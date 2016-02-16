@@ -1,0 +1,287 @@
+---
+title: "Alt Model Output"
+author: John C. Flournoy
+mainfont: Palatino Linotype
+monofont: DejaVu Sans Mono
+output: 
+ pdf_document:
+   latex_engine: xelatex
+   fig_caption: true
+   keep_tex: true
+   toc: true
+   toc_depth: 2
+---
+
+```{r setup chunk,echo=FALSE, results='hide'}
+
+require(knitr)
+opts_chunk$set(warning=FALSE,echo=FALSE,results='asis',comment=NA,message=FALSE,dpi=300,dev='CairoPNG',error=TRUE,cache=F,
+               cache.comments=F)
+
+
+require(MplusAutomation)
+
+setwd('C:/Users/jackflibb/Documents/UO/Life and Times/Work and Concientiousness/SEM/')
+
+# createModels('workAndC_BiTemplate_base_ladders_bfas.inp')
+
+# setwd('C:/Users/jackflibb/Documents/UO/Life and Times/Work and Concientiousness/automated/UniModels')
+# runModels(recursive = T)
+# setwd('C:/Users/jackflibb/Documents/UO/Life and Times/Work and Concientiousness/SEM/automated/BiModels')
+# runModels(recursive = T,replaceOutfile='never')
+
+
+saveUniFN<-'C:/Users/jackflibb/Documents/UO/Life and Times/Work and Concientiousness/SEM/uniMods'
+saveBiFN<-'C:/Users/jackflibb/Documents/UO/Life and Times/Work and Concientiousness/SEM/biMods'
+
+#Read models
+# setwd('C:/Users/jackflibb/Documents/UO/Life and Times/Work and Concientiousness/SEM/automated/UniModels')
+# uniModelOut<-readModels(recursive = T,
+#                         filefilter='.*base.*')
+# setwd('C:/Users/jackflibb/Documents/UO/Life and Times/Work and Concientiousness/SEM/automated/BiModels')
+# biModelOut<-readModels(recursive = T,
+#                        filefilter='.*base.*')
+
+# save(uniModelOut,file=saveUniFN)
+# save(biModelOut,file=saveBiFN)
+
+# load(saveUniFN)
+load(saveBiFN)
+
+# #Fit estimates
+# biFits<-ldply(biModelOut,
+#               function(aModel){
+#                 data.frame(filename=sub('-((nat)|(col)|(nat empl))-base\\.out','',aModel$summaries['Filename']),
+#                            subset=sub('.*((nat)|(col)|(nat empl)).*','\\1',aModel$summaries['Filename']),
+#                            variable=c('Estimator',
+#                                       'Observations',
+#                                       'Parameters',
+#                                       'LL',
+#                                       'AIC',
+#                                       'BIC'),
+#                            value=t(aModel$summaries[c('Estimator',
+#                                                       'Observations',
+#                                                       'Parameters',
+#                                                       'LL',
+#                                                       'AIC',
+#                                                       'BIC')]
+#                            )
+#                 )
+#               })[-1] #less the first column because it's just the filenames
+# head(biFits,40)
+
+# require(reshape2)
+# head(biFits_w<-dcast(biFits,filename+subset~...))
+# head(biFits_w<-biFits_w[order(biFits_w$subset,biFits_w$filename),])
+
+
+# #Parameter estimates
+# biFits<-ldply(biModelOut,
+#               function(aModel){
+#                 data.frame(filename=sub('-((nat)|(col)|(nat empl))-base\\.out','',aModel$summaries['Filename']),
+#                            subset=sub('.*((nat)|(col)|(nat empl)).*','\\1',aModel$summaries['Filename']),
+#                            variable=c('Estimator',
+#                                       'Observations',
+#                                       'Parameters',
+#                                       'LL',
+#                                       'AIC',
+#                                       'BIC'),
+#                            value=t(aModel$summaries[c('Estimator',
+#                                                       'Observations',
+#                                                       'Parameters',
+#                                                       'LL',
+#                                                       'AIC',
+#                                                       'BIC')]
+#                            )
+#                 )
+#               })[-1] #less the first column because it's just the filenames
+# head(biFits,40)
+# 
+# require(reshape2)
+# head(biFits_w<-dcast(biFits,filename+subset~...))
+# head(biFits_w<-biFits_w[order(biFits_w$subset,biFits_w$filename),])
+
+biParams<-ldply(biModelOut,
+                function(aMod){
+                  if(!exists('Parameters',where=aMod$summaries)){
+                    data.frame(
+                      filename=sub('-((nat)|(col)|(nat empl))-base\\.out','',aMod$summaries['Filename']),
+                      subset=sub('.*((nat)|(col)|(nat empl)).*','\\1',aMod$summaries['Filename']),
+                      param_l=NA,
+                      param_l_wave=NA,
+                      relat=NA,
+                      param_r=NA,
+                      param_r_wave=NA,
+                      est=NA,
+                      se=NA,
+                      est_se=NA,
+                      pval=NA
+                    )
+                  } else {
+                    notScales<-c('Means','Intercepts','Variances','Residual.Variances')
+                    parDF<-aMod$parameters$unstandardized[!(aMod$parameters$unstandardized$paramHeader %in% notScales),]
+                    etcDF<-aMod$parameters$unstandardized[aMod$parameters$unstandardized$paramHeader %in% notScales,]
+                    parDF$param_l<-
+                      sub(
+                        '(\\w)_*(BFI_\\w{1,2}|BFAS_\\w{1,2}|ASPFIN|GOALEC|INVJOB|LADDE1|LADDE2)\\.(\\w+)',
+                        '\\2',
+                        parDF$paramHeader
+                      )
+                    parDF$param_l_wave<-
+                      sub(
+                        '(\\w)_*(BFI_\\w{1,2}|BFAS_\\w{1,2}|ASPFIN|GOALEC|INVJOB|LADDE1|LADDE2)\\.(\\w+)',
+                        '\\1',
+                        parDF$paramHeader
+                      )
+                    parDF$relat<-
+                      sub(
+                        '(\\w)_*(BFI_\\w{1,2}|BFAS_\\w{1,2}|ASPFIN|GOALEC|INVJOB|LADDE1|LADDE2)\\.(\\w+)',
+                        '\\3',
+                        parDF$paramHeader
+                      )
+                    parDF$param_r<-
+                      sub(
+                        '(\\w)_*(BFI_\\w{1,2}|BFAS_\\w{1,2}|ASPFIN|GOALEC|INVJOB|LADDE1|LADDE2)',
+                        '\\2',
+                        parDF$param
+                      )
+                    parDF$param_r_wave<-
+                      sub(
+                        '(\\w)_*(BFI_\\w{1,2}|BFAS_\\w{1,2}|ASPFIN|GOALEC|INVJOB|LADDE1|LADDE2)',
+                        '\\1',
+                        parDF$param
+                      )
+                    
+                    etcDF$param_l<-etcDF$paramHeader
+                    etcDF$param_r<-
+                      sub(
+                        '(\\w)_*(BFI_\\w{1,2}|BFAS_\\w{1,2}|ASPFIN|GOALEC|INVJOB|LADDE1|LADDE2)',
+                        '\\2',
+                        etcDF$param
+                      )
+                    etcDF$param_r_wave<-
+                      sub(
+                        '(\\w)_*(BFI_\\w{1,2}|BFAS_\\w{1,2}|ASPFIN|GOALEC|INVJOB|LADDE1|LADDE2)',
+                        '\\1',
+                        etcDF$param
+                      )
+                    
+                    aDF<-rbind.fill(parDF,etcDF)
+                    aDF$filename<-sub('-((nat)|(col)|(nat empl))-base\\.out','',aMod$summaries['Filename'])
+                    aDF$subset<-sub('.*((nat)|(col)|(nat empl)).*','\\1',aMod$summaries['Filename'])
+                    aDF<-aDF[,c('filename',
+                                'subset',
+                                'param_l',
+                                'param_l_wave',
+                                'relat',
+                                'param_r',
+                                'param_r_wave',
+                                'est',
+                                'se',
+                                'est_se',
+                                'pval')]
+                  }
+                  
+                }
+)[-1] #less the first column because it's just the filenames
+# head(biParams,120)
+
+biParams$param_l<-sub('_',' ',biParams$param_l)
+biParams$param_r<-sub('_',' ',biParams$param_r)
+
+
+require(knitr)
+source('~/R/latexTableWrap.r')
+
+setwd('C:/Users/jackflibb/Documents/UO/Life and Times/Work and Concientiousness/SEM')
+```
+
+#Bivariate Alt Models
+A visual discription of the model
+
+![ALT Model](alt-model.png "ALT Model")
+\newpage
+
+```{r display chunk,results='asis',warning=TRUE}
+d_ply(biParams,
+      .variables=c('subset'),
+      function(subsetDF){
+        aSubset<-subsetDF$subset[1]
+        write(paste('\n# Subset:',aSubset,'\n\n'),'')
+        d_ply(biParams[biParams$subset==aSubset,],
+              .variables=c('filename'),
+              function(aDF){
+                biScaleNames<-sub('_',' ',paste(strsplit(aDF$filename[1],'-')[[1]][2:3],collapse=' '))
+                write(paste('\n## Scales:',sub('_',' ',paste(strsplit(aDF$filename[1],'-')[[1]][2:3],collapse=', ')),'\n\n'),'')
+                notScales<-c('Means','Intercepts','Variances','Residual.Variances')
+#                 aDF$relat<-sub('^ON$','$\\\\leftarrow$',aDF$relat)
+#                 aDF$relat<-sub('^WITH$','$\\\\leftrightarrow$',aDF$relat)
+                
+                aDFScale<-aDF[!aDF$param_l %in% notScales,c('param_l',
+                                                            'param_l_wave',
+                                                            'relat',
+                                                            'param_r',
+                                                            'param_r_wave',
+                                                            'est',
+                                                            'se',
+                                                            'est_se',
+                                                            'pval')]
+                aDFNotScales<-aDF[aDF$param_l %in% notScales,c('param_l',
+                                                               'param_r',
+                                                               'param_r_wave',
+                                                               'est',
+                                                               'se',
+                                                               'est_se',
+                                                               'pval')]
+                tableScales<-kable(aDFScale,
+                                   row.names = F,
+                                   format='latex',
+                                   booktabs=T,
+                                   longtable=F,
+                                   output=F,
+                                   col.names=c('Scale 1',
+                                               'Wave/I/S',
+                                               'Arrow',
+                                               'Scale 2',
+                                               'Wave/I/S',
+                                               'Estimate',
+                                               'Standard Error',
+                                               'Estimate/SE',
+                                               'p'),
+                                   linesep=c(rep(c('','','','','','\\addlinespace'),2),
+                                             rep(c('','','','\\addlinespace'),2))
+                )
+                tableNotScales<-kable(aDFNotScales,
+                                      row.names = F,
+                                      format='latex',
+                                      booktabs=T,
+                                      longtable=F,
+                                      output=F,
+                                      col.names=c('Parameter',
+                                                  'Scale',
+                                                  'Wave/I/S',
+                                                  'Estimate',
+                                                  'Standard Error',
+                                                  'Estimate/SE',
+                                                  'p'),
+                                      linesep=c('','','','','','\\addlinespace'))
+                
+                write(
+                  latexTableWrap(
+                    tableScales,
+                    caption=paste(biScaleNames,'- paths'),
+                    small=T
+                  ),''
+                )
+                write(
+                  latexTableWrap(
+                    tableNotScales,
+                    caption=paste(biScaleNames,'- intercepts and variances'),
+                    small=T
+                  ),''
+                )
+                write('\n\\clearpage\n','')
+              })
+      })
+```
+
