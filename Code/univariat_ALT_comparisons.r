@@ -252,7 +252,7 @@ kable(winnersByCriterion,
 
 
 #'
-#' ## Parameter histograms
+#' # Parameter histograms
 #'
 
 #+fig.width=10, fig.height=2.66, dev='svg', fig.cap='National: path estimates'
