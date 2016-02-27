@@ -1,24 +1,23 @@
 [[init]]
-iterators = subset growthtype which;
+iterators = growthtype which;
 
-subset = 1:3;
-growthtype = 1:4;
-which = 1:25;
+growthtype = 1:3;
+which = 1:57;
 
-subsetNames#subset = "Nat" "Inf" "Col";
-subsetMeanAge#subset = 36 36 20.5;
-var#which = BFA_AC	BFA_AP	BFA_CI	BFA_CO	BFA_EA	BFA_EE	BFA_MT	BFA_NV	BFA_NW	BFA_OI	BFA_OO	BFI_A6	BFI_C	BFI_E	BFI_HP	BFI_N	BFI_O	COLLCTV	D_SCALE	HRZ_COL	HRZ_IND	MVS_mc	S_SCALE	USI	VRT_IND;
-growthTypeDesc#growthtype = "AR_Int" "AR_Lin" "NoAR_Int" "NoAr_Lin";
-datafile#subset = "LT_227.txt" "LT_informants3.txt" "LT_227.txt";
- 
-filename="ALT-[[var#which]]-[[subsetNames#subset]]-[[growthTypeDesc#growthtype]].inp";
-outputDirectory="E:\Projects\LnT_Values\Rez\univariate\[[var#which]]";
+growthTypeDesc#growthtype = "AR_Int" "AR_LinM" "AR_Lin";
+var#which = BFA_AC	BFA_AP	BFA_CI	BFA_CO	BFA_EA	BFA_EE	BFA_MT	BFA_NV	BFA_NW	BFA_OI	BFA_OO	BFI_A6	BFI_C	BFI_E	BFI_HP	BFI_N	BFI_O	D_SCALE	HRZ_COL	HRZ_IND	MVS_mc	S_SCALE	USI	VRT_COL VRT_IND BFA_AC	BFA_AP	BFA_CI	BFA_CO	BFA_EA	BFA_EE	BFA_MT	BFA_NV	BFA_NW	BFA_OI	BFA_OO	BFI_A6	BFI_C	BFI_E	BFI_HP BFI_N BFI_O	D_SCALE	VRT_COL HRZ_COL	HRZ_IND	MVS_mc	S_SCALE	USI	VRT_IND I_E I_A I_C I_N I_O I_S I_D;
+subsetNames#which = Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Col Col Col Col Col Col Col Col Col Col Col Col Col Col Col Col Col Col Col Col Col Col Col Col Col Inf Inf Inf Inf Inf Inf Inf;
+datafile#which = LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_informants3.txt LT_informants3.txt LT_informants3.txt LT_informants3.txt LT_informants3.txt LT_informants3.txt LT_informants3.txt;
+subsetMeanAge#which = 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 20.5 20.5 20.5 20.5 20.5 20.5 20.5;
+
+filename="ALT-[[var#which]]-[[subsetNames#which]]-[[growthTypeDesc#growthtype]].inp";
+outputDirectory="E:\Projects\lnt_pxvx\Rez\univariate\[[subsetNames#which]]\[[var#which]]";
 [[/init]]
 
-title: PxVx Univariate - [[subsetNames#subset]] [[var#which]] [[growthTypeDesc#growthtype]];
-data: file = E:\Projects\LnT_Values\Data\[[datafile#subset]];
+title: PxVx Univariate - [[subsetNames#which]] [[var#which]] [[growthTypeDesc#growthtype]];
+data: file = E:\Projects\lnt_pxvx\Data\[[datafile#which]];
 
-[[subset == 2]]
+[[which > 50]]
 variable:
 names =
 subjid
@@ -312,8 +311,8 @@ aI_H
 bI_H
 cI_H
 dI_H;
-[[/subset == 2]]
-[[subset != 2]]
+[[/which > 50]]
+[[which < 51]]
 variable: 
 names =
 subjid
@@ -543,7 +542,7 @@ aaspfin
 baspfin
 caspfin
 daspfin;
-[[/subset != 2]]
+[[/which < 51]]
 
 USEVARIABLES =
 a[[var#which]]
@@ -557,23 +556,27 @@ dage_c
 
 missing = all (-9999);
 
-[[subset == 1]]
+[[which < 26]]
 USEOBSERVATIONS are Sample == 1; ! National Sample
-[[/subset == 1]]
-[[subset == 2]]
-USEOBSERVATIONS are Sample == 1; ! National Sample, informant's data
-[[/subset == 2]]
-[[subset == 3]]
+[[/which < 26]]
+
+[[which > 25]]
+[[which < 51]]
 USEOBSERVATIONS are Sample == 2; ! College Sample
-[[/subset == 3]]
+[[/which < 51]]
+[[/which > 25]]
+
+[[which > 50]]
+USEOBSERVATIONS are Sample == 1; ! National Sample, informant's data
+[[/which > 50]]
 
 
 tscores = bage_c cage_c dage_c;
 
 DEFINE:
-bage_c = aAGE + 1 - [[subsetMeanAge#subset]];
-cage_c = aAGE + 2 - [[subsetMeanAge#subset]];
-dage_c = aAGE + 3 - [[subsetMeanAge#subset]];
+bage_c = aAGE + 1 - [[subsetMeanAge#which]];
+cage_c = aAGE + 2 - [[subsetMeanAge#which]];
+dage_c = aAGE + 3 - [[subsetMeanAge#which]];
 
 
 ANALYSIS:
@@ -585,42 +588,29 @@ MODEL:
 [[growthtype == 1]]
 i_[[var#which]] | b[[var#which]] c[[var#which]] d[[var#which]] AT bage_c cage_c dage_c;
 [[/growthtype == 1]]
-[[growthtype == 2]]
+
+[[growthtype > 1]]
 i_[[var#which]] s_[[var#which]] | b[[var#which]] c[[var#which]] d[[var#which]] AT bage_c cage_c dage_c;
-[[/growthtype == 2]]
-[[growthtype == 3]]
-i_[[var#which]] | b[[var#which]] c[[var#which]] d[[var#which]] AT bage_c cage_c dage_c;
-[[/growthtype == 3]]
-[[growthtype == 4]]
-i_[[var#which]] s_[[var#which]] | b[[var#which]] c[[var#which]] d[[var#which]] AT bage_c cage_c dage_c;
-[[/growthtype == 4]]
+[[/growthtype > 1]]
 
 !After Bollen and Curran initial observation is not part of LGM
 
-[[growthtype < 3]]
-d[[var#which]] on c[[var#which]] (a); ! Autoregressive effect constrained 
+d[[var#which]] on c[[var#which]] (a); ! Autoregressive paths constrained to equality
 c[[var#which]] on b[[var#which]] (a);
 b[[var#which]] on a[[var#which]] (a);
-[[/growthtype < 3]]
-[[growthtype > 2]]
-d[[var#which]] on c[[var#which]]@0 (a); ! Autoregressive effect constrained to be 0
-c[[var#which]] on b[[var#which]]@0 (a);
-b[[var#which]] on a[[var#which]]@0 (a);
-[[/growthtype > 2]]
 
 b[[var#which]] c[[var#which]] d[[var#which]] (c); !Equality constraint on residuals
-
 
 a[[var#which]] i_[[var#which]]
 WITH
 a[[var#which]] i_[[var#which]];
 
 [[growthtype == 2]]
-s_[[var#which]] WITH i_[[var#which]] a[[var#which]];
+s_[[var#which]]@0;
 [[/growthtype == 2]]
-[[growthtype == 4]]
-s_[[var#which]] WITH i_[[var#which]] a[[var#which]];
-[[/growthtype == 4]]
 
+[[growthtype > 2]]
+s_[[var#which]] WITH i_[[var#which]] a[[var#which]];
+[[/growthtype > 2]]
 
 OUTPUT: SAMPSTAT PATTERNS;
