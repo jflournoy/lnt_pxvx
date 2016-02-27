@@ -23,20 +23,18 @@ opts_chunk$set(echo=F, message=F, warning=F)
 #'
 #'![](initial_model.png "Template for model comparisons")
 #'
-#' The above diagram captures all 4 models we wish to compare. Ignoring the 
-#' blue portion, we have an intercept-only ALT model. We can decide whether
-#' the auto-regressive paths improve fit by comparing a model where `AR` is
-#' freely estimated to a model where `AR` is constrained to be 0 -- the
-#' *AR_Int* versus *NoAR_Int* models in the tables below. This comparison
-#' results in a difference of 1 parameter between the models.
+#' The above diagram captures all 3 models we wish to compare. The black portion
+#' is the base, intercept-only ALT model (**AR_Int**). We estimate 7 parameters: the initial
+#' status (`a X`) variance and mean, the autoregressive parameter constrained 
+#' to be equal between all four waves (`AR`), the residual variances for waves
+#' 2-4 constrained to be equal (`v`), and a latent intercept mean, variance, and
+#' covariance with initial status.
 #'
-#' We can also include a latent slope (the blue portion, above) and compare
-#' model fit between an intercept only, and intercept + slope model (with 
-#' `AR` free or constrained). Adding the slope
-#' gives us 4 new parameters to estimate: The slope mean, varriance, and 
-#' covarriance with the intercept and initial status indicator (`a X`). These
-#' two-parameter latent growth models are postfixed with *Lin* below (e.g., 
-#' *NoAR_Lin*).
+#' The blue portion shows the addition of one parameter 
+#' to capture the mean of a latent slope (`S X`), which gives us the 
+#' **AR_LinM** model below. Finally, the red portion shows the addition of 
+#' three parameters: the latent slope variance, and covariance with
+#' the latent intercept, and initial status (**AR_Lin** below).
 #'
 
 # Set working directory to that which contains Code, Data, etc
@@ -91,9 +89,8 @@ paramsummaries <- uniModelOut_df %>% rowwise %>%
 #' 
 #' # Comparisons
 #'
-#' The below tables test fit improvements between models with and without 
-#' the `AR` path constrained to 0, and with and without the latent slope.
-#' because we use the `tscores` command in MPlus, the MLR estimator is used,
+#' The below tables test fit improvements between these three models.
+#' Because we use the `tscores` command in MPlus, the MLR estimator is used,
 #' which requires an adjustment to the -2\*Log Likelhood values before their
 #' difference is computed. For more information on this adjustment, see 
 #' the [MPlus website]( https://www.statmodel.com/chidiff.shtml) or the
