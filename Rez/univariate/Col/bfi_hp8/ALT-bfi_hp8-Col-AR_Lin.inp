@@ -1,5 +1,5 @@
 
-title: PxVx Univariate - Col BFI_HP AR_Lin;
+title: PxVx Univariate - Col bfi_hp8 AR_Lin;
 data: file = E:\Projects\lnt_pxvx\Data\LT_227.txt;
 
 variable: 
@@ -233,10 +233,10 @@ caspfin
 daspfin;
 
 USEVARIABLES =
-aBFI_HP
-bBFI_HP
-cBFI_HP
-dBFI_HP
+abfi_hp8
+bbfi_hp8
+cbfi_hp8
+dbfi_hp8
 bage_c
 cage_c
 dage_c
@@ -264,21 +264,21 @@ PROCESSORS = 8;
 MODEL:
 
 
-i_BFI_HP s_BFI_HP | bBFI_HP cBFI_HP dBFI_HP AT bage_c cage_c dage_c;
+i_bfi_hp8 s_bfi_hp8 | bbfi_hp8 cbfi_hp8 dbfi_hp8 AT bage_c cage_c dage_c;
 
 !After Bollen and Curran initial observation is not part of LGM
 
-dBFI_HP on cBFI_HP (a); ! Autoregressive paths constrained to equality
-cBFI_HP on bBFI_HP (a);
-bBFI_HP on aBFI_HP (a);
+dbfi_hp8 on cbfi_hp8 (a); ! Autoregressive paths constrained to equality
+cbfi_hp8 on bbfi_hp8 (a);
+bbfi_hp8 on abfi_hp8 (a);
 
-bBFI_HP cBFI_HP dBFI_HP (c); !Equality constraint on residuals
+bbfi_hp8 cbfi_hp8 dbfi_hp8 (c); !Equality constraint on residuals
 
-aBFI_HP i_BFI_HP
+abfi_hp8 i_bfi_hp8
 WITH
-aBFI_HP i_BFI_HP;
+abfi_hp8 i_bfi_hp8;
 
 
-s_BFI_HP WITH i_BFI_HP aBFI_HP;
+s_bfi_hp8 WITH i_bfi_hp8 abfi_hp8;
 
 OUTPUT: SAMPSTAT PATTERNS;

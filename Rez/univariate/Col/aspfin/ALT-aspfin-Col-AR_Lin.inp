@@ -1,5 +1,5 @@
 
-title: PxVx Univariate - Nat BFI_HP AR_Int;
+title: PxVx Univariate - Col aspfin AR_Lin;
 data: file = E:\Projects\lnt_pxvx\Data\LT_227.txt;
 
 variable: 
@@ -233,10 +233,10 @@ caspfin
 daspfin;
 
 USEVARIABLES =
-aBFI_HP
-bBFI_HP
-cBFI_HP
-dBFI_HP
+aaspfin
+baspfin
+caspfin
+daspfin
 bage_c
 cage_c
 dage_c
@@ -244,8 +244,8 @@ dage_c
 
 missing = all (-9999);
 
-USEOBSERVATIONS are Sample == 1; ! National Sample
 
+USEOBSERVATIONS are Sample == 2; ! College Sample
 
 
 
@@ -263,21 +263,22 @@ PROCESSORS = 8;
 
 MODEL:
 
-i_BFI_HP | bBFI_HP cBFI_HP dBFI_HP AT bage_c cage_c dage_c;
 
+i_aspfin s_aspfin | baspfin caspfin daspfin AT bage_c cage_c dage_c;
 
 !After Bollen and Curran initial observation is not part of LGM
 
-dBFI_HP on cBFI_HP (a); ! Autoregressive paths constrained to equality
-cBFI_HP on bBFI_HP (a);
-bBFI_HP on aBFI_HP (a);
+daspfin on caspfin (a); ! Autoregressive paths constrained to equality
+caspfin on baspfin (a);
+baspfin on aaspfin (a);
 
-bBFI_HP cBFI_HP dBFI_HP (c); !Equality constraint on residuals
+baspfin caspfin daspfin (c); !Equality constraint on residuals
 
-aBFI_HP i_BFI_HP
+aaspfin i_aspfin
 WITH
-aBFI_HP i_BFI_HP;
+aaspfin i_aspfin;
 
 
+s_aspfin WITH i_aspfin aaspfin;
 
 OUTPUT: SAMPSTAT PATTERNS;

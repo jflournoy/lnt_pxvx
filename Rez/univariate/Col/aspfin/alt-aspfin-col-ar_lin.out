@@ -1,11 +1,11 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/26/2016   2:32 PM
+02/28/2016   5:41 PM
 
 INPUT INSTRUCTIONS
 
 
-  title: PxVx Univariate - Nat BFI_HP AR_Int;
+  title: PxVx Univariate - Col aspfin AR_Lin;
   data: file = E:\Projects\lnt_pxvx\Data\LT_227.txt;
 
   variable:
@@ -239,10 +239,10 @@ INPUT INSTRUCTIONS
   daspfin;
 
   USEVARIABLES =
-  aBFI_HP
-  bBFI_HP
-  cBFI_HP
-  dBFI_HP
+  aaspfin
+  baspfin
+  caspfin
+  daspfin
   bage_c
   cage_c
   dage_c
@@ -250,8 +250,8 @@ INPUT INSTRUCTIONS
 
   missing = all (-9999);
 
-  USEOBSERVATIONS are Sample == 1; ! National Sample
 
+  USEOBSERVATIONS are Sample == 2; ! College Sample
 
 
 
@@ -269,56 +269,57 @@ INPUT INSTRUCTIONS
 
   MODEL:
 
-  i_BFI_HP | bBFI_HP cBFI_HP dBFI_HP AT bage_c cage_c dage_c;
 
+  i_aspfin s_aspfin | baspfin caspfin daspfin AT bage_c cage_c dage_c;
 
   !After Bollen and Curran initial observation is not part of LGM
 
-  dBFI_HP on cBFI_HP (a); ! Autoregressive paths constrained to equality
-  cBFI_HP on bBFI_HP (a);
-  bBFI_HP on aBFI_HP (a);
+  daspfin on caspfin (a); ! Autoregressive paths constrained to equality
+  caspfin on baspfin (a);
+  baspfin on aaspfin (a);
 
-  bBFI_HP cBFI_HP dBFI_HP (c); !Equality constraint on residuals
+  baspfin caspfin daspfin (c); !Equality constraint on residuals
 
-  aBFI_HP i_BFI_HP
+  aaspfin i_aspfin
   WITH
-  aBFI_HP i_BFI_HP;
+  aaspfin i_aspfin;
 
 
+  s_aspfin WITH i_aspfin aaspfin;
 
   OUTPUT: SAMPSTAT PATTERNS;
 
 
 
 *** WARNING
-  Data set contains cases with missing on time scores but non-missing on the
-  corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  5
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  2
    1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
-PxVx Univariate - Nat BFI_HP AR_Int;
+PxVx Univariate - Col aspfin AR_Lin;
 
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         874
+Number of observations                                         278
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
-Number of continuous latent variables                            1
+Number of continuous latent variables                            2
 
 Observed dependent variables
 
   Continuous
-   BBFI_HP     CBFI_HP     DBFI_HP
+   BASPFIN     CASPFIN     DASPFIN
 
 Observed independent variables
-   ABFI_HP
+   AASPFIN
 
 Continuous latent variables
-   I_BFI_HP
+   I_ASPFIN    S_ASPFIN
 
 Variables with special functions
 
@@ -348,7 +349,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns             9
+     Number of missing data patterns             8
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -356,19 +357,19 @@ SUMMARY OF MISSING DATA PATTERNS
 
      MISSING DATA PATTERNS (x = not missing)
 
-           1  2  3  4  5  6  7  8  9
- BBFI_HP   x     x  x        x
- CBFI_HP   x           x     x  x
- DBFI_HP   x     x     x  x        x
- ABFI_HP   x  x  x  x  x  x  x  x
+           1  2  3  4  5  6  7  8
+ BASPFIN   x  x     x        x
+ CASPFIN   x  x  x              x
+ DASPFIN   x              x  x  x
+ AASPFIN   x  x  x  x  x  x  x  x
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         503           4          57           7          47
-          2         169           5          23           8          22
-          3          27           6          25           9           1
+          1         140           4          28           7          16
+          2          12           5          55           8          11
+          3           5           6          11
 
 
 COVARIANCE COVERAGE OF DATA
@@ -380,12 +381,12 @@ Minimum covariance coverage value   0.100
 
 
            Covariance Coverage
-              BBFI_HP       CBFI_HP       DBFI_HP       ABFI_HP
+              BASPFIN       CASPFIN       DASPFIN       AASPFIN
               ________      ________      ________      ________
- BBFI_HP        0.725
- CBFI_HP        0.629         0.681
- DBFI_HP        0.606         0.602         0.662
- ABFI_HP        0.725         0.681         0.661         0.999
+ BASPFIN        0.705
+ CASPFIN        0.547         0.604
+ DASPFIN        0.561         0.543         0.640
+ AASPFIN        0.705         0.604         0.640         1.000
 
 
 SAMPLE STATISTICS
@@ -395,30 +396,30 @@ SAMPLE STATISTICS
 
 
            Means
-              BBFI_HP       CBFI_HP       DBFI_HP       ABFI_HP
+              BASPFIN       CASPFIN       DASPFIN       AASPFIN
               ________      ________      ________      ________
- 1             68.657        69.277        69.586        68.131
+ 1             47.581        46.616        47.888        47.415
 
 
            Covariances
-              BBFI_HP       CBFI_HP       DBFI_HP       ABFI_HP
+              BASPFIN       CASPFIN       DASPFIN       AASPFIN
               ________      ________      ________      ________
- BBFI_HP      236.846
- CBFI_HP      177.045       220.691
- DBFI_HP      167.719       169.732       218.760
- ABFI_HP      181.902       171.980       162.407       236.233
+ BASPFIN      536.102
+ CASPFIN      342.774       495.685
+ DASPFIN      395.807       395.371       557.801
+ AASPFIN      420.562       334.563       357.797       540.567
 
 
            Correlations
-              BBFI_HP       CBFI_HP       DBFI_HP       ABFI_HP
+              BASPFIN       CASPFIN       DASPFIN       AASPFIN
               ________      ________      ________      ________
- BBFI_HP        1.000
- CBFI_HP        0.774         1.000
- DBFI_HP        0.737         0.772         1.000
- ABFI_HP        0.769         0.753         0.714         1.000
+ BASPFIN        1.000
+ CASPFIN        0.665         1.000
+ DASPFIN        0.724         0.752         1.000
+ AASPFIN        0.781         0.646         0.652         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -10185.606
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3501.919
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -427,19 +428,19 @@ THE MODEL ESTIMATION TERMINATED NORMALLY
 
 MODEL FIT INFORMATION
 
-Number of Free Parameters                        7
+Number of Free Parameters                       11
 
 Loglikelihood
 
-          H0 Value                      -10190.201
-          H0 Scaling Correction Factor       1.054
+          H0 Value                       -3505.367
+          H0 Scaling Correction Factor       0.897
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   20394.402
-          Bayesian (BIC)                 20427.813
-          Sample-Size Adjusted BIC       20405.583
+          Akaike (AIC)                    7032.734
+          Bayesian (BIC)                  7072.638
+          Sample-Size Adjusted BIC        7037.758
             (n* = (n + 2) / 24)
 
 
@@ -449,46 +450,52 @@ MODEL RESULTS
                                                     Two-Tailed
                     Estimate       S.E.  Est./S.E.    P-Value
 
- DBFI_HP    ON
-    CBFI_HP            0.142      0.044      3.248      0.001
+ DASPFIN    ON
+    CASPFIN           -0.020      0.058     -0.353      0.724
 
- CBFI_HP    ON
-    BBFI_HP            0.142      0.044      3.248      0.001
+ CASPFIN    ON
+    BASPFIN           -0.020      0.058     -0.353      0.724
 
- BBFI_HP    ON
-    ABFI_HP            0.142      0.044      3.248      0.001
+ BASPFIN    ON
+    AASPFIN           -0.020      0.058     -0.353      0.724
 
- ABFI_HP  WITH
-    I_BFI_HP         144.353     11.110     12.993      0.000
+ S_ASPFIN WITH
+    I_ASPFIN         184.505     61.568      2.997      0.003
+    AASPFIN          -37.905     12.730     -2.978      0.003
+
+ AASPFIN  WITH
+    I_ASPFIN        -132.508    181.763     -0.729      0.466
 
  Means
-    ABFI_HP           68.131      0.520    131.048      0.000
-    I_BFI_HP          59.393      3.037     19.558      0.000
+    AASPFIN           47.415      1.392     34.067      0.000
+    I_ASPFIN          48.324      8.681      5.567      0.000
+    S_ASPFIN           0.006      0.623      0.009      0.993
 
  Intercepts
-    BBFI_HP            0.000      0.000    999.000    999.000
-    CBFI_HP            0.000      0.000    999.000    999.000
-    DBFI_HP            0.000      0.000    999.000    999.000
+    BASPFIN            0.000      0.000    999.000    999.000
+    CASPFIN            0.000      0.000    999.000    999.000
+    DASPFIN            0.000      0.000    999.000    999.000
 
  Variances
-    ABFI_HP          236.235     10.264     23.017      0.000
-    I_BFI_HP         121.396     16.113      7.534      0.000
+    AASPFIN          540.567     37.598     14.378      0.000
+    I_ASPFIN        2897.970    886.070      3.271      0.001
+    S_ASPFIN          13.575      4.446      3.054      0.002
 
  Residual Variances
-    BBFI_HP           59.023      3.758     15.708      0.000
-    CBFI_HP           59.023      3.758     15.708      0.000
-    DBFI_HP           59.023      3.758     15.708      0.000
+    BASPFIN          136.507     14.135      9.658      0.000
+    CASPFIN          136.507     14.135      9.658      0.000
+    DASPFIN          136.507     14.135      9.658      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.124E-03
+     Condition Number for the Information Matrix              0.798E-07
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  14:32:53
-        Ending Time:  14:32:53
-       Elapsed Time:  00:00:00
+     Beginning Time:  17:41:51
+        Ending Time:  17:41:53
+       Elapsed Time:  00:00:02
 
 
 

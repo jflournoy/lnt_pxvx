@@ -231,14 +231,25 @@ winningModels <- modelComparisonResults %>% group_by(sample, variable) %>%
 			   winningmodel=c(LLwinner, AICwinner, BICwinner))
 	})
 
+variableTypes <- data_frame(variable=c('BFA_AC', 'BFA_AP', 'BFA_CI', 'BFA_CO', 'BFA_EA', 'BFA_EE', 'BFA_MT', 'BFA_NV', 'BFA_NW', 'BFA_OI', 'BFA_OO', 'BFI_A6', 'BFI_C', 'BFI_E', 'bfi_hp8', 'BFI_N', 'BFI_O', 'D_SCALE', 'VRT_COL', 'HRZ_COL', 'HRZ_IND', 'MVS_mc', 'S_SCALE', 'USI', 'VRT_IND', 'aspfin'),
+			    vartype=c(rep('p', 6),
+				      'v',
+				      rep('p', 10),
+				      rep('v', 9)))
+
 #+results='asis'
 modelTallies <- winningModels %>%
-	group_by(sample) %>%
+	filter(sample != 'Inf') %>%
+	left_join(variableTypes) %>%
+	group_by(sample, vartype) %>%
 	select(criterion, winningmodel) %>%
 	do({
+		vartypenames <- c(p='Pers', v='Val')
 		sampleNames <- c(Nat='National', Col='College', `Inf`='Informants')
 		print(kable(table(select(., criterion, winningmodel)),
 	    		    caption=paste0(sampleNames[.$sample[[1]]],
+					   ' ',
+					   vartypenames[.$vartype[[1]]],
 					   ': Tally of winning models, by fit measure'),
 			    align='l'))
 		tidy(table(.))
