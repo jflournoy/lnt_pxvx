@@ -17,13 +17,14 @@ library(ggplot2)
 library(broom)
 opts_chunk$set(echo=F, message=F, warning=F)
 
+#'
 #' # Intro
 #'
 #' **Template for model comparisons:**
 #'
-#'![](initial_model.png "Template for model comparisons")
+#'![](bi_model.png "Template for bivartiate models")
 #'
-#' The above diagram captures all 3 models we wish to compare. The black portion
+#' CHANGEMEThe above diagram captures all 3 models we wish to compare. The black portion
 #' is the base, intercept-only ALT model (**AR_Int**). We estimate 7 parameters: the initial
 #' status (`a X`) variance and mean, the autoregressive parameter constrained 
 #' to be equal between all four waves (`AR`), the residual variances for waves
@@ -37,15 +38,15 @@ opts_chunk$set(echo=F, message=F, warning=F)
 #' the latent intercept, and initial status (**AR_Lin** below).
 #'
 
-# Set working directory to that which contains Code, Data, etc
+# # Set working directory to that which contains Code, Data, etc
 # setwd('E:/Projects/lnt_pxvx/')
 
 loadUniFN<-'../Rez/uniMods.RData'
 
 # # Create Models
-# createModels('code/PxVx_UniTemplate.inp')
+# createModels('code/PxVx_BiTemplate.inp')
 # 
-# setwd('E:/Projects/lnt_pxvx/Rez/univariate')
+# setwd('E:/Projects/lnt_pxvx/Rez/bivariate')
 # runModels(recursive = T)
 
 # # Read models

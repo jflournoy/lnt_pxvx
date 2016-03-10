@@ -1,5 +1,5 @@
 [[init]]
-iterators = growthtype which;
+iterators = growthtypeP growthtypeV whichP whichV;
 
 growthtypeP = 1:2;
 growthtypeV = 1:2;
@@ -23,7 +23,7 @@ filename="BivALT-[[varP#whichP]]_[[varV#whichV]]-[[subsetNames#whichP]]-P[[growt
 outputDirectory="E:\Projects\lnt_pxvx\Rez\bivariate\[[subsetNames#whichP]]\[[varP#whichP]]_[[varV#whichV]]";
 [[/init]]
 
-title: PxVx Univariate - [[subsetNames#whichP]] [[growthTypeDescP#growthtypeP]] [[varP#whichP]] with [[growthTypeDescV#growthtypeV]] [[varV#whichV]] [[growthTypeDesc#growthtype]];
+title: PxVx Univariate - [[subsetNames#whichP]] [[growthTypeDescP#growthtypeP]] [[varP#whichP]] with [[growthTypeDescV#growthtypeV]] [[varV#whichV]];
 data: file = E:\Projects\lnt_pxvx\Data\[[datafile#whichP]];
 
 [[whichP > 18]]
@@ -253,10 +253,10 @@ aECgoalc
 bECgoalC
 cECgoalC
 dECgoalC
-aasp_fin
-basp_fin
-casp_fin
-dasp_fin
+aaspfin
+baspfin
+caspfin
+daspfin
 aasp_mn2
 basp_mn2
 casp_mn2
@@ -830,11 +830,44 @@ i_[[varV#whichV]] s_[[varV#whichV]] | b[[varV#whichV]] c[[varV#whichV]] d[[varV#
 
 !After Bollen and Curran initial observation is not part of LGM
 
-d[[var#which]] on c[[var#which]] (a); ! Autoregressive paths constrained to equality
-c[[var#which]] on b[[var#which]] (a);
-b[[var#which]] on a[[var#which]] (a);
+d[[varP#whichP]] on c[[varP#whichP]] (a); ! Autoregressive paths constrained to equality
+c[[varP#whichP]] on b[[varP#whichP]] (a);
+b[[varP#whichP]] on a[[varP#whichP]] (a);
 
-b[[var#which]] c[[var#which]] d[[var#which]] (c); !Equality constraint on residuals
+d[[varV#whichV]] on c[[varV#whichV]] (b); ! Autoregressive paths constrained to equality
+c[[varV#whichV]] on b[[varV#whichV]] (b);
+b[[varV#whichV]] on a[[varV#whichV]] (b);
+
+b[[varP#whichP]] c[[varP#whichP]] d[[varP#whichP]] (c); !Equality constraint on residuals
+b[[varV#whichV]] c[[varV#whichV]] d[[varV#whichV]] (d); !Equality constraint on residuals
+
+d[[varV#whichV]] on c[[varP#whichP]] (x); ! Cross-lagged paths constrained to equality
+c[[varV#whichV]] on b[[varP#whichP]] (x);
+b[[varV#whichV]] on a[[varP#whichP]] (x);
+
+d[[varP#whichP]] on c[[varV#whichV]] (y); ! Cross-lagged paths constrained to equality
+c[[varP#whichP]] on b[[varV#whichV]] (y);
+b[[varP#whichP]] on a[[varV#whichV]] (y);
+
+d[[varV#whichV]] with d[[varP#whichP]] (w); ! within-wave correlations constrained to equality
+c[[varV#whichV]] with c[[varP#whichP]] (w);
+b[[varV#whichV]] with b[[varP#whichP]] (w);
+
+a[[varP#whichP]] a[[varV#whichV]] i_[[varP#whichP]] i_[[varV#whichV]] 
+[[growthtypeP == 1]]
+s_[[varP#whichP]]
+[[/growthtypeP == 1]]
+[[growthtypeV == 1]]
+s_[[varV#whichV]]
+[[/growthtypeV == 1]]
+with
+[[growthtypeP == 1]]
+s_[[varP#whichP]]
+[[/growthtypeP == 1]]
+[[growthtypeV == 1]]
+s_[[varV#whichV]]
+[[/growthtypeV == 1]]
+a[[varP#whichP]] a[[varV#whichV]] i_[[varP#whichP]] i_[[varV#whichV]];
 
 [[growthtypeP == 2]]
 s_[[varP#whichP]]@0;
@@ -843,6 +876,5 @@ s_[[varP#whichP]]@0;
 [[growthtypeV == 2]]
 s_[[varV#whichV]]@0;
 [[/growthtypeV == 2]]
-
 
 OUTPUT: SAMPSTAT PATTERNS;
