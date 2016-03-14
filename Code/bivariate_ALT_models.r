@@ -312,6 +312,44 @@ paramsummaries %>%
 	coord_cartesian(y=c(-.31, .31))+
 	scale_colour_manual(values=cbbPalette)
 
+#' 
+#' ## National: Within-wave correlations across variable combinations and model types
+#' 
+#+fig.height=12, fig.width=7
+paramsummaries %>%
+	filter(sample=='Nat', 
+	       paramgroup=='B WITH B',
+	       bivPathType=='Across Var') %>%
+	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
+	geom_hline(yintercept=0, color='red')+
+	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
+	facet_grid(vVar~bivPathType, scales='free_y')+
+	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$pVar))),
+			   labels=levels(factor(paramsummaries$pVar)))+
+	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
+	      panel.background=element_rect(fill='white'))+
+# 	coord_cartesian(y=c(0, .3))+
+	scale_colour_manual(values=cbbPalette)
+
+
+#' 
+#' ## College: Within-wave correlations across variable combinations and model types
+#' 
+#+fig.height=12, fig.width=7
+paramsummaries %>%
+	filter(sample=='Col', 
+	       paramgroup=='B WITH B',
+	       bivPathType=='Across Var') %>%
+	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
+	geom_hline(yintercept=0, color='red')+
+	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
+	facet_grid(vVar~bivPathType, scales='free_y')+
+	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$pVar))),
+			   labels=levels(factor(paramsummaries$pVar)))+
+	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
+	      panel.background=element_rect(fill='white'))+
+# 	coord_cartesian(y=c(0, .3))+
+	scale_colour_manual(values=cbbPalette)
 
 # 
 # #' 
