@@ -257,6 +257,8 @@ modelTallies <- winningModels %>%
 
 winnersByCriterion <- winningModels %>% spread(criterion, winningmodel) 
 
+save(winnersByCriterion, file='../Rez/winningUniModels.RData')
+
 kable(winnersByCriterion,
       col.names=c('Sample', 'Variable', 'AIC', 'BIC', '-2*LL'),
       caption='List of which model performs best, by fit measure')
