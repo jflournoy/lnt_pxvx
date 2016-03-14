@@ -5,7 +5,7 @@
 #'    toc: true
 #'---
 
-#+ echo=F
+#+ echo=F, warning=F, message=F
 library(MplusAutomation)
 library(knitr)
 library(dplyr)
@@ -24,18 +24,11 @@ opts_chunk$set(echo=F, message=F, warning=F, dev='svg')
 #'
 #'![](bi_model.png "Template for bivartiate models")
 #'
-#' CHANGEMEThe above diagram captures all 3 models we wish to compare. The black portion
-#' is the base, intercept-only ALT model (**AR_Int**). We estimate 7 parameters: the initial
-#' status (`a X`) variance and mean, the autoregressive parameter constrained 
-#' to be equal between all four waves (`AR`), the residual variances for waves
-#' 2-4 constrained to be equal (`v`), and a latent intercept mean, variance, and
-#' covariance with initial status.
-#'
-#' The blue portion shows the addition of one parameter 
-#' to capture the mean of a latent slope (`S X`), which gives us the 
-#' **AR_LinM** model below. Finally, the red portion shows the addition of 
-#' three parameters: the latent slope variance, and covariance with
-#' the latent intercept, and initial status (**AR_Lin** below).
+#' The above diagram captures all 4 possible models combinations. The black
+#' is the univariate ALT model, and the blue adds all paths we estimate for the 
+#' bivariate ALT. Red paths show the paths constrained to be 0 in the 
+#' mean-only (fixed slope) model. Letter labels indicate paths constrained
+#' to be equal.
 #'
 
 # # Set working directory to that which contains Code, Data, etc
@@ -59,6 +52,7 @@ loadBiFN<-'../Rez/biMods.RData'
 # setwd('../../Code')
 
 load(loadBiFN)
+load('../Rez/winningUniModels.RData')
 
 summaries <- biModelOut_df %>% rowwise %>%
   do({
@@ -77,15 +71,7 @@ summaries <- biModelOut_df %>% rowwise %>%
           'PxVx Univariate - (\\w+) (\\w+) ([\\w_]+) with (\\w+) ([\\w_]+)') %>%
   mutate(modelNum=1:n())
 
-# summaries %>% filter(stdErrorWarn) %>%
-# 	select(modelNum, sample, contains('model'), contains('Var'), numErrors,
-# 	       numWarnings, AIC, BIC) %>%
-# 	kable()
-# 
-# summaries %>% filter(numErrors>0) %>%
-# 	select(modelNum, sample, contains('model'), contains('Var'), numErrors,
-# 	       numWarnings, stdErrorWarn, AIC, BIC) %>%
-# 	kable()
+# biModelOut_df[[1]][grep('Nat.*\\.I_O.*MVS_mc.*plin\\.vmeanonlyV',names(biModelOut_df[[1]]))][[1]]$error
 
 convSum <- summaries %>% 
 	select(sample, pVar, vVar,
@@ -97,72 +83,236 @@ convSum <- summaries %>%
 	       modComboScore=(numErrors==0)*(1+!stdErrorWarn))
 
 #'
-#' ## What models can we keep?
+#' ## What are the best models that converge?
+#'
+#' In the below figures, each bar represents the 'model score' of 
+#' a model combination for a bivariate ALT model. A score of 2
+#' indicates that there were no problems, 1 indicates that
+#' there were warnings about the standard error being computed
+#' (e.g., with MLF instead of MLR), and 0 indicates that there
+#' were errors (non-convergence). 	
+#' 
+#' The tables show the winning model giving preference to 
+#' the full bivariate random slope ALT model, even if it was
+#' estimated with MLF instead of MLR (this is not very common in the 
+#' national sample, but more so in the college sample).
+#'
+#' The model for the personality variable comes first, so 'Lin_MeanOnly' 
+#' means 'full linear ALT model for personality variable, fixed mean slope
+#' ALT model for value variable.'
 #'
 #' ### National
-#+fig.width=6, fig.height=15, fig.cap='National Sample'
-convSum %>% ungroup %>%
-	filter(sample=='Nat') %>%
-# 	slice(1:(8*9*4)) %>%
-	ggplot(aes(x=as.numeric(factor(vVar)), y=modComboScore))+
-	geom_ribbon(aes(fill=modComboText, ymin=0, ymax=modComboScore), 
-		    alpha=.5,
-		    position=position_stack())+
-	facet_grid(pVar~1)+
-	theme(axis.text.x=element_text(angle=(360-45), hjust=0))+
-	labs(x='Value', color='Model Combo',
-	     y='Model Score\n(higher is better)')
+#'
 
-#'
-#' ### National
-#+fig.width=7, fig.height=15, fig.cap='National Sample'
+modelComboSelection_l <- convSum %>% 
+	group_by(sample, pVar, vVar) %>%
+	do({
+		scores <- .$modComboScore
+		names(scores) <- .$modCombo
+		scores['Lin_Lin'] <- scores['Lin_Lin']*100
+		scores[c('Lin_MeanOnly','MeanOnly_Lin')] <- scores[c('Lin_MeanOnly','MeanOnly_Lin')]*10
+		maxScore <- max(scores)
+		bestModelCombo <- paste(names(scores)[scores==maxScore],
+					collapse=' ')
+		data_frame(sample=.$sample[[1]],
+			   pVar=.$pVar[[1]],
+			   vVar=.$vVar[[1]],
+			   bestCombo=bestModelCombo)
+	}) 
+	
+modelComboSelection <- modelComboSelection_l %>%
+	spread(vVar, bestCombo)
+			
+#'	
+modelComboSelection %>% ungroup %>%
+	filter(sample=='Nat') %>%
+	select(-sample) %>%
+	kable
+#'		
+
+#+fig.width=8, fig.height=15, fig.cap='National Sample'
 convSum %>% ungroup %>%
 	filter(sample=='Nat') %>%
 # 	slice(1:(8*9*4)) %>%
-	ggplot(aes(x=modComboText, y=!stdErrorWarn))+
-	geom_bar(aes(fill=(numErrors > 0)), stat='identity', position='dodge')+
+	ggplot(aes(x=1, y=modComboScore))+
+	geom_bar(aes(fill=modComboText, y=modComboScore), 
+		    stat='identity',
+		    position=position_dodge())+
 	facet_grid(pVar~vVar)+
 	theme(axis.text.x=element_text(angle=(360-45), hjust=0))+
-	labs(x='Model Combination', fill='Errors?',
-	     y='No SE Warnings?')
+	labs(x='Value', color='Model Combo',
+	     y='Model Score\n(higher is better)')+
+	theme(panel.background=element_rect(fill='#555555'))+
+	scale_x_continuous(breaks=NULL)+scale_y_continuous(breaks=NULL)
 
 #'
 #' ### College
 #'
-#+fig.width=7, fig.height=10.8, fig.cap='College Sample'
+#'
+modelComboSelection %>% ungroup %>%
+	filter(sample=='Col') %>%
+	select(-sample) %>%
+	kable
+#'
+#+fig.width=8, fig.height=15, fig.cap='College Sample'
 convSum %>% ungroup %>%
 	filter(sample=='Col') %>%
 # 	slice(1:(8*9*4)) %>%
-	ggplot(aes(x=modComboText, y=!stdErrorWarn))+
-	geom_bar(aes(fill=(numErrors > 0)), stat='identity', position='dodge')+
+	ggplot(aes(x=1, y=modComboScore))+
+	geom_bar(aes(fill=modComboText, y=modComboScore), 
+		    stat='identity',
+		    position=position_dodge())+
 	facet_grid(pVar~vVar)+
 	theme(axis.text.x=element_text(angle=(360-45), hjust=0))+
-	labs(x='Model Combination', fill='Errors?',
-	     y='No SE Warnings?')
+	labs(x='Value', color='Model Combo',
+	     y='Model Score\n(higher is better)')+
+	theme(panel.background=element_rect(fill='#555555'))+
+	scale_x_continuous(breaks=NULL)+scale_y_continuous(breaks=NULL)
 
 #'
-#'
+#' ## Non-Lin_Lin Models: Univariate best-fit
 #'
 
-# 
-# 
-# paramsummaries <- uniModelOut_df %>% rowwise %>%
-# 	  do({
-# 	    someParams <- .[[1]]$parameters$unstandardized
-# 	    someParams.df <- as_data_frame(someParams) %>%
-# 		    mutate(est_se=as.numeric(ifelse(est_se == '*********', NA, est_se)))
-# 	    someParams.df$Title <- as.character(.[[1]]$summaries$Title)
-# 	    someParams.df
-# 	  })%>%
-# 	  extract(Title, 
-# 		  c('sample', 'variable', 'modelType'),
-# 		  'PxVx Univariate - (\\w+) ([\\w_]+) ([\\w_]+)') %>%
-# 	  mutate(paramstatement=paste(paramHeader, param, sep='.'),
-# 		 paramgroup=str_replace(paramstatement, 
-# 					'^([ABCDS]|Means|Intercepts|Variances|Residual\\.Variances).*?\\.(ON|WITH)*\\.*([ABCDIS]).*',
-# 					'\\1 \\2 \\3'))
-# 	
-# 
+winnersByCriterion <- winnersByCriterion %>% ungroup %>%
+	mutate(sample=ifelse(sample=='Inf', 'Nat', sample))
+
+
+winNames <- c('AIC', 'BIC', 'LL')
+names(winNames) <- paste0(winNames,'_P')
+winnersByCriterionP <- winnersByCriterion %>% rename_(.dots=winNames)
+names(winNames) <- paste0(winNames,'_V')
+winnersByCriterionV <- winnersByCriterion %>% rename_(.dots=winNames)
+
+modelComboSelection_l %>% 
+	filter(bestCombo != 'Lin_Lin') %>%
+	left_join(winnersByCriterionP, by=c('sample'='sample', 'pVar'='variable')) %>%
+	left_join(winnersByCriterionV, by=c('sample'='sample', 'vVar'='variable')) %>%
+	kable()
+
+#'
+#' # Parameter plots
+#'
+
+
+# biModelOut_df[[1]][[1]]$parameters$unstandardized
+
+paramsummaries <- biModelOut_df %>% rowwise %>%
+	do({
+		if(length(.[[1]]$errors)==0){
+			someParams <- .[[1]]$parameters$unstandardized
+			someParams.df <- as_data_frame(someParams) %>%
+				mutate(est_se=as.numeric(ifelse(est_se == '*********', NA, est_se)))
+			someParams.df$Title <- as.character(.[[1]]$summaries$Title)
+		} else {
+			someParams.df <- data_frame(Title=as.character(.[[1]]$summaries$Title))
+		}
+		someParams.df
+	}) %>%
+  extract(Title, 
+          c('sample', 
+	    'modelTypeP', 'pVar', 
+	    'modelTypeV', 'vVar'),
+          'PxVx Univariate - (\\w+) (\\w+) ([\\w_]+) with (\\w+) ([\\w_]+)') %>%
+mutate(paramstatement=paste(paramHeader, param, sep='.'),
+       paramgroup=str_replace(paramstatement, 
+			      '^([ABCDSI]|Means|Intercepts|Variances|Residual\\.Variances).*?\\.(ON|WITH)*\\.*([ABCDIS]).*',
+			      '\\1 \\2 \\3'),
+       withoron=str_detect(paramstatement, '\\.(WITH|ON)\\.'),
+       firstVar=str_replace(paramstatement,'[ABCDIS](.*)\\.(WITH|ON)\\.[ABCDIS].*','\\1'),
+       secondVar=str_replace(paramstatement,'[ABCDIS].*\\.(WITH|ON)\\.[ABCDIS](.*)','\\2'),
+       bivPathType=ifelse(!is.na(firstVar) & !is.na(secondVar) & withoron,
+	    		  ifelse(firstVar==secondVar,
+				     'Within Var',
+ 				     'Across Var'),
+			  'Other'),
+       bivPathDir=ifelse(str_detect(paramstatement, '\\.ON\\.'),
+			 ifelse(str_to_upper(firstVar)==str_to_upper(pVar),
+				'Target: Pers',
+				'Target: Val'),
+			 NA)) %>%
+	unite(modelCombo, modelTypeP, modelTypeV)
+		
+# select(paramsummaries,paramstatement,paramgroup, bivPathType, bivPathDir) %>%slice(1:50)%>%kable
+
+
+# The palette with black:
+cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+#' 
+#' ## National: AR paths across variable combinations and model types
+#' 
+#+fig.height=12, fig.width=10
+paramsummaries %>%
+	filter(sample=='Nat', 
+	       paramgroup=='B ON A',
+	       bivPathType=='Within Var') %>%
+	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
+	geom_hline(yintercept=0, color='red')+
+	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
+	facet_grid(vVar~bivPathType+bivPathDir, scales='free_y')+
+	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$pVar))),
+			   labels=levels(factor(paramsummaries$pVar)))+
+	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
+	      panel.background=element_rect(fill='white'))+
+	coord_cartesian(y=c(0, .3))+
+	scale_colour_manual(values=cbbPalette)
+#' 
+#' ## National: XL paths across variable combinations and model types
+#' 
+#+fig.height=12, fig.width=10
+paramsummaries %>%
+	filter(sample=='Nat', 
+	       paramgroup=='B ON A',
+	       bivPathType=='Across Var') %>%
+	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
+	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
+	facet_grid(vVar~bivPathType+bivPathDir, scales='free_y')+
+	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$pVar))),
+			   labels=levels(factor(paramsummaries$pVar)))+
+	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
+	      panel.background=element_rect(fill='white'))+
+	coord_cartesian(y=c(-.15, .15))+
+	scale_colour_manual(values=cbbPalette)
+
+#' 
+#' ## College: AR paths across variable combinations and model types
+#' 
+#+fig.height=12, fig.width=10
+paramsummaries %>%
+	filter(sample=='Col', 
+	       paramgroup=='B ON A',
+	       bivPathType=='Within Var') %>%
+	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
+	geom_hline(yintercept=0, color='red')+
+	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
+	facet_grid(vVar~bivPathType+bivPathDir, scales='free_y')+
+	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$pVar))),
+			   labels=levels(factor(paramsummaries$pVar)))+
+	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
+	      panel.background=element_rect(fill='white'))+
+	coord_cartesian(y=c(-.1, .39))+
+	scale_colour_manual(values=cbbPalette)
+
+
+#' 
+#' ## College: XL paths across variable combinations and model types
+#' 
+#+fig.height=12, fig.width=10
+paramsummaries %>%
+	filter(sample=='Col', 
+	       paramgroup=='B ON A',
+	       bivPathType=='Across Var') %>%
+	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
+	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
+	facet_grid(vVar~bivPathType+bivPathDir, scales='free_y')+
+	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$pVar))),
+			   labels=levels(factor(paramsummaries$pVar)))+
+	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
+	      panel.background=element_rect(fill='white'))+
+	coord_cartesian(y=c(-.31, .31))+
+	scale_colour_manual(values=cbbPalette)
+
+
 # 
 # #' 
 # #' # Comparisons
