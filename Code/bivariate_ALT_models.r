@@ -75,7 +75,8 @@ summaries <- biModelOut_df %>% rowwise %>%
 
 convSum <- summaries %>% 
 	select(sample, pVar, vVar,
-	       modelTypeP, modelTypeV, numErrors, stdErrorWarn) %>%
+	       modelTypeP, modelTypeV, numErrors, stdErrorWarn,
+	       AIC, BIC) %>%
 	unite(modCombo, modelTypeP, modelTypeV) %>%
 	mutate(modComboText=str_replace(modCombo, 
 				    '(Lin|Mean)\\w*_(Lin|Mean)\\w*',
@@ -106,7 +107,11 @@ convSum <- summaries %>%
 
 modelComboSelection_l <- convSum %>% 
 	group_by(sample, pVar, vVar) %>%
-	do({
+	do({	
+		AICs <- .$AIC
+		names(AICs) <- .$modCombo
+		BICs <- .$BIC
+		names(BICs) <- .$modCombo
 		scores <- .$modComboScore
 		names(scores) <- .$modCombo
 		scores['Lin_Lin'] <- scores['Lin_Lin']*100
@@ -114,13 +119,18 @@ modelComboSelection_l <- convSum %>%
 		maxScore <- max(scores)
 		bestModelCombo <- paste(names(scores)[scores==maxScore],
 					collapse=' ')
+		bestModelComboAICs <- paste(AICs[scores==maxScore], collapse=' ')
+		bestModelComboBICs <- paste(BICs[scores==maxScore], collapse=' ')
 		data_frame(sample=.$sample[[1]],
 			   pVar=.$pVar[[1]],
 			   vVar=.$vVar[[1]],
-			   bestCombo=bestModelCombo)
+			   bestCombo=bestModelCombo,
+			   AIC_biv=bestModelComboAICs,
+			   BIC_biv=bestModelComboBICs)
 	}) 
 	
 modelComboSelection <- modelComboSelection_l %>%
+	select(-AIC_biv, -BIC_biv) %>%
 	spread(vVar, bestCombo)
 			
 #'	
@@ -239,78 +249,127 @@ mutate(paramstatement=paste(paramHeader, param, sep='.'),
 cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
 #' 
-#' ## National: AR paths across variable combinations and model types
+#' ## National: Effects on personality across variable combinations and model types
 #' 
-#+fig.height=12, fig.width=10
+#+fig.height=35, fig.width=10
 paramsummaries %>%
 	filter(sample=='Nat', 
 	       paramgroup=='B ON A',
-	       bivPathType=='Within Var') %>%
-	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
+	       bivPathDir=='Target: Pers',
+	       vVar!='MVS_mc') %>%
+	ggplot(aes(x=as.numeric(factor(vVar)), y=est))+
 	geom_hline(yintercept=0, color='red')+
 	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
-	facet_grid(vVar~bivPathType+bivPathDir, scales='free_y')+
-	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$pVar))),
-			   labels=levels(factor(paramsummaries$pVar)))+
+	facet_grid(pVar~bivPathType+bivPathDir)+
+	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$vVar))),
+			   labels=levels(factor(paramsummaries$vVar)))+
 	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
 	      panel.background=element_rect(fill='white'))+
-	coord_cartesian(y=c(0, .3))+
+# 	coord_cartesian(y=c(0, .3))+
 	scale_colour_manual(values=cbbPalette)
+
 #' 
-#' ## National: XL paths across variable combinations and model types
+#' ## National: Effects on values across variable combinations and model types
 #' 
-#+fig.height=12, fig.width=10
+#+fig.height=10, fig.width=10
 paramsummaries %>%
 	filter(sample=='Nat', 
 	       paramgroup=='B ON A',
-	       bivPathType=='Across Var') %>%
-	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
-	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
-	facet_grid(vVar~bivPathType+bivPathDir, scales='free_y')+
-	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$pVar))),
-			   labels=levels(factor(paramsummaries$pVar)))+
-	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
-	      panel.background=element_rect(fill='white'))+
-	coord_cartesian(y=c(-.15, .15))+
-	scale_colour_manual(values=cbbPalette)
-
-#' 
-#' ## College: AR paths across variable combinations and model types
-#' 
-#+fig.height=12, fig.width=10
-paramsummaries %>%
-	filter(sample=='Col', 
-	       paramgroup=='B ON A',
-	       bivPathType=='Within Var') %>%
+	       bivPathDir=='Target: Val',
+	       vVar!='MVS_mc') %>%
 	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
 	geom_hline(yintercept=0, color='red')+
 	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
-	facet_grid(vVar~bivPathType+bivPathDir, scales='free_y')+
+	facet_grid(vVar~bivPathType+bivPathDir)+
 	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$pVar))),
 			   labels=levels(factor(paramsummaries$pVar)))+
 	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
 	      panel.background=element_rect(fill='white'))+
-	coord_cartesian(y=c(-.1, .39))+
+# 	coord_cartesian(y=c(0, .3))+
 	scale_colour_manual(values=cbbPalette)
 
+#' 
+#' ## National: MVS_mc 
+#' 
+#+fig.height=5, fig.width=10
+paramsummaries %>%
+	filter(sample=='Nat', 
+	       paramgroup=='B ON A',
+	       vVar=='MVS_mc') %>%
+	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
+	geom_hline(yintercept=0, color='red')+
+	geom_bar(aes(fill=modelCombo), 
+		 stat='identity', position='dodge', 
+		 alpha=1, size=1)+
+	facet_wrap(~bivPathType+bivPathDir, scales='free_y')+
+	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$pVar))),
+			   labels=levels(factor(paramsummaries$pVar)))+
+	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
+	      panel.background=element_rect(fill='white'))+
+# 	coord_cartesian(y=c(0, .3))+
+	scale_fill_manual(values=cbbPalette)
+
 
 #' 
-#' ## College: XL paths across variable combinations and model types
+#' ## College: Effects on personality across variable combinations and model types
 #' 
-#+fig.height=12, fig.width=10
+#+fig.height=25, fig.width=10
 paramsummaries %>%
 	filter(sample=='Col', 
 	       paramgroup=='B ON A',
-	       bivPathType=='Across Var') %>%
-	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
+	       bivPathDir=='Target: Pers',
+	       vVar!='MVS_mc') %>%
+	ggplot(aes(x=as.numeric(factor(vVar)), y=est))+
+	geom_hline(yintercept=0, color='red')+
 	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
-	facet_grid(vVar~bivPathType+bivPathDir, scales='free_y')+
+	facet_grid(pVar~bivPathType+bivPathDir)+
+	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$vVar))),
+			   labels=levels(factor(paramsummaries$vVar)))+
+	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
+	      panel.background=element_rect(fill='white'))+
+# 	coord_cartesian(y=c(0, .3))+
+	scale_colour_manual(values=cbbPalette)
+
+#' 
+#' ## College: Effects on values across variable combinations and model types
+#' 
+#+fig.height=10, fig.width=10
+paramsummaries %>%
+	filter(sample=='Col', 
+	       paramgroup=='B ON A',
+	       bivPathDir=='Target: Val',
+	       vVar!='MVS_mc') %>%
+	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
+	geom_hline(yintercept=0, color='red')+
+	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
+	facet_grid(vVar~bivPathType+bivPathDir)+
 	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$pVar))),
 			   labels=levels(factor(paramsummaries$pVar)))+
 	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
 	      panel.background=element_rect(fill='white'))+
-	coord_cartesian(y=c(-.31, .31))+
+# 	coord_cartesian(y=c(0, .3))+
 	scale_colour_manual(values=cbbPalette)
+
+#' 
+#' ## COllege: MVS_mc 
+#' 
+#+fig.height=5, fig.width=10
+paramsummaries %>%
+	filter(sample=='Col', 
+	       paramgroup=='B ON A',
+	       vVar=='MVS_mc') %>%
+	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
+	geom_hline(yintercept=0, color='red')+
+	geom_bar(aes(fill=modelCombo), 
+		 stat='identity', position='dodge', 
+		 alpha=1, size=1)+
+	facet_wrap(~bivPathType+bivPathDir, scales='free_y')+
+	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$pVar))),
+			   labels=levels(factor(paramsummaries$pVar)))+
+	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
+	      panel.background=element_rect(fill='white'))+
+# 	coord_cartesian(y=c(0, .3))+
+	scale_fill_manual(values=cbbPalette)
 
 #' 
 #' ## National: Within-wave correlations across variable combinations and model types
@@ -350,6 +409,31 @@ paramsummaries %>%
 	      panel.background=element_rect(fill='white'))+
 # 	coord_cartesian(y=c(0, .3))+
 	scale_colour_manual(values=cbbPalette)
+#'
+#' #SE
+#'
+
+
+# #' 
+# #' ## National: AR paths across variable combinations and model types
+# #' 
+# #+fig.height=12, fig.width=10
+# paramsummaries %>%
+# 	filter(sample=='Nat', 
+# 	       paramgroup=='B ON A',
+# 	       bivPathType=='Within Var') %>%
+# 	ggplot(aes(x=as.numeric(factor(pVar)), y=se))+
+# 	geom_hline(yintercept=0, color='red')+
+# 	geom_point(aes(color=modelCombo), alpha=.9, size=1)+
+# # 	geom_errorbar(aes(ymin=est-1.96*se, ymax=est+1.96*se, color=modelCombo),
+# # 		      position=position_dodge())+
+# 	facet_grid(vVar~bivPathType+bivPathDir, scales='free_y')+
+# 	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$pVar))),
+# 			   labels=levels(factor(paramsummaries$pVar)))+
+# 	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
+# 	      panel.background=element_rect(fill='white'))+
+# # 	coord_cartesian(y=c(0, .3))+
+# 	scale_colour_manual(values=cbbPalette)
 
 # 
 # #' 
