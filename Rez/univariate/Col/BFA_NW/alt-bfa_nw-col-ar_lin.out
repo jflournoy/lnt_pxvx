@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:42 PM
+03/21/2016  11:07 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFA_NW
@@ -292,10 +296,30 @@ INPUT INSTRUCTIONS
 
 
 *** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  2
-   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   6 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -304,7 +328,7 @@ PxVx Univariate - Col BFA_NW AR_Lin;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         278
+Number of observations                                         276
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -367,7 +391,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           4          29           7          17
+          1         138           4          29           7          17
           2          12           5          53           8          11
           3           5           6          11
 
@@ -383,10 +407,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFA_NW       CBFA_NW       DBFA_NW       ABFA_NW
               ________      ________      ________      ________
- BBFA_NW        0.712
- CBFA_NW        0.547         0.604
- DBFA_NW        0.565         0.543         0.644
- ABFA_NW        0.712         0.604         0.644         1.000
+ BBFA_NW        0.710
+ CBFA_NW        0.543         0.601
+ DBFA_NW        0.562         0.540         0.641
+ ABFA_NW        0.710         0.601         0.641         1.000
 
 
 SAMPLE STATISTICS
@@ -398,33 +422,29 @@ SAMPLE STATISTICS
            Means
               BBFA_NW       CBFA_NW       DBFA_NW       ABFA_NW
               ________      ________      ________      ________
- 1             47.809        47.670        47.468        48.508
+ 1             47.620        47.396        47.107        48.420
 
 
            Covariances
               BBFA_NW       CBFA_NW       DBFA_NW       ABFA_NW
               ________      ________      ________      ________
- BBFA_NW      352.001
- CBFA_NW      257.885       364.679
- DBFA_NW      258.740       269.992       324.082
- ABFA_NW      241.150       223.487       220.547       334.151
+ BBFA_NW      350.755
+ CBFA_NW      253.731       359.659
+ DBFA_NW      252.772       260.910       311.397
+ ABFA_NW      241.582       222.069       216.013       332.043
 
 
            Correlations
               BBFA_NW       CBFA_NW       DBFA_NW       ABFA_NW
               ________      ________      ________      ________
  BBFA_NW        1.000
- CBFA_NW        0.720         1.000
- DBFA_NW        0.766         0.785         1.000
- ABFA_NW        0.703         0.640         0.670         1.000
+ CBFA_NW        0.714         1.000
+ DBFA_NW        0.765         0.780         1.000
+ ABFA_NW        0.708         0.643         0.672         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3331.804
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3294.742
 
-     WARNING:  THE MLR STANDARD ERRORS COULD NOT BE COMPUTED.  THE MLF STANDARD
-     ERRORS WERE COMPUTED INSTEAD.  THE MLR CONDITION NUMBER IS      -0.126D-01.
-     PROBLEM INVOLVING PARAMETER 7.  THIS MAY BE DUE TO NEAR SINGULARITY
-     OF THE RANDOM EFFECT VARIANCE/COVARIANCE OR INCOMPLETE CONVERGENCE.
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
 
@@ -436,13 +456,15 @@ Number of Free Parameters                       11
 
 Loglikelihood
 
-          H0 Value                       -3335.055
+          H0 Value                       -3298.809
+          H0 Scaling Correction Factor       1.012
+            for MLR
 
 Information Criteria
 
-          Akaike (AIC)                    6692.111
-          Bayesian (BIC)                  6732.015
-          Sample-Size Adjusted BIC        6697.135
+          Akaike (AIC)                    6619.617
+          Bayesian (BIC)                  6659.442
+          Sample-Size Adjusted BIC        6624.563
             (n* = (n + 2) / 24)
 
 
@@ -453,25 +475,25 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFA_NW    ON
-    CBFA_NW            0.148      0.089      1.664      0.096
+    CBFA_NW            0.123      0.099      1.244      0.213
 
  CBFA_NW    ON
-    BBFA_NW            0.148      0.089      1.664      0.096
+    BBFA_NW            0.123      0.099      1.244      0.213
 
  BBFA_NW    ON
-    ABFA_NW            0.148      0.089      1.664      0.096
+    ABFA_NW            0.123      0.099      1.244      0.213
 
  S_BFA_NW WITH
-    I_BFA_NW           5.073     62.214      0.082      0.935
-    ABFA_NW            5.272     10.452      0.504      0.614
+    I_BFA_NW           0.681     17.644      0.039      0.969
+    ABFA_NW            1.336     10.877      0.123      0.902
 
  ABFA_NW  WITH
-    I_BFA_NW         261.663    131.968      1.983      0.047
+    I_BFA_NW         213.150    136.607      1.560      0.119
 
  Means
-    ABFA_NW           48.499      1.113     43.583      0.000
-    I_BFA_NW          38.072      7.915      4.810      0.000
-    S_BFA_NW          -0.183      0.517     -0.354      0.724
+    ABFA_NW           48.425      1.097     44.147      0.000
+    I_BFA_NW          38.387      7.533      5.096      0.000
+    S_BFA_NW          -0.228      0.455     -0.502      0.616
 
  Intercepts
     BBFA_NW            0.000      0.000    999.000    999.000
@@ -479,25 +501,25 @@ MODEL RESULTS
     DBFA_NW            0.000      0.000    999.000    999.000
 
  Variances
-    ABFA_NW          334.151     30.378     11.000      0.000
-    I_BFA_NW         206.511    843.824      0.245      0.807
-    S_BFA_NW           0.637      4.694      0.136      0.892
+    ABFA_NW          332.057     27.059     12.272      0.000
+    I_BFA_NW         136.943    252.994      0.541      0.588
+    S_BFA_NW           0.406      1.317      0.309      0.758
 
  Residual Variances
-    BBFA_NW           93.410     11.122      8.399      0.000
-    CBFA_NW           93.410     11.122      8.399      0.000
-    DBFA_NW           93.410     11.122      8.399      0.000
+    BBFA_NW           91.707     10.521      8.717      0.000
+    CBFA_NW           91.707     10.521      8.717      0.000
+    DBFA_NW           91.707     10.521      8.717      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.207E-06
+     Condition Number for the Information Matrix              0.363E-07
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:42:09
-        Ending Time:  17:42:11
-       Elapsed Time:  00:00:02
+     Beginning Time:  11:07:57
+        Ending Time:  11:07:58
+       Elapsed Time:  00:00:01
 
 
 

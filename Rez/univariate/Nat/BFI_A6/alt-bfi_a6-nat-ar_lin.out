@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:43 PM
+03/21/2016  11:09 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFI_A6
@@ -292,10 +296,26 @@ INPUT INSTRUCTIONS
 
 
 *** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  5
-   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  16
+   5 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -304,7 +324,7 @@ PxVx Univariate - Nat BFI_A6 AR_Lin;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         874
+Number of observations                                         863
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -349,7 +369,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns             9
+     Number of missing data patterns            11
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -357,19 +377,20 @@ SUMMARY OF MISSING DATA PATTERNS
 
      MISSING DATA PATTERNS (x = not missing)
 
-           1  2  3  4  5  6  7  8  9
- BBFI_A6   x     x  x        x
- CBFI_A6   x           x     x  x
- DBFI_A6   x     x     x  x        x
+           1  2  3  4  5  6  7  8  9 10 11
+ BBFI_A6   x     x  x        x        x
+ CBFI_A6   x           x     x  x     x  x
+ DBFI_A6   x     x     x  x        x  x  x
  ABFI_A6   x  x  x  x  x  x  x  x
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         502           4          57           7          47
-          2         169           5          24           8          22
-          3          27           6          25           9           1
+          1         494           5          24           9           1
+          2         169           6          25          10           3
+          3          27           7          46          11           1
+          4          52           8          21
 
 
 COVARIANCE COVERAGE OF DATA
@@ -383,10 +404,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFI_A6       CBFI_A6       DBFI_A6       ABFI_A6
               ________      ________      ________      ________
- BBFI_A6        0.724
- CBFI_A6        0.628         0.681
- DBFI_A6        0.605         0.602         0.662
- ABFI_A6        0.724         0.681         0.661         0.999
+ BBFI_A6        0.721
+ CBFI_A6        0.629         0.683
+ DBFI_A6        0.607         0.605         0.666
+ ABFI_A6        0.717         0.678         0.660         0.994
 
 
 SAMPLE STATISTICS
@@ -398,28 +419,28 @@ SAMPLE STATISTICS
            Means
               BBFI_A6       CBFI_A6       DBFI_A6       ABFI_A6
               ________      ________      ________      ________
- 1             60.043        60.006        60.402        59.840
+ 1             60.036        60.007        60.314        59.724
 
 
            Covariances
               BBFI_A6       CBFI_A6       DBFI_A6       ABFI_A6
               ________      ________      ________      ________
- BBFI_A6      352.791
- CBFI_A6      282.557       354.243
- DBFI_A6      272.405       289.757       356.384
- ABFI_A6      274.378       271.116       255.068       348.670
+ BBFI_A6      351.437
+ CBFI_A6      281.244       353.187
+ DBFI_A6      273.172       289.831       355.343
+ ABFI_A6      273.918       271.165       254.671       348.980
 
 
            Correlations
               BBFI_A6       CBFI_A6       DBFI_A6       ABFI_A6
               ________      ________      ________      ________
  BBFI_A6        1.000
- CBFI_A6        0.799         1.000
- DBFI_A6        0.768         0.815         1.000
- ABFI_A6        0.782         0.771         0.724         1.000
+ CBFI_A6        0.798         1.000
+ DBFI_A6        0.773         0.818         1.000
+ ABFI_A6        0.782         0.772         0.723         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -10671.308
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -10521.039
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -432,15 +453,15 @@ Number of Free Parameters                       11
 
 Loglikelihood
 
-          H0 Value                      -10661.580
-          H0 Scaling Correction Factor       1.172
+          H0 Value                      -10512.022
+          H0 Scaling Correction Factor       1.199
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   21345.160
-          Bayesian (BIC)                 21397.664
-          Sample-Size Adjusted BIC       21362.731
+          Akaike (AIC)                   21046.044
+          Bayesian (BIC)                 21098.409
+          Sample-Size Adjusted BIC       21063.476
             (n* = (n + 2) / 24)
 
 
@@ -451,25 +472,25 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFI_A6    ON
-    CBFI_A6            0.169      0.045      3.775      0.000
+    CBFI_A6            0.161      0.054      2.969      0.003
 
  CBFI_A6    ON
-    BBFI_A6            0.169      0.045      3.775      0.000
+    BBFI_A6            0.161      0.054      2.969      0.003
 
  BBFI_A6    ON
-    ABFI_A6            0.169      0.045      3.775      0.000
+    ABFI_A6            0.161      0.054      2.969      0.003
 
  S_BFI_A6 WITH
-    I_BFI_A6          -0.363      0.459     -0.791      0.429
-    ABFI_A6            0.703      0.657      1.071      0.284
+    I_BFI_A6          -0.370      0.464     -0.797      0.425
+    ABFI_A6            0.731      0.664      1.102      0.270
 
  ABFI_A6  WITH
-    I_BFI_A6         212.144     18.173     11.674      0.000
+    I_BFI_A6         213.977     20.528     10.424      0.000
 
  Means
-    ABFI_A6           59.837      0.632     94.711      0.000
-    I_BFI_A6          49.754      2.744     18.131      0.000
-    S_BFI_A6           0.138      0.035      3.996      0.000
+    ABFI_A6           59.720      0.636     93.886      0.000
+    I_BFI_A6          50.189      3.306     15.181      0.000
+    S_BFI_A6           0.138      0.035      3.953      0.000
 
  Intercepts
     BBFI_A6            0.000      0.000    999.000    999.000
@@ -477,14 +498,14 @@ MODEL RESULTS
     DBFI_A6            0.000      0.000    999.000    999.000
 
  Variances
-    ABFI_A6          348.758     15.384     22.671      0.000
-    I_BFI_A6         175.164     25.128      6.971      0.000
-    S_BFI_A6           0.071      0.055      1.289      0.198
+    ABFI_A6          349.047     15.471     22.561      0.000
+    I_BFI_A6         178.044     29.639      6.007      0.000
+    S_BFI_A6           0.077      0.056      1.390      0.164
 
  Residual Variances
-    BBFI_A6           80.687      5.469     14.752      0.000
-    CBFI_A6           80.687      5.469     14.752      0.000
-    DBFI_A6           80.687      5.469     14.752      0.000
+    BBFI_A6           79.265      5.738     13.815      0.000
+    CBFI_A6           79.265      5.738     13.815      0.000
+    DBFI_A6           79.265      5.738     13.815      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
@@ -493,8 +514,8 @@ QUALITY OF NUMERICAL RESULTS
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:43:19
-        Ending Time:  17:43:20
+     Beginning Time:  11:09:08
+        Ending Time:  11:09:09
        Elapsed Time:  00:00:01
 
 

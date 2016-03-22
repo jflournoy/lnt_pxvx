@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   8:22 PM
+03/21/2016   1:32 PM
 
 INPUT INSTRUCTIONS
 
@@ -237,7 +237,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
 
   USEVARIABLES =
@@ -313,14 +317,30 @@ INPUT INSTRUCTIONS
 
 
 
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
 *** WARNING in MODEL command
   All continuous latent variable covariances involving S_BFI_N have been fixed to 0
   because the variance of S_BFI_N is fixed at 0.
 *** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  5
-   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  16
+   6 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -329,7 +349,7 @@ PxVx Univariate - Nat MeanOnly BFI_N with Lin aspfin;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         874
+Number of observations                                         863
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -374,7 +394,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns            19
+     Number of missing data patterns            21
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -382,27 +402,37 @@ SUMMARY OF MISSING DATA PATTERNS
 
      MISSING DATA PATTERNS (x = not missing)
 
-           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
- BBFI_N    x     x  x        x     x  x  x  x  x        x  x
- CBFI_N    x           x     x  x        x  x  x           x  x
- DBFI_N    x     x     x  x              x  x  x  x     x     x  x
- BASPFIN   x     x  x        x     x     x     x           x
- CASPFIN   x           x     x  x        x  x              x  x
- DASPFIN   x     x     x  x                 x  x  x     x  x
- ABFI_N    x  x  x  x  x  x  x  x  x  x  x  x  x     x  x  x  x  x
- AASPFIN   x  x  x  x  x  x  x  x     x  x  x  x  x     x  x  x  x
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
+ BBFI_N    x     x  x        x     x  x  x  x  x     x     x  x
+ CBFI_N    x           x     x  x        x  x  x     x        x  x
+ DBFI_N    x     x     x  x              x  x  x  x  x     x     x  x
+ BASPFIN   x     x  x        x     x     x     x     x        x
+ CASPFIN   x           x     x  x        x  x        x        x  x
+ DASPFIN   x     x     x  x                 x  x  x  x     x  x
+ ABFI_N    x  x  x  x  x  x  x  x  x  x  x  x  x        x  x  x  x  x
+ AASPFIN   x  x  x  x  x  x  x  x     x  x  x  x  x        x  x  x  x
+
+          21
+ BBFI_N
+ CBFI_N    x
+ DBFI_N    x
+ BASPFIN
+ CASPFIN   x
+ DASPFIN   x
+ ABFI_N
+ AASPFIN
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         499           8          22          15           1
+          1         491           8          21          15           3
           2         168           9           1          16           1
           3          26          10           3          17           1
-          4          53          11           1          18           2
+          4          48          11           1          18           1
           5          21          12           2          19           2
-          6          23          13           1
-          7          46          14           1
+          6          23          13           1          20           2
+          7          45          14           1          21           1
 
 
 COVARIANCE COVERAGE OF DATA
@@ -416,22 +446,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFI_N        CBFI_N        DBFI_N        BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- BBFI_N         0.725
- CBFI_N         0.629         0.681
- DBFI_N         0.606         0.602         0.662
- BASPFIN        0.719         0.627         0.603         0.719
- CASPFIN        0.628         0.680         0.601         0.626         0.680
- DASPFIN        0.606         0.600         0.657         0.603         0.598
- ABFI_N         0.725         0.681         0.661         0.719         0.680
- AASPFIN        0.724         0.681         0.662         0.717         0.680
+ BBFI_N         0.722
+ CBFI_N         0.630         0.683
+ DBFI_N         0.608         0.605         0.666
+ BASPFIN        0.715         0.628         0.605         0.715
+ CASPFIN        0.629         0.681         0.604         0.627         0.681
+ DASPFIN        0.608         0.603         0.660         0.605         0.601
+ ABFI_N         0.718         0.678         0.660         0.711         0.677
+ AASPFIN        0.717         0.678         0.662         0.710         0.677
 
 
            Covariance Coverage
               DASPFIN       ABFI_N        AASPFIN
               ________      ________      ________
- DASPFIN        0.658
- ABFI_N         0.657         0.999
- AASPFIN        0.658         0.997         0.998
+ DASPFIN        0.662
+ ABFI_N         0.656         0.994
+ AASPFIN        0.657         0.992         0.993
 
 
 SAMPLE STATISTICS
@@ -443,34 +473,34 @@ SAMPLE STATISTICS
            Means
               BBFI_N        CBFI_N        DBFI_N        BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- 1             49.024        48.045        47.895        48.614        48.967
+ 1             49.117        48.122        47.938        48.440        48.776
 
 
            Means
               DASPFIN       ABFI_N        AASPFIN
               ________      ________      ________
- 1             48.616        49.507        48.700
+ 1             48.525        49.634        48.505
 
 
            Covariances
               BBFI_N        CBFI_N        DBFI_N        BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- BBFI_N       452.000
- CBFI_N       375.161       448.969
- DBFI_N       384.563       402.775       495.530
- BASPFIN      -21.341       -14.164       -36.485       521.572
- CASPFIN      -14.248       -16.351       -20.994       422.297       532.888
- DASPFIN      -11.111       -21.733       -33.453       408.161       413.917
- ABFI_N       359.581       355.133       369.379       -42.893       -40.280
- AASPFIN        1.469        -0.957       -22.426       394.179       382.141
+ BBFI_N       453.642
+ CBFI_N       377.656       452.741
+ DBFI_N       388.602       405.668       499.274
+ BASPFIN      -23.712       -15.709       -39.320       523.754
+ CASPFIN      -16.027       -15.913       -22.258       423.080       531.359
+ DASPFIN      -13.815       -24.953       -37.353       411.064       418.020
+ ABFI_N       361.641       356.904       372.101       -42.940       -37.641
+ AASPFIN       -0.977        -3.565       -24.700       393.359       381.582
 
 
            Covariances
               DASPFIN       ABFI_N        AASPFIN
               ________      ________      ________
- DASPFIN      535.966
- ABFI_N       -35.058       458.274
- AASPFIN      374.440       -17.886       497.538
+ DASPFIN      542.408
+ ABFI_N       -36.878       459.988
+ AASPFIN      376.482       -17.459       494.555
 
 
            Correlations
@@ -478,23 +508,23 @@ SAMPLE STATISTICS
               ________      ________      ________      ________      ________
  BBFI_N         1.000
  CBFI_N         0.833         1.000
- DBFI_N         0.813         0.854         1.000
- BASPFIN       -0.044        -0.029        -0.072         1.000
- CASPFIN       -0.029        -0.033        -0.041         0.801         1.000
- DASPFIN       -0.023        -0.044        -0.065         0.772         0.775
- ABFI_N         0.790         0.783         0.775        -0.088        -0.082
- AASPFIN        0.003        -0.002        -0.045         0.774         0.742
+ DBFI_N         0.817         0.853         1.000
+ BASPFIN       -0.049        -0.032        -0.077         1.000
+ CASPFIN       -0.033        -0.032        -0.043         0.802         1.000
+ DASPFIN       -0.028        -0.050        -0.072         0.771         0.779
+ ABFI_N         0.792         0.782         0.776        -0.087        -0.076
+ AASPFIN       -0.002        -0.008        -0.050         0.773         0.744
 
 
            Correlations
               DASPFIN       ABFI_N        AASPFIN
               ________      ________      ________
  DASPFIN        1.000
- ABFI_N        -0.071         1.000
- AASPFIN        0.725        -0.037         1.000
+ ABFI_N        -0.074         1.000
+ AASPFIN        0.727        -0.037         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -22097.726
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -21801.849
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -507,15 +537,15 @@ Number of Free Parameters                       28
 
 Loglikelihood
 
-          H0 Value                      -22102.825
-          H0 Scaling Correction Factor       1.110
+          H0 Value                      -21806.111
+          H0 Scaling Correction Factor       1.114
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   44261.650
-          Bayesian (BIC)                 44395.296
-          Sample-Size Adjusted BIC       44306.374
+          Akaike (AIC)                   43668.222
+          Bayesian (BIC)                 43801.514
+          Sample-Size Adjusted BIC       43712.593
             (n* = (n + 2) / 24)
 
 
@@ -526,65 +556,65 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFI_N     ON
-    CBFI_N             0.116      0.039      2.928      0.003
-    CASPFIN            0.051      0.030      1.737      0.082
+    CBFI_N             0.111      0.041      2.687      0.007
+    CASPFIN            0.051      0.029      1.749      0.080
 
  CBFI_N     ON
-    BBFI_N             0.116      0.039      2.928      0.003
-    BASPFIN            0.051      0.030      1.737      0.082
+    BBFI_N             0.111      0.041      2.687      0.007
+    BASPFIN            0.051      0.029      1.749      0.080
 
  BBFI_N     ON
-    ABFI_N             0.116      0.039      2.928      0.003
-    AASPFIN            0.051      0.030      1.737      0.082
+    ABFI_N             0.111      0.041      2.687      0.007
+    AASPFIN            0.051      0.029      1.749      0.080
 
  DASPFIN    ON
-    CASPFIN            0.122      0.048      2.556      0.011
-    CBFI_N            -0.036      0.041     -0.861      0.389
+    CASPFIN            0.124      0.046      2.676      0.007
+    CBFI_N            -0.043      0.042     -1.026      0.305
 
  CASPFIN    ON
-    BASPFIN            0.122      0.048      2.556      0.011
-    BBFI_N            -0.036      0.041     -0.861      0.389
+    BASPFIN            0.124      0.046      2.676      0.007
+    BBFI_N            -0.043      0.042     -1.026      0.305
 
  BASPFIN    ON
-    AASPFIN            0.122      0.048      2.556      0.011
-    ABFI_N            -0.036      0.041     -0.861      0.389
+    AASPFIN            0.124      0.046      2.676      0.007
+    ABFI_N            -0.043      0.042     -1.026      0.305
 
  I_ASPFIN WITH
-    I_BFI_N          -23.115     26.122     -0.885      0.376
+    I_BFI_N          -22.042     26.445     -0.833      0.405
 
  S_ASPFIN WITH
-    I_BFI_N           -0.167      0.692     -0.241      0.809
-    I_ASPFIN          -1.218      0.753     -1.617      0.106
+    I_BFI_N           -0.139      0.697     -0.199      0.842
+    I_ASPFIN          -1.112      0.741     -1.500      0.134
 
  ABFI_N   WITH
-    I_BFI_N          314.792     22.031     14.289      0.000
-    I_ASPFIN         -21.204     21.928     -0.967      0.334
-    S_ASPFIN          -0.276      0.881     -0.313      0.754
+    I_BFI_N          318.427     22.745     14.000      0.000
+    I_ASPFIN         -17.752     22.271     -0.797      0.425
+    S_ASPFIN          -0.228      0.889     -0.257      0.797
 
  AASPFIN  WITH
-    I_BFI_N          -28.834     19.414     -1.485      0.137
-    I_ASPFIN         332.230     26.293     12.636      0.000
-    S_ASPFIN           0.109      0.949      0.115      0.908
+    I_BFI_N          -31.043     19.429     -1.598      0.110
+    I_ASPFIN         331.292     25.774     12.854      0.000
+    S_ASPFIN           0.135      0.933      0.145      0.885
 
  DASPFIN  WITH
-    DBFI_N            -3.203      3.857     -0.830      0.406
+    DBFI_N            -3.121      3.866     -0.807      0.419
 
  CASPFIN  WITH
-    CBFI_N            -3.203      3.857     -0.830      0.406
+    CBFI_N            -3.121      3.866     -0.807      0.419
 
  BASPFIN  WITH
-    BBFI_N            -3.203      3.857     -0.830      0.406
+    BBFI_N            -3.121      3.866     -0.807      0.419
 
  AASPFIN  WITH
-    ABFI_N           -17.854     16.870     -1.058      0.290
+    ABFI_N           -17.447     16.942     -1.030      0.303
 
  Means
-    ABFI_N            49.510      0.720     68.775      0.000
-    AASPFIN           48.700      0.753     64.666      0.000
-    I_BFI_N           40.376      2.355     17.146      0.000
-    S_BFI_N           -0.111      0.040     -2.775      0.006
-    I_ASPFIN          44.518      3.096     14.378      0.000
-    S_ASPFIN          -0.008      0.044     -0.182      0.855
+    ABFI_N            49.635      0.728     68.171      0.000
+    AASPFIN           48.506      0.755     64.226      0.000
+    I_BFI_N           40.702      2.423     16.799      0.000
+    S_BFI_N           -0.113      0.041     -2.775      0.006
+    I_ASPFIN          44.679      3.135     14.250      0.000
+    S_ASPFIN          -0.010      0.044     -0.224      0.823
 
  Intercepts
     BBFI_N             0.000      0.000    999.000    999.000
@@ -595,31 +625,31 @@ MODEL RESULTS
     DASPFIN            0.000      0.000    999.000    999.000
 
  Variances
-    ABFI_N           458.382     18.367     24.957      0.000
-    AASPFIN          497.538     21.072     23.611      0.000
-    I_BFI_N          297.394     31.785      9.356      0.000
+    ABFI_N           460.127     18.559     24.792      0.000
+    AASPFIN          494.649     21.221     23.310      0.000
+    I_BFI_N          303.295     33.242      9.124      0.000
     S_BFI_N            0.000      0.000    999.000    999.000
-    I_ASPFIN         305.555     41.855      7.300      0.000
-    S_ASPFIN           0.101      0.070      1.444      0.149
+    I_ASPFIN         306.730     41.159      7.452      0.000
+    S_ASPFIN           0.087      0.074      1.176      0.240
 
  Residual Variances
-    BBFI_N            83.411      5.198     16.047      0.000
-    CBFI_N            83.411      5.198     16.047      0.000
-    DBFI_N            83.411      5.198     16.047      0.000
-    BASPFIN          124.250      8.277     15.012      0.000
-    CASPFIN          124.250      8.277     15.012      0.000
-    DASPFIN          124.250      8.277     15.012      0.000
+    BBFI_N            83.062      5.262     15.786      0.000
+    CBFI_N            83.062      5.262     15.786      0.000
+    DBFI_N            83.062      5.262     15.786      0.000
+    BASPFIN          124.102      8.241     15.058      0.000
+    CASPFIN          124.102      8.241     15.058      0.000
+    DASPFIN          124.102      8.241     15.058      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.254E-05
+     Condition Number for the Information Matrix              0.220E-05
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  20:22:24
-        Ending Time:  20:22:27
-       Elapsed Time:  00:00:03
+     Beginning Time:  13:32:10
+        Ending Time:  13:32:12
+       Elapsed Time:  00:00:02
 
 
 

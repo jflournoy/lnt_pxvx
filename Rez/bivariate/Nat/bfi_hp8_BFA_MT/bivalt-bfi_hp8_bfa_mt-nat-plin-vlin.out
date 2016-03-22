@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   8:16 PM
+03/21/2016   1:25 PM
 
 INPUT INSTRUCTIONS
 
@@ -237,7 +237,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
 
   USEVARIABLES =
@@ -317,6 +321,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_BFI_HP8
 *** WARNING
   Variable name contains more than 8 characters.
@@ -325,8 +345,8 @@ INPUT INSTRUCTIONS
 *** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  5
-   3 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  16
+   7 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -335,7 +355,7 @@ PxVx Univariate - Nat Lin bfi_hp8 with Lin BFA_MT;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         874
+Number of observations                                         863
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -380,7 +400,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns            14
+     Number of missing data patterns            16
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -388,25 +408,26 @@ SUMMARY OF MISSING DATA PATTERNS
 
      MISSING DATA PATTERNS (x = not missing)
 
-           1  2  3  4  5  6  7  8  9 10 11 12 13 14
- BBFI_HP8  x     x  x        x     x  x     x
- CBFI_HP8  x           x     x  x  x  x     x  x
- DBFI_HP8  x     x     x  x        x  x  x  x  x  x
- BBFA_MT   x     x  x        x     x        x
- CBFA_MT   x           x     x  x  x  x     x  x
- DBFA_MT   x     x     x  x           x  x  x
- ABFI_HP8  x  x  x  x  x  x  x  x  x  x     x  x  x
- ABFA_MT   x  x  x  x  x  x  x  x  x  x  x     x  x
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16
+ BBFI_HP8  x     x  x        x     x  x     x  x
+ CBFI_HP8  x           x     x  x  x  x     x  x  x     x
+ DBFI_HP8  x     x     x  x        x  x  x  x  x  x  x  x
+ BBFA_MT   x     x  x        x     x        x  x
+ CBFA_MT   x           x     x  x  x  x     x  x  x     x
+ DBFA_MT   x     x     x  x           x  x  x  x        x
+ ABFI_HP8  x  x  x  x  x  x  x  x  x  x     x     x  x
+ ABFA_MT   x  x  x  x  x  x  x  x  x  x  x        x  x
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         498           6          24          11           1
-          2         169           7          47          12           2
-          3          27           8          22          13           2
-          4          57           9           1          14           1
-          5          21          10           2
+          1         491           7          46          13           3
+          2         169           8          21          14           2
+          3          27           9           1          15           1
+          4          52          10           1          16           1
+          5          21          11           1
+          6          24          12           2
 
 
 COVARIANCE COVERAGE OF DATA
@@ -420,22 +441,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFI_HP8      CBFI_HP8      DBFI_HP8      BBFA_MT       CBFA_MT
               ________      ________      ________      ________      ________
- BBFI_HP8       0.725
- CBFI_HP8       0.629         0.681
- DBFI_HP8       0.606         0.602         0.662
- BBFA_MT        0.723         0.627         0.604         0.723
- CBFA_MT        0.629         0.681         0.602         0.627         0.681
- DBFA_MT        0.605         0.598         0.658         0.603         0.598
- ABFI_HP8       0.725         0.681         0.661         0.723         0.681
- ABFA_MT        0.723         0.678         0.660         0.721         0.678
+ BBFI_HP8       0.722
+ CBFI_HP8       0.630         0.683
+ DBFI_HP8       0.608         0.605         0.666
+ BBFA_MT        0.721         0.629         0.607         0.721
+ CBFA_MT        0.630         0.683         0.605         0.629         0.683
+ DBFA_MT        0.607         0.601         0.662         0.606         0.601
+ ABFI_HP8       0.718         0.678         0.660         0.717         0.678
+ ABFA_MT        0.716         0.676         0.659         0.715         0.676
 
 
            Covariance Coverage
               DBFA_MT       ABFI_HP8      ABFA_MT
               ________      ________      ________
- DBFA_MT        0.658
- ABFI_HP8       0.657         0.999
- ABFA_MT        0.656         0.997         0.998
+ DBFA_MT        0.662
+ ABFI_HP8       0.656         0.994
+ ABFA_MT        0.655         0.992         0.993
 
 
 SAMPLE STATISTICS
@@ -447,58 +468,58 @@ SAMPLE STATISTICS
            Means
               BBFI_HP8      CBFI_HP8      DBFI_HP8      BBFA_MT       CBFA_MT
               ________      ________      ________      ________      ________
- 1             71.528        72.205        72.245        48.315        47.801
+ 1             71.620        72.260        72.382        48.272        47.815
 
 
            Means
               DBFA_MT       ABFI_HP8      ABFA_MT
               ________      ________      ________
- 1             47.633        71.135        48.593
+ 1             47.666        71.157        48.531
 
 
            Covariances
               BBFI_HP8      CBFI_HP8      DBFI_HP8      BBFA_MT       CBFA_MT
               ________      ________      ________      ________      ________
- BBFI_HP8     254.831
- CBFI_HP8     186.331       233.339
- DBFI_HP8     177.435       178.593       235.089
- BBFA_MT      -71.518       -60.426       -49.133       232.550
- CBFA_MT      -67.521       -62.232       -60.599       192.480       240.157
- DBFA_MT      -75.893       -59.027       -60.170       189.254       202.920
- ABFI_HP8     189.057       174.930       165.136       -60.084       -48.316
- ABFA_MT      -66.516       -55.625       -47.265       185.716       183.947
+ BBFI_HP8     252.891
+ CBFI_HP8     186.178       233.649
+ DBFI_HP8     175.767       177.089       230.750
+ BBFA_MT      -73.023       -61.928       -49.424       235.509
+ CBFA_MT      -67.883       -63.064       -59.181       195.623       242.812
+ DBFA_MT      -74.878       -59.432       -57.112       192.889       204.912
+ ABFI_HP8     188.314       175.216       164.306       -61.185       -49.008
+ ABFA_MT      -66.005       -55.922       -45.763       188.021       185.572
 
 
            Covariances
               DBFA_MT       ABFI_HP8      ABFA_MT
               ________      ________      ________
- DBFA_MT      252.522
- ABFI_HP8     -61.326       248.701
- ABFA_MT      181.036       -62.768       237.270
+ DBFA_MT      253.030
+ ABFI_HP8     -61.769       248.599
+ ABFA_MT      182.714       -63.056       237.767
 
 
            Correlations
               BBFI_HP8      CBFI_HP8      DBFI_HP8      BBFA_MT       CBFA_MT
               ________      ________      ________      ________      ________
  BBFI_HP8       1.000
- CBFI_HP8       0.764         1.000
- DBFI_HP8       0.725         0.763         1.000
- BBFA_MT       -0.294        -0.259        -0.210         1.000
- CBFA_MT       -0.273        -0.263        -0.255         0.814         1.000
- DBFA_MT       -0.299        -0.243        -0.247         0.781         0.824
- ABFI_HP8       0.751         0.726         0.683        -0.250        -0.198
- ABFA_MT       -0.271        -0.236        -0.200         0.791         0.771
+ CBFI_HP8       0.766         1.000
+ DBFI_HP8       0.728         0.763         1.000
+ BBFA_MT       -0.299        -0.264        -0.212         1.000
+ CBFA_MT       -0.274        -0.265        -0.250         0.818         1.000
+ DBFA_MT       -0.296        -0.244        -0.236         0.790         0.827
+ ABFI_HP8       0.751         0.727         0.686        -0.253        -0.199
+ ABFA_MT       -0.269        -0.237        -0.195         0.795         0.772
 
 
            Correlations
               DBFA_MT       ABFI_HP8      ABFA_MT
               ________      ________      ________
  DBFA_MT        1.000
- ABFI_HP8      -0.245         1.000
- ABFA_MT        0.740        -0.258         1.000
+ ABFI_HP8      -0.246         1.000
+ ABFA_MT        0.745        -0.259         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -20358.068
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -20069.682
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -511,15 +532,15 @@ Number of Free Parameters                       34
 
 Loglikelihood
 
-          H0 Value                      -20358.517
-          H0 Scaling Correction Factor       1.138
+          H0 Value                      -20069.082
+          H0 Scaling Correction Factor       1.167
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   40785.034
-          Bayesian (BIC)                 40947.319
-          Sample-Size Adjusted BIC       40839.343
+          Akaike (AIC)                   40206.164
+          Bayesian (BIC)                 40368.018
+          Sample-Size Adjusted BIC       40260.043
             (n* = (n + 2) / 24)
 
 
@@ -530,72 +551,72 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFI_HP8   ON
-    CBFI_HP8           0.125      0.047      2.647      0.008
-    CBFA_MT           -0.115      0.041     -2.807      0.005
+    CBFI_HP8           0.119      0.048      2.457      0.014
+    CBFA_MT           -0.105      0.049     -2.148      0.032
 
  CBFI_HP8   ON
-    BBFI_HP8           0.125      0.047      2.647      0.008
-    BBFA_MT           -0.115      0.041     -2.807      0.005
+    BBFI_HP8           0.119      0.048      2.457      0.014
+    BBFA_MT           -0.105      0.049     -2.148      0.032
 
  BBFI_HP8   ON
-    ABFI_HP8           0.125      0.047      2.647      0.008
-    ABFA_MT           -0.115      0.041     -2.807      0.005
+    ABFI_HP8           0.119      0.048      2.457      0.014
+    ABFA_MT           -0.105      0.049     -2.148      0.032
 
  DBFA_MT    ON
-    CBFA_MT            0.168      0.049      3.406      0.001
-    CBFI_HP8          -0.032      0.035     -0.893      0.372
+    CBFA_MT            0.158      0.060      2.647      0.008
+    CBFI_HP8          -0.026      0.038     -0.683      0.495
 
  CBFA_MT    ON
-    BBFA_MT            0.168      0.049      3.406      0.001
-    BBFI_HP8          -0.032      0.035     -0.893      0.372
+    BBFA_MT            0.158      0.060      2.647      0.008
+    BBFI_HP8          -0.026      0.038     -0.683      0.495
 
  BBFA_MT    ON
-    ABFA_MT            0.168      0.049      3.406      0.001
-    ABFI_HP8          -0.032      0.035     -0.893      0.372
+    ABFA_MT            0.158      0.060      2.647      0.008
+    ABFI_HP8          -0.026      0.038     -0.683      0.495
 
  S_BFI_HP WITH
-    I_BFI_HP8          0.013      0.325      0.041      0.967
+    I_BFI_HP8          0.029      0.324      0.089      0.929
 
  I_BFA_MT WITH
-    I_BFI_HP8        -16.145     10.421     -1.549      0.121
-    S_BFI_HP8          0.537      1.717      0.313      0.754
+    I_BFI_HP8        -18.280     13.019     -1.404      0.160
+    S_BFI_HP8          0.409      1.758      0.233      0.816
 
  S_BFA_MT WITH
-    I_BFI_HP8         -0.701      1.755     -0.399      0.690
-    S_BFI_HP8         -0.018      0.025     -0.717      0.473
-    I_BFA_MT          -0.424      0.346     -1.227      0.220
+    I_BFI_HP8         -0.616      1.803     -0.342      0.733
+    S_BFI_HP8         -0.021      0.026     -0.809      0.419
+    I_BFA_MT          -0.448      0.355     -1.262      0.207
 
  ABFI_HP8 WITH
-    I_BFI_HP8        141.491     11.434     12.375      0.000
-    S_BFI_HP8          0.795      0.475      1.675      0.094
-    I_BFA_MT         -38.808     10.147     -3.825      0.000
-    S_BFA_MT          -0.347      0.478     -0.727      0.467
+    I_BFI_HP8        142.320     12.183     11.682      0.000
+    S_BFI_HP8          0.797      0.474      1.681      0.093
+    I_BFA_MT         -41.176     11.281     -3.650      0.000
+    S_BFA_MT          -0.359      0.481     -0.747      0.455
 
  ABFA_MT  WITH
-    I_BFI_HP8        -23.347      9.810     -2.380      0.017
-    S_BFI_HP8         -0.325      0.495     -0.657      0.511
-    I_BFA_MT         145.261     13.204     11.001      0.000
-    S_BFA_MT           0.738      0.495      1.490      0.136
+    I_BFI_HP8        -24.346     11.959     -2.036      0.042
+    S_BFI_HP8         -0.398      0.480     -0.827      0.408
+    I_BFA_MT         149.324     15.645      9.544      0.000
+    S_BFA_MT           0.671      0.508      1.320      0.187
 
  DBFA_MT  WITH
-    DBFI_HP8          -5.176      2.196     -2.357      0.018
+    DBFI_HP8          -4.657      2.378     -1.959      0.050
 
  CBFA_MT  WITH
-    CBFI_HP8          -5.176      2.196     -2.357      0.018
+    CBFI_HP8          -4.657      2.378     -1.959      0.050
 
  BBFA_MT  WITH
-    BBFI_HP8          -5.176      2.196     -2.357      0.018
+    BBFI_HP8          -4.657      2.378     -1.959      0.050
 
  ABFA_MT  WITH
-    ABFI_HP8         -62.746      8.255     -7.601      0.000
+    ABFI_HP8         -63.112      8.376     -7.535      0.000
 
  Means
-    ABFI_HP8          71.121      0.534    133.213      0.000
-    ABFA_MT           48.602      0.521     93.304      0.000
-    I_BFI_HP8         68.334      4.697     14.549      0.000
-    S_BFI_HP8          0.092      0.031      2.920      0.004
-    I_BFA_MT          42.237      4.124     10.242      0.000
-    S_BFA_MT          -0.015      0.029     -0.508      0.611
+    ABFI_HP8          71.157      0.537    132.460      0.000
+    ABFA_MT           48.488      0.525     92.409      0.000
+    I_BFI_HP8         68.349      4.581     14.920      0.000
+    S_BFI_HP8          0.096      0.031      3.086      0.002
+    I_BFA_MT          42.228      4.206     10.041      0.000
+    S_BFA_MT          -0.016      0.030     -0.551      0.582
 
  Intercepts
     BBFI_HP8           0.000      0.000    999.000    999.000
@@ -606,31 +627,31 @@ MODEL RESULTS
     DBFA_MT            0.000      0.000    999.000    999.000
 
  Variances
-    ABFI_HP8         248.660     10.695     23.249      0.000
-    ABFA_MT          237.244     11.310     20.976      0.000
-    I_BFI_HP8        117.665     16.159      7.282      0.000
-    S_BFI_HP8          0.042      0.042      0.994      0.320
-    I_BFA_MT         121.498     18.517      6.561      0.000
-    S_BFA_MT           0.065      0.039      1.685      0.092
+    ABFI_HP8         248.546     10.810     22.993      0.000
+    ABFA_MT          237.811     11.488     20.701      0.000
+    I_BFI_HP8        119.111     17.552      6.786      0.000
+    S_BFI_HP8          0.037      0.048      0.768      0.442
+    I_BFA_MT         127.576     23.074      5.529      0.000
+    S_BFA_MT           0.064      0.038      1.701      0.089
 
  Residual Variances
-    BBFI_HP8          64.851      4.155     15.608      0.000
-    CBFI_HP8          64.851      4.155     15.608      0.000
-    DBFI_HP8          64.851      4.155     15.608      0.000
-    BBFA_MT           51.555      3.879     13.291      0.000
-    CBFA_MT           51.555      3.879     13.291      0.000
-    DBFA_MT           51.555      3.879     13.291      0.000
+    BBFI_HP8          63.790      4.138     15.414      0.000
+    CBFI_HP8          63.790      4.138     15.414      0.000
+    DBFI_HP8          63.790      4.138     15.414      0.000
+    BBFA_MT           50.333      3.952     12.737      0.000
+    CBFA_MT           50.333      3.952     12.737      0.000
+    DBFA_MT           50.333      3.952     12.737      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.152E-05
+     Condition Number for the Information Matrix              0.149E-05
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  20:16:08
-        Ending Time:  20:16:28
-       Elapsed Time:  00:00:20
+     Beginning Time:  13:25:41
+        Ending Time:  13:26:00
+       Elapsed Time:  00:00:19
 
 
 

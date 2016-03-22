@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:42 PM
+03/21/2016  11:08 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFI_O
@@ -291,6 +295,22 @@ INPUT INSTRUCTIONS
 
 
 
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
 *** WARNING in MODEL command
   All continuous latent variable covariances involving S_BFI_O have been fixed to 0
   because the variance of S_BFI_O is fixed at 0.
@@ -298,7 +318,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   7 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -307,7 +331,7 @@ PxVx Univariate - Col BFI_O AR_LinM;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -370,7 +394,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         143           4          28           7          18
+          1         141           4          28           7          18
           2          10           5          54           8           4
           3          11           6          11
 
@@ -386,10 +410,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFI_O        CBFI_O        DBFI_O        ABFI_O
               ________      ________      ________      ________
- BBFI_O         0.713
- CBFI_O         0.548         0.602
- DBFI_O         0.577         0.552         0.656
- ABFI_O         0.713         0.602         0.656         1.000
+ BBFI_O         0.711
+ CBFI_O         0.545         0.599
+ DBFI_O         0.574         0.549         0.653
+ ABFI_O         0.711         0.599         0.653         1.000
 
 
 SAMPLE STATISTICS
@@ -401,28 +425,28 @@ SAMPLE STATISTICS
            Means
               BBFI_O        CBFI_O        DBFI_O        ABFI_O
               ________      ________      ________      ________
- 1             71.405        72.121        73.889        72.286
+ 1             71.344        72.283        73.956        72.311
 
 
            Covariances
               BBFI_O        CBFI_O        DBFI_O        ABFI_O
               ________      ________      ________      ________
- BBFI_O       235.006
- CBFI_O       178.881       205.277
- DBFI_O       144.892       145.881       164.626
- ABFI_O       181.272       163.527       136.739       219.525
+ BBFI_O       235.547
+ CBFI_O       180.319       204.467
+ DBFI_O       143.621       144.376       161.128
+ ABFI_O       181.795       163.524       135.540       220.466
 
 
            Correlations
               BBFI_O        CBFI_O        DBFI_O        ABFI_O
               ________      ________      ________      ________
  BBFI_O         1.000
- CBFI_O         0.814         1.000
- DBFI_O         0.737         0.794         1.000
+ CBFI_O         0.822         1.000
+ DBFI_O         0.737         0.795         1.000
  ABFI_O         0.798         0.770         0.719         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3089.024
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3056.085
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -435,15 +459,15 @@ Number of Free Parameters                        8
 
 Loglikelihood
 
-          H0 Value                       -3095.958
-          H0 Scaling Correction Factor       1.137
+          H0 Value                       -3064.089
+          H0 Scaling Correction Factor       1.142
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                    6207.915
-          Bayesian (BIC)                  6236.965
-          Sample-Size Adjusted BIC        6211.597
+          Akaike (AIC)                    6144.178
+          Bayesian (BIC)                  6173.170
+          Sample-Size Adjusted BIC        6147.803
             (n* = (n + 2) / 24)
 
 
@@ -454,21 +478,21 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFI_O     ON
-    CBFI_O             0.285      0.089      3.188      0.001
+    CBFI_O             0.296      0.090      3.289      0.001
 
  CBFI_O     ON
-    BBFI_O             0.285      0.089      3.188      0.001
+    BBFI_O             0.296      0.090      3.289      0.001
 
  BBFI_O     ON
-    ABFI_O             0.285      0.089      3.188      0.001
+    ABFI_O             0.296      0.090      3.289      0.001
 
  ABFI_O   WITH
-    I_BFI_O          108.753     18.577      5.854      0.000
+    I_BFI_O          106.505     18.713      5.691      0.000
 
  Means
-    ABFI_O            72.287      0.886     81.544      0.000
-    I_BFI_O           65.382      7.646      8.551      0.000
-    S_BFI_O            1.000      0.346      2.887      0.004
+    ABFI_O            72.312      0.894     80.920      0.000
+    I_BFI_O           64.715      7.832      8.263      0.000
+    S_BFI_O            1.006      0.348      2.889      0.004
 
  Intercepts
     BBFI_O             0.000      0.000    999.000    999.000
@@ -476,24 +500,24 @@ MODEL RESULTS
     DBFI_O             0.000      0.000    999.000    999.000
 
  Variances
-    ABFI_O           219.505     21.034     10.436      0.000
-    I_BFI_O           71.300     25.206      2.829      0.005
+    ABFI_O           220.445     21.191     10.403      0.000
+    I_BFI_O           68.398     25.063      2.729      0.006
     S_BFI_O            0.000      0.000    999.000    999.000
 
  Residual Variances
-    BBFI_O            54.505      7.073      7.706      0.000
-    CBFI_O            54.505      7.073      7.706      0.000
-    DBFI_O            54.505      7.073      7.706      0.000
+    BBFI_O            54.039      7.160      7.547      0.000
+    CBFI_O            54.039      7.160      7.547      0.000
+    DBFI_O            54.039      7.160      7.547      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.489E-04
+     Condition Number for the Information Matrix              0.460E-04
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:42:22
-        Ending Time:  17:42:22
+     Beginning Time:  11:08:10
+        Ending Time:  11:08:10
        Elapsed Time:  00:00:00
 
 

@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   6:56 PM
+03/21/2016  12:05 PM
 
 INPUT INSTRUCTIONS
 
@@ -237,7 +237,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
 
   USEVARIABLES =
@@ -312,6 +316,22 @@ INPUT INSTRUCTIONS
 
 
 
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
 *** WARNING in MODEL command
   All continuous latent variable covariances involving S_BFA_AC have been fixed to 0
   because the variance of S_BFA_AC is fixed at 0.
@@ -321,8 +341,8 @@ INPUT INSTRUCTIONS
 *** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  5
-   3 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  16
+   7 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -331,7 +351,7 @@ PxVx Univariate - Nat MeanOnly BFA_AC with MeanOnly USI;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         874
+Number of observations                                         863
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -376,7 +396,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns            19
+     Number of missing data patterns            20
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -384,27 +404,27 @@ SUMMARY OF MISSING DATA PATTERNS
 
      MISSING DATA PATTERNS (x = not missing)
 
-           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
- BBFA_AC   x     x  x     x     x     x  x  x  x     x     x
- CBFA_AC   x           x  x     x  x     x  x  x        x  x  x
- DBFA_AC   x     x     x  x  x              x  x     x        x  x
- BUSI      x     x  x     x     x        x     x           x  x
- CUSI      x           x        x  x        x  x           x  x
- DUSI      x     x     x  x  x              x  x     x     x  x
- ABFA_AC   x  x  x  x  x  x  x  x  x  x  x  x     x  x  x  x  x  x
- AUSI      x  x  x  x  x  x  x  x  x  x  x  x  x     x  x  x  x  x
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
+ BBFA_AC   x     x  x     x     x     x  x  x  x  x     x     x
+ CBFA_AC   x           x  x     x  x     x  x  x  x        x  x     x
+ DBFA_AC   x     x     x  x  x              x  x  x     x        x  x
+ BUSI      x     x  x     x     x        x     x  x           x
+ CUSI      x           x        x  x        x  x  x           x     x
+ DUSI      x     x     x  x  x              x  x  x     x     x     x
+ ABFA_AC   x  x  x  x  x  x  x  x  x  x  x  x        x  x  x  x  x
+ AUSI      x  x  x  x  x  x  x  x  x  x  x  x  x        x  x  x  x
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         494           8          46          15           1
-          2         169           9          23          16           1
+          1         487           8          45          15           1
+          2         169           9          22          16           1
           3          26          10           5          17           1
-          4          52          11           1          18           1
+          4          47          11           1          18           1
           5          21          12           3          19           1
-          6           2          13           2
-          7          24          14           1
+          6           2          13           2          20           1
+          7          24          14           3
 
 
 COVARIANCE COVERAGE OF DATA
@@ -418,22 +438,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFA_AC       CBFA_AC       DBFA_AC       BUSI          CUSI
               ________      ________      ________      ________      ________
- BBFA_AC        0.724
- CBFA_AC        0.628         0.681
- DBFA_AC        0.604         0.598         0.658
- BUSI           0.714         0.626         0.601         0.715
- CUSI           0.625         0.676         0.596         0.622         0.676
- DUSI           0.605         0.600         0.657         0.602         0.597
- ABFA_AC        0.722         0.678         0.656         0.713         0.674
- AUSI           0.724         0.681         0.658         0.715         0.676
+ BBFA_AC        0.722
+ CBFA_AC        0.630         0.683
+ DBFA_AC        0.607         0.601         0.662
+ BUSI           0.711         0.627         0.603         0.711
+ CUSI           0.627         0.678         0.599         0.623         0.678
+ DUSI           0.608         0.603         0.660         0.604         0.600
+ ABFA_AC        0.716         0.676         0.655         0.706         0.671
+ AUSI           0.718         0.678         0.657         0.708         0.673
 
 
            Covariance Coverage
               DUSI          ABFA_AC       AUSI
               ________      ________      ________
- DUSI           0.658
- ABFA_AC        0.656         0.998
- AUSI           0.658         0.997         0.999
+ DUSI           0.662
+ ABFA_AC        0.655         0.993
+ AUSI           0.657         0.992         0.994
 
 
 SAMPLE STATISTICS
@@ -445,58 +465,58 @@ SAMPLE STATISTICS
            Means
               BBFA_AC       CBFA_AC       DBFA_AC       BUSI          CUSI
               ________      ________      ________      ________      ________
- 1             77.590        77.203        77.605        28.599        28.619
+ 1             77.714        77.257        77.718        28.439        28.593
 
 
            Means
               DUSI          ABFA_AC       AUSI
               ________      ________      ________
- 1             28.642        77.548        29.097
+ 1             28.551        77.656        28.997
 
 
            Covariances
               BBFA_AC       CBFA_AC       DBFA_AC       BUSI          CUSI
               ________      ________      ________      ________      ________
- BBFA_AC      256.179
- CBFA_AC      212.552       266.453
- DBFA_AC      198.153       215.528       258.824
- BUSI        -106.874      -101.735       -96.087       276.882
- CUSI         -90.323      -102.507       -89.177       214.372       282.131
- DUSI         -91.525       -98.179       -97.854       200.484       221.520
- ABFA_AC      204.027       197.312       196.917       -97.394       -88.469
- AUSI         -99.695       -99.210       -91.857       206.911       203.997
+ BBFA_AC      253.432
+ CBFA_AC      211.761       264.866
+ DBFA_AC      196.752       213.495       254.799
+ BUSI        -104.661      -101.737       -95.392       276.193
+ CUSI         -89.360       -99.872       -86.339       216.924       283.869
+ DUSI         -91.331       -96.957       -95.494       201.938       220.316
+ ABFA_AC      203.071       196.475       196.303       -96.905       -87.366
+ AUSI         -97.493       -95.004       -88.198       209.722       203.358
 
 
            Covariances
               DUSI          ABFA_AC       AUSI
               ________      ________      ________
- DUSI         263.190
- ABFA_AC      -94.239       264.138
- AUSI         192.758      -106.237       267.279
+ DUSI         262.921
+ ABFA_AC      -94.210       263.820
+ AUSI         191.532      -103.464       264.552
 
 
            Correlations
               BBFA_AC       CBFA_AC       DBFA_AC       BUSI          CUSI
               ________      ________      ________      ________      ________
  BBFA_AC        1.000
- CBFA_AC        0.814         1.000
- DBFA_AC        0.770         0.821         1.000
- BUSI          -0.401        -0.375        -0.359         1.000
- CUSI          -0.336        -0.374        -0.330         0.767         1.000
- DUSI          -0.352        -0.371        -0.375         0.743         0.813
- ABFA_AC        0.784         0.744         0.753        -0.360        -0.324
- AUSI          -0.381        -0.372        -0.349         0.761         0.743
+ CBFA_AC        0.817         1.000
+ DBFA_AC        0.774         0.822         1.000
+ BUSI          -0.396        -0.376        -0.360         1.000
+ CUSI          -0.333        -0.364        -0.321         0.775         1.000
+ DUSI          -0.354        -0.367        -0.369         0.749         0.806
+ ABFA_AC        0.785         0.743         0.757        -0.359        -0.319
+ AUSI          -0.377        -0.359        -0.340         0.776         0.742
 
 
            Correlations
               DUSI          ABFA_AC       AUSI
               ________      ________      ________
  DUSI           1.000
- ABFA_AC       -0.357         1.000
- AUSI           0.727        -0.400         1.000
+ ABFA_AC       -0.358         1.000
+ AUSI           0.726        -0.392         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -20454.550
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -20152.782
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -509,15 +529,15 @@ Number of Free Parameters                       23
 
 Loglikelihood
 
-          H0 Value                      -20465.304
-          H0 Scaling Correction Factor       1.147
+          H0 Value                      -20162.758
+          H0 Scaling Correction Factor       1.172
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   40976.609
-          Bayesian (BIC)                 41086.389
-          Sample-Size Adjusted BIC       41013.347
+          Akaike (AIC)                   40371.517
+          Bayesian (BIC)                 40481.006
+          Sample-Size Adjusted BIC       40407.964
             (n* = (n + 2) / 24)
 
 
@@ -528,59 +548,59 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFA_AC    ON
-    CBFA_AC            0.184      0.036      5.165      0.000
-    CUSI              -0.011      0.027     -0.418      0.676
+    CBFA_AC            0.176      0.042      4.173      0.000
+    CUSI              -0.019      0.039     -0.480      0.631
 
  CBFA_AC    ON
-    BBFA_AC            0.184      0.036      5.165      0.000
-    BUSI              -0.011      0.027     -0.418      0.676
+    BBFA_AC            0.176      0.042      4.173      0.000
+    BUSI              -0.019      0.039     -0.480      0.631
 
  BBFA_AC    ON
-    ABFA_AC            0.184      0.036      5.165      0.000
-    AUSI              -0.011      0.027     -0.418      0.676
+    ABFA_AC            0.176      0.042      4.173      0.000
+    AUSI              -0.019      0.039     -0.480      0.631
 
  DUSI       ON
-    CUSI               0.149      0.034      4.409      0.000
-    CBFA_AC            0.003      0.026      0.119      0.905
+    CUSI               0.175      0.056      3.111      0.002
+    CBFA_AC            0.008      0.032      0.260      0.795
 
  CUSI       ON
-    BUSI               0.149      0.034      4.409      0.000
-    BBFA_AC            0.003      0.026      0.119      0.905
+    BUSI               0.175      0.056      3.111      0.002
+    BBFA_AC            0.008      0.032      0.260      0.795
 
  BUSI       ON
-    AUSI               0.149      0.034      4.409      0.000
-    ABFA_AC            0.003      0.026      0.119      0.905
+    AUSI               0.175      0.056      3.111      0.002
+    ABFA_AC            0.008      0.032      0.260      0.795
 
  I_USI    WITH
-    I_BFA_AC         -61.929     10.750     -5.761      0.000
+    I_BFA_AC         -59.615     16.346     -3.647      0.000
 
  ABFA_AC  WITH
-    I_BFA_AC         156.876     12.818     12.239      0.000
-    I_USI            -78.679      9.885     -7.960      0.000
+    I_BFA_AC         157.098     15.053     10.436      0.000
+    I_USI            -77.105     12.943     -5.957      0.000
 
  AUSI     WITH
-    I_BFA_AC         -74.943      9.926     -7.550      0.000
-    I_USI            166.706     11.216     14.864      0.000
+    I_BFA_AC         -71.149     13.225     -5.380      0.000
+    I_USI            161.870     16.357      9.896      0.000
 
  DUSI     WITH
-    DBFA_AC           -8.906      2.654     -3.356      0.001
+    DBFA_AC           -7.411      2.704     -2.740      0.006
 
  CUSI     WITH
-    CBFA_AC           -8.906      2.654     -3.356      0.001
+    CBFA_AC           -7.411      2.704     -2.740      0.006
 
  BUSI     WITH
-    BBFA_AC           -8.906      2.654     -3.356      0.001
+    BBFA_AC           -7.411      2.704     -2.740      0.006
 
  AUSI     WITH
-    ABFA_AC         -106.241      9.676    -10.980      0.000
+    ABFA_AC         -103.496      9.581    -10.803      0.000
 
  Means
-    ABFA_AC           77.548      0.550    141.125      0.000
-    AUSI              29.097      0.552     52.696      0.000
-    I_BFA_AC          63.527      3.030     20.964      0.000
-    S_BFA_AC           0.028      0.029      0.942      0.346
-    I_USI             24.156      2.368     10.202      0.000
-    S_USI             -0.035      0.032     -1.085      0.278
+    ABFA_AC           77.656      0.554    140.192      0.000
+    AUSI              28.999      0.555     52.207      0.000
+    I_BFA_AC          64.399      3.122     20.627      0.000
+    S_BFA_AC           0.026      0.029      0.895      0.371
+    I_USI             22.923      2.464      9.302      0.000
+    S_USI             -0.032      0.031     -1.034      0.301
 
  Intercepts
     BBFA_AC            0.000      0.000    999.000    999.000
@@ -591,30 +611,30 @@ MODEL RESULTS
     DUSI               0.000      0.000    999.000    999.000
 
  Variances
-    ABFA_AC          264.126     14.750     17.906      0.000
-    AUSI             267.279     10.777     24.800      0.000
-    I_BFA_AC         131.752     15.448      8.529      0.000
+    ABFA_AC          263.813     14.934     17.666      0.000
+    AUSI             264.598     10.611     24.936      0.000
+    I_BFA_AC         132.340     20.027      6.608      0.000
     S_BFA_AC           0.000      0.000    999.000    999.000
-    I_USI            147.297     14.901      9.885      0.000
+    I_USI            139.062     24.508      5.674      0.000
     S_USI              0.000      0.000    999.000    999.000
 
  Residual Variances
-    BBFA_AC           57.726      3.808     15.160      0.000
-    CBFA_AC           57.726      3.808     15.160      0.000
-    DBFA_AC           57.726      3.808     15.160      0.000
-    BUSI              67.971      4.198     16.191      0.000
-    CUSI              67.971      4.198     16.191      0.000
-    DUSI              67.971      4.198     16.191      0.000
+    BBFA_AC           56.042      3.850     14.558      0.000
+    CBFA_AC           56.042      3.850     14.558      0.000
+    DBFA_AC           56.042      3.850     14.558      0.000
+    BUSI              68.110      4.618     14.748      0.000
+    CUSI              68.110      4.618     14.748      0.000
+    DUSI              68.110      4.618     14.748      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.959E-05
+     Condition Number for the Information Matrix              0.806E-05
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  18:56:23
-        Ending Time:  18:56:27
+     Beginning Time:  12:05:40
+        Ending Time:  12:05:44
        Elapsed Time:  00:00:04
 
 

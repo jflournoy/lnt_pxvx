@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:42 PM
+03/21/2016  11:08 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFI_A6
@@ -291,6 +295,22 @@ INPUT INSTRUCTIONS
 
 
 
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
 *** WARNING in MODEL command
   All continuous latent variable covariances involving S_BFI_A6 have been fixed to 0
   because the variance of S_BFI_A6 is fixed at 0.
@@ -298,7 +318,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   7 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -307,7 +331,7 @@ PxVx Univariate - Col BFI_A6 AR_LinM;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -370,7 +394,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         143           4          28           7          18
+          1         141           4          28           7          18
           2          10           5          54           8           4
           3          11           6          11
 
@@ -386,10 +410,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFI_A6       CBFI_A6       DBFI_A6       ABFI_A6
               ________      ________      ________      ________
- BBFI_A6        0.713
- CBFI_A6        0.548         0.602
- DBFI_A6        0.577         0.552         0.656
- ABFI_A6        0.713         0.602         0.656         1.000
+ BBFI_A6        0.711
+ CBFI_A6        0.545         0.599
+ DBFI_A6        0.574         0.549         0.653
+ ABFI_A6        0.711         0.599         0.653         1.000
 
 
 SAMPLE STATISTICS
@@ -401,28 +425,28 @@ SAMPLE STATISTICS
            Means
               BBFI_A6       CBFI_A6       DBFI_A6       ABFI_A6
               ________      ________      ________      ________
- 1             60.156        59.919        63.059        60.810
+ 1             60.257        59.893        63.224        60.922
 
 
            Covariances
               BBFI_A6       CBFI_A6       DBFI_A6       ABFI_A6
               ________      ________      ________      ________
- BBFI_A6      266.561
- CBFI_A6      176.045       237.819
- DBFI_A6      171.991       154.643       243.523
- ABFI_A6      208.017       176.889       160.807       294.868
+ BBFI_A6      267.934
+ CBFI_A6      178.991       239.162
+ DBFI_A6      174.132       150.903       231.409
+ ABFI_A6      209.131       176.430       152.193       292.272
 
 
            Correlations
               BBFI_A6       CBFI_A6       DBFI_A6       ABFI_A6
               ________      ________      ________      ________
  BBFI_A6        1.000
- CBFI_A6        0.699         1.000
- DBFI_A6        0.675         0.643         1.000
- ABFI_A6        0.742         0.668         0.600         1.000
+ CBFI_A6        0.707         1.000
+ DBFI_A6        0.699         0.641         1.000
+ ABFI_A6        0.747         0.667         0.585         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3280.585
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3239.511
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -435,15 +459,15 @@ Number of Free Parameters                        8
 
 Loglikelihood
 
-          H0 Value                       -3286.208
-          H0 Scaling Correction Factor       0.938
+          H0 Value                       -3247.744
+          H0 Scaling Correction Factor       1.045
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                    6588.416
-          Bayesian (BIC)                  6617.466
-          Sample-Size Adjusted BIC        6592.099
+          Akaike (AIC)                    6511.489
+          Bayesian (BIC)                  6540.481
+          Sample-Size Adjusted BIC        6515.114
             (n* = (n + 2) / 24)
 
 
@@ -454,21 +478,21 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFI_A6    ON
-    CBFI_A6            0.187      0.000  *********      0.000
+    CBFI_A6            0.181      0.072      2.506      0.012
 
  CBFI_A6    ON
-    BBFI_A6            0.187      0.000  *********      0.000
+    BBFI_A6            0.181      0.072      2.506      0.012
 
  BBFI_A6    ON
-    ABFI_A6            0.187      0.000  *********      0.000
+    ABFI_A6            0.181      0.072      2.506      0.012
 
  ABFI_A6  WITH
-    I_BFI_A6         141.519     16.350      8.656      0.000
+    I_BFI_A6         140.724     23.312      6.037      0.000
 
  Means
-    ABFI_A6           60.810      1.027     59.192      0.000
-    I_BFI_A6          65.450      5.859     11.172      0.000
-    S_BFI_A6           1.168      0.432      2.702      0.007
+    ABFI_A6           60.922      1.027     59.301      0.000
+    I_BFI_A6          66.202      6.715      9.858      0.000
+    S_BFI_A6           1.190      0.420      2.833      0.005
 
  Intercepts
     BBFI_A6            0.000      0.000    999.000    999.000
@@ -476,24 +500,24 @@ MODEL RESULTS
     DBFI_A6            0.000      0.000    999.000    999.000
 
  Variances
-    ABFI_A6          294.879     23.373     12.616      0.000
-    I_BFI_A6         101.917     12.505      8.150      0.000
+    ABFI_A6          292.282     23.277     12.557      0.000
+    I_BFI_A6         104.589     26.965      3.879      0.000
     S_BFI_A6           0.000      0.000    999.000    999.000
 
  Residual Variances
-    BBFI_A6           91.821      8.304     11.058      0.000
-    CBFI_A6           91.821      8.304     11.058      0.000
-    DBFI_A6           91.821      8.304     11.058      0.000
+    BBFI_A6           87.661      8.430     10.398      0.000
+    CBFI_A6           87.661      8.430     10.398      0.000
+    DBFI_A6           87.661      8.430     10.398      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.420E-09
+     Condition Number for the Information Matrix              0.119E-03
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:42:16
-        Ending Time:  17:42:16
+     Beginning Time:  11:08:04
+        Ending Time:  11:08:04
        Elapsed Time:  00:00:00
 
 

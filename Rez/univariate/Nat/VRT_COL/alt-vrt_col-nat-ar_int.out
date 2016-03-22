@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:43 PM
+03/21/2016  11:09 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aVRT_COL
@@ -293,6 +297,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_VRT_COL
 *** WARNING
   Data set contains cases with missing on all variables.
@@ -301,8 +321,8 @@ INPUT INSTRUCTIONS
 *** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  5
-   3 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  16
+   7 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -311,7 +331,7 @@ PxVx Univariate - Nat VRT_COL AR_Int;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         873
+Number of observations                                         862
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -356,7 +376,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns             8
+     Number of missing data patterns            10
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -364,19 +384,20 @@ SUMMARY OF MISSING DATA PATTERNS
 
      MISSING DATA PATTERNS (x = not missing)
 
-           1  2  3  4  5  6  7  8
- BVRT_COL  x     x  x        x
- CVRT_COL  x           x     x  x
- DVRT_COL  x     x     x  x
+           1  2  3  4  5  6  7  8  9 10
+ BVRT_COL  x     x  x        x     x
+ CVRT_COL  x           x     x  x  x  x
+ DVRT_COL  x     x     x  x        x  x
  AVRT_COL  x  x  x  x  x  x  x  x
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         498           4          54           7          46
-          2         175           5          24           8          23
-          3          28           6          25
+          1         490           5          24           9           3
+          2         175           6          25          10           1
+          3          28           7          45
+          4          49           8          22
 
 
 COVARIANCE COVERAGE OF DATA
@@ -390,10 +411,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BVRT_COL      CVRT_COL      DVRT_COL      AVRT_COL
               ________      ________      ________      ________
- BVRT_COL       0.717
- CVRT_COL       0.623         0.677
- DVRT_COL       0.603         0.598         0.659
- AVRT_COL       0.717         0.677         0.659         1.000
+ BVRT_COL       0.713
+ CVRT_COL       0.624         0.679
+ DVRT_COL       0.604         0.601         0.662
+ AVRT_COL       0.710         0.674         0.658         0.995
 
 
 SAMPLE STATISTICS
@@ -405,28 +426,28 @@ SAMPLE STATISTICS
            Means
               BVRT_COL      CVRT_COL      DVRT_COL      AVRT_COL
               ________      ________      ________      ________
- 1             70.343        68.672        68.859        71.583
+ 1             70.344        68.557        68.749        71.500
 
 
            Covariances
               BVRT_COL      CVRT_COL      DVRT_COL      AVRT_COL
               ________      ________      ________      ________
- BVRT_COL     353.914
- CVRT_COL     260.065       372.622
- DVRT_COL     261.713       275.884       364.271
- AVRT_COL     238.716       225.745       238.271       327.291
+ BVRT_COL     356.583
+ CVRT_COL     263.186       381.395
+ DVRT_COL     265.646       280.173       370.767
+ AVRT_COL     243.369       230.016       242.248       328.850
 
 
            Correlations
               BVRT_COL      CVRT_COL      DVRT_COL      AVRT_COL
               ________      ________      ________      ________
  BVRT_COL       1.000
- CVRT_COL       0.716         1.000
- DVRT_COL       0.729         0.749         1.000
- AVRT_COL       0.701         0.646         0.690         1.000
+ CVRT_COL       0.714         1.000
+ DVRT_COL       0.731         0.745         1.000
+ AVRT_COL       0.711         0.649         0.694         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -10843.081
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -10707.888
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -439,15 +460,15 @@ Number of Free Parameters                        7
 
 Loglikelihood
 
-          H0 Value                      -10850.748
-          H0 Scaling Correction Factor       1.114
+          H0 Value                      -10716.595
+          H0 Scaling Correction Factor       1.121
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   21715.497
-          Bayesian (BIC)                 21748.900
-          Sample-Size Adjusted BIC       21726.670
+          Akaike (AIC)                   21447.189
+          Bayesian (BIC)                 21480.504
+          Sample-Size Adjusted BIC       21458.274
             (n* = (n + 2) / 24)
 
 
@@ -458,20 +479,20 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DVRT_COL   ON
-    CVRT_COL           0.102      0.039      2.595      0.009
+    CVRT_COL           0.108      0.041      2.648      0.008
 
  CVRT_COL   ON
-    BVRT_COL           0.102      0.039      2.595      0.009
+    BVRT_COL           0.108      0.041      2.648      0.008
 
  BVRT_COL   ON
-    AVRT_COL           0.102      0.039      2.595      0.009
+    AVRT_COL           0.108      0.041      2.648      0.008
 
  AVRT_COL WITH
-    I_VRT_COL        207.227     16.392     12.642      0.000
+    I_VRT_COL        209.595     16.918     12.389      0.000
 
  Means
-    AVRT_COL          71.582      0.612    116.919      0.000
-    I_VRT_COL         62.189      2.884     21.565      0.000
+    AVRT_COL          71.495      0.617    115.858      0.000
+    I_VRT_COL         61.689      2.991     20.628      0.000
 
  Intercepts
     BVRT_COL           0.000      0.000    999.000    999.000
@@ -479,23 +500,23 @@ MODEL RESULTS
     DVRT_COL           0.000      0.000    999.000    999.000
 
  Variances
-    AVRT_COL         327.287     16.363     20.001      0.000
-    I_VRT_COL        209.848     23.365      8.981      0.000
+    AVRT_COL         328.864     16.565     19.852      0.000
+    I_VRT_COL        209.443     24.199      8.655      0.000
 
  Residual Variances
-    BVRT_COL         105.136      6.112     17.202      0.000
-    CVRT_COL         105.136      6.112     17.202      0.000
-    DVRT_COL         105.136      6.112     17.202      0.000
+    BVRT_COL         107.987      6.386     16.909      0.000
+    CVRT_COL         107.987      6.386     16.909      0.000
+    DVRT_COL         107.987      6.386     16.909      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.315E-03
+     Condition Number for the Information Matrix              0.295E-03
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:43:46
-        Ending Time:  17:43:46
+     Beginning Time:  11:09:34
+        Ending Time:  11:09:34
        Elapsed Time:  00:00:00
 
 

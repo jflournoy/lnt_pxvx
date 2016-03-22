@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   7:33 PM
+03/21/2016  12:40 PM
 
 INPUT INSTRUCTIONS
 
@@ -237,7 +237,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
 
   USEVARIABLES =
@@ -315,10 +319,26 @@ INPUT INSTRUCTIONS
 
 
 *** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  5
-   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  16
+   5 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -327,7 +347,7 @@ PxVx Univariate - Nat Lin BFA_NV with Lin USI;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         874
+Number of observations                                         863
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -372,7 +392,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns            16
+     Number of missing data patterns            18
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -380,26 +400,26 @@ SUMMARY OF MISSING DATA PATTERNS
 
      MISSING DATA PATTERNS (x = not missing)
 
-           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16
- BBFA_NV   x     x  x     x     x     x  x  x     x
- CBFA_NV   x           x  x     x  x     x  x        x
- DBFA_NV   x     x     x  x  x  x  x     x  x     x  x  x
- BUSI      x     x  x     x     x        x
- CUSI      x           x        x  x        x
- DUSI      x     x     x  x  x              x     x
- ABFA_NV   x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
- AUSI      x  x  x  x  x  x  x  x  x  x  x  x     x  x  x
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18
+ BBFA_NV   x     x  x     x     x     x  x  x  x     x
+ CBFA_NV   x           x  x     x  x     x  x  x        x     x
+ DBFA_NV   x     x     x  x  x  x  x     x  x  x     x  x  x  x
+ BUSI      x     x  x     x     x        x     x
+ CUSI      x           x        x  x        x  x              x
+ DUSI      x     x     x  x  x              x  x     x        x
+ ABFA_NV   x  x  x  x  x  x  x  x  x  x  x  x     x  x  x  x
+ AUSI      x  x  x  x  x  x  x  x  x  x  x  x        x  x  x
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         498           7          24          13           1
-          2         169           8          46          14           1
-          3          26           9          23          15           1
-          4          52          10           5          16           1
-          5          21          11           1
-          6           2          12           3
+          1         490           7          24          13           3
+          2         169           8          45          14           1
+          3          26           9          22          15           1
+          4          47          10           5          16           1
+          5          21          11           1          17           1
+          6           2          12           3          18           1
 
 
 COVARIANCE COVERAGE OF DATA
@@ -413,22 +433,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFA_NV       CBFA_NV       DBFA_NV       BUSI          CUSI
               ________      ________      ________      ________      ________
- BBFA_NV        0.725
- CBFA_NV        0.629         0.681
- DBFA_NV        0.660         0.681         0.740
- BUSI           0.715         0.626         0.656         0.715
- CUSI           0.626         0.676         0.676         0.622         0.676
- DUSI           0.606         0.600         0.658         0.602         0.597
- ABFA_NV        0.725         0.681         0.740         0.715         0.676
- AUSI           0.725         0.681         0.740         0.715         0.676
+ BBFA_NV        0.722
+ CBFA_NV        0.630         0.683
+ DBFA_NV        0.662         0.683         0.743
+ BUSI           0.711         0.627         0.657         0.711
+ CUSI           0.627         0.678         0.678         0.623         0.678
+ DUSI           0.608         0.603         0.662         0.604         0.600
+ ABFA_NV        0.718         0.678         0.738         0.708         0.673
+ AUSI           0.718         0.678         0.738         0.708         0.673
 
 
            Covariance Coverage
               DUSI          ABFA_NV       AUSI
               ________      ________      ________
- DUSI           0.658
- ABFA_NV        0.658         1.000
- AUSI           0.658         0.999         0.999
+ DUSI           0.662
+ ABFA_NV        0.657         0.995
+ AUSI           0.657         0.994         0.994
 
 
 SAMPLE STATISTICS
@@ -440,47 +460,47 @@ SAMPLE STATISTICS
            Means
               BBFA_NV       CBFA_NV       DBFA_NV       BUSI          CUSI
               ________      ________      ________      ________      ________
- 1             43.555        42.964        42.395        28.540        28.596
+ 1             43.692        42.969        42.442        28.381        28.561
 
 
            Means
               DUSI          ABFA_NV       AUSI
               ________      ________      ________
- 1             28.565        43.761        29.082
+ 1             28.473        43.885        28.987
 
 
            Covariances
               BBFA_NV       CBFA_NV       DBFA_NV       BUSI          CUSI
               ________      ________      ________      ________      ________
- BBFA_NV      437.289
- CBFA_NV      363.656       447.015
- DBFA_NV      371.407       398.599       514.772
- BUSI          56.465        63.144        58.515       275.961
- CUSI          54.708        61.314        64.684       212.691       280.466
- DUSI          41.237        45.157        55.972       199.453       219.843
- ABFA_NV      376.182       361.217       367.610        26.184        37.967
- AUSI          39.609        42.830        43.806       206.380       202.965
+ BBFA_NV      437.593
+ CBFA_NV      369.007       450.734
+ DBFA_NV      373.327       400.924       513.974
+ BUSI          60.175        64.504        60.314       274.990
+ CUSI          57.316        62.087        64.484       215.117       282.014
+ DUSI          42.475        44.124        53.480       200.442       218.286
+ ABFA_NV      375.201       364.287       368.613        29.415        38.274
+ AUSI          39.877        41.460        41.696       209.101       202.313
 
 
            Covariances
               DUSI          ABFA_NV       AUSI
               ________      ________      ________
- DUSI         261.854
- ABFA_NV       28.100       487.542
- AUSI         191.731        25.471       267.130
+ DUSI         261.110
+ ABFA_NV       28.229       485.843
+ AUSI         190.404        23.225       264.590
 
 
            Correlations
               BBFA_NV       CBFA_NV       DBFA_NV       BUSI          CUSI
               ________      ________      ________      ________      ________
  BBFA_NV        1.000
- CBFA_NV        0.823         1.000
- DBFA_NV        0.783         0.831         1.000
- BUSI           0.163         0.180         0.155         1.000
- CUSI           0.156         0.173         0.170         0.765         1.000
- DUSI           0.122         0.132         0.152         0.742         0.811
- ABFA_NV        0.815         0.774         0.734         0.071         0.103
- AUSI           0.116         0.124         0.118         0.760         0.742
+ CBFA_NV        0.831         1.000
+ DBFA_NV        0.787         0.833         1.000
+ BUSI           0.173         0.183         0.160         1.000
+ CUSI           0.163         0.174         0.169         0.772         1.000
+ DUSI           0.126         0.129         0.146         0.748         0.804
+ ABFA_NV        0.814         0.778         0.738         0.080         0.103
+ AUSI           0.117         0.120         0.113         0.775         0.741
 
 
            Correlations
@@ -488,10 +508,10 @@ SAMPLE STATISTICS
               ________      ________      ________
  DUSI           1.000
  ABFA_NV        0.079         1.000
- AUSI           0.725         0.071         1.000
+ AUSI           0.724         0.065         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -21563.374
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -21239.541
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -504,15 +524,15 @@ Number of Free Parameters                       34
 
 Loglikelihood
 
-          H0 Value                      -21570.551
-          H0 Scaling Correction Factor       1.203
+          H0 Value                      -21244.724
+          H0 Scaling Correction Factor       1.222
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   43209.103
-          Bayesian (BIC)                 43371.387
-          Sample-Size Adjusted BIC       43263.411
+          Akaike (AIC)                   42557.448
+          Bayesian (BIC)                 42719.303
+          Sample-Size Adjusted BIC       42611.327
             (n* = (n + 2) / 24)
 
 
@@ -523,72 +543,72 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFA_NV    ON
-    CBFA_NV            0.267      0.053      5.042      0.000
-    CUSI               0.034      0.050      0.690      0.490
+    CBFA_NV            0.258      0.065      3.947      0.000
+    CUSI               0.033      0.059      0.563      0.573
 
  CBFA_NV    ON
-    BBFA_NV            0.267      0.053      5.042      0.000
-    BUSI               0.034      0.050      0.690      0.490
+    BBFA_NV            0.258      0.065      3.947      0.000
+    BUSI               0.033      0.059      0.563      0.573
 
  BBFA_NV    ON
-    ABFA_NV            0.267      0.053      5.042      0.000
-    AUSI               0.034      0.050      0.690      0.490
+    ABFA_NV            0.258      0.065      3.947      0.000
+    AUSI               0.033      0.059      0.563      0.573
 
  DUSI       ON
-    CUSI               0.152      0.049      3.099      0.002
-    CBFA_NV           -0.045      0.031     -1.435      0.151
+    CUSI               0.176      0.058      3.005      0.003
+    CBFA_NV           -0.042      0.039     -1.074      0.283
 
  CUSI       ON
-    BUSI               0.152      0.049      3.099      0.002
-    BBFA_NV           -0.045      0.031     -1.435      0.151
+    BUSI               0.176      0.058      3.005      0.003
+    BBFA_NV           -0.042      0.039     -1.074      0.283
 
  BUSI       ON
-    AUSI               0.152      0.049      3.099      0.002
-    ABFA_NV           -0.045      0.031     -1.435      0.151
+    AUSI               0.176      0.058      3.005      0.003
+    ABFA_NV           -0.042      0.039     -1.074      0.283
 
  S_BFA_NV WITH
-    I_BFA_NV           0.101      0.514      0.197      0.844
+    I_BFA_NV           0.030      0.523      0.057      0.955
 
  I_USI    WITH
-    I_BFA_NV          35.329     16.017      2.206      0.027
-    S_BFA_NV           0.061      2.197      0.028      0.978
+    I_BFA_NV          35.156     20.317      1.730      0.084
+    S_BFA_NV           0.153      2.359      0.065      0.948
 
  S_USI    WITH
-    I_BFA_NV          -0.368      2.185     -0.169      0.866
-    S_BFA_NV           0.033      0.029      1.148      0.251
-    I_USI             -0.094      0.361     -0.260      0.795
+    I_BFA_NV          -0.436      2.332     -0.187      0.852
+    S_BFA_NV           0.034      0.030      1.141      0.254
+    I_USI             -0.156      0.342     -0.457      0.648
 
  ABFA_NV  WITH
-    I_BFA_NV         254.743     25.793      9.876      0.000
-    S_BFA_NV           1.356      0.881      1.540      0.124
-    I_USI             43.391     16.817      2.580      0.010
-    S_USI              0.492      0.762      0.646      0.519
+    I_BFA_NV         259.363     30.627      8.468      0.000
+    S_BFA_NV           1.286      0.888      1.448      0.148
+    I_USI             43.068     19.737      2.182      0.029
+    S_USI              0.342      0.753      0.454      0.650
 
  AUSI     WITH
-    I_BFA_NV          21.849     14.152      1.544      0.123
-    S_BFA_NV          -0.780      0.602     -1.295      0.195
-    I_USI            165.071     13.851     11.917      0.000
-    S_USI              0.653      0.525      1.245      0.213
+    I_BFA_NV          21.640     16.176      1.338      0.181
+    S_BFA_NV          -0.716      0.621     -1.154      0.248
+    I_USI            160.371     15.967     10.044      0.000
+    S_USI              0.487      0.504      0.966      0.334
 
  DUSI     WITH
-    DBFA_NV            4.043      3.345      1.209      0.227
+    DBFA_NV            3.710      3.594      1.032      0.302
 
  CUSI     WITH
-    CBFA_NV            4.043      3.345      1.209      0.227
+    CBFA_NV            3.710      3.594      1.032      0.302
 
  BUSI     WITH
-    BBFA_NV            4.043      3.345      1.209      0.227
+    BBFA_NV            3.710      3.594      1.032      0.302
 
  AUSI     WITH
-    ABFA_NV           25.471     12.304      2.070      0.038
+    ABFA_NV           23.225     12.376      1.877      0.061
 
  Means
-    ABFA_NV           43.761      0.746     58.654      0.000
-    AUSI              29.082      0.554     52.524      0.000
-    I_BFA_NV          30.561      2.594     11.780      0.000
-    S_BFA_NV          -0.110      0.038     -2.899      0.004
-    I_USI             26.266      1.909     13.759      0.000
-    S_USI             -0.033      0.031     -1.058      0.290
+    ABFA_NV           43.884      0.752     58.390      0.000
+    AUSI              28.988      0.553     52.443      0.000
+    I_BFA_NV          31.036      3.519      8.819      0.000
+    S_BFA_NV          -0.107      0.038     -2.793      0.005
+    I_USI             25.360      2.621      9.675      0.000
+    S_USI             -0.031      0.031     -1.017      0.309
 
  Intercepts
     BBFA_NV            0.000      0.000    999.000    999.000
@@ -599,30 +619,30 @@ MODEL RESULTS
     DUSI               0.000      0.000    999.000    999.000
 
  Variances
-    ABFA_NV          487.543     19.129     25.486      0.000
-    AUSI             267.130     10.766     24.811      0.000
-    I_BFA_NV         180.112     33.247      5.417      0.000
-    S_BFA_NV           0.087      0.089      0.974      0.330
-    I_USI            143.026     20.480      6.984      0.000
-    S_USI              0.053      0.037      1.444      0.149
+    ABFA_NV          485.858     19.242     25.250      0.000
+    AUSI             264.677     10.607     24.954      0.000
+    I_BFA_NV         185.988     41.267      4.507      0.000
+    S_BFA_NV           0.099      0.088      1.131      0.258
+    I_USI            134.808     24.399      5.525      0.000
+    S_USI              0.051      0.036      1.429      0.153
 
  Residual Variances
-    BBFA_NV          101.252      6.879     14.719      0.000
-    CBFA_NV          101.252      6.879     14.719      0.000
-    DBFA_NV          101.252      6.879     14.719      0.000
-    BUSI              67.781      4.425     15.318      0.000
-    CUSI              67.781      4.425     15.318      0.000
-    DUSI              67.781      4.425     15.318      0.000
+    BBFA_NV           98.690      7.471     13.209      0.000
+    CBFA_NV           98.690      7.471     13.209      0.000
+    DBFA_NV           98.690      7.471     13.209      0.000
+    BUSI              67.882      4.486     15.131      0.000
+    CUSI              67.882      4.486     15.131      0.000
+    DUSI              67.882      4.486     15.131      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.196E-05
+     Condition Number for the Information Matrix              0.200E-05
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  19:33:51
-        Ending Time:  19:33:53
+     Beginning Time:  12:40:39
+        Ending Time:  12:40:41
        Elapsed Time:  00:00:02
 
 

@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   6:47 PM
+03/21/2016  11:57 AM
 
 INPUT INSTRUCTIONS
 
@@ -238,7 +238,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aS_SCALE
@@ -317,6 +321,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_S_SCALE
 *** WARNING
   Variable name contains more than 8 characters.
@@ -326,7 +346,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   3 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   8 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -335,7 +359,7 @@ PxVx Univariate - Col Lin S_SCALE with Lin aspfin;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -402,7 +426,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           6          11          11           1
+          1         138           6          11          11           1
           2          10           7           1          12           4
           3           1           8          16          13           1
           4          27           9          10          14           1
@@ -420,22 +444,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BS_SCALE      CS_SCALE      DS_SCALE      BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- BS_SCALE       0.713
- CS_SCALE       0.548         0.602
- DS_SCALE       0.577         0.552         0.656
- BASPFIN        0.703         0.545         0.570         0.703
- CASPFIN        0.548         0.602         0.552         0.545         0.602
- DASPFIN        0.563         0.541         0.638         0.559         0.541
- AS_SCALE       0.713         0.602         0.656         0.703         0.602
- AASPFIN        0.713         0.602         0.656         0.703         0.602
+ BS_SCALE       0.711
+ CS_SCALE       0.545         0.599
+ DS_SCALE       0.574         0.549         0.653
+ BASPFIN        0.700         0.542         0.567         0.700
+ CASPFIN        0.545         0.599         0.549         0.542         0.599
+ DASPFIN        0.560         0.538         0.635         0.556         0.538
+ AS_SCALE       0.711         0.599         0.653         0.700         0.599
+ AASPFIN        0.711         0.599         0.653         0.700         0.599
 
 
            Covariance Coverage
               DASPFIN       AS_SCALE      AASPFIN
               ________      ________      ________
- DASPFIN        0.638
- AS_SCALE       0.638         1.000
- AASPFIN        0.638         0.996         0.996
+ DASPFIN        0.635
+ AS_SCALE       0.635         1.000
+ AASPFIN        0.635         0.996         0.996
 
 
 SAMPLE STATISTICS
@@ -447,63 +471,59 @@ SAMPLE STATISTICS
            Means
               BS_SCALE      CS_SCALE      DS_SCALE      BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- 1             71.162        71.084        72.402        47.548        46.560
+ 1             71.213        71.159        72.567        47.555        46.414
 
 
            Means
               DASPFIN       AS_SCALE      AASPFIN
               ________      ________      ________
- 1             47.936        70.249        47.420
+ 1             48.055        70.343        47.363
 
 
            Covariances
               BS_SCALE      CS_SCALE      DS_SCALE      BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- BS_SCALE     133.610
- CS_SCALE      90.729       144.102
- DS_SCALE      87.171       120.671       166.153
- BASPFIN      -12.703       -23.271        -0.827       534.401
- CASPFIN      -35.994       -61.596       -28.656       340.625       494.127
- DASPFIN      -53.692       -64.653       -32.036       394.066       393.347
- AS_SCALE      98.876        88.760       107.166       -10.869       -19.648
- AASPFIN      -12.216       -26.503       -15.011       419.362       334.787
+ BS_SCALE     133.767
+ CS_SCALE      89.130       140.520
+ DS_SCALE      84.461       114.915       158.238
+ BASPFIN      -11.896       -20.498         3.377       537.783
+ CASPFIN      -32.996       -54.921       -18.830       339.023       489.047
+ DASPFIN      -52.053       -58.686       -24.608       392.141       387.687
+ AS_SCALE      97.647        85.193       101.906        -8.692       -13.516
+ AASPFIN       -9.629       -20.004        -6.217       418.431       327.509
 
 
            Covariances
               DASPFIN       AS_SCALE      AASPFIN
               ________      ________      ________
- DASPFIN      556.785
- AS_SCALE     -38.776       147.616
- AASPFIN      359.300       -12.786       540.572
+ DASPFIN      546.430
+ AS_SCALE     -34.453       145.197
+ AASPFIN      350.997        -7.645       535.189
 
 
            Correlations
               BS_SCALE      CS_SCALE      DS_SCALE      BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
  BS_SCALE       1.000
- CS_SCALE       0.654         1.000
- DS_SCALE       0.585         0.780         1.000
- BASPFIN       -0.048        -0.084        -0.003         1.000
- CASPFIN       -0.140        -0.231        -0.100         0.663         1.000
- DASPFIN       -0.197        -0.228        -0.105         0.722         0.750
- AS_SCALE       0.704         0.609         0.684        -0.039        -0.073
- AASPFIN       -0.045        -0.095        -0.050         0.780         0.648
+ CS_SCALE       0.650         1.000
+ DS_SCALE       0.581         0.771         1.000
+ BASPFIN       -0.044        -0.075         0.012         1.000
+ CASPFIN       -0.129        -0.210        -0.068         0.661         1.000
+ DASPFIN       -0.193        -0.212        -0.084         0.723         0.750
+ AS_SCALE       0.701         0.596         0.672        -0.031        -0.051
+ AASPFIN       -0.036        -0.073        -0.021         0.780         0.640
 
 
            Correlations
               DASPFIN       AS_SCALE      AASPFIN
               ________      ________      ________
  DASPFIN        1.000
- AS_SCALE      -0.135         1.000
- AASPFIN        0.655        -0.045         1.000
+ AS_SCALE      -0.122         1.000
+ AASPFIN        0.649        -0.027         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6517.800
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6451.167
 
-     WARNING:  THE MLR STANDARD ERRORS COULD NOT BE COMPUTED.  THE MLF STANDARD
-     ERRORS WERE COMPUTED INSTEAD.  THE MLR CONDITION NUMBER IS      -0.808D-05.
-     PROBLEM INVOLVING PARAMETER 25.  THIS MAY BE DUE TO NEAR SINGULARITY
-     OF THE RANDOM EFFECT VARIANCE/COVARIANCE OR INCOMPLETE CONVERGENCE.
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
 
@@ -515,13 +535,15 @@ Number of Free Parameters                       34
 
 Loglikelihood
 
-          H0 Value                       -6530.799
+          H0 Value                       -6464.754
+          H0 Scaling Correction Factor       1.009
+            for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   13129.597
-          Bayesian (BIC)                 13253.058
-          Sample-Size Adjusted BIC       13145.248
+          Akaike (AIC)                   12997.507
+          Bayesian (BIC)                 13120.724
+          Sample-Size Adjusted BIC       13012.915
             (n* = (n + 2) / 24)
 
 
@@ -532,72 +554,72 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DS_SCALE   ON
-    CS_SCALE           0.097      0.132      0.737      0.461
-    CASPFIN           -0.057      0.067     -0.852      0.394
+    CS_SCALE           0.097      0.203      0.477      0.633
+    CASPFIN           -0.055      0.108     -0.508      0.611
 
  CS_SCALE   ON
-    BS_SCALE           0.097      0.132      0.737      0.461
-    BASPFIN           -0.057      0.067     -0.852      0.394
+    BS_SCALE           0.097      0.203      0.477      0.633
+    BASPFIN           -0.055      0.108     -0.508      0.611
 
  BS_SCALE   ON
-    AS_SCALE           0.097      0.132      0.737      0.461
-    AASPFIN           -0.057      0.067     -0.852      0.394
+    AS_SCALE           0.097      0.203      0.477      0.633
+    AASPFIN           -0.055      0.108     -0.508      0.611
 
  DASPFIN    ON
-    CASPFIN            0.013      0.123      0.109      0.913
-    CS_SCALE          -0.072      0.176     -0.410      0.682
+    CASPFIN            0.010      0.120      0.081      0.935
+    CS_SCALE          -0.068      0.118     -0.579      0.563
 
  CASPFIN    ON
-    BASPFIN            0.013      0.123      0.109      0.913
-    BS_SCALE          -0.072      0.176     -0.410      0.682
+    BASPFIN            0.010      0.120      0.081      0.935
+    BS_SCALE          -0.068      0.118     -0.579      0.563
 
  BASPFIN    ON
-    AASPFIN            0.013      0.123      0.109      0.913
-    AS_SCALE          -0.072      0.176     -0.410      0.682
+    AASPFIN            0.010      0.120      0.081      0.935
+    AS_SCALE          -0.068      0.118     -0.579      0.563
 
  S_S_SCAL WITH
-    I_S_SCALE        -11.445      9.388     -1.219      0.223
+    I_S_SCALE        -11.401     13.109     -0.870      0.384
 
  I_ASPFIN WITH
-    I_S_SCALE         31.401     60.325      0.521      0.603
-    S_S_SCALE          3.666     14.920      0.246      0.806
+    I_S_SCALE         28.804     65.368      0.441      0.659
+    S_S_SCALE          5.556     10.116      0.549      0.583
 
  S_ASPFIN WITH
-    I_S_SCALE        -22.321     15.867     -1.407      0.160
-    S_S_SCALE          2.695      6.580      0.410      0.682
-    I_ASPFIN         -22.789     29.348     -0.777      0.437
+    I_S_SCALE        -22.163     15.560     -1.424      0.154
+    S_S_SCALE          2.930      3.803      0.770      0.441
+    I_ASPFIN         -25.522     13.818     -1.847      0.065
 
  AS_SCALE WITH
-    I_S_SCALE         76.948     25.378      3.032      0.002
-    S_S_SCALE          5.068      5.610      0.903      0.366
-    I_ASPFIN          18.681     35.805      0.522      0.602
-    S_ASPFIN         -15.477      8.784     -1.762      0.078
+    I_S_SCALE         78.490     34.464      2.277      0.023
+    S_S_SCALE          3.113      7.448      0.418      0.676
+    I_ASPFIN          19.822     21.359      0.928      0.353
+    S_ASPFIN         -14.335      6.735     -2.129      0.033
 
  AASPFIN  WITH
-    I_S_SCALE         26.105     46.645      0.560      0.576
-    S_S_SCALE         -8.047     10.622     -0.758      0.449
-    I_ASPFIN         429.508     95.030      4.520      0.000
-    S_ASPFIN         -33.072     19.797     -1.671      0.095
+    I_S_SCALE         23.635     65.256      0.362      0.717
+    S_S_SCALE         -4.732     13.001     -0.364      0.716
+    I_ASPFIN         433.243     69.715      6.214      0.000
+    S_ASPFIN         -36.770     12.866     -2.858      0.004
 
  DASPFIN  WITH
-    DS_SCALE          -6.101      8.663     -0.704      0.481
+    DS_SCALE          -5.754      7.918     -0.727      0.467
 
  CASPFIN  WITH
-    CS_SCALE          -6.101      8.663     -0.704      0.481
+    CS_SCALE          -5.754      7.918     -0.727      0.467
 
  BASPFIN  WITH
-    BS_SCALE          -6.101      8.663     -0.704      0.481
+    BS_SCALE          -5.754      7.918     -0.727      0.467
 
  AASPFIN  WITH
-    AS_SCALE         -12.786     18.584     -0.688      0.491
+    AS_SCALE          -7.645     16.909     -0.452      0.651
 
  Means
-    AS_SCALE          70.249      0.780     90.022      0.000
-    AASPFIN           47.415      1.521     31.166      0.000
-    I_S_SCALE         66.417      9.615      6.907      0.000
-    S_S_SCALE          0.524      0.441      1.190      0.234
-    I_ASPFIN          51.307     14.241      3.603      0.000
-    S_ASPFIN           0.153      0.780      0.197      0.844
+    AS_SCALE          70.343      0.722     97.401      0.000
+    AASPFIN           47.360      1.402     33.784      0.000
+    I_S_SCALE         66.321     18.994      3.492      0.000
+    S_S_SCALE          0.583      0.391      1.493      0.136
+    I_ASPFIN          51.155     12.456      4.107      0.000
+    S_ASPFIN           0.183      0.614      0.298      0.766
 
  Intercepts
     BS_SCALE           0.000      0.000    999.000    999.000
@@ -608,30 +630,30 @@ MODEL RESULTS
     DASPFIN            0.000      0.000    999.000    999.000
 
  Variances
-    AS_SCALE         147.616     16.045      9.200      0.000
-    AASPFIN          540.572     62.082      8.707      0.000
-    I_S_SCALE         84.240     42.287      1.992      0.046
-    S_S_SCALE          9.768      4.382      2.229      0.026
-    I_ASPFIN         398.729    165.632      2.407      0.016
-    S_ASPFIN          12.071     12.941      0.933      0.351
+    AS_SCALE         145.197     10.579     13.725      0.000
+    AASPFIN          535.189     37.656     14.212      0.000
+    I_S_SCALE         85.419     64.295      1.329      0.184
+    S_S_SCALE          9.005      6.704      1.343      0.179
+    I_ASPFIN         408.942    108.255      3.778      0.000
+    S_ASPFIN          12.282      4.659      2.636      0.008
 
  Residual Variances
-    BS_SCALE          40.953      7.093      5.774      0.000
-    CS_SCALE          40.953      7.093      5.774      0.000
-    DS_SCALE          40.953      7.093      5.774      0.000
-    BASPFIN          140.203     21.359      6.564      0.000
-    CASPFIN          140.203     21.359      6.564      0.000
-    DASPFIN          140.203     21.359      6.564      0.000
+    BS_SCALE          41.240     10.145      4.065      0.000
+    CS_SCALE          41.240     10.145      4.065      0.000
+    DS_SCALE          41.240     10.145      4.065      0.000
+    BASPFIN          139.149     17.296      8.045      0.000
+    CASPFIN          139.149     17.296      8.045      0.000
+    DASPFIN          139.149     17.296      8.045      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.215E-06
+     Condition Number for the Information Matrix              0.275E-06
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  18:47:20
-        Ending Time:  18:47:26
+     Beginning Time:  11:57:48
+        Ending Time:  11:57:54
        Elapsed Time:  00:00:06
 
 

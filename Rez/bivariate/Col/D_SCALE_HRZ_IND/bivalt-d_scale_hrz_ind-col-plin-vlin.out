@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   6:46 PM
+03/21/2016  11:56 AM
 
 INPUT INSTRUCTIONS
 
@@ -238,7 +238,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aD_SCALE
@@ -317,6 +321,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_D_SCALE
 *** WARNING
   Variable name contains more than 8 characters.
@@ -334,7 +354,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   5 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+  10 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -343,7 +367,7 @@ PxVx Univariate - Col Lin D_SCALE with Lin HRZ_IND;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -410,7 +434,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           6          11          11           1
+          1         138           6          11          11           1
           2          10           7           1          12           4
           3           2           8          16          13           2
           4          26           9           9          14           2
@@ -428,22 +452,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BD_SCALE      CD_SCALE      DD_SCALE      BHRZ_IND      CHRZ_IND
               ________      ________      ________      ________      ________
- BD_SCALE       0.713
- CD_SCALE       0.548         0.602
- DD_SCALE       0.577         0.552         0.656
- BHRZ_IND       0.699         0.545         0.570         0.699
- CHRZ_IND       0.548         0.602         0.552         0.545         0.602
- DHRZ_IND       0.563         0.538         0.634         0.559         0.538
- AD_SCALE       0.713         0.602         0.656         0.699         0.602
- AHRZ_IND       0.713         0.602         0.656         0.699         0.602
+ BD_SCALE       0.711
+ CD_SCALE       0.545         0.599
+ DD_SCALE       0.574         0.549         0.653
+ BHRZ_IND       0.697         0.542         0.567         0.697
+ CHRZ_IND       0.545         0.599         0.549         0.542         0.599
+ DHRZ_IND       0.560         0.534         0.632         0.556         0.534
+ AD_SCALE       0.711         0.599         0.653         0.697         0.599
+ AHRZ_IND       0.711         0.599         0.653         0.697         0.599
 
 
            Covariance Coverage
               DHRZ_IND      AD_SCALE      AHRZ_IND
               ________      ________      ________
- DHRZ_IND       0.634
- AD_SCALE       0.634         1.000
- AHRZ_IND       0.634         0.993         0.993
+ DHRZ_IND       0.632
+ AD_SCALE       0.632         1.000
+ AHRZ_IND       0.632         0.993         0.993
 
 
 SAMPLE STATISTICS
@@ -455,190 +479,605 @@ SAMPLE STATISTICS
            Means
               BD_SCALE      CD_SCALE      DD_SCALE      BHRZ_IND      CHRZ_IND
               ________      ________      ________      ________      ________
- 1             62.431        63.543        64.168        73.291        73.726
+ 1             62.372        63.732        64.357        73.169        73.693
 
 
            Means
               DHRZ_IND      AD_SCALE      AHRZ_IND
               ________      ________      ________
- 1             75.331        64.331        73.938
+ 1             75.396        64.294        74.074
 
 
            Covariances
               BD_SCALE      CD_SCALE      DD_SCALE      BHRZ_IND      CHRZ_IND
               ________      ________      ________      ________      ________
- BD_SCALE     212.923
- CD_SCALE     145.782       177.484
- DD_SCALE     159.879       154.041       216.118
- BHRZ_IND      29.256        19.323        13.469       264.606
- CHRZ_IND      33.502        22.370        15.898       171.609       244.138
- DHRZ_IND     -12.764        -3.749        16.982       144.898       140.740
- AD_SCALE     156.128       126.602       137.684        48.985        34.713
- AHRZ_IND       8.720         4.442        11.591       160.490       129.180
+ BD_SCALE     213.289
+ CD_SCALE     145.711       170.807
+ DD_SCALE     159.787       146.959       209.808
+ BHRZ_IND      27.403        19.001        12.794       264.900
+ CHRZ_IND      32.981        21.974        15.391       172.514       246.637
+ DHRZ_IND     -14.609        -8.821        11.990       144.987       141.578
+ AD_SCALE     155.868       126.101       137.384        47.486        34.370
+ AHRZ_IND       8.460        -1.609         5.761       162.232       130.216
 
 
            Covariances
               DHRZ_IND      AD_SCALE      AHRZ_IND
               ________      ________      ________
- DHRZ_IND     258.157
- AD_SCALE     -10.901       217.273
- AHRZ_IND     139.518        34.020       241.705
+ DHRZ_IND     257.601
+ AD_SCALE     -12.295       217.760
+ AHRZ_IND     137.226        33.880       239.562
 
 
            Correlations
               BD_SCALE      CD_SCALE      DD_SCALE      BHRZ_IND      CHRZ_IND
               ________      ________      ________      ________      ________
  BD_SCALE       1.000
- CD_SCALE       0.750         1.000
- DD_SCALE       0.745         0.787         1.000
- BHRZ_IND       0.123         0.089         0.056         1.000
- CHRZ_IND       0.147         0.107         0.069         0.675         1.000
- DHRZ_IND      -0.054        -0.018         0.072         0.554         0.561
- AD_SCALE       0.726         0.645         0.635         0.204         0.151
- AHRZ_IND       0.038         0.021         0.051         0.635         0.532
+ CD_SCALE       0.763         1.000
+ DD_SCALE       0.755         0.776         1.000
+ BHRZ_IND       0.115         0.089         0.054         1.000
+ CHRZ_IND       0.144         0.107         0.068         0.675         1.000
+ DHRZ_IND      -0.062        -0.042         0.052         0.555         0.562
+ AD_SCALE       0.723         0.654         0.643         0.198         0.148
+ AHRZ_IND       0.037        -0.008         0.026         0.644         0.536
 
 
            Correlations
               DHRZ_IND      AD_SCALE      AHRZ_IND
               ________      ________      ________
  DHRZ_IND       1.000
- AD_SCALE      -0.046         1.000
- AHRZ_IND       0.559         0.148         1.000
+ AD_SCALE      -0.052         1.000
+ AHRZ_IND       0.552         0.148         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6390.813
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6320.474
+
+     THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN ILL-CONDITIONED
+     FISHER INFORMATION MATRIX.  CHANGE YOUR MODEL AND/OR STARTING VALUES.
+
+     THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO A NON-POSITIVE
+     DEFINITE FISHER INFORMATION MATRIX.  THIS MAY BE DUE TO THE STARTING VALUES
+     BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE CONDITION
+     NUMBER IS      -0.317D-10.
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES COULD NOT BE
+     COMPUTED.  THIS IS OFTEN DUE TO THE STARTING VALUES BUT MAY ALSO BE
+     AN INDICATION OF MODEL NONIDENTIFICATION.  CHANGE YOUR MODEL AND/OR
+     STARTING VALUES.  PROBLEM INVOLVING PARAMETER 7.
 
 
-THE MODEL ESTIMATION TERMINATED NORMALLY
 
-
-
-MODEL FIT INFORMATION
-
-Number of Free Parameters                       34
-
-Loglikelihood
-
-          H0 Value                       -6402.132
-          H0 Scaling Correction Factor       1.087
-            for MLR
-
-Information Criteria
-
-          Akaike (AIC)                   12872.264
-          Bayesian (BIC)                 12995.726
-          Sample-Size Adjusted BIC       12887.915
-            (n* = (n + 2) / 24)
 
 
 
 MODEL RESULTS
 
-                                                    Two-Tailed
-                    Estimate       S.E.  Est./S.E.    P-Value
+                    Estimate
 
  DD_SCALE   ON
-    CD_SCALE           0.044      0.290      0.153      0.878
-    CHRZ_IND          -0.003      0.051     -0.065      0.948
+    CD_SCALE           0.021
+    CHRZ_IND           0.057
 
  CD_SCALE   ON
-    BD_SCALE           0.044      0.290      0.153      0.878
-    BHRZ_IND          -0.003      0.051     -0.065      0.948
+    BD_SCALE           0.021
+    BHRZ_IND           0.057
 
  BD_SCALE   ON
-    AD_SCALE           0.044      0.290      0.153      0.878
-    AHRZ_IND          -0.003      0.051     -0.065      0.948
+    AD_SCALE           0.021
+    AHRZ_IND           0.057
 
  DHRZ_IND   ON
-    CHRZ_IND           0.059      0.061      0.969      0.333
-    CD_SCALE           0.095      0.243      0.390      0.697
+    CHRZ_IND           0.164
+    CD_SCALE           0.190
 
  CHRZ_IND   ON
-    BHRZ_IND           0.059      0.061      0.969      0.333
-    BD_SCALE           0.095      0.243      0.390      0.697
+    BHRZ_IND           0.164
+    BD_SCALE           0.190
 
  BHRZ_IND   ON
-    AHRZ_IND           0.059      0.061      0.969      0.333
-    AD_SCALE           0.095      0.243      0.390      0.697
+    AHRZ_IND           0.164
+    AD_SCALE           0.190
 
  S_D_SCAL WITH
-    I_D_SCALE         -7.294     15.426     -0.473      0.636
+    I_D_SCALE        -10.179
 
  I_HRZ_IN WITH
-    I_D_SCALE         35.576     76.736      0.464      0.643
-    S_D_SCALE         -7.490     17.102     -0.438      0.661
+    I_D_SCALE          5.799
+    S_D_SCALE         -3.770
 
  S_HRZ_IN WITH
-    I_D_SCALE        -19.970     18.451     -1.082      0.279
-    S_D_SCALE          3.744      6.723      0.557      0.578
-    I_HRZ_IND        -15.662     18.422     -0.850      0.395
+    I_D_SCALE        -19.640
+    S_D_SCALE          2.348
+    I_HRZ_IND         -4.730
 
  AD_SCALE WITH
-    I_D_SCALE        147.247     75.374      1.954      0.051
-    S_D_SCALE         -6.351     12.786     -0.497      0.619
-    I_HRZ_IND         55.814     59.258      0.942      0.346
-    S_HRZ_IND        -25.680     11.501     -2.233      0.026
+    I_D_SCALE        150.765
+    S_D_SCALE         -7.479
+    I_HRZ_IND         27.725
+    S_HRZ_IND        -22.116
 
  AHRZ_IND WITH
-    I_D_SCALE          5.567     19.541      0.285      0.776
-    S_D_SCALE          1.501      5.630      0.267      0.790
-    I_HRZ_IND        147.393     27.006      5.458      0.000
-    S_HRZ_IND         -8.497      7.314     -1.162      0.245
+    I_D_SCALE         -9.794
+    S_D_SCALE          1.962
+    I_HRZ_IND        119.523
+    S_HRZ_IND         -4.549
 
  DHRZ_IND WITH
-    DD_SCALE           8.164      9.860      0.828      0.408
+    DD_SCALE          12.618
 
  CHRZ_IND WITH
-    CD_SCALE           8.164      9.860      0.828      0.408
+    CD_SCALE          12.618
 
  BHRZ_IND WITH
-    BD_SCALE           8.164      9.860      0.828      0.408
+    BD_SCALE          12.618
 
  AHRZ_IND WITH
-    AD_SCALE          34.020     15.143      2.246      0.025
+    AD_SCALE          33.880
 
  Means
-    AD_SCALE          64.331      0.882     72.911      0.000
-    AHRZ_IND          73.932      0.933     79.241      0.000
-    I_D_SCALE         59.050     16.368      3.608      0.000
-    S_D_SCALE          0.844      0.364      2.320      0.020
-    I_HRZ_IND         62.535     14.417      4.338      0.000
-    S_HRZ_IND          0.609      0.495      1.232      0.218
+    AD_SCALE          64.293
+    AHRZ_IND          74.075
+    I_D_SCALE         56.075
+    S_D_SCALE          0.895
+    I_HRZ_IND         48.614
+    S_HRZ_IND          0.646
 
  Intercepts
-    BD_SCALE           0.000      0.000    999.000    999.000
-    CD_SCALE           0.000      0.000    999.000    999.000
-    DD_SCALE           0.000      0.000    999.000    999.000
-    BHRZ_IND           0.000      0.000    999.000    999.000
-    CHRZ_IND           0.000      0.000    999.000    999.000
-    DHRZ_IND           0.000      0.000    999.000    999.000
+    BD_SCALE           0.000
+    CD_SCALE           0.000
+    DD_SCALE           0.000
+    BHRZ_IND           0.000
+    CHRZ_IND           0.000
+    DHRZ_IND           0.000
 
  Variances
-    AD_SCALE         217.273     17.038     12.753      0.000
-    AHRZ_IND         241.706     21.236     11.382      0.000
-    I_D_SCALE        155.868    122.402      1.273      0.203
-    S_D_SCALE          3.790      7.451      0.509      0.611
-    I_HRZ_IND        166.181     49.738      3.341      0.001
-    S_HRZ_IND          6.881      6.243      1.102      0.270
+    AD_SCALE         217.760
+    AHRZ_IND         239.562
+    I_D_SCALE        168.320
+    S_D_SCALE          4.338
+    I_HRZ_IND        106.398
+    S_HRZ_IND          3.022
 
  Residual Variances
-    BD_SCALE          45.668     15.543      2.938      0.003
-    CD_SCALE          45.668     15.543      2.938      0.003
-    DD_SCALE          45.668     15.543      2.938      0.003
-    BHRZ_IND          97.450     12.703      7.671      0.000
-    CHRZ_IND          97.450     12.703      7.671      0.000
-    DHRZ_IND          97.450     12.703      7.671      0.000
+    BD_SCALE          43.717
+    CD_SCALE          43.717
+    DD_SCALE          43.717
+    BHRZ_IND         108.671
+    CHRZ_IND         108.671
+    DHRZ_IND         108.671
 
 
-QUALITY OF NUMERICAL RESULTS
+MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
 
-     Condition Number for the Information Matrix              0.295E-06
-       (ratio of smallest to largest eigenvalue)
+     i_d_scale s_d_scale | bd_scale cd_scale dd_scale AT bage_c cage_c dage_c;
+     i_hrz_ind s_hrz_ind | bhrz_ind chrz_ind dhrz_ind AT bage_c cage_c dage_c;
+
+     dd_scale ON cd_scale*0.021 (a);
+     dd_scale ON chrz_ind*0.057 (y);
+     cd_scale ON bd_scale*0.021 (a);
+     cd_scale ON bhrz_ind*0.057 (y);
+     bd_scale ON ad_scale*0.021 (a);
+     bd_scale ON ahrz_ind*0.057 (y);
+     dhrz_ind ON chrz_ind*0.164 (b);
+     dhrz_ind ON cd_scale*0.190 (x);
+     chrz_ind ON bhrz_ind*0.164 (b);
+     chrz_ind ON bd_scale*0.190 (x);
+     bhrz_ind ON ahrz_ind*0.164 (b);
+     bhrz_ind ON ad_scale*0.190 (x);
+
+     dhrz_ind WITH dd_scale*12.618 (w);
+     chrz_ind WITH cd_scale*12.618 (w);
+     bhrz_ind WITH bd_scale*12.618 (w);
+     ahrz_ind WITH ad_scale*33.880;
+     s_d_scale WITH i_d_scale*-10.179;
+     i_hrz_ind WITH i_d_scale*5.799;
+     i_hrz_ind WITH s_d_scale*-3.770;
+     s_hrz_ind WITH i_d_scale*-19.640;
+     s_hrz_ind WITH s_d_scale*2.348;
+     s_hrz_ind WITH i_hrz_ind*-4.730;
+     ad_scale WITH i_d_scale*150.765;
+     ad_scale WITH s_d_scale*-7.479;
+     ad_scale WITH i_hrz_ind*27.725;
+     ad_scale WITH s_hrz_ind*-22.116;
+     ahrz_ind WITH i_d_scale*-9.794;
+     ahrz_ind WITH s_d_scale*1.962;
+     ahrz_ind WITH i_hrz_ind*119.523;
+     ahrz_ind WITH s_hrz_ind*-4.549;
+
+     [ bd_scale@0 ];
+     [ cd_scale@0 ];
+     [ dd_scale@0 ];
+     [ bhrz_ind@0 ];
+     [ chrz_ind@0 ];
+     [ dhrz_ind@0 ];
+     [ ad_scale*64.293 ];
+     [ ahrz_ind*74.075 ];
+     [ i_d_scale*56.075 ];
+     [ s_d_scale*0.895 ];
+     [ i_hrz_ind*48.614 ];
+     [ s_hrz_ind*0.646 ];
+
+     bd_scale*43.717 (c);
+     cd_scale*43.717 (c);
+     dd_scale*43.717 (c);
+     bhrz_ind*108.671 (d);
+     chrz_ind*108.671 (d);
+     dhrz_ind*108.671 (d);
+     ad_scale*217.760;
+     ahrz_ind*239.562;
+     i_d_scale*168.320;
+     s_d_scale*4.338;
+     i_hrz_ind*106.398;
+     s_hrz_ind*3.022;
 
 
-     Beginning Time:  18:46:27
-        Ending Time:  18:46:34
-       Elapsed Time:  00:00:07
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION
+
+
+           NU
+              BD_SCALE      CD_SCALE      DD_SCALE      BHRZ_IND      CHRZ_IND
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           NU
+              DHRZ_IND      AD_SCALE      AHRZ_IND
+              ________      ________      ________
+ 1                  0             0             0
+
+
+           LAMBDA
+              I_D_SCAL      S_D_SCAL      I_HRZ_IN      S_HRZ_IN      BD_SCALE
+              ________      ________      ________      ________      ________
+ BD_SCALE           0             0             0             0             0
+ CD_SCALE           0             0             0             0             0
+ DD_SCALE           0             0             0             0             0
+ BHRZ_IND           0             0             0             0             0
+ CHRZ_IND           0             0             0             0             0
+ DHRZ_IND           0             0             0             0             0
+ AD_SCALE           0             0             0             0             0
+ AHRZ_IND           0             0             0             0             0
+
+
+           LAMBDA
+              CD_SCALE      DD_SCALE      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________      ________
+ BD_SCALE           0             0             0             0             0
+ CD_SCALE           0             0             0             0             0
+ DD_SCALE           0             0             0             0             0
+ BHRZ_IND           0             0             0             0             0
+ CHRZ_IND           0             0             0             0             0
+ DHRZ_IND           0             0             0             0             0
+ AD_SCALE           0             0             0             0             0
+ AHRZ_IND           0             0             0             0             0
+
+
+           LAMBDA
+              AD_SCALE      AHRZ_IND
+              ________      ________
+ BD_SCALE           0             0
+ CD_SCALE           0             0
+ DD_SCALE           0             0
+ BHRZ_IND           0             0
+ CHRZ_IND           0             0
+ DHRZ_IND           0             0
+ AD_SCALE           0             0
+ AHRZ_IND           0             0
+
+
+           THETA
+              BD_SCALE      CD_SCALE      DD_SCALE      BHRZ_IND      CHRZ_IND
+              ________      ________      ________      ________      ________
+ BD_SCALE           0
+ CD_SCALE           0             0
+ DD_SCALE           0             0             0
+ BHRZ_IND           0             0             0             0
+ CHRZ_IND           0             0             0             0             0
+ DHRZ_IND           0             0             0             0             0
+ AD_SCALE           0             0             0             0             0
+ AHRZ_IND           0             0             0             0             0
+
+
+           THETA
+              DHRZ_IND      AD_SCALE      AHRZ_IND
+              ________      ________      ________
+ DHRZ_IND           0
+ AD_SCALE           0             0
+ AHRZ_IND           0             0             0
+
+
+           ALPHA
+              I_D_SCAL      S_D_SCAL      I_HRZ_IN      S_HRZ_IN      BD_SCALE
+              ________      ________      ________      ________      ________
+ 1                  1             2             3             4             0
+
+
+           ALPHA
+              CD_SCALE      DD_SCALE      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________      ________
+ 1                  0             0             0             0             0
+
+
+           ALPHA
+              AD_SCALE      AHRZ_IND
+              ________      ________
+ 1                  5             6
+
+
+           BETA
+              I_D_SCAL      S_D_SCAL      I_HRZ_IN      S_HRZ_IN      BD_SCALE
+              ________      ________      ________      ________      ________
+ I_D_SCAL           0             0             0             0             0
+ S_D_SCAL           0             0             0             0             0
+ I_HRZ_IN           0             0             0             0             0
+ S_HRZ_IN           0             0             0             0             0
+ BD_SCALE           0             0             0             0             0
+ CD_SCALE           0             0             0             0             7
+ DD_SCALE           0             0             0             0             0
+ BHRZ_IND           0             0             0             0             0
+ CHRZ_IND           0             0             0             0             9
+ DHRZ_IND           0             0             0             0             0
+ AD_SCALE           0             0             0             0             0
+ AHRZ_IND           0             0             0             0             0
+
+
+           BETA
+              CD_SCALE      DD_SCALE      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________      ________
+ I_D_SCAL           0             0             0             0             0
+ S_D_SCAL           0             0             0             0             0
+ I_HRZ_IN           0             0             0             0             0
+ S_HRZ_IN           0             0             0             0             0
+ BD_SCALE           0             0             0             0             0
+ CD_SCALE           0             0             8             0             0
+ DD_SCALE           7             0             0             8             0
+ BHRZ_IND           0             0             0             0             0
+ CHRZ_IND           0             0            10             0             0
+ DHRZ_IND           9             0             0            10             0
+ AD_SCALE           0             0             0             0             0
+ AHRZ_IND           0             0             0             0             0
+
+
+           BETA
+              AD_SCALE      AHRZ_IND
+              ________      ________
+ I_D_SCAL           0             0
+ S_D_SCAL           0             0
+ I_HRZ_IN           0             0
+ S_HRZ_IN           0             0
+ BD_SCALE           7             8
+ CD_SCALE           0             0
+ DD_SCALE           0             0
+ BHRZ_IND           9            10
+ CHRZ_IND           0             0
+ DHRZ_IND           0             0
+ AD_SCALE           0             0
+ AHRZ_IND           0             0
+
+
+           PSI
+              I_D_SCAL      S_D_SCAL      I_HRZ_IN      S_HRZ_IN      BD_SCALE
+              ________      ________      ________      ________      ________
+ I_D_SCAL          11
+ S_D_SCAL          12            13
+ I_HRZ_IN          14            15            16
+ S_HRZ_IN          17            18            19            20
+ BD_SCALE           0             0             0             0            21
+ CD_SCALE           0             0             0             0             0
+ DD_SCALE           0             0             0             0             0
+ BHRZ_IND           0             0             0             0            22
+ CHRZ_IND           0             0             0             0             0
+ DHRZ_IND           0             0             0             0             0
+ AD_SCALE          24            25            26            27             0
+ AHRZ_IND          29            30            31            32             0
+
+
+           PSI
+              CD_SCALE      DD_SCALE      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________      ________
+ CD_SCALE          21
+ DD_SCALE           0            21
+ BHRZ_IND           0             0            23
+ CHRZ_IND          22             0             0            23
+ DHRZ_IND           0            22             0             0            23
+ AD_SCALE           0             0             0             0             0
+ AHRZ_IND           0             0             0             0             0
+
+
+           PSI
+              AD_SCALE      AHRZ_IND
+              ________      ________
+ AD_SCALE          28
+ AHRZ_IND          33            34
+
+
+     STARTING VALUES
+
+
+           NU
+              BD_SCALE      CD_SCALE      DD_SCALE      BHRZ_IND      CHRZ_IND
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              DHRZ_IND      AD_SCALE      AHRZ_IND
+              ________      ________      ________
+ 1              0.000         0.000         0.000
+
+
+           LAMBDA
+              I_D_SCAL      S_D_SCAL      I_HRZ_IN      S_HRZ_IN      BD_SCALE
+              ________      ________      ________      ________      ________
+ BD_SCALE       0.000         0.000         0.000         0.000         1.000
+ CD_SCALE       0.000         0.000         0.000         0.000         0.000
+ DD_SCALE       0.000         0.000         0.000         0.000         0.000
+ BHRZ_IND       0.000         0.000         0.000         0.000         0.000
+ CHRZ_IND       0.000         0.000         0.000         0.000         0.000
+ DHRZ_IND       0.000         0.000         0.000         0.000         0.000
+ AD_SCALE       0.000         0.000         0.000         0.000         0.000
+ AHRZ_IND       0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              CD_SCALE      DD_SCALE      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________      ________
+ BD_SCALE       0.000         0.000         0.000         0.000         0.000
+ CD_SCALE       1.000         0.000         0.000         0.000         0.000
+ DD_SCALE       0.000         1.000         0.000         0.000         0.000
+ BHRZ_IND       0.000         0.000         1.000         0.000         0.000
+ CHRZ_IND       0.000         0.000         0.000         1.000         0.000
+ DHRZ_IND       0.000         0.000         0.000         0.000         1.000
+ AD_SCALE       0.000         0.000         0.000         0.000         0.000
+ AHRZ_IND       0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              AD_SCALE      AHRZ_IND
+              ________      ________
+ BD_SCALE       0.000         0.000
+ CD_SCALE       0.000         0.000
+ DD_SCALE       0.000         0.000
+ BHRZ_IND       0.000         0.000
+ CHRZ_IND       0.000         0.000
+ DHRZ_IND       0.000         0.000
+ AD_SCALE       1.000         0.000
+ AHRZ_IND       0.000         1.000
+
+
+           THETA
+              BD_SCALE      CD_SCALE      DD_SCALE      BHRZ_IND      CHRZ_IND
+              ________      ________      ________      ________      ________
+ BD_SCALE       0.000
+ CD_SCALE       0.000         0.000
+ DD_SCALE       0.000         0.000         0.000
+ BHRZ_IND       0.000         0.000         0.000         0.000
+ CHRZ_IND       0.000         0.000         0.000         0.000         0.000
+ DHRZ_IND       0.000         0.000         0.000         0.000         0.000
+ AD_SCALE       0.000         0.000         0.000         0.000         0.000
+ AHRZ_IND       0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              DHRZ_IND      AD_SCALE      AHRZ_IND
+              ________      ________      ________
+ DHRZ_IND       0.000
+ AD_SCALE       0.000         0.000
+ AHRZ_IND       0.000         0.000         0.000
+
+
+           ALPHA
+              I_D_SCAL      S_D_SCAL      I_HRZ_IN      S_HRZ_IN      BD_SCALE
+              ________      ________      ________      ________      ________
+ 1             62.363         1.518        74.271         0.570         0.000
+
+
+           ALPHA
+              CD_SCALE      DD_SCALE      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________      ________
+ 1              0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              AD_SCALE      AHRZ_IND
+              ________      ________
+ 1             64.294        74.068
+
+
+           BETA
+              I_D_SCAL      S_D_SCAL      I_HRZ_IN      S_HRZ_IN      BD_SCALE
+              ________      ________      ________      ________      ________
+ I_D_SCAL       0.000         0.000         0.000         0.000         0.000
+ S_D_SCAL       0.000         0.000         0.000         0.000         0.000
+ I_HRZ_IN       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_IN       0.000         0.000         0.000         0.000         0.000
+ BD_SCALE       0.000         0.000         0.000         0.000         0.000
+ CD_SCALE       0.000         0.000         0.000         0.000         0.000
+ DD_SCALE       0.000         0.000         0.000         0.000         0.000
+ BHRZ_IND       0.000         0.000         0.000         0.000         0.000
+ CHRZ_IND       0.000         0.000         0.000         0.000         0.000
+ DHRZ_IND       0.000         0.000         0.000         0.000         0.000
+ AD_SCALE       0.000         0.000         0.000         0.000         0.000
+ AHRZ_IND       0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              CD_SCALE      DD_SCALE      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________      ________
+ I_D_SCAL       0.000         0.000         0.000         0.000         0.000
+ S_D_SCAL       0.000         0.000         0.000         0.000         0.000
+ I_HRZ_IN       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_IN       0.000         0.000         0.000         0.000         0.000
+ BD_SCALE       0.000         0.000         0.000         0.000         0.000
+ CD_SCALE       0.000         0.000         0.000         0.000         0.000
+ DD_SCALE       0.000         0.000         0.000         0.000         0.000
+ BHRZ_IND       0.000         0.000         0.000         0.000         0.000
+ CHRZ_IND       0.000         0.000         0.000         0.000         0.000
+ DHRZ_IND       0.000         0.000         0.000         0.000         0.000
+ AD_SCALE       0.000         0.000         0.000         0.000         0.000
+ AHRZ_IND       0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              AD_SCALE      AHRZ_IND
+              ________      ________
+ I_D_SCAL       0.000         0.000
+ S_D_SCAL       0.000         0.000
+ I_HRZ_IN       0.000         0.000
+ S_HRZ_IN       0.000         0.000
+ BD_SCALE       0.000         0.000
+ CD_SCALE       0.000         0.000
+ DD_SCALE       0.000         0.000
+ BHRZ_IND       0.000         0.000
+ CHRZ_IND       0.000         0.000
+ DHRZ_IND       0.000         0.000
+ AD_SCALE       0.000         0.000
+ AHRZ_IND       0.000         0.000
+
+
+           PSI
+              I_D_SCAL      S_D_SCAL      I_HRZ_IN      S_HRZ_IN      BD_SCALE
+              ________      ________      ________      ________      ________
+ I_D_SCAL     265.750
+ S_D_SCAL       0.000        35.903
+ I_HRZ_IN       0.000         0.000       373.586
+ S_HRZ_IN       0.000         0.000         0.000        66.895
+ BD_SCALE       0.000         0.000         0.000         0.000       112.836
+ CD_SCALE       0.000         0.000         0.000         0.000         0.000
+ DD_SCALE       0.000         0.000         0.000         0.000         0.000
+ BHRZ_IND       0.000         0.000         0.000         0.000         0.000
+ CHRZ_IND       0.000         0.000         0.000         0.000         0.000
+ DHRZ_IND       0.000         0.000         0.000         0.000         0.000
+ AD_SCALE       0.000         0.000         0.000         0.000         0.000
+ AHRZ_IND       0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              CD_SCALE      DD_SCALE      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________      ________
+ CD_SCALE      89.345
+ DD_SCALE       0.000       107.643
+ BHRZ_IND       0.000         0.000       140.763
+ CHRZ_IND       0.000         0.000         0.000       123.596
+ DHRZ_IND       0.000         0.000         0.000         0.000       130.493
+ AD_SCALE       0.000         0.000         0.000         0.000         0.000
+ AHRZ_IND       0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              AD_SCALE      AHRZ_IND
+              ________      ________
+ AD_SCALE     109.275
+ AHRZ_IND       0.000       120.229
+
+
+     Beginning Time:  11:56:57
+        Ending Time:  11:57:00
+       Elapsed Time:  00:00:03
 
 
 

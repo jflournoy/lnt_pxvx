@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:42 PM
+03/21/2016  11:08 AM
 
 INPUT INSTRUCTIONS
 
@@ -300,7 +300,11 @@ INPUT INSTRUCTIONS
   aI_H
   bI_H
   cI_H
-  dI_H;
+  dI_H
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aI_D
@@ -371,14 +375,30 @@ INPUT INSTRUCTIONS
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
   Variable: DGOAL_ECO
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
 *** WARNING in MODEL command
   All continuous latent variable covariances involving S_I_D have been fixed to 0
   because the variance of S_I_D is fixed at 0.
 *** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  3
-   6 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  9
+  10 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -387,7 +407,7 @@ PxVx Univariate - Inf I_D AR_LinM;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         605
+Number of observations                                         599
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -450,11 +470,11 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         172           6          23          11          15
-          2         107           7          40          12          14
-          3          26           8          41          13          17
-          4          26           9          22          14          33
-          5          26          10          20          15          23
+          1         173           6          23          11          16
+          2         107           7          38          12          14
+          3          25           8          40          13          17
+          4          24           9          23          14          32
+          5          24          10          20          15          23
 
 
 COVARIANCE COVERAGE OF DATA
@@ -469,9 +489,9 @@ Minimum covariance coverage value   0.100
               BI_D          CI_D          DI_D          AI_D
               ________      ________      ________      ________
  BI_D           0.623
- CI_D           0.455         0.588
- DI_D           0.421         0.413         0.550
- AI_D           0.445         0.418         0.383         0.711
+ CI_D           0.457         0.593
+ DI_D           0.424         0.417         0.553
+ AI_D           0.447         0.422         0.389         0.716
 
 
 SAMPLE STATISTICS
@@ -483,28 +503,28 @@ SAMPLE STATISTICS
            Means
               BI_D          CI_D          DI_D          AI_D
               ________      ________      ________      ________
- 1             67.180        64.877        65.221        66.048
+ 1             67.200        64.867        65.330        66.139
 
 
            Covariances
               BI_D          CI_D          DI_D          AI_D
               ________      ________      ________      ________
- BI_D         278.002
- CI_D         189.099       286.111
- DI_D         197.732       193.515       306.201
- AI_D         165.186       155.600       158.544       271.228
+ BI_D         278.693
+ CI_D         188.595       284.963
+ DI_D         197.767       191.733       306.538
+ AI_D         164.716       153.402       157.926       270.905
 
 
            Correlations
               BI_D          CI_D          DI_D          AI_D
               ________      ________      ________      ________
  BI_D           1.000
- CI_D           0.670         1.000
- DI_D           0.678         0.654         1.000
- AI_D           0.602         0.559         0.550         1.000
+ CI_D           0.669         1.000
+ DI_D           0.677         0.649         1.000
+ AI_D           0.599         0.552         0.548         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6079.705
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6048.751
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -517,15 +537,15 @@ Number of Free Parameters                        8
 
 Loglikelihood
 
-          H0 Value                       -6085.321
-          H0 Scaling Correction Factor       1.097
+          H0 Value                       -6054.182
+          H0 Scaling Correction Factor       1.096
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   12186.642
-          Bayesian (BIC)                 12221.884
-          Sample-Size Adjusted BIC       12196.486
+          Akaike (AIC)                   12124.365
+          Bayesian (BIC)                 12159.527
+          Sample-Size Adjusted BIC       12134.129
             (n* = (n + 2) / 24)
 
 
@@ -536,21 +556,21 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DI_D       ON
-    CI_D               0.060      0.059      1.007      0.314
+    CI_D               0.060      0.060      1.008      0.314
 
  CI_D       ON
-    BI_D               0.060      0.059      1.007      0.314
+    BI_D               0.060      0.060      1.008      0.314
 
  BI_D       ON
-    AI_D               0.060      0.059      1.007      0.314
+    AI_D               0.060      0.060      1.008      0.314
 
  AI_D     WITH
-    I_I_D            147.903     18.997      7.786      0.000
+    I_I_D            146.941     18.943      7.757      0.000
 
  Means
-    AI_D              66.060      0.755     87.444      0.000
-    I_I_D             60.598      4.237     14.301      0.000
-    S_I_D              0.073      0.052      1.400      0.162
+    AI_D              66.150      0.757     87.427      0.000
+    I_I_D             60.475      4.244     14.249      0.000
+    S_I_D              0.081      0.053      1.534      0.125
 
  Intercepts
     BI_D               0.000      0.000    999.000    999.000
@@ -558,14 +578,14 @@ MODEL RESULTS
     DI_D               0.000      0.000    999.000    999.000
 
  Variances
-    AI_D             270.801     17.072     15.863      0.000
-    I_I_D            166.234     27.266      6.097      0.000
+    AI_D             270.411     17.161     15.757      0.000
+    I_I_D            165.503     27.341      6.053      0.000
     S_I_D              0.000      0.000    999.000    999.000
 
  Residual Variances
-    BI_D             102.313      8.515     12.016      0.000
-    CI_D             102.313      8.515     12.016      0.000
-    DI_D             102.313      8.515     12.016      0.000
+    BI_D             103.053      8.561     12.038      0.000
+    CI_D             103.053      8.561     12.038      0.000
+    DI_D             103.053      8.561     12.038      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
@@ -574,8 +594,8 @@ QUALITY OF NUMERICAL RESULTS
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:42:40
-        Ending Time:  17:42:41
+     Beginning Time:  11:08:29
+        Ending Time:  11:08:30
        Elapsed Time:  00:00:01
 
 

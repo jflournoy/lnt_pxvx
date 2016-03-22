@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   6:25 PM
+03/21/2016  11:33 AM
 
 INPUT INSTRUCTIONS
 
@@ -238,7 +238,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFA_NV
@@ -316,6 +320,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_HRZ_IND
 *** WARNING
   Variable name contains more than 8 characters.
@@ -328,7 +348,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   4 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   9 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -337,7 +361,7 @@ PxVx Univariate - Col Lin BFA_NV with MeanOnly HRZ_IND;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -404,7 +428,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           5          52           9           9
+          1         138           5          52           9           9
           2          12           6          11          10           2
           3           6           7           1          11           2
           4          27           8          16          12           1
@@ -421,22 +445,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFA_NV       CBFA_NV       DBFA_NV       BHRZ_IND      CHRZ_IND
               ________      ________      ________      ________      ________
- BBFA_NV        0.713
- CBFA_NV        0.548         0.602
- DBFA_NV        0.609         0.602         0.703
- BHRZ_IND       0.699         0.545         0.602         0.699
- CHRZ_IND       0.548         0.602         0.602         0.545         0.602
- DHRZ_IND       0.563         0.538         0.634         0.559         0.538
- ABFA_NV        0.713         0.602         0.703         0.699         0.602
- AHRZ_IND       0.713         0.602         0.703         0.699         0.602
+ BBFA_NV        0.711
+ CBFA_NV        0.545         0.599
+ DBFA_NV        0.606         0.599         0.700
+ BHRZ_IND       0.697         0.542         0.599         0.697
+ CHRZ_IND       0.545         0.599         0.599         0.542         0.599
+ DHRZ_IND       0.560         0.534         0.632         0.556         0.534
+ ABFA_NV        0.711         0.599         0.700         0.697         0.599
+ AHRZ_IND       0.711         0.599         0.700         0.697         0.599
 
 
            Covariance Coverage
               DHRZ_IND      ABFA_NV       AHRZ_IND
               ________      ________      ________
- DHRZ_IND       0.634
- ABFA_NV        0.634         1.000
- AHRZ_IND       0.634         0.993         0.993
+ DHRZ_IND       0.632
+ ABFA_NV        0.632         1.000
+ AHRZ_IND       0.632         0.993         0.993
 
 
 SAMPLE STATISTICS
@@ -448,59 +472,63 @@ SAMPLE STATISTICS
            Means
               BBFA_NV       CBFA_NV       DBFA_NV       BHRZ_IND      CHRZ_IND
               ________      ________      ________      ________      ________
- 1             43.120        42.267        41.732        73.072        73.636
+ 1             42.948        42.257        41.495        72.922        73.603
 
 
            Means
               DHRZ_IND      ABFA_NV       AHRZ_IND
               ________      ________      ________
- 1             75.285        43.268        73.932
+ 1             75.361        43.179        74.069
 
 
            Covariances
               BBFA_NV       CBFA_NV       DBFA_NV       BHRZ_IND      CHRZ_IND
               ________      ________      ________      ________      ________
- BBFA_NV      391.399
- CBFA_NV      273.590       411.170
- DBFA_NV      270.535       314.928       432.860
- BHRZ_IND       4.396         6.295       -11.317       265.309
- CHRZ_IND     -15.444       -22.527       -28.401       171.137       242.119
- DHRZ_IND      37.270         7.613        27.187       144.105       137.921
- ABFA_NV      303.226       247.595       266.267        15.128         5.554
- AHRZ_IND       3.589       -12.061        -1.886       160.952       128.111
+ BBFA_NV      389.199
+ CBFA_NV      277.439       413.891
+ DBFA_NV      270.421       312.193       420.060
+ BHRZ_IND       3.121         4.332       -19.692       266.068
+ CHRZ_IND     -15.713       -23.443       -31.402       172.128       244.489
+ DHRZ_IND      41.522         6.414        25.101       144.484       138.829
+ ABFA_NV      305.520       247.272       258.804        11.345         4.498
+ AHRZ_IND       8.585       -13.415        -1.593       163.007       129.220
 
 
            Covariances
               DHRZ_IND      ABFA_NV       AHRZ_IND
               ________      ________      ________
- DHRZ_IND     257.665
- ABFA_NV       59.635       415.289
- AHRZ_IND     137.247         6.628       241.726
+ DHRZ_IND     257.286
+ ABFA_NV       59.056       414.460
+ AHRZ_IND     134.805         6.451       239.583
 
 
            Correlations
               BBFA_NV       CBFA_NV       DBFA_NV       BHRZ_IND      CHRZ_IND
               ________      ________      ________      ________      ________
  BBFA_NV        1.000
- CBFA_NV        0.682         1.000
- DBFA_NV        0.657         0.746         1.000
- BHRZ_IND       0.014         0.019        -0.033         1.000
- CHRZ_IND      -0.050        -0.071        -0.088         0.675         1.000
- DHRZ_IND       0.117         0.023         0.081         0.551         0.552
- ABFA_NV        0.752         0.599         0.628         0.046         0.018
- AHRZ_IND       0.012        -0.038        -0.006         0.636         0.530
+ CBFA_NV        0.691         1.000
+ DBFA_NV        0.669         0.749         1.000
+ BHRZ_IND       0.010         0.013        -0.059         1.000
+ CHRZ_IND      -0.051        -0.074        -0.098         0.675         1.000
+ DHRZ_IND       0.131         0.020         0.076         0.552         0.554
+ ABFA_NV        0.761         0.597         0.620         0.034         0.014
+ AHRZ_IND       0.028        -0.043        -0.005         0.646         0.534
 
 
            Correlations
               DHRZ_IND      ABFA_NV       AHRZ_IND
               ________      ________      ________
  DHRZ_IND       1.000
- ABFA_NV        0.182         1.000
- AHRZ_IND       0.550         0.021         1.000
+ ABFA_NV        0.181         1.000
+ AHRZ_IND       0.543         0.020         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6765.040
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6689.409
 
+     WARNING:  THE MLR STANDARD ERRORS COULD NOT BE COMPUTED.  THE MLF STANDARD
+     ERRORS WERE COMPUTED INSTEAD.  THE MLR CONDITION NUMBER IS      -0.711D-05.
+     PROBLEM INVOLVING PARAMETER 20.  THIS MAY BE DUE TO NEAR SINGULARITY
+     OF THE RANDOM EFFECT VARIANCE/COVARIANCE OR INCOMPLETE CONVERGENCE.
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
 
@@ -512,15 +540,13 @@ Number of Free Parameters                       28
 
 Loglikelihood
 
-          H0 Value                       -6776.849
-          H0 Scaling Correction Factor       1.663
-            for MLR
+          H0 Value                       -6703.420
 
 Information Criteria
 
-          Akaike (AIC)                   13609.698
-          Bayesian (BIC)                 13711.372
-          Sample-Size Adjusted BIC       13622.586
+          Akaike (AIC)                   13462.841
+          Bayesian (BIC)                 13564.313
+          Sample-Size Adjusted BIC       13475.529
             (n* = (n + 2) / 24)
 
 
@@ -531,65 +557,65 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFA_NV    ON
-    CBFA_NV            0.369      1.576      0.234      0.815
-    CHRZ_IND          -0.049      0.531     -0.092      0.927
+    CBFA_NV            0.348      0.119      2.936      0.003
+    CHRZ_IND          -0.013      0.119     -0.106      0.915
 
  CBFA_NV    ON
-    BBFA_NV            0.369      1.576      0.234      0.815
-    BHRZ_IND          -0.049      0.531     -0.092      0.927
+    BBFA_NV            0.348      0.119      2.936      0.003
+    BHRZ_IND          -0.013      0.119     -0.106      0.915
 
  BBFA_NV    ON
-    ABFA_NV            0.369      1.576      0.234      0.815
-    AHRZ_IND          -0.049      0.531     -0.092      0.927
+    ABFA_NV            0.348      0.119      2.936      0.003
+    AHRZ_IND          -0.013      0.119     -0.106      0.915
 
  DHRZ_IND   ON
-    CHRZ_IND           0.165      0.106      1.559      0.119
-    CBFA_NV           -0.091      0.160     -0.568      0.570
+    CHRZ_IND           0.172      0.089      1.927      0.054
+    CBFA_NV           -0.090      0.085     -1.064      0.287
 
  CHRZ_IND   ON
-    BHRZ_IND           0.165      0.106      1.559      0.119
-    BBFA_NV           -0.091      0.160     -0.568      0.570
+    BHRZ_IND           0.172      0.089      1.927      0.054
+    BBFA_NV           -0.090      0.085     -1.064      0.287
 
  BHRZ_IND   ON
-    AHRZ_IND           0.165      0.106      1.559      0.119
-    ABFA_NV           -0.091      0.160     -0.568      0.570
+    AHRZ_IND           0.172      0.089      1.927      0.054
+    ABFA_NV           -0.090      0.085     -1.064      0.287
 
  S_BFA_NV WITH
-    I_BFA_NV           2.988     16.109      0.185      0.853
+    I_BFA_NV           2.901     18.806      0.154      0.877
 
  I_HRZ_IN WITH
-    I_BFA_NV           9.923     53.475      0.186      0.853
-    S_BFA_NV           5.990     42.676      0.140      0.888
+    I_BFA_NV          10.182     34.712      0.293      0.769
+    S_BFA_NV           2.706      7.424      0.364      0.716
 
  ABFA_NV  WITH
-    I_BFA_NV         123.953    760.872      0.163      0.871
-    S_BFA_NV          15.503    124.070      0.125      0.901
-    I_HRZ_IND         54.434     55.558      0.980      0.327
+    I_BFA_NV         140.561     59.956      2.344      0.019
+    S_BFA_NV           9.537     16.365      0.583      0.560
+    I_HRZ_IND         52.233     34.873      1.498      0.134
 
  AHRZ_IND WITH
-    I_BFA_NV           3.258    117.339      0.028      0.978
-    S_BFA_NV           1.433     13.541      0.106      0.916
-    I_HRZ_IND        113.445     23.276      4.874      0.000
+    I_BFA_NV          -0.192     35.876     -0.005      0.996
+    S_BFA_NV           0.455      9.507      0.048      0.962
+    I_HRZ_IND        112.664     24.978      4.511      0.000
 
  DHRZ_IND WITH
-    DBFA_NV           -1.923     32.136     -0.060      0.952
+    DBFA_NV           -0.038     12.795     -0.003      0.998
 
  CHRZ_IND WITH
-    CBFA_NV           -1.923     32.136     -0.060      0.952
+    CBFA_NV           -0.038     12.795     -0.003      0.998
 
  BHRZ_IND WITH
-    BBFA_NV           -1.923     32.136     -0.060      0.952
+    BBFA_NV           -0.038     12.795     -0.003      0.998
 
  AHRZ_IND WITH
-    ABFA_NV            6.628     18.534      0.358      0.721
+    ABFA_NV            6.451     20.917      0.308      0.758
 
  Means
-    ABFA_NV           43.268      1.218     35.532      0.000
-    AHRZ_IND          73.932      0.935     79.044      0.000
-    I_BFA_NV          30.425     35.604      0.855      0.393
-    S_BFA_NV          -0.121      1.952     -0.062      0.951
-    I_HRZ_IND         64.883      8.591      7.552      0.000
-    S_HRZ_IND          0.468      0.593      0.789      0.430
+    ABFA_NV           43.179      1.269     34.032      0.000
+    AHRZ_IND          74.068      1.108     66.866      0.000
+    I_BFA_NV          28.666     10.041      2.855      0.004
+    S_BFA_NV          -0.196      0.596     -0.329      0.742
+    I_HRZ_IND         64.049      8.126      7.882      0.000
+    S_HRZ_IND          0.570      0.555      1.027      0.304
 
  Intercepts
     BBFA_NV            0.000      0.000    999.000    999.000
@@ -600,31 +626,31 @@ MODEL RESULTS
     DHRZ_IND           0.000      0.000    999.000    999.000
 
  Variances
-    ABFA_NV          415.289     31.094     13.356      0.000
-    AHRZ_IND         241.726     21.238     11.382      0.000
-    I_BFA_NV          74.563    616.270      0.121      0.904
-    S_BFA_NV           2.098      3.494      0.601      0.548
-    I_HRZ_IND        102.762     34.315      2.995      0.003
+    ABFA_NV          414.459     43.396      9.551      0.000
+    AHRZ_IND         239.582     23.706     10.106      0.000
+    I_BFA_NV          88.639     80.509      1.101      0.271
+    S_BFA_NV           1.274      7.952      0.160      0.873
+    I_HRZ_IND        101.294     35.611      2.844      0.004
     S_HRZ_IND          0.000      0.000    999.000    999.000
 
  Residual Variances
-    BBFA_NV          150.245    197.827      0.759      0.448
-    CBFA_NV          150.245    197.827      0.759      0.448
-    DBFA_NV          150.245    197.827      0.759      0.448
-    BHRZ_IND         112.875     14.106      8.002      0.000
-    CHRZ_IND         112.875     14.106      8.002      0.000
-    DHRZ_IND         112.875     14.106      8.002      0.000
+    BBFA_NV          142.017     20.749      6.845      0.000
+    CBFA_NV          142.017     20.749      6.845      0.000
+    DBFA_NV          142.017     20.749      6.845      0.000
+    BHRZ_IND         112.864     10.342     10.914      0.000
+    CHRZ_IND         112.864     10.342     10.914      0.000
+    DHRZ_IND         112.864     10.342     10.914      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.479E-07
+     Condition Number for the Information Matrix              0.323E-07
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  18:25:45
-        Ending Time:  18:25:52
-       Elapsed Time:  00:00:07
+     Beginning Time:  11:33:10
+        Ending Time:  11:33:18
+       Elapsed Time:  00:00:08
 
 
 

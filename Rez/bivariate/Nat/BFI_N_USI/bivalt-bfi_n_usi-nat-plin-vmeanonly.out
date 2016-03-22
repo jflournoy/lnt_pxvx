@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   8:24 PM
+03/21/2016   1:34 PM
 
 INPUT INSTRUCTIONS
 
@@ -237,7 +237,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
 
   USEVARIABLES =
@@ -313,14 +317,30 @@ INPUT INSTRUCTIONS
 
 
 
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
 *** WARNING in MODEL command
   All continuous latent variable covariances involving S_USI have been fixed to 0
   because the variance of S_USI is fixed at 0.
 *** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  5
-   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  16
+   6 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -329,7 +349,7 @@ PxVx Univariate - Nat Lin BFI_N with MeanOnly USI;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         874
+Number of observations                                         863
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -374,7 +394,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns            20
+     Number of missing data patterns            22
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -383,26 +403,37 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERNS (x = not missing)
 
            1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
- BBFI_N    x     x  x     x     x     x  x  x  x        x     x
- CBFI_N    x           x  x     x  x     x  x  x           x  x  x
- DBFI_N    x     x     x  x  x           x     x  x     x        x  x
- BUSI      x     x  x     x     x        x  x                 x
- CUSI      x           x        x  x     x     x              x  x
- DUSI      x     x     x  x  x                 x  x     x     x
- ABFI_N    x  x  x  x  x  x  x  x  x  x  x  x  x     x  x  x  x  x  x
- AUSI      x  x  x  x  x  x  x  x  x  x  x  x  x  x     x  x  x  x  x
+ BBFI_N    x     x  x     x     x     x  x  x  x     x     x     x
+ CBFI_N    x           x  x     x  x     x  x  x     x        x  x  x
+ DBFI_N    x     x     x  x  x           x     x  x  x     x        x
+ BUSI      x     x  x     x     x        x  x        x           x
+ CUSI      x           x        x  x     x     x     x           x  x
+ DUSI      x     x     x  x  x                 x  x  x     x     x
+ ABFI_N    x  x  x  x  x  x  x  x  x  x  x  x  x        x  x  x  x  x
+ AUSI      x  x  x  x  x  x  x  x  x  x  x  x  x  x        x  x  x  x
+
+          21 22
+ BBFI_N
+ CBFI_N       x
+ DBFI_N    x  x
+ BUSI
+ CUSI         x
+ DUSI         x
+ ABFI_N    x
+ AUSI      x
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         497           8          45          15           1
-          2         168           9          21          16           1
-          3          26          10           5          17           1
-          4          52          11           1          18           1
-          5          21          12           1          19           2
-          6           2          13           3          20           2
-          7          23          14           1
+          1         489           9          20          17           1
+          2         168          10           5          18           1
+          3          26          11           1          19           1
+          4          47          12           1          20           2
+          5          21          13           3          21           2
+          6           2          14           1          22           1
+          7          23          15           3
+          8          44          16           1
 
 
 COVARIANCE COVERAGE OF DATA
@@ -416,22 +447,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFI_N        CBFI_N        DBFI_N        BUSI          CUSI
               ________      ________      ________      ________      ________
- BBFI_N         0.725
- CBFI_N         0.629         0.681
- DBFI_N         0.606         0.602         0.662
- BUSI           0.715         0.626         0.602         0.715
- CUSI           0.626         0.676         0.600         0.622         0.676
- DUSI           0.606         0.600         0.657         0.602         0.597
- ABFI_N         0.725         0.681         0.661         0.715         0.676
- AUSI           0.725         0.681         0.662         0.715         0.676
+ BBFI_N         0.722
+ CBFI_N         0.630         0.683
+ DBFI_N         0.608         0.605         0.666
+ BUSI           0.711         0.627         0.604         0.711
+ CUSI           0.627         0.678         0.603         0.623         0.678
+ DUSI           0.608         0.603         0.660         0.604         0.600
+ ABFI_N         0.718         0.678         0.660         0.708         0.673
+ AUSI           0.718         0.678         0.662         0.708         0.673
 
 
            Covariance Coverage
               DUSI          ABFI_N        AUSI
               ________      ________      ________
- DUSI           0.658
- ABFI_N         0.657         0.999
- AUSI           0.658         0.998         0.999
+ DUSI           0.662
+ ABFI_N         0.656         0.994
+ AUSI           0.657         0.993         0.994
 
 
 SAMPLE STATISTICS
@@ -443,58 +474,58 @@ SAMPLE STATISTICS
            Means
               BBFI_N        CBFI_N        DBFI_N        BUSI          CUSI
               ________      ________      ________      ________      ________
- 1             49.028        48.044        47.851        28.569        28.590
+ 1             49.123        48.123        47.896        28.409        28.559
 
 
            Means
               DUSI          ABFI_N        AUSI
               ________      ________      ________
- 1             28.599        49.507        29.082
+ 1             28.504        49.631        28.990
 
 
            Covariances
               BBFI_N        CBFI_N        DBFI_N        BUSI          CUSI
               ________      ________      ________      ________      ________
- BBFI_N       450.930
- CBFI_N       374.000       447.768
- DBFI_N       384.288       402.399       496.168
- BUSI          25.248        26.367        12.947       275.443
- CUSI          30.447        32.507        24.845       212.652       280.430
- DUSI          15.861        11.673         3.039       199.029       219.846
- ABFI_N       358.901       354.636       369.447         0.210        12.824
- AUSI          14.886        15.581         1.262       206.109       203.118
+ BBFI_N       452.595
+ CBFI_N       376.585       451.713
+ DBFI_N       388.430       405.282       499.932
+ BUSI          27.128        28.380        14.718       274.624
+ CUSI          31.657        34.328        24.878       215.133       281.980
+ DUSI          15.550        11.798         1.356       200.222       218.438
+ ABFI_N       360.838       356.399       371.993         3.727        15.564
+ AUSI          13.945        15.369         0.098       209.006       202.581
 
 
            Covariances
               DUSI          ABFI_N        AUSI
               ________      ________      ________
- DUSI         261.924
- ABFI_N         1.754       458.263
- AUSI         191.886        -1.823       267.131
+ DUSI         261.463
+ ABFI_N         3.924       459.711
+ AUSI         190.803        -0.953       264.738
 
 
            Correlations
               BBFI_N        CBFI_N        DBFI_N        BUSI          CUSI
               ________      ________      ________      ________      ________
  BBFI_N         1.000
- CBFI_N         0.832         1.000
- DBFI_N         0.812         0.854         1.000
- BUSI           0.072         0.075         0.035         1.000
- CUSI           0.086         0.092         0.067         0.765         1.000
- DUSI           0.046         0.034         0.008         0.741         0.811
- ABFI_N         0.790         0.783         0.775         0.001         0.036
- AUSI           0.043         0.045         0.003         0.760         0.742
+ CBFI_N         0.833         1.000
+ DBFI_N         0.817         0.853         1.000
+ BUSI           0.077         0.081         0.040         1.000
+ CUSI           0.089         0.096         0.066         0.773         1.000
+ DUSI           0.045         0.034         0.004         0.747         0.804
+ ABFI_N         0.791         0.782         0.776         0.010         0.043
+ AUSI           0.040         0.044         0.000         0.775         0.741
 
 
            Correlations
               DUSI          ABFI_N        AUSI
               ________      ________      ________
  DUSI           1.000
- ABFI_N         0.005         1.000
- AUSI           0.725        -0.005         1.000
+ ABFI_N         0.011         1.000
+ AUSI           0.725        -0.003         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -21232.991
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -20933.910
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -507,15 +538,15 @@ Number of Free Parameters                       28
 
 Loglikelihood
 
-          H0 Value                      -21240.735
-          H0 Scaling Correction Factor       1.140
+          H0 Value                      -20939.640
+          H0 Scaling Correction Factor       1.109
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   42537.471
-          Bayesian (BIC)                 42671.117
-          Sample-Size Adjusted BIC       42582.195
+          Akaike (AIC)                   41935.280
+          Bayesian (BIC)                 42068.571
+          Sample-Size Adjusted BIC       41979.651
             (n* = (n + 2) / 24)
 
 
@@ -526,65 +557,65 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFI_N     ON
-    CBFI_N             0.127      0.044      2.853      0.004
-    CUSI               0.019      0.040      0.473      0.636
+    CBFI_N             0.122      0.040      3.065      0.002
+    CUSI               0.010      0.038      0.257      0.797
 
  CBFI_N     ON
-    BBFI_N             0.127      0.044      2.853      0.004
-    BUSI               0.019      0.040      0.473      0.636
+    BBFI_N             0.122      0.040      3.065      0.002
+    BUSI               0.010      0.038      0.257      0.797
 
  BBFI_N     ON
-    ABFI_N             0.127      0.044      2.853      0.004
-    AUSI               0.019      0.040      0.473      0.636
+    ABFI_N             0.122      0.040      3.065      0.002
+    AUSI               0.010      0.038      0.257      0.797
 
  DUSI       ON
-    CUSI               0.147      0.048      3.081      0.002
-    CBFI_N            -0.058      0.031     -1.900      0.057
+    CUSI               0.172      0.046      3.773      0.000
+    CBFI_N            -0.063      0.028     -2.262      0.024
 
  CUSI       ON
-    BUSI               0.147      0.048      3.081      0.002
-    BBFI_N            -0.058      0.031     -1.900      0.057
+    BUSI               0.172      0.046      3.773      0.000
+    BBFI_N            -0.063      0.028     -2.262      0.024
 
  BUSI       ON
-    AUSI               0.147      0.048      3.081      0.002
-    ABFI_N            -0.058      0.031     -1.900      0.057
+    AUSI               0.172      0.046      3.773      0.000
+    ABFI_N            -0.063      0.028     -2.262      0.024
 
  S_BFI_N  WITH
-    I_BFI_N           -0.598      0.631     -0.947      0.343
+    I_BFI_N           -0.618      0.642     -0.962      0.336
 
  I_USI    WITH
-    I_BFI_N           30.065     17.797      1.689      0.091
-    S_BFI_N           -0.370      0.476     -0.777      0.437
+    I_BFI_N           33.802     16.474      2.052      0.040
+    S_BFI_N           -0.240      0.464     -0.516      0.606
 
  ABFI_N   WITH
-    I_BFI_N          308.217     23.410     13.166      0.000
-    S_BFI_N            0.623      0.752      0.829      0.407
-    I_USI             25.987     15.552      1.671      0.095
+    I_BFI_N          311.627     22.385     13.921      0.000
+    S_BFI_N            0.595      0.759      0.784      0.433
+    I_USI             30.437     14.765      2.061      0.039
 
  AUSI     WITH
-    I_BFI_N            4.560     14.027      0.325      0.745
-    S_BFI_N           -1.073      0.629     -1.706      0.088
-    I_USI            166.134     13.708     12.120      0.000
+    I_BFI_N            5.508     13.991      0.394      0.694
+    S_BFI_N           -0.933      0.631     -1.479      0.139
+    I_USI            161.194     13.297     12.122      0.000
 
  DUSI     WITH
-    DBFI_N            -0.994      2.957     -0.336      0.737
+    DBFI_N            -1.533      2.852     -0.538      0.591
 
  CUSI     WITH
-    CBFI_N            -0.994      2.957     -0.336      0.737
+    CBFI_N            -1.533      2.852     -0.538      0.591
 
  BUSI     WITH
-    BBFI_N            -0.994      2.957     -0.336      0.737
+    BBFI_N            -1.533      2.852     -0.538      0.591
 
  AUSI     WITH
-    ABFI_N            -1.716     11.880     -0.144      0.885
+    ABFI_N            -0.857     12.031     -0.071      0.943
 
  Means
-    ABFI_N            49.512      0.722     68.594      0.000
-    AUSI              29.082      0.551     52.803      0.000
-    I_BFI_N           41.671      2.643     15.764      0.000
-    S_BFI_N           -0.103      0.040     -2.577      0.010
-    I_USI             27.263      2.036     13.388      0.000
-    S_USI             -0.044      0.032     -1.347      0.178
+    ABFI_N            49.636      0.732     67.848      0.000
+    AUSI              28.991      0.553     52.447      0.000
+    I_BFI_N           42.233      2.440     17.309      0.000
+    S_BFI_N           -0.105      0.040     -2.589      0.010
+    I_USI             26.720      1.955     13.668      0.000
+    S_USI             -0.041      0.032     -1.307      0.191
 
  Intercepts
     BBFI_N             0.000      0.000    999.000    999.000
@@ -595,31 +626,31 @@ MODEL RESULTS
     DUSI               0.000      0.000    999.000    999.000
 
  Variances
-    ABFI_N           458.464     18.371     24.956      0.000
-    AUSI             267.131     10.767     24.811      0.000
-    I_BFI_N          283.560     36.215      7.830      0.000
-    S_BFI_N            0.055      0.086      0.642      0.521
-    I_USI            148.797     19.772      7.526      0.000
+    ABFI_N           459.934     18.559     24.782      0.000
+    AUSI             264.734     10.616     24.938      0.000
+    I_BFI_N          289.135     33.785      8.558      0.000
+    S_BFI_N            0.055      0.083      0.667      0.505
+    I_USI            140.650     18.729      7.510      0.000
     S_USI              0.000      0.000    999.000    999.000
 
  Residual Variances
-    BBFI_N            84.379      5.349     15.774      0.000
-    CBFI_N            84.379      5.349     15.774      0.000
-    DBFI_N            84.379      5.349     15.774      0.000
-    BUSI              67.673      4.464     15.158      0.000
-    CUSI              67.673      4.464     15.158      0.000
-    DUSI              67.673      4.464     15.158      0.000
+    BBFI_N            84.110      5.245     16.037      0.000
+    CBFI_N            84.110      5.245     16.037      0.000
+    DBFI_N            84.110      5.245     16.037      0.000
+    BUSI              67.770      4.187     16.186      0.000
+    CUSI              67.770      4.187     16.186      0.000
+    DUSI              67.770      4.187     16.186      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.152E-06
+     Condition Number for the Information Matrix              0.155E-06
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  20:24:45
-        Ending Time:  20:24:51
-       Elapsed Time:  00:00:06
+     Beginning Time:  13:34:46
+        Ending Time:  13:34:53
+       Elapsed Time:  00:00:07
 
 
 

@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   6:13 PM
+03/21/2016  11:18 AM
 
 INPUT INSTRUCTIONS
 
@@ -238,7 +238,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFA_AP
@@ -312,6 +316,22 @@ INPUT INSTRUCTIONS
 
 
 
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
 *** WARNING in MODEL command
   All continuous latent variable covariances involving S_BFA_AP have been fixed to 0
   because the variance of S_BFA_AP is fixed at 0.
@@ -322,7 +342,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   3 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   8 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -331,7 +355,7 @@ PxVx Univariate - Col MeanOnly BFA_AP with MeanOnly aspfin;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -398,7 +422,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           5          53           9          11
+          1         138           5          53           9          11
           2          12           6          11          10           1
           3           5           7           1          11           1
           4          28           8          16
@@ -415,22 +439,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFA_AP       CBFA_AP       DBFA_AP       BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- BBFA_AP        0.710
- CBFA_AP        0.545         0.602
- DBFA_AP        0.563         0.541         0.642
- BASPFIN        0.703         0.545         0.559         0.703
- CASPFIN        0.545         0.602         0.541         0.545         0.602
- DASPFIN        0.559         0.541         0.638         0.559         0.541
- ABFA_AP        0.710         0.602         0.642         0.703         0.602
- AASPFIN        0.710         0.602         0.642         0.703         0.602
+ BBFA_AP        0.708
+ CBFA_AP        0.542         0.599
+ DBFA_AP        0.560         0.538         0.639
+ BASPFIN        0.700         0.542         0.556         0.700
+ CASPFIN        0.542         0.599         0.538         0.542         0.599
+ DASPFIN        0.556         0.538         0.635         0.556         0.538
+ ABFA_AP        0.708         0.599         0.639         0.700         0.599
+ AASPFIN        0.708         0.599         0.639         0.700         0.599
 
 
            Covariance Coverage
               DASPFIN       ABFA_AP       AASPFIN
               ________      ________      ________
- DASPFIN        0.638
- ABFA_AP        0.638         1.000
- AASPFIN        0.638         0.996         0.996
+ DASPFIN        0.635
+ ABFA_AP        0.635         1.000
+ AASPFIN        0.635         0.996         0.996
 
 
 SAMPLE STATISTICS
@@ -442,58 +466,58 @@ SAMPLE STATISTICS
            Means
               BBFA_AP       CBFA_AP       DBFA_AP       BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- 1             67.841        68.463        68.781        47.576        46.426
+ 1             67.990        68.554        68.926        47.596        46.299
 
 
            Means
               DASPFIN       ABFA_AP       AASPFIN
               ________      ________      ________
- 1             47.877        66.745        47.454
+ 1             47.997        66.884        47.398
 
 
            Covariances
               BBFA_AP       CBFA_AP       DBFA_AP       BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- BBFA_AP      237.531
- CBFA_AP      182.670       240.857
- DBFA_AP      148.934       174.345       217.751
- BASPFIN     -117.568      -111.874       -87.174       534.305
- CASPFIN     -124.771      -136.743      -114.812       340.164       495.618
- DASPFIN     -117.763      -135.785      -114.066       393.285       393.393
- ABFA_AP      177.727       180.265       156.834       -81.080      -105.587
- AASPFIN     -104.650      -102.593       -77.060       419.870       338.615
+ BBFA_AP      233.629
+ CBFA_AP      176.953       232.243
+ DBFA_AP      140.086       161.647       202.231
+ BASPFIN     -116.709      -108.477       -81.741       538.405
+ CASPFIN     -118.555      -127.891      -103.031       339.170       491.506
+ DASPFIN     -115.519      -127.057      -102.097       391.919       388.345
+ ABFA_AP      171.288       170.478       143.133       -77.501       -95.750
+ AASPFIN      -99.783       -93.481       -64.351       419.377       332.006
 
 
            Covariances
               DASPFIN       ABFA_AP       AASPFIN
               ________      ________      ________
- DASPFIN      555.915
- ABFA_AP     -122.013       237.253
- AASPFIN      357.668      -108.094       540.830
+ DASPFIN      546.093
+ ABFA_AP     -113.932       227.428
+ AASPFIN      349.759       -98.930       535.441
 
 
            Correlations
               BBFA_AP       CBFA_AP       DBFA_AP       BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
  BBFA_AP        1.000
- CBFA_AP        0.764         1.000
- DBFA_AP        0.655         0.761         1.000
- BASPFIN       -0.330        -0.312        -0.256         1.000
- CASPFIN       -0.364        -0.396        -0.349         0.661         1.000
- DASPFIN       -0.324        -0.371        -0.328         0.722         0.749
- ABFA_AP        0.749         0.754         0.690        -0.228        -0.308
- AASPFIN       -0.292        -0.284        -0.225         0.781         0.654
+ CBFA_AP        0.760         1.000
+ DBFA_AP        0.644         0.746         1.000
+ BASPFIN       -0.329        -0.307        -0.248         1.000
+ CASPFIN       -0.350        -0.379        -0.327         0.659         1.000
+ DASPFIN       -0.323        -0.357        -0.307         0.723         0.750
+ ABFA_AP        0.743         0.742         0.667        -0.221        -0.286
+ AASPFIN       -0.282        -0.265        -0.196         0.781         0.647
 
 
            Correlations
               DASPFIN       ABFA_AP       AASPFIN
               ________      ________      ________
  DASPFIN        1.000
- ABFA_AP       -0.336         1.000
- AASPFIN        0.652        -0.302         1.000
+ ABFA_AP       -0.323         1.000
+ AASPFIN        0.647        -0.283         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6631.861
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6561.206
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -506,15 +530,15 @@ Number of Free Parameters                       23
 
 Loglikelihood
 
-          H0 Value                       -6650.980
-          H0 Scaling Correction Factor       1.178
+          H0 Value                       -6580.343
+          H0 Scaling Correction Factor       1.163
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   13347.959
-          Bayesian (BIC)                 13431.477
-          Sample-Size Adjusted BIC       13358.546
+          Akaike (AIC)                   13206.686
+          Bayesian (BIC)                 13290.039
+          Sample-Size Adjusted BIC       13217.109
             (n* = (n + 2) / 24)
 
 
@@ -525,59 +549,59 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFA_AP    ON
-    CBFA_AP            0.230      0.095      2.425      0.015
-    CASPFIN           -0.041      0.048     -0.858      0.391
+    CBFA_AP            0.239      0.092      2.602      0.009
+    CASPFIN           -0.039      0.044     -0.878      0.380
 
  CBFA_AP    ON
-    BBFA_AP            0.230      0.095      2.425      0.015
-    BASPFIN           -0.041      0.048     -0.858      0.391
+    BBFA_AP            0.239      0.092      2.602      0.009
+    BASPFIN           -0.039      0.044     -0.878      0.380
 
  BBFA_AP    ON
-    ABFA_AP            0.230      0.095      2.425      0.015
-    AASPFIN           -0.041      0.048     -0.858      0.391
+    ABFA_AP            0.239      0.092      2.602      0.009
+    AASPFIN           -0.039      0.044     -0.878      0.380
 
  DASPFIN    ON
-    CASPFIN            0.237      0.089      2.665      0.008
-    CBFA_AP            0.050      0.104      0.484      0.628
+    CASPFIN            0.242      0.081      2.981      0.003
+    CBFA_AP            0.067      0.097      0.693      0.489
 
  CASPFIN    ON
-    BASPFIN            0.237      0.089      2.665      0.008
-    BBFA_AP            0.050      0.104      0.484      0.628
+    BASPFIN            0.242      0.081      2.981      0.003
+    BBFA_AP            0.067      0.097      0.693      0.489
 
  BASPFIN    ON
-    AASPFIN            0.237      0.089      2.665      0.008
-    ABFA_AP            0.050      0.104      0.484      0.628
+    AASPFIN            0.242      0.081      2.981      0.003
+    ABFA_AP            0.067      0.097      0.693      0.489
 
  I_ASPFIN WITH
-    I_BFA_AP         -60.436     41.185     -1.467      0.142
+    I_BFA_AP         -58.347     36.992     -1.577      0.115
 
  ABFA_AP  WITH
-    I_BFA_AP         121.858     25.512      4.776      0.000
-    I_ASPFIN         -86.725     31.623     -2.742      0.006
+    I_BFA_AP         112.685     22.486      5.011      0.000
+    I_ASPFIN         -83.503     28.488     -2.931      0.003
 
  AASPFIN  WITH
-    I_BFA_AP         -53.287     31.979     -1.666      0.096
-    I_ASPFIN         275.043     54.662      5.032      0.000
+    I_BFA_AP         -46.410     28.996     -1.601      0.109
+    I_ASPFIN         270.101     50.258      5.374      0.000
 
  DASPFIN  WITH
-    DBFA_AP          -11.796      9.955     -1.185      0.236
+    DBFA_AP          -10.366      9.654     -1.074      0.283
 
  CASPFIN  WITH
-    CBFA_AP          -11.796      9.955     -1.185      0.236
+    CBFA_AP          -10.366      9.654     -1.074      0.283
 
  BASPFIN  WITH
-    BBFA_AP          -11.796      9.955     -1.185      0.236
+    BBFA_AP          -10.366      9.654     -1.074      0.283
 
  AASPFIN  WITH
-    ABFA_AP         -108.094     23.427     -4.614      0.000
+    ABFA_AP          -98.930     22.217     -4.453      0.000
 
  Means
-    ABFA_AP           66.745      0.922     72.399      0.000
-    AASPFIN           47.454      1.392     34.081      0.000
-    I_BFA_AP          54.279      5.507      9.857      0.000
-    S_BFA_AP           0.223      0.376      0.593      0.553
-    I_ASPFIN          32.549      5.767      5.644      0.000
-    S_ASPFIN           0.055      0.622      0.088      0.930
+    ABFA_AP           66.884      0.907     73.758      0.000
+    AASPFIN           47.398      1.397     33.923      0.000
+    I_BFA_AP          53.700      5.454      9.846      0.000
+    S_BFA_AP           0.215      0.372      0.577      0.564
+    I_ASPFIN          31.118      5.520      5.637      0.000
+    S_ASPFIN           0.090      0.623      0.144      0.885
 
  Intercepts
     BBFA_AP            0.000      0.000    999.000    999.000
@@ -588,30 +612,30 @@ MODEL RESULTS
     DASPFIN            0.000      0.000    999.000    999.000
 
  Variances
-    ABFA_AP          237.253     20.471     11.590      0.000
-    AASPFIN          540.830     37.616     14.378      0.000
-    I_BFA_AP          84.231     35.137      2.397      0.017
+    ABFA_AP          227.428     18.224     12.480      0.000
+    AASPFIN          535.441     37.631     14.229      0.000
+    I_BFA_AP          77.009     31.631      2.435      0.015
     S_BFA_AP           0.000      0.000    999.000    999.000
-    I_ASPFIN         211.126     76.002      2.778      0.005
+    I_ASPFIN         209.247     69.352      3.017      0.003
     S_ASPFIN           0.000      0.000    999.000    999.000
 
  Residual Variances
-    BBFA_AP           73.061     11.218      6.513      0.000
-    CBFA_AP           73.061     11.218      6.513      0.000
-    DBFA_AP           73.061     11.218      6.513      0.000
-    BASPFIN          172.191     20.198      8.525      0.000
-    CASPFIN          172.191     20.198      8.525      0.000
-    DASPFIN          172.191     20.198      8.525      0.000
+    BBFA_AP           73.023     11.154      6.547      0.000
+    CBFA_AP           73.023     11.154      6.547      0.000
+    DBFA_AP           73.023     11.154      6.547      0.000
+    BASPFIN          171.568     19.881      8.630      0.000
+    CASPFIN          171.568     19.881      8.630      0.000
+    DASPFIN          171.568     19.881      8.630      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.698E-05
+     Condition Number for the Information Matrix              0.598E-05
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  18:13:09
-        Ending Time:  18:13:10
+     Beginning Time:  11:18:30
+        Ending Time:  11:18:31
        Elapsed Time:  00:00:01
 
 

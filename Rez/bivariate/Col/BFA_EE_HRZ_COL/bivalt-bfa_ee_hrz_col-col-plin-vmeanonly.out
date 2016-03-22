@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   6:22 PM
+03/21/2016  11:28 AM
 
 INPUT INSTRUCTIONS
 
@@ -238,7 +238,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFA_EE
@@ -316,6 +320,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_HRZ_COL
 *** WARNING
   Variable name contains more than 8 characters.
@@ -328,7 +348,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   4 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   9 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -337,7 +361,7 @@ PxVx Univariate - Col Lin BFA_EE with MeanOnly HRZ_COL;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -404,7 +428,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           5          52           9           1
+          1         138           5          52           9           1
           2          12           6          11          10          10
           3           5           7           1          11           2
           4          27           8          16          12           2
@@ -421,22 +445,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFA_EE       CBFA_EE       DBFA_EE       BHRZ_COL      CHRZ_COL
               ________      ________      ________      ________      ________
- BBFA_EE        0.710
- CBFA_EE        0.545         0.602
- DBFA_EE        0.563         0.541         0.642
- BHRZ_COL       0.699         0.545         0.559         0.699
- CHRZ_COL       0.545         0.602         0.541         0.545         0.602
- DHRZ_COL       0.559         0.538         0.634         0.559         0.538
- ABFA_EE        0.710         0.602         0.642         0.699         0.602
- AHRZ_COL       0.710         0.602         0.642         0.699         0.602
+ BBFA_EE        0.708
+ CBFA_EE        0.542         0.599
+ DBFA_EE        0.560         0.538         0.639
+ BHRZ_COL       0.697         0.542         0.556         0.697
+ CHRZ_COL       0.542         0.599         0.538         0.542         0.599
+ DHRZ_COL       0.556         0.534         0.632         0.556         0.534
+ ABFA_EE        0.708         0.599         0.639         0.697         0.599
+ AHRZ_COL       0.708         0.599         0.639         0.697         0.599
 
 
            Covariance Coverage
               DHRZ_COL      ABFA_EE       AHRZ_COL
               ________      ________      ________
- DHRZ_COL       0.634
- ABFA_EE        0.634         1.000
- AHRZ_COL       0.634         0.993         0.993
+ DHRZ_COL       0.632
+ ABFA_EE        0.632         1.000
+ AHRZ_COL       0.632         0.993         0.993
 
 
 SAMPLE STATISTICS
@@ -448,59 +472,63 @@ SAMPLE STATISTICS
            Means
               BBFA_EE       CBFA_EE       DBFA_EE       BHRZ_COL      CHRZ_COL
               ________      ________      ________      ________      ________
- 1             65.425        66.198        65.055        74.050        73.902
+ 1             65.374        66.382        65.136        73.958        73.955
 
 
            Means
               DHRZ_COL      ABFA_EE       AHRZ_COL
               ________      ________      ________
- 1             74.787        67.217        71.555
+ 1             74.884        67.197        71.598
 
 
            Covariances
               BBFA_EE       CBFA_EE       DBFA_EE       BHRZ_COL      CHRZ_COL
               ________      ________      ________      ________      ________
- BBFA_EE      308.057
- CBFA_EE      218.206       283.802
- DBFA_EE      232.396       244.274       337.152
- BHRZ_COL      84.366        53.861        69.996       205.203
- CHRZ_COL      66.964        76.913        58.786       129.354       179.636
- DHRZ_COL      85.933        69.158       101.852       122.755       113.980
- ABFA_EE      236.627       203.053       223.159        73.394        60.004
- AHRZ_COL      74.330        34.518        52.260       106.717       109.141
+ BBFA_EE      310.199
+ CBFA_EE      220.418       283.315
+ DBFA_EE      233.571       242.869       334.191
+ BHRZ_COL      84.746        54.887        69.518       207.062
+ CHRZ_COL      68.871        77.895        62.205       132.391       179.095
+ DHRZ_COL      87.222        67.819       102.654       125.357       113.687
+ ABFA_EE      238.255       204.796       225.107        74.097        60.411
+ AHRZ_COL      76.322        35.262        57.406       110.607       106.669
 
 
            Covariances
               DHRZ_COL      ABFA_EE       AHRZ_COL
               ________      ________      ________
- DHRZ_COL     208.643
- ABFA_EE       83.543       278.136
- AHRZ_COL     119.800        74.197       193.603
+ DHRZ_COL     209.780
+ ABFA_EE       84.408       280.088
+ AHRZ_COL     120.020        74.847       191.269
 
 
            Correlations
               BBFA_EE       CBFA_EE       DBFA_EE       BHRZ_COL      CHRZ_COL
               ________      ________      ________      ________      ________
  BBFA_EE        1.000
- CBFA_EE        0.738         1.000
- DBFA_EE        0.721         0.790         1.000
- BHRZ_COL       0.336         0.223         0.266         1.000
- CHRZ_COL       0.285         0.341         0.239         0.674         1.000
- DHRZ_COL       0.339         0.284         0.384         0.593         0.589
- ABFA_EE        0.808         0.723         0.729         0.307         0.268
- AHRZ_COL       0.304         0.147         0.205         0.535         0.585
+ CBFA_EE        0.744         1.000
+ DBFA_EE        0.725         0.789         1.000
+ BHRZ_COL       0.334         0.227         0.264         1.000
+ CHRZ_COL       0.292         0.346         0.254         0.687         1.000
+ DHRZ_COL       0.342         0.278         0.388         0.601         0.587
+ ABFA_EE        0.808         0.727         0.736         0.308         0.270
+ AHRZ_COL       0.313         0.151         0.227         0.556         0.576
 
 
            Correlations
               DHRZ_COL      ABFA_EE       AHRZ_COL
               ________      ________      ________
  DHRZ_COL       1.000
- ABFA_EE        0.347         1.000
- AHRZ_COL       0.596         0.320         1.000
+ ABFA_EE        0.348         1.000
+ AHRZ_COL       0.599         0.323         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6360.019
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6293.314
 
+     WARNING:  THE MLR STANDARD ERRORS COULD NOT BE COMPUTED.  THE MLF STANDARD
+     ERRORS WERE COMPUTED INSTEAD.  THE MLR CONDITION NUMBER IS      -0.307D-05.
+     PROBLEM INVOLVING PARAMETER 25.  THIS MAY BE DUE TO NEAR SINGULARITY
+     OF THE RANDOM EFFECT VARIANCE/COVARIANCE OR INCOMPLETE CONVERGENCE.
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
 
@@ -512,15 +540,13 @@ Number of Free Parameters                       28
 
 Loglikelihood
 
-          H0 Value                       -6378.053
-          H0 Scaling Correction Factor       1.203
-            for MLR
+          H0 Value                       -6311.546
 
 Information Criteria
 
-          Akaike (AIC)                   12812.107
-          Bayesian (BIC)                 12913.781
-          Sample-Size Adjusted BIC       12824.995
+          Akaike (AIC)                   12679.091
+          Bayesian (BIC)                 12780.564
+          Sample-Size Adjusted BIC       12691.780
             (n* = (n + 2) / 24)
 
 
@@ -531,65 +557,65 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFA_EE    ON
-    CBFA_EE            0.201      0.121      1.670      0.095
-    CHRZ_COL          -0.090      0.165     -0.546      0.585
+    CBFA_EE            0.181      0.115      1.574      0.115
+    CHRZ_COL          -0.072      0.093     -0.770      0.441
 
  CBFA_EE    ON
-    BBFA_EE            0.201      0.121      1.670      0.095
-    BHRZ_COL          -0.090      0.165     -0.546      0.585
+    BBFA_EE            0.181      0.115      1.574      0.115
+    BHRZ_COL          -0.072      0.093     -0.770      0.441
 
  BBFA_EE    ON
-    ABFA_EE            0.201      0.121      1.670      0.095
-    AHRZ_COL          -0.090      0.165     -0.546      0.585
+    ABFA_EE            0.181      0.115      1.574      0.115
+    AHRZ_COL          -0.072      0.093     -0.770      0.441
 
  DHRZ_COL   ON
-    CHRZ_COL          -0.035      0.108     -0.324      0.746
-    CBFA_EE            0.039      0.081      0.480      0.631
+    CHRZ_COL          -0.009      0.081     -0.111      0.911
+    CBFA_EE            0.030      0.077      0.384      0.701
 
  CHRZ_COL   ON
-    BHRZ_COL          -0.035      0.108     -0.324      0.746
-    BBFA_EE            0.039      0.081      0.480      0.631
+    BHRZ_COL          -0.009      0.081     -0.111      0.911
+    BBFA_EE            0.030      0.077      0.384      0.701
 
  BHRZ_COL   ON
-    AHRZ_COL          -0.035      0.108     -0.324      0.746
-    ABFA_EE            0.039      0.081      0.480      0.631
+    AHRZ_COL          -0.009      0.081     -0.111      0.911
+    ABFA_EE            0.030      0.077      0.384      0.701
 
  S_BFA_EE WITH
-    I_BFA_EE          -2.986      6.908     -0.432      0.666
+    I_BFA_EE          -3.317     10.211     -0.325      0.745
 
  I_HRZ_CO WITH
-    I_BFA_EE          56.751     39.629      1.432      0.152
-    S_BFA_EE           2.045      5.624      0.364      0.716
+    I_BFA_EE          56.349     30.369      1.855      0.064
+    S_BFA_EE           2.155      6.108      0.353      0.724
 
  ABFA_EE  WITH
-    I_BFA_EE         177.485     49.906      3.556      0.000
-    S_BFA_EE           0.606      8.391      0.072      0.942
-    I_HRZ_COL         66.194     20.835      3.177      0.001
+    I_BFA_EE         183.619     38.999      4.708      0.000
+    S_BFA_EE           0.239      9.720      0.025      0.980
+    I_HRZ_COL         67.214     23.943      2.807      0.005
 
  AHRZ_COL WITH
-    I_BFA_EE          77.871     42.143      1.848      0.065
-    S_BFA_EE         -11.266      8.563     -1.316      0.188
-    I_HRZ_COL        114.619     15.960      7.182      0.000
+    I_BFA_EE          76.080     26.550      2.866      0.004
+    S_BFA_EE          -9.805      8.533     -1.149      0.251
+    I_HRZ_COL        112.459     19.476      5.774      0.000
 
  DHRZ_COL WITH
-    DBFA_EE           19.979      8.150      2.452      0.014
+    DBFA_EE           19.974      6.420      3.111      0.002
 
  CHRZ_COL WITH
-    CBFA_EE           19.979      8.150      2.452      0.014
+    CBFA_EE           19.974      6.420      3.111      0.002
 
  BHRZ_COL WITH
-    BBFA_EE           19.979      8.150      2.452      0.014
+    BBFA_EE           19.974      6.420      3.111      0.002
 
  AHRZ_COL WITH
-    ABFA_EE           74.191     15.199      4.881      0.000
+    ABFA_EE           74.842     15.814      4.732      0.000
 
  Means
-    ABFA_EE           67.217      0.996     67.453      0.000
-    AHRZ_COL          71.593      0.836     85.638      0.000
-    I_BFA_EE          58.355     14.855      3.928      0.000
-    S_BFA_EE           0.209      0.435      0.480      0.631
-    I_HRZ_COL         75.112      5.066     14.826      0.000
-    S_HRZ_COL         -0.440      0.468     -0.941      0.347
+    ABFA_EE           67.197      1.108     60.643      0.000
+    AHRZ_COL          71.636      0.889     80.564      0.000
+    I_BFA_EE          58.456      8.541      6.845      0.000
+    S_BFA_EE           0.200      0.548      0.365      0.715
+    I_HRZ_COL         73.746      7.135     10.336      0.000
+    S_HRZ_COL         -0.392      0.456     -0.859      0.390
 
  Intercepts
     BBFA_EE            0.000      0.000    999.000    999.000
@@ -600,30 +626,30 @@ MODEL RESULTS
     DHRZ_COL           0.000      0.000    999.000    999.000
 
  Variances
-    ABFA_EE          278.136     21.216     13.110      0.000
-    AHRZ_COL         193.601     15.953     12.136      0.000
-    I_BFA_EE         152.038     69.799      2.178      0.029
-    S_BFA_EE           2.859      2.744      1.042      0.298
-    I_HRZ_COL        126.797     25.965      4.883      0.000
+    ABFA_EE          280.087     29.599      9.463      0.000
+    AHRZ_COL         191.267     18.083     10.577      0.000
+    I_BFA_EE         160.215     60.099      2.666      0.008
+    S_BFA_EE           2.768      3.944      0.702      0.483
+    I_HRZ_COL        122.682     31.175      3.935      0.000
     S_HRZ_COL          0.000      0.000    999.000    999.000
 
  Residual Variances
-    BBFA_EE           83.053     12.499      6.645      0.000
-    CBFA_EE           83.053     12.499      6.645      0.000
-    DBFA_EE           83.053     12.499      6.645      0.000
-    BHRZ_COL          75.373      9.180      8.210      0.000
-    CHRZ_COL          75.373      9.180      8.210      0.000
-    DHRZ_COL          75.373      9.180      8.210      0.000
+    BBFA_EE           81.635     10.682      7.642      0.000
+    CBFA_EE           81.635     10.682      7.642      0.000
+    DBFA_EE           81.635     10.682      7.642      0.000
+    BHRZ_COL          75.693      7.312     10.351      0.000
+    CHRZ_COL          75.693      7.312     10.351      0.000
+    DHRZ_COL          75.693      7.312     10.351      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.190E-06
+     Condition Number for the Information Matrix              0.221E-06
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  18:22:19
-        Ending Time:  18:22:26
+     Beginning Time:  11:28:44
+        Ending Time:  11:28:51
        Elapsed Time:  00:00:07
 
 

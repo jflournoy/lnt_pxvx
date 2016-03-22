@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   9:48 PM
+03/21/2016   3:06 PM
 
 INPUT INSTRUCTIONS
 
@@ -237,7 +237,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
 
   USEVARIABLES =
@@ -315,6 +319,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_S_SCALE
 *** WARNING
   Variable name contains more than 8 characters.
@@ -329,8 +349,8 @@ INPUT INSTRUCTIONS
 *** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  5
-   5 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  16
+   9 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -339,7 +359,7 @@ PxVx Univariate - Nat MeanOnly S_SCALE with MeanOnly USI;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         874
+Number of observations                                         863
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -384,7 +404,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns            20
+     Number of missing data patterns            22
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -393,26 +413,37 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERNS (x = not missing)
 
            1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
- BS_SCALE  x     x  x     x     x     x  x  x  x        x     x
- CS_SCALE  x           x  x     x  x     x  x  x           x  x  x
- DS_SCALE  x     x     x  x  x           x     x  x     x        x  x
- BUSI      x     x  x     x     x        x  x                 x
- CUSI      x           x        x  x     x     x              x  x
- DUSI      x     x     x  x  x                 x  x     x     x
- AS_SCALE  x  x  x  x  x  x  x  x  x  x  x  x  x     x  x  x  x  x  x
- AUSI      x  x  x  x  x  x  x  x  x  x  x  x  x  x     x  x  x  x  x
+ BS_SCALE  x     x  x     x     x     x  x  x  x     x     x     x
+ CS_SCALE  x           x  x     x  x     x  x  x     x        x  x  x
+ DS_SCALE  x     x     x  x  x           x     x  x  x     x        x
+ BUSI      x     x  x     x     x        x  x        x           x
+ CUSI      x           x        x  x     x     x     x           x  x
+ DUSI      x     x     x  x  x                 x  x  x     x     x
+ AS_SCALE  x  x  x  x  x  x  x  x  x  x  x  x  x        x  x  x  x  x
+ AUSI      x  x  x  x  x  x  x  x  x  x  x  x  x  x        x  x  x  x
+
+          21 22
+ BS_SCALE
+ CS_SCALE     x
+ DS_SCALE  x  x
+ BUSI
+ CUSI         x
+ DUSI         x
+ AS_SCALE  x
+ AUSI      x
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         497           8          45          15           1
-          2         168           9          21          16           1
-          3          26          10           5          17           1
-          4          52          11           1          18           1
-          5          21          12           1          19           2
-          6           2          13           3          20           2
-          7          23          14           1
+          1         489           9          20          17           1
+          2         168          10           5          18           1
+          3          26          11           1          19           1
+          4          47          12           1          20           2
+          5          21          13           3          21           2
+          6           2          14           1          22           1
+          7          23          15           3
+          8          44          16           1
 
 
 COVARIANCE COVERAGE OF DATA
@@ -426,22 +457,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BS_SCALE      CS_SCALE      DS_SCALE      BUSI          CUSI
               ________      ________      ________      ________      ________
- BS_SCALE       0.725
- CS_SCALE       0.629         0.681
- DS_SCALE       0.606         0.602         0.662
- BUSI           0.715         0.626         0.602         0.715
- CUSI           0.626         0.676         0.600         0.622         0.676
- DUSI           0.606         0.600         0.657         0.602         0.597
- AS_SCALE       0.725         0.681         0.661         0.715         0.676
- AUSI           0.725         0.681         0.662         0.715         0.676
+ BS_SCALE       0.722
+ CS_SCALE       0.630         0.683
+ DS_SCALE       0.608         0.605         0.666
+ BUSI           0.711         0.627         0.604         0.711
+ CUSI           0.627         0.678         0.603         0.623         0.678
+ DUSI           0.608         0.603         0.660         0.604         0.600
+ AS_SCALE       0.718         0.678         0.660         0.708         0.673
+ AUSI           0.718         0.678         0.662         0.708         0.673
 
 
            Covariance Coverage
               DUSI          AS_SCALE      AUSI
               ________      ________      ________
- DUSI           0.658
- AS_SCALE       0.657         0.999
- AUSI           0.658         0.998         0.999
+ DUSI           0.662
+ AS_SCALE       0.656         0.994
+ AUSI           0.657         0.993         0.994
 
 
 SAMPLE STATISTICS
@@ -453,59 +484,63 @@ SAMPLE STATISTICS
            Means
               BS_SCALE      CS_SCALE      DS_SCALE      BUSI          CUSI
               ________      ________      ________      ________      ________
- 1             73.125        73.716        73.927        28.587        28.584
+ 1             73.206        73.773        74.013        28.433        28.559
 
 
            Means
               DUSI          AS_SCALE      AUSI
               ________      ________      ________
- 1             28.592        72.922        29.089
+ 1             28.504        72.963        28.992
 
 
            Covariances
               BS_SCALE      CS_SCALE      DS_SCALE      BUSI          CUSI
               ________      ________      ________      ________      ________
- BS_SCALE     188.493
- CS_SCALE     150.905       184.560
- DS_SCALE     148.303       157.937       194.679
- BUSI         -50.714       -52.623       -42.577       275.860
- CUSI         -45.313       -52.390       -41.152       213.381       281.200
- DUSI         -38.696       -44.519       -36.351       199.215       220.244
- AS_SCALE     149.224       150.465       150.196       -38.224       -32.941
- AUSI         -49.882       -48.862       -39.432       206.260       203.366
+ BS_SCALE     184.563
+ CS_SCALE     149.229       183.838
+ DS_SCALE     145.642       156.432       192.526
+ BUSI         -50.057       -52.617       -41.566       275.180
+ CUSI         -44.502       -51.378       -39.988       215.949       282.859
+ DUSI         -36.432       -42.826       -34.993       200.480       218.933
+ AS_SCALE     146.598       148.587       147.953       -38.743       -31.973
+ AUSI         -47.020       -45.210       -36.675       209.123       202.798
 
 
            Covariances
               DUSI          AS_SCALE      AUSI
               ________      ________      ________
- DUSI         261.711
- AS_SCALE     -29.620       199.287
- AUSI         191.675       -41.308       267.164
+ DUSI         261.308
+ AS_SCALE     -28.801       196.769
+ AUSI         190.456       -37.922       264.555
 
 
            Correlations
               BS_SCALE      CS_SCALE      DS_SCALE      BUSI          CUSI
               ________      ________      ________      ________      ________
  BS_SCALE       1.000
- CS_SCALE       0.809         1.000
- DS_SCALE       0.774         0.833         1.000
- BUSI          -0.222        -0.233        -0.184         1.000
- CUSI          -0.197        -0.230        -0.176         0.766         1.000
- DUSI          -0.174        -0.203        -0.161         0.741         0.812
- AS_SCALE       0.770         0.785         0.763        -0.163        -0.139
- AUSI          -0.222        -0.220        -0.173         0.760         0.742
+ CS_SCALE       0.810         1.000
+ DS_SCALE       0.773         0.832         1.000
+ BUSI          -0.222        -0.234        -0.181         1.000
+ CUSI          -0.195        -0.225        -0.171         0.774         1.000
+ DUSI          -0.166        -0.195        -0.156         0.748         0.805
+ AS_SCALE       0.769         0.781         0.760        -0.166        -0.136
+ AUSI          -0.213        -0.205        -0.163         0.775         0.741
 
 
            Correlations
               DUSI          AS_SCALE      AUSI
               ________      ________      ________
  DUSI           1.000
- AS_SCALE      -0.130         1.000
- AUSI           0.725        -0.179         1.000
+ AS_SCALE      -0.127         1.000
+ AUSI           0.724        -0.166         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -20119.464
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -19822.239
 
+     WARNING:  THE MLR STANDARD ERRORS COULD NOT BE COMPUTED.  THE MLF STANDARD
+     ERRORS WERE COMPUTED INSTEAD.  THE MLR CONDITION NUMBER IS      -0.573D-04.
+     PROBLEM INVOLVING PARAMETER 17.  THIS MAY BE DUE TO NEAR SINGULARITY
+     OF THE RANDOM EFFECT VARIANCE/COVARIANCE OR INCOMPLETE CONVERGENCE.
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
 
@@ -517,15 +552,13 @@ Number of Free Parameters                       23
 
 Loglikelihood
 
-          H0 Value                      -20134.000
-          H0 Scaling Correction Factor       1.117
-            for MLR
+          H0 Value                      -19833.595
 
 Information Criteria
 
-          Akaike (AIC)                   40314.001
-          Bayesian (BIC)                 40423.782
-          Sample-Size Adjusted BIC       40350.739
+          Akaike (AIC)                   39713.190
+          Bayesian (BIC)                 39822.680
+          Sample-Size Adjusted BIC       39749.638
             (n* = (n + 2) / 24)
 
 
@@ -536,59 +569,59 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DS_SCALE   ON
-    CS_SCALE           0.091      0.038      2.386      0.017
-    CUSI              -0.042      0.025     -1.695      0.090
+    CS_SCALE           0.099      0.032      3.113      0.002
+    CUSI              -0.056      0.028     -1.979      0.048
 
  CS_SCALE   ON
-    BS_SCALE           0.091      0.038      2.386      0.017
-    BUSI              -0.042      0.025     -1.695      0.090
+    BS_SCALE           0.099      0.032      3.113      0.002
+    BUSI              -0.056      0.028     -1.979      0.048
 
  BS_SCALE   ON
-    AS_SCALE           0.091      0.038      2.386      0.017
-    AUSI              -0.042      0.025     -1.695      0.090
+    AS_SCALE           0.099      0.032      3.113      0.002
+    AUSI              -0.056      0.028     -1.979      0.048
 
  DUSI       ON
-    CUSI               0.147      0.040      3.648      0.000
-    CS_SCALE          -0.029      0.038     -0.774      0.439
+    CUSI               0.172      0.044      3.926      0.000
+    CS_SCALE          -0.047      0.046     -1.023      0.306
 
  CUSI       ON
-    BUSI               0.147      0.040      3.648      0.000
-    BS_SCALE          -0.029      0.038     -0.774      0.439
+    BUSI               0.172      0.044      3.926      0.000
+    BS_SCALE          -0.047      0.046     -1.023      0.306
 
  BUSI       ON
-    AUSI               0.147      0.040      3.648      0.000
-    AS_SCALE          -0.029      0.038     -0.774      0.439
+    AUSI               0.172      0.044      3.926      0.000
+    AS_SCALE          -0.047      0.046     -1.023      0.306
 
  I_USI    WITH
-    I_S_SCALE        -19.301      9.203     -2.097      0.036
+    I_S_SCALE        -12.411     11.979     -1.036      0.300
 
  AS_SCALE WITH
-    I_S_SCALE        131.050      8.983     14.588      0.000
-    I_USI            -22.256      9.011     -2.470      0.014
+    I_S_SCALE        126.949      9.898     12.826      0.000
+    I_USI            -18.390     10.220     -1.800      0.072
 
  AUSI     WITH
-    I_S_SCALE        -30.066      8.916     -3.372      0.001
-    I_USI            164.879     11.942     13.806      0.000
+    I_S_SCALE        -23.717      9.336     -2.541      0.011
+    I_USI            159.092     15.496     10.267      0.000
 
  DUSI     WITH
-    DS_SCALE          -3.561      2.030     -1.754      0.079
+    DS_SCALE          -4.177      1.759     -2.375      0.018
 
  CUSI     WITH
-    CS_SCALE          -3.561      2.030     -1.754      0.079
+    CS_SCALE          -4.177      1.759     -2.375      0.018
 
  BUSI     WITH
-    BS_SCALE          -3.561      2.030     -1.754      0.079
+    BS_SCALE          -4.177      1.759     -2.375      0.018
 
  AUSI     WITH
-    AS_SCALE         -41.334      8.037     -5.143      0.000
+    AS_SCALE         -37.937      8.261     -4.593      0.000
 
  Means
-    AS_SCALE          72.923      0.477    152.728      0.000
-    AUSI              29.088      0.553     52.562      0.000
-    I_S_SCALE         67.985      3.053     22.265      0.000
-    S_S_SCALE          0.073      0.026      2.794      0.005
-    I_USI             26.582      3.358      7.915      0.000
-    S_USI             -0.037      0.032     -1.143      0.253
+    AS_SCALE          72.962      0.517    141.041      0.000
+    AUSI              28.993      0.576     50.364      0.000
+    I_S_SCALE         67.823      2.502     27.112      0.000
+    S_S_SCALE          0.075      0.026      2.847      0.004
+    I_USI             27.079      3.539      7.652      0.000
+    S_USI             -0.031      0.031     -1.008      0.314
 
  Intercepts
     BS_SCALE           0.000      0.000    999.000    999.000
@@ -599,31 +632,31 @@ MODEL RESULTS
     DUSI               0.000      0.000    999.000    999.000
 
  Variances
-    AS_SCALE         199.309      9.509     20.960      0.000
-    AUSI             267.197     10.773     24.803      0.000
-    I_S_SCALE        117.580     11.990      9.806      0.000
+    AS_SCALE         196.753     10.324     19.058      0.000
+    AUSI             264.586     15.952     16.586      0.000
+    I_S_SCALE        112.685     12.327      9.141      0.000
     S_S_SCALE          0.000      0.000    999.000    999.000
-    I_USI            144.944     16.366      8.857      0.000
+    I_USI            135.282     20.472      6.608      0.000
     S_USI              0.000      0.000    999.000    999.000
 
  Residual Variances
-    BS_SCALE          39.080      2.324     16.813      0.000
-    CS_SCALE          39.080      2.324     16.813      0.000
-    DS_SCALE          39.080      2.324     16.813      0.000
-    BUSI              67.959      4.305     15.787      0.000
-    CUSI              67.959      4.305     15.787      0.000
-    DUSI              67.959      4.305     15.787      0.000
+    BS_SCALE          38.917      1.700     22.893      0.000
+    CS_SCALE          38.917      1.700     22.893      0.000
+    DS_SCALE          38.917      1.700     22.893      0.000
+    BUSI              68.155      3.281     20.770      0.000
+    CUSI              68.155      3.281     20.770      0.000
+    DUSI              68.155      3.281     20.770      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.284E-05
+     Condition Number for the Information Matrix              0.152E-05
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  21:48:52
-        Ending Time:  21:48:56
-       Elapsed Time:  00:00:04
+     Beginning Time:  15:06:58
+        Ending Time:  15:07:03
+       Elapsed Time:  00:00:05
 
 
 

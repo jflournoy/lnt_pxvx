@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:43 PM
+03/21/2016  11:08 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFA_NV
@@ -291,14 +295,30 @@ INPUT INSTRUCTIONS
 
 
 
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
 *** WARNING in MODEL command
   All continuous latent variable covariances involving S_BFA_NV have been fixed to 0
   because the variance of S_BFA_NV is fixed at 0.
 *** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  5
-   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  16
+   6 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -307,7 +327,7 @@ PxVx Univariate - Nat BFA_NV AR_LinM;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         874
+Number of observations                                         863
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -352,7 +372,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns             6
+     Number of missing data patterns             8
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -360,18 +380,19 @@ SUMMARY OF MISSING DATA PATTERNS
 
      MISSING DATA PATTERNS (x = not missing)
 
-           1  2  3  4  5  6
- BBFA_NV   x     x  x
- CBFA_NV   x           x
- DBFA_NV   x     x     x  x
+           1  2  3  4  5  6  7  8
+ BBFA_NV   x     x  x        x
+ CBFA_NV   x           x     x  x
+ DBFA_NV   x     x     x  x  x  x
  ABFA_NV   x  x  x  x  x  x
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         550           3          27           5          45
-          2         170           4          57           6          25
+          1         541           4          52           7           3
+          2         170           5          44           8           1
+          3          27           6          25
 
 
 COVARIANCE COVERAGE OF DATA
@@ -385,10 +406,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFA_NV       CBFA_NV       DBFA_NV       ABFA_NV
               ________      ________      ________      ________
- BBFA_NV        0.725
- CBFA_NV        0.629         0.681
- DBFA_NV        0.660         0.681         0.740
- ABFA_NV        0.725         0.681         0.740         1.000
+ BBFA_NV        0.722
+ CBFA_NV        0.630         0.683
+ DBFA_NV        0.662         0.683         0.743
+ ABFA_NV        0.718         0.678         0.738         0.995
 
 
 SAMPLE STATISTICS
@@ -400,28 +421,28 @@ SAMPLE STATISTICS
            Means
               BBFA_NV       CBFA_NV       DBFA_NV       ABFA_NV
               ________      ________      ________      ________
- 1             43.540        42.984        42.403        43.761
+ 1             43.668        42.983        42.449        43.894
 
 
            Covariances
               BBFA_NV       CBFA_NV       DBFA_NV       ABFA_NV
               ________      ________      ________      ________
- BBFA_NV      438.472
- CBFA_NV      365.145       448.641
- DBFA_NV      373.147       400.486       516.896
- ABFA_NV      376.954       362.244       368.993       487.542
+ BBFA_NV      438.790
+ CBFA_NV      370.419       452.275
+ DBFA_NV      375.058       402.751       516.059
+ ABFA_NV      376.052       365.406       370.010       485.953
 
 
            Correlations
               BBFA_NV       CBFA_NV       DBFA_NV       ABFA_NV
               ________      ________      ________      ________
  BBFA_NV        1.000
- CBFA_NV        0.823         1.000
- DBFA_NV        0.784         0.832         1.000
- ABFA_NV        0.815         0.775         0.735         1.000
+ CBFA_NV        0.832         1.000
+ DBFA_NV        0.788         0.834         1.000
+ ABFA_NV        0.814         0.779         0.739         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -11257.843
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -11089.116
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -434,15 +455,15 @@ Number of Free Parameters                        8
 
 Loglikelihood
 
-          H0 Value                      -11262.349
-          H0 Scaling Correction Factor       1.334
+          H0 Value                      -11093.422
+          H0 Scaling Correction Factor       1.370
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   22540.697
-          Bayesian (BIC)                 22578.882
-          Sample-Size Adjusted BIC       22553.476
+          Akaike (AIC)                   22202.845
+          Bayesian (BIC)                 22240.928
+          Sample-Size Adjusted BIC       22215.522
             (n* = (n + 2) / 24)
 
 
@@ -453,21 +474,21 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFA_NV    ON
-    CBFA_NV            0.269      0.067      4.039      0.000
+    CBFA_NV            0.260      0.070      3.694      0.000
 
  CBFA_NV    ON
-    BBFA_NV            0.269      0.067      4.039      0.000
+    BBFA_NV            0.260      0.070      3.694      0.000
 
  BBFA_NV    ON
-    ABFA_NV            0.269      0.067      4.039      0.000
+    ABFA_NV            0.260      0.070      3.694      0.000
 
  ABFA_NV  WITH
-    I_BFA_NV         255.508     30.923      8.263      0.000
+    I_BFA_NV         259.976     32.302      8.048      0.000
 
  Means
-    ABFA_NV           43.762      0.744     58.817      0.000
-    I_BFA_NV          31.526      2.985     10.563      0.000
-    S_BFA_NV          -0.129      0.037     -3.452      0.001
+    ABFA_NV           43.893      0.746     58.854      0.000
+    I_BFA_NV          31.959      3.157     10.124      0.000
+    S_BFA_NV          -0.128      0.038     -3.393      0.001
 
  Intercepts
     BBFA_NV            0.000      0.000    999.000    999.000
@@ -475,25 +496,25 @@ MODEL RESULTS
     DBFA_NV            0.000      0.000    999.000    999.000
 
  Variances
-    ABFA_NV          487.543     19.129     25.487      0.000
-    I_BFA_NV         189.203     40.023      4.727      0.000
+    ABFA_NV          485.955     19.241     25.257      0.000
+    I_BFA_NV         196.097     42.922      4.569      0.000
     S_BFA_NV           0.000      0.000    999.000    999.000
 
  Residual Variances
-    BBFA_NV          101.583      7.603     13.361      0.000
-    CBFA_NV          101.583      7.603     13.361      0.000
-    DBFA_NV          101.583      7.603     13.361      0.000
+    BBFA_NV           99.050      7.776     12.738      0.000
+    CBFA_NV           99.050      7.776     12.738      0.000
+    DBFA_NV           99.050      7.776     12.738      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.338E-03
+     Condition Number for the Information Matrix              0.342E-03
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:43:13
-        Ending Time:  17:43:14
-       Elapsed Time:  00:00:01
+     Beginning Time:  11:08:58
+        Ending Time:  11:08:58
+       Elapsed Time:  00:00:00
 
 
 

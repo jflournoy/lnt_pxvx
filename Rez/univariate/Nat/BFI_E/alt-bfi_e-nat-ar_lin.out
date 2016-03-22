@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:43 PM
+03/21/2016  11:09 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFI_E
@@ -292,10 +296,26 @@ INPUT INSTRUCTIONS
 
 
 *** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  5
-   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  16
+   5 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -304,7 +324,7 @@ PxVx Univariate - Nat BFI_E AR_Lin;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         874
+Number of observations                                         863
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -349,7 +369,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns             9
+     Number of missing data patterns            11
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -357,19 +377,20 @@ SUMMARY OF MISSING DATA PATTERNS
 
      MISSING DATA PATTERNS (x = not missing)
 
-           1  2  3  4  5  6  7  8  9
- BBFI_E    x     x  x        x
- CBFI_E    x           x     x  x
- DBFI_E    x     x     x  x        x
+           1  2  3  4  5  6  7  8  9 10 11
+ BBFI_E    x     x  x        x        x
+ CBFI_E    x           x     x  x     x  x
+ DBFI_E    x     x     x  x        x  x  x
  ABFI_E    x  x  x  x  x  x  x  x
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         503           4          57           7          47
-          2         169           5          23           8          22
-          3          27           6          25           9           1
+          1         495           5          23           9           1
+          2         169           6          25          10           3
+          3          27           7          46          11           1
+          4          52           8          21
 
 
 COVARIANCE COVERAGE OF DATA
@@ -383,10 +404,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFI_E        CBFI_E        DBFI_E        ABFI_E
               ________      ________      ________      ________
- BBFI_E         0.725
- CBFI_E         0.629         0.681
- DBFI_E         0.606         0.602         0.662
- ABFI_E         0.725         0.681         0.661         0.999
+ BBFI_E         0.722
+ CBFI_E         0.630         0.683
+ DBFI_E         0.608         0.605         0.666
+ ABFI_E         0.718         0.678         0.660         0.994
 
 
 SAMPLE STATISTICS
@@ -398,16 +419,16 @@ SAMPLE STATISTICS
            Means
               BBFI_E        CBFI_E        DBFI_E        ABFI_E
               ________      ________      ________      ________
- 1             54.684        54.263        53.837        54.880
+ 1             54.577        54.220        53.871        54.890
 
 
            Covariances
               BBFI_E        CBFI_E        DBFI_E        ABFI_E
               ________      ________      ________      ________
- BBFI_E       475.575
- CBFI_E       412.237       465.971
- DBFI_E       398.761       414.861       476.841
- ABFI_E       419.868       412.327       403.150       490.895
+ BBFI_E       477.059
+ CBFI_E       413.600       466.993
+ DBFI_E       403.606       418.700       483.463
+ ABFI_E       421.902       413.795       407.794       491.674
 
 
            Correlations
@@ -415,11 +436,11 @@ SAMPLE STATISTICS
               ________      ________      ________      ________
  BBFI_E         1.000
  CBFI_E         0.876         1.000
- DBFI_E         0.837         0.880         1.000
- ABFI_E         0.869         0.862         0.833         1.000
+ DBFI_E         0.840         0.881         1.000
+ ABFI_E         0.871         0.864         0.836         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -10685.435
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -10537.982
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -432,15 +453,15 @@ Number of Free Parameters                       11
 
 Loglikelihood
 
-          H0 Value                      -10686.350
-          H0 Scaling Correction Factor       1.174
+          H0 Value                      -10536.911
+          H0 Scaling Correction Factor       1.206
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   21394.700
-          Bayesian (BIC)                 21447.203
-          Sample-Size Adjusted BIC       21412.270
+          Akaike (AIC)                   21095.821
+          Bayesian (BIC)                 21148.186
+          Sample-Size Adjusted BIC       21113.253
             (n* = (n + 2) / 24)
 
 
@@ -451,25 +472,25 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFI_E     ON
-    CBFI_E             0.236      0.054      4.364      0.000
+    CBFI_E             0.233      0.067      3.491      0.000
 
  CBFI_E     ON
-    BBFI_E             0.236      0.054      4.364      0.000
+    BBFI_E             0.233      0.067      3.491      0.000
 
  BBFI_E     ON
-    ABFI_E             0.236      0.054      4.364      0.000
+    ABFI_E             0.233      0.067      3.491      0.000
 
  S_BFI_E  WITH
-    I_BFI_E            0.057      0.402      0.142      0.887
-    ABFI_E             0.789      0.627      1.259      0.208
+    I_BFI_E           -0.010      0.413     -0.025      0.980
+    ABFI_E             0.773      0.632      1.224      0.221
 
  ABFI_E   WITH
-    I_BFI_E          305.122     28.227     10.809      0.000
+    I_BFI_E          308.889     33.230      9.296      0.000
 
  Means
-    ABFI_E            54.878      0.750     73.170      0.000
-    I_BFI_E           41.317      3.018     13.690      0.000
-    S_BFI_E            0.046      0.030      1.512      0.131
+    ABFI_E            54.887      0.755     72.741      0.000
+    I_BFI_E           41.449      3.689     11.237      0.000
+    S_BFI_E            0.051      0.031      1.642      0.101
 
  Intercepts
     BBFI_E             0.000      0.000    999.000    999.000
@@ -477,25 +498,25 @@ MODEL RESULTS
     DBFI_E             0.000      0.000    999.000    999.000
 
  Variances
-    ABFI_E           490.891     19.642     24.992      0.000
-    I_BFI_E          219.281     37.712      5.815      0.000
-    S_BFI_E            0.076      0.045      1.708      0.088
+    ABFI_E           491.736     19.827     24.801      0.000
+    I_BFI_E          221.726     45.793      4.842      0.000
+    S_BFI_E            0.094      0.045      2.104      0.035
 
  Residual Variances
-    BBFI_E            73.643      5.248     14.034      0.000
-    CBFI_E            73.643      5.248     14.034      0.000
-    DBFI_E            73.643      5.248     14.034      0.000
+    BBFI_E            73.099      5.660     12.914      0.000
+    CBFI_E            73.099      5.660     12.914      0.000
+    DBFI_E            73.099      5.660     12.914      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.269E-04
+     Condition Number for the Information Matrix              0.264E-04
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:43:26
-        Ending Time:  17:43:27
-       Elapsed Time:  00:00:01
+     Beginning Time:  11:09:15
+        Ending Time:  11:09:15
+       Elapsed Time:  00:00:00
 
 
 

@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:42 PM
+03/21/2016  11:08 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aHRZ_IND
@@ -293,12 +297,32 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_HRZ_IND
 *** WARNING
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  3
-   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   7 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -307,7 +331,7 @@ PxVx Univariate - Col HRZ_IND AR_Int;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         277
+Number of observations                                         275
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -370,7 +394,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           4          27           7          16
+          1         138           4          27           7          16
           2          12           5          55           8          10
           3           6           6          11
 
@@ -386,10 +410,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BHRZ_IND      CHRZ_IND      DHRZ_IND      AHRZ_IND
               ________      ________      ________      ________
- BHRZ_IND       0.704
- CHRZ_IND       0.549         0.606
- DHRZ_IND       0.563         0.542         0.639
- AHRZ_IND       0.704         0.606         0.639         1.000
+ BHRZ_IND       0.702
+ CHRZ_IND       0.545         0.604
+ DHRZ_IND       0.560         0.538         0.636
+ AHRZ_IND       0.702         0.604         0.636         1.000
 
 
 SAMPLE STATISTICS
@@ -401,16 +425,16 @@ SAMPLE STATISTICS
            Means
               BHRZ_IND      CHRZ_IND      DHRZ_IND      AHRZ_IND
               ________      ________      ________      ________
- 1             73.158        73.673        75.294        73.932
+ 1             73.037        73.637        75.370        74.068
 
 
            Covariances
               BHRZ_IND      CHRZ_IND      DHRZ_IND      AHRZ_IND
               ________      ________      ________      ________
- BHRZ_IND     265.262
- CHRZ_IND     171.334       243.275
- DHRZ_IND     144.495       139.350       258.298
- AHRZ_IND     160.830       129.088       138.975       241.727
+ BHRZ_IND     265.621
+ CHRZ_IND     172.179       245.653
+ DHRZ_IND     144.835       140.103       257.687
+ AHRZ_IND     162.609       130.123       136.594       239.583
 
 
            Correlations
@@ -418,11 +442,11 @@ SAMPLE STATISTICS
               ________      ________      ________      ________
  BHRZ_IND       1.000
  CHRZ_IND       0.674         1.000
- DHRZ_IND       0.552         0.556         1.000
- AHRZ_IND       0.635         0.532         0.556         1.000
+ DHRZ_IND       0.554         0.557         1.000
+ AHRZ_IND       0.645         0.536         0.550         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3268.640
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3235.139
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -435,15 +459,15 @@ Number of Free Parameters                        7
 
 Loglikelihood
 
-          H0 Value                       -3273.375
-          H0 Scaling Correction Factor       1.143
+          H0 Value                       -3239.973
+          H0 Scaling Correction Factor       1.149
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                    6560.749
-          Bayesian (BIC)                  6586.117
-          Sample-Size Adjusted BIC        6563.921
+          Akaike (AIC)                    6493.947
+          Bayesian (BIC)                  6519.264
+          Sample-Size Adjusted BIC        6497.069
             (n* = (n + 2) / 24)
 
 
@@ -454,20 +478,20 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DHRZ_IND   ON
-    CHRZ_IND           0.218      0.079      2.747      0.006
+    CHRZ_IND           0.235      0.079      2.971      0.003
 
  CHRZ_IND   ON
-    BHRZ_IND           0.218      0.079      2.747      0.006
+    BHRZ_IND           0.235      0.079      2.971      0.003
 
  BHRZ_IND   ON
-    AHRZ_IND           0.218      0.079      2.747      0.006
+    AHRZ_IND           0.235      0.079      2.971      0.003
 
  AHRZ_IND WITH
-    I_HRZ_IND        104.021     18.040      5.766      0.000
+    I_HRZ_IND        101.245     17.961      5.637      0.000
 
  Means
-    AHRZ_IND          73.932      0.933     79.217      0.000
-    I_HRZ_IND         57.941      5.888      9.840      0.000
+    AHRZ_IND          74.068      0.935     79.240      0.000
+    I_HRZ_IND         56.682      5.849      9.691      0.000
 
  Intercepts
     BHRZ_IND           0.000      0.000    999.000    999.000
@@ -475,23 +499,23 @@ MODEL RESULTS
     DHRZ_IND           0.000      0.000    999.000    999.000
 
  Variances
-    AHRZ_IND         241.727     21.244     11.379      0.000
-    I_HRZ_IND         80.482     27.772      2.898      0.004
+    AHRZ_IND         239.583     21.293     11.252      0.000
+    I_HRZ_IND         76.087     27.259      2.791      0.005
 
  Residual Variances
-    BHRZ_IND         119.601     15.215      7.861      0.000
-    CHRZ_IND         119.601     15.215      7.861      0.000
-    DHRZ_IND         119.601     15.215      7.861      0.000
+    BHRZ_IND         120.969     15.471      7.819      0.000
+    CHRZ_IND         120.969     15.471      7.819      0.000
+    DHRZ_IND         120.969     15.471      7.819      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.738E-04
+     Condition Number for the Information Matrix              0.655E-04
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:42:25
-        Ending Time:  17:42:25
+     Beginning Time:  11:08:14
+        Ending Time:  11:08:14
        Elapsed Time:  00:00:00
 
 

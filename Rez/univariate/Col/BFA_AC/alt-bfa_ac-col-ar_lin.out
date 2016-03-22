@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:41 PM
+03/21/2016  11:07 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFA_AC
@@ -292,10 +296,30 @@ INPUT INSTRUCTIONS
 
 
 *** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   6 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -304,7 +328,7 @@ PxVx Univariate - Col BFA_AC AR_Lin;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -367,7 +391,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           4          29           7          17
+          1         138           4          29           7          17
           2          12           5          54           8          11
           3           5           6          11
 
@@ -383,10 +407,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFA_AC       CBFA_AC       DBFA_AC       ABFA_AC
               ________      ________      ________      ________
- BBFA_AC        0.710
- CBFA_AC        0.545         0.602
- DBFA_AC        0.563         0.541         0.642
- ABFA_AC        0.710         0.602         0.642         1.000
+ BBFA_AC        0.708
+ CBFA_AC        0.542         0.599
+ DBFA_AC        0.560         0.538         0.639
+ ABFA_AC        0.708         0.599         0.639         1.000
 
 
 SAMPLE STATISTICS
@@ -398,28 +422,28 @@ SAMPLE STATISTICS
            Means
               BBFA_AC       CBFA_AC       DBFA_AC       ABFA_AC
               ________      ________      ________      ________
- 1             78.748        78.195        79.117        78.816
+ 1             78.733        78.313        79.154        78.771
 
 
            Covariances
               BBFA_AC       CBFA_AC       DBFA_AC       ABFA_AC
               ________      ________      ________      ________
- BBFA_AC      235.008
- CBFA_AC      173.543       222.444
- DBFA_AC      165.153       172.599       210.395
- ABFA_AC      189.323       164.111       154.205       242.252
+ BBFA_AC      234.705
+ CBFA_AC      171.506       218.094
+ DBFA_AC      165.193       171.423       211.501
+ ABFA_AC      188.642       162.744       154.399       242.098
 
 
            Correlations
               BBFA_AC       CBFA_AC       DBFA_AC       ABFA_AC
               ________      ________      ________      ________
  BBFA_AC        1.000
- CBFA_AC        0.759         1.000
- DBFA_AC        0.743         0.798         1.000
- ABFA_AC        0.793         0.707         0.683         1.000
+ CBFA_AC        0.758         1.000
+ DBFA_AC        0.741         0.798         1.000
+ ABFA_AC        0.791         0.708         0.682         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3136.133
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3105.648
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -432,15 +456,15 @@ Number of Free Parameters                       11
 
 Loglikelihood
 
-          H0 Value                       -3138.581
-          H0 Scaling Correction Factor       1.132
+          H0 Value                       -3107.689
+          H0 Scaling Correction Factor       1.142
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                    6299.162
-          Bayesian (BIC)                  6339.106
-          Sample-Size Adjusted BIC        6304.226
+          Akaike (AIC)                    6237.378
+          Bayesian (BIC)                  6277.242
+          Sample-Size Adjusted BIC        6242.362
             (n* = (n + 2) / 24)
 
 
@@ -451,25 +475,25 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFA_AC    ON
-    CBFA_AC            0.211      0.057      3.704      0.000
+    CBFA_AC            0.204      0.057      3.574      0.000
 
  CBFA_AC    ON
-    BBFA_AC            0.211      0.057      3.704      0.000
+    BBFA_AC            0.204      0.057      3.574      0.000
 
  BBFA_AC    ON
-    ABFA_AC            0.211      0.057      3.704      0.000
+    ABFA_AC            0.204      0.057      3.574      0.000
 
  S_BFA_AC WITH
-    I_BFA_AC          48.062     41.076      1.170      0.242
-    ABFA_AC           -3.936      6.580     -0.598      0.550
+    I_BFA_AC          55.278     42.291      1.307      0.191
+    ABFA_AC           -3.808      6.639     -0.574      0.566
 
  ABFA_AC  WITH
-    I_BFA_AC          74.746     86.770      0.861      0.389
+    I_BFA_AC          77.361     87.525      0.884      0.377
 
  Means
-    ABFA_AC           78.816      0.931     84.614      0.000
-    I_BFA_AC          63.737      6.932      9.194      0.000
-    S_BFA_AC           0.120      0.381      0.316      0.752
+    ABFA_AC           78.771      0.935     84.233      0.000
+    I_BFA_AC          64.561      7.060      9.144      0.000
+    S_BFA_AC           0.140      0.385      0.363      0.716
 
  Intercepts
     BBFA_AC            0.000      0.000    999.000    999.000
@@ -477,24 +501,24 @@ MODEL RESULTS
     DBFA_AC            0.000      0.000    999.000    999.000
 
  Variances
-    ABFA_AC          242.252     20.411     11.869      0.000
-    I_BFA_AC         724.882    555.725      1.304      0.192
-    S_BFA_AC           3.689      3.092      1.193      0.233
+    ABFA_AC          242.098     20.494     11.813      0.000
+    I_BFA_AC         824.150    571.925      1.441      0.150
+    S_BFA_AC           4.221      3.186      1.325      0.185
 
  Residual Variances
-    BBFA_AC           54.427      8.452      6.440      0.000
-    CBFA_AC           54.427      8.452      6.440      0.000
-    DBFA_AC           54.427      8.452      6.440      0.000
+    BBFA_AC           53.537      8.485      6.310      0.000
+    CBFA_AC           53.537      8.485      6.310      0.000
+    DBFA_AC           53.537      8.485      6.310      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.140E-05
+     Condition Number for the Information Matrix              0.117E-05
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:41:53
-        Ending Time:  17:41:53
+     Beginning Time:  11:07:40
+        Ending Time:  11:07:40
        Elapsed Time:  00:00:00
 
 

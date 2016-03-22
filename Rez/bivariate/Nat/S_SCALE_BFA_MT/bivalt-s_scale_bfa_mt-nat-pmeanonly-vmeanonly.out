@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   9:45 PM
+03/21/2016   3:03 PM
 
 INPUT INSTRUCTIONS
 
@@ -237,7 +237,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
 
   USEVARIABLES =
@@ -315,6 +319,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_S_SCALE
 *** WARNING
   Variable name contains more than 8 characters.
@@ -329,8 +349,8 @@ INPUT INSTRUCTIONS
 *** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  5
-   5 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  16
+   9 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -339,7 +359,7 @@ PxVx Univariate - Nat MeanOnly S_SCALE with MeanOnly BFA_MT;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         874
+Number of observations                                         863
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -384,7 +404,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns            14
+     Number of missing data patterns            16
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -392,25 +412,26 @@ SUMMARY OF MISSING DATA PATTERNS
 
      MISSING DATA PATTERNS (x = not missing)
 
-           1  2  3  4  5  6  7  8  9 10 11 12 13 14
- BS_SCALE  x     x  x        x     x  x     x
- CS_SCALE  x           x     x  x  x  x     x  x
- DS_SCALE  x     x     x  x        x  x  x  x  x  x
- BBFA_MT   x     x  x        x     x        x
- CBFA_MT   x           x     x  x  x  x     x  x
- DBFA_MT   x     x     x  x           x  x  x
- AS_SCALE  x  x  x  x  x  x  x  x  x  x     x  x  x
- ABFA_MT   x  x  x  x  x  x  x  x  x  x  x     x  x
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16
+ BS_SCALE  x     x  x        x     x  x     x  x
+ CS_SCALE  x           x     x  x  x  x     x  x  x     x
+ DS_SCALE  x     x     x  x        x  x  x  x  x  x  x  x
+ BBFA_MT   x     x  x        x     x        x  x
+ CBFA_MT   x           x     x  x  x  x     x  x  x     x
+ DBFA_MT   x     x     x  x           x  x  x  x        x
+ AS_SCALE  x  x  x  x  x  x  x  x  x  x     x     x  x
+ ABFA_MT   x  x  x  x  x  x  x  x  x  x  x        x  x
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         498           6          24          11           1
-          2         169           7          47          12           2
-          3          27           8          22          13           2
-          4          57           9           1          14           1
-          5          21          10           2
+          1         491           7          46          13           3
+          2         169           8          21          14           2
+          3          27           9           1          15           1
+          4          52          10           1          16           1
+          5          21          11           1
+          6          24          12           2
 
 
 COVARIANCE COVERAGE OF DATA
@@ -424,22 +445,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BS_SCALE      CS_SCALE      DS_SCALE      BBFA_MT       CBFA_MT
               ________      ________      ________      ________      ________
- BS_SCALE       0.725
- CS_SCALE       0.629         0.681
- DS_SCALE       0.606         0.602         0.662
- BBFA_MT        0.723         0.627         0.604         0.723
- CBFA_MT        0.629         0.681         0.602         0.627         0.681
- DBFA_MT        0.605         0.598         0.658         0.603         0.598
- AS_SCALE       0.725         0.681         0.661         0.723         0.681
- ABFA_MT        0.723         0.678         0.660         0.721         0.678
+ BS_SCALE       0.722
+ CS_SCALE       0.630         0.683
+ DS_SCALE       0.608         0.605         0.666
+ BBFA_MT        0.721         0.629         0.607         0.721
+ CBFA_MT        0.630         0.683         0.605         0.629         0.683
+ DBFA_MT        0.607         0.601         0.662         0.606         0.601
+ AS_SCALE       0.718         0.678         0.660         0.717         0.678
+ ABFA_MT        0.716         0.676         0.659         0.715         0.676
 
 
            Covariance Coverage
               DBFA_MT       AS_SCALE      ABFA_MT
               ________      ________      ________
- DBFA_MT        0.658
- AS_SCALE       0.657         0.999
- ABFA_MT        0.656         0.997         0.998
+ DBFA_MT        0.662
+ AS_SCALE       0.656         0.994
+ ABFA_MT        0.655         0.992         0.993
 
 
 SAMPLE STATISTICS
@@ -451,58 +472,58 @@ SAMPLE STATISTICS
            Means
               BS_SCALE      CS_SCALE      DS_SCALE      BBFA_MT       CBFA_MT
               ________      ________      ________      ________      ________
- 1             73.155        73.702        73.922        48.302        47.842
+ 1             73.238        73.755        74.010        48.259        47.855
 
 
            Means
               DBFA_MT       AS_SCALE      ABFA_MT
               ________      ________      ________
- 1             47.659        72.925        48.592
+ 1             47.692        72.965        48.528
 
 
            Covariances
               BS_SCALE      CS_SCALE      DS_SCALE      BBFA_MT       CBFA_MT
               ________      ________      ________      ________      ________
- BS_SCALE     188.977
- CS_SCALE     150.969       184.474
- DS_SCALE     148.748       157.896       194.787
- BBFA_MT      -55.296       -50.724       -44.294       232.558
- CBFA_MT      -55.550       -55.295       -51.599       192.420       239.689
- DBFA_MT      -55.714       -54.702       -55.447       189.008       202.614
- AS_SCALE     149.628       150.587       150.303       -43.170       -42.351
- ABFA_MT      -54.642       -44.242       -42.613       185.664       183.527
+ BS_SCALE     185.026
+ CS_SCALE     149.295       183.729
+ DS_SCALE     146.035       156.339       192.551
+ BBFA_MT      -55.794       -51.731       -44.379       235.525
+ CBFA_MT      -54.106       -55.647       -49.827       195.540       242.308
+ DBFA_MT      -54.189       -54.759       -52.901       192.729       204.605
+ AS_SCALE     147.002       148.726       148.011       -43.947       -41.853
+ ABFA_MT      -53.947       -43.779       -41.009       187.930       185.043
 
 
            Covariances
               DBFA_MT       AS_SCALE      ABFA_MT
               ________      ________      ________
- DBFA_MT      252.198
- AS_SCALE     -51.052       199.299
- ABFA_MT      180.848       -54.310       237.220
+ DBFA_MT      252.790
+ AS_SCALE     -50.179       196.826
+ ABFA_MT      182.498       -52.924       237.600
 
 
            Correlations
               BS_SCALE      CS_SCALE      DS_SCALE      BBFA_MT       CBFA_MT
               ________      ________      ________      ________      ________
  BS_SCALE       1.000
- CS_SCALE       0.809         1.000
- DS_SCALE       0.775         0.833         1.000
- BBFA_MT       -0.264        -0.245        -0.208         1.000
- CBFA_MT       -0.261        -0.263        -0.239         0.815         1.000
- DBFA_MT       -0.255        -0.254        -0.250         0.780         0.824
- AS_SCALE       0.771         0.785         0.763        -0.201        -0.194
- ABFA_MT       -0.258        -0.211        -0.198         0.790         0.770
+ CS_SCALE       0.810         1.000
+ DS_SCALE       0.774         0.831         1.000
+ BBFA_MT       -0.267        -0.249        -0.208         1.000
+ CBFA_MT       -0.256        -0.264        -0.231         0.819         1.000
+ DBFA_MT       -0.251        -0.254        -0.240         0.790         0.827
+ AS_SCALE       0.770         0.782         0.760        -0.204        -0.192
+ ABFA_MT       -0.257        -0.210        -0.192         0.794         0.771
 
 
            Correlations
               DBFA_MT       AS_SCALE      ABFA_MT
               ________      ________      ________
  DBFA_MT        1.000
- AS_SCALE      -0.228         1.000
- ABFA_MT        0.739        -0.250         1.000
+ AS_SCALE      -0.225         1.000
+ ABFA_MT        0.745        -0.245         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -19856.745
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -19576.088
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -515,15 +536,15 @@ Number of Free Parameters                       23
 
 Loglikelihood
 
-          H0 Value                      -19870.618
-          H0 Scaling Correction Factor       1.151
+          H0 Value                      -19588.228
+          H0 Scaling Correction Factor       1.219
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   39787.237
-          Bayesian (BIC)                 39897.018
-          Sample-Size Adjusted BIC       39823.975
+          Akaike (AIC)                   39222.456
+          Bayesian (BIC)                 39331.945
+          Sample-Size Adjusted BIC       39258.903
             (n* = (n + 2) / 24)
 
 
@@ -534,59 +555,59 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DS_SCALE   ON
-    CS_SCALE           0.073      0.035      2.117      0.034
-    CBFA_MT           -0.096      0.027     -3.601      0.000
+    CS_SCALE           0.081      0.053      1.534      0.125
+    CBFA_MT           -0.096      0.031     -3.081      0.002
 
  CS_SCALE   ON
-    BS_SCALE           0.073      0.035      2.117      0.034
-    BBFA_MT           -0.096      0.027     -3.601      0.000
+    BS_SCALE           0.081      0.053      1.534      0.125
+    BBFA_MT           -0.096      0.031     -3.081      0.002
 
  BS_SCALE   ON
-    AS_SCALE           0.073      0.035      2.117      0.034
-    ABFA_MT           -0.096      0.027     -3.601      0.000
+    AS_SCALE           0.081      0.053      1.534      0.125
+    ABFA_MT           -0.096      0.031     -3.081      0.002
 
  DBFA_MT    ON
-    CBFA_MT            0.176      0.051      3.440      0.001
-    CS_SCALE          -0.027      0.045     -0.587      0.557
+    CBFA_MT            0.164      0.061      2.693      0.007
+    CS_SCALE          -0.027      0.055     -0.494      0.621
 
  CBFA_MT    ON
-    BBFA_MT            0.176      0.051      3.440      0.001
-    BS_SCALE          -0.027      0.045     -0.587      0.557
+    BBFA_MT            0.164      0.061      2.693      0.007
+    BS_SCALE          -0.027      0.055     -0.494      0.621
 
  BBFA_MT    ON
-    ABFA_MT            0.176      0.051      3.440      0.001
-    AS_SCALE          -0.027      0.045     -0.587      0.557
+    ABFA_MT            0.164      0.061      2.693      0.007
+    AS_SCALE          -0.027      0.055     -0.494      0.621
 
  I_BFA_MT WITH
-    I_S_SCALE        -18.102      8.714     -2.077      0.038
+    I_S_SCALE        -17.395     11.480     -1.515      0.130
 
  AS_SCALE WITH
-    I_S_SCALE        130.979      8.342     15.701      0.000
-    I_BFA_MT         -32.058      8.157     -3.930      0.000
+    I_S_SCALE        127.499     10.619     12.006      0.000
+    I_BFA_MT         -32.471      9.797     -3.314      0.001
 
  ABFA_MT  WITH
-    I_S_SCALE        -21.918      7.864     -2.787      0.005
-    I_BFA_MT         145.745     12.398     11.755      0.000
+    I_S_SCALE        -20.536      9.166     -2.240      0.025
+    I_BFA_MT         149.719     14.793     10.121      0.000
 
  DBFA_MT  WITH
-    DS_SCALE          -5.078      1.555     -3.265      0.001
+    DS_SCALE          -5.109      1.721     -2.968      0.003
 
  CBFA_MT  WITH
-    CS_SCALE          -5.078      1.555     -3.265      0.001
+    CS_SCALE          -5.109      1.721     -2.968      0.003
 
  BBFA_MT  WITH
-    BS_SCALE          -5.078      1.555     -3.265      0.001
+    BS_SCALE          -5.109      1.721     -2.968      0.003
 
  ABFA_MT  WITH
-    AS_SCALE         -54.293      7.325     -7.412      0.000
+    AS_SCALE         -52.899      7.350     -7.197      0.000
 
  Means
-    AS_SCALE          72.925      0.478    152.701      0.000
-    ABFA_MT           48.593      0.521     93.216      0.000
-    I_S_SCALE         72.709      3.566     20.390      0.000
-    S_S_SCALE          0.079      0.027      2.984      0.003
-    I_BFA_MT          41.451      5.569      7.443      0.000
-    S_BFA_MT          -0.022      0.029     -0.742      0.458
+    AS_SCALE          72.963      0.478    152.725      0.000
+    ABFA_MT           48.529      0.525     92.419      0.000
+    I_S_SCALE         72.224      4.427     16.314      0.000
+    S_S_SCALE          0.081      0.027      3.039      0.002
+    I_BFA_MT          42.049      6.144      6.843      0.000
+    S_BFA_MT          -0.020      0.030     -0.651      0.515
 
  Intercepts
     BS_SCALE           0.000      0.000    999.000    999.000
@@ -597,30 +618,30 @@ MODEL RESULTS
     DBFA_MT            0.000      0.000    999.000    999.000
 
  Variances
-    AS_SCALE         199.298      9.508     20.961      0.000
-    ABFA_MT          237.195     11.308     20.976      0.000
-    I_S_SCALE        118.896     10.690     11.122      0.000
+    AS_SCALE         196.762      9.505     20.701      0.000
+    ABFA_MT          237.619     11.473     20.712      0.000
+    I_S_SCALE        115.004     15.330      7.502      0.000
     S_S_SCALE          0.000      0.000    999.000    999.000
-    I_BFA_MT         125.876     16.950      7.426      0.000
+    I_BFA_MT         131.951     21.361      6.177      0.000
     S_BFA_MT           0.000      0.000    999.000    999.000
 
  Residual Variances
-    BS_SCALE          38.600      2.325     16.605      0.000
-    CS_SCALE          38.600      2.325     16.605      0.000
-    DS_SCALE          38.600      2.325     16.605      0.000
-    BBFA_MT           51.818      3.912     13.246      0.000
-    CBFA_MT           51.818      3.912     13.246      0.000
-    DBFA_MT           51.818      3.912     13.246      0.000
+    BS_SCALE          38.386      2.531     15.165      0.000
+    CS_SCALE          38.386      2.531     15.165      0.000
+    DS_SCALE          38.386      2.531     15.165      0.000
+    BBFA_MT           50.553      3.955     12.783      0.000
+    CBFA_MT           50.553      3.955     12.783      0.000
+    DBFA_MT           50.553      3.955     12.783      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.312E-05
+     Condition Number for the Information Matrix              0.292E-05
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  21:45:35
-        Ending Time:  21:45:37
+     Beginning Time:  15:03:27
+        Ending Time:  15:03:29
        Elapsed Time:  00:00:02
 
 

@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   6:47 PM
+03/21/2016  11:57 AM
 
 INPUT INSTRUCTIONS
 
@@ -238,7 +238,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aD_SCALE
@@ -317,6 +321,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_D_SCALE
 *** WARNING
   Variable name contains more than 8 characters.
@@ -334,7 +354,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   5 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+  10 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -343,7 +367,7 @@ PxVx Univariate - Col Lin D_SCALE with Lin VRT_COL;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -410,7 +434,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           6          11          11           1
+          1         138           6          11          11           1
           2          10           7           1          12           4
           3           2           8          16          13           2
           4          26           9           9          14           2
@@ -428,22 +452,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BD_SCALE      CD_SCALE      DD_SCALE      BVRT_COL      CVRT_COL
               ________      ________      ________      ________      ________
- BD_SCALE       0.713
- CD_SCALE       0.548         0.602
- DD_SCALE       0.577         0.552         0.656
- BVRT_COL       0.699         0.545         0.570         0.699
- CVRT_COL       0.548         0.602         0.552         0.545         0.602
- DVRT_COL       0.563         0.538         0.634         0.559         0.538
- AD_SCALE       0.713         0.602         0.656         0.699         0.602
- AVRT_COL       0.713         0.602         0.656         0.699         0.602
+ BD_SCALE       0.711
+ CD_SCALE       0.545         0.599
+ DD_SCALE       0.574         0.549         0.653
+ BVRT_COL       0.697         0.542         0.567         0.697
+ CVRT_COL       0.545         0.599         0.549         0.542         0.599
+ DVRT_COL       0.560         0.534         0.632         0.556         0.534
+ AD_SCALE       0.711         0.599         0.653         0.697         0.599
+ AVRT_COL       0.711         0.599         0.653         0.697         0.599
 
 
            Covariance Coverage
               DVRT_COL      AD_SCALE      AVRT_COL
               ________      ________      ________
- DVRT_COL       0.634
- AD_SCALE       0.634         1.000
- AVRT_COL       0.634         0.993         0.993
+ DVRT_COL       0.632
+ AD_SCALE       0.632         1.000
+ AVRT_COL       0.632         0.993         0.993
 
 
 SAMPLE STATISTICS
@@ -455,63 +479,59 @@ SAMPLE STATISTICS
            Means
               BD_SCALE      CD_SCALE      DD_SCALE      BVRT_COL      CVRT_COL
               ________      ________      ________      ________      ________
- 1             62.464        63.565        64.084        66.565        64.201
+ 1             62.402        63.757        64.281        66.443        64.190
 
 
            Means
               DVRT_COL      AD_SCALE      AVRT_COL
               ________      ________      ________
- 1             64.694        64.331        67.101
+ 1             64.701        64.294        67.089
 
 
            Covariances
               BD_SCALE      CD_SCALE      DD_SCALE      BVRT_COL      CVRT_COL
               ________      ________      ________      ________      ________
- BD_SCALE     213.333
- CD_SCALE     146.411       178.071
- DD_SCALE     160.205       155.305       217.320
- BVRT_COL      42.977        30.807        40.809       312.454
- CVRT_COL      11.633        13.515        22.956       179.752       299.269
- DVRT_COL      11.400         7.916        29.158       201.853       201.096
- AD_SCALE     156.320       127.271       137.538        36.297        13.168
- AVRT_COL      27.767        19.918        53.921       201.484       182.912
+ BD_SCALE     213.631
+ CD_SCALE     146.279       171.441
+ DD_SCALE     160.076       148.262       210.841
+ BVRT_COL      40.754        29.862        39.705       311.333
+ CVRT_COL      10.248        11.729        20.844       179.386       301.454
+ DVRT_COL      11.923         9.451        30.363       204.144       203.449
+ AD_SCALE     155.982       126.737       137.119        34.338        12.137
+ AVRT_COL      27.377        19.154        52.899       201.867       183.715
 
 
            Covariances
               DVRT_COL      AD_SCALE      AVRT_COL
               ________      ________      ________
- DVRT_COL     339.961
- AD_SCALE      24.531       217.273
- AVRT_COL     206.125        30.702       325.852
+ DVRT_COL     343.201
+ AD_SCALE      25.344       217.760
+ AVRT_COL     207.978        30.359       327.918
 
 
            Correlations
               BD_SCALE      CD_SCALE      DD_SCALE      BVRT_COL      CVRT_COL
               ________      ________      ________      ________      ________
  BD_SCALE       1.000
- CD_SCALE       0.751         1.000
- DD_SCALE       0.744         0.789         1.000
- BVRT_COL       0.166         0.131         0.157         1.000
- CVRT_COL       0.046         0.059         0.090         0.588         1.000
- DVRT_COL       0.042         0.032         0.107         0.619         0.630
- AD_SCALE       0.726         0.647         0.633         0.139         0.052
- AVRT_COL       0.105         0.083         0.203         0.631         0.586
+ CD_SCALE       0.764         1.000
+ DD_SCALE       0.754         0.780         1.000
+ BVRT_COL       0.158         0.129         0.155         1.000
+ CVRT_COL       0.040         0.052         0.083         0.586         1.000
+ DVRT_COL       0.044         0.039         0.113         0.625         0.633
+ AD_SCALE       0.723         0.656         0.640         0.132         0.047
+ AVRT_COL       0.103         0.081         0.201         0.632         0.584
 
 
            Correlations
               DVRT_COL      AD_SCALE      AVRT_COL
               ________      ________      ________
  DVRT_COL       1.000
- AD_SCALE       0.090         1.000
- AVRT_COL       0.619         0.115         1.000
+ AD_SCALE       0.093         1.000
+ AVRT_COL       0.620         0.114         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6491.431
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6423.605
 
-     WARNING:  THE MLR STANDARD ERRORS COULD NOT BE COMPUTED.  THE MLF STANDARD
-     ERRORS WERE COMPUTED INSTEAD.  THE MLR CONDITION NUMBER IS      -0.380D-05.
-     PROBLEM INVOLVING PARAMETER 30.  THIS MAY BE DUE TO NEAR SINGULARITY
-     OF THE RANDOM EFFECT VARIANCE/COVARIANCE OR INCOMPLETE CONVERGENCE.
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
 
@@ -523,13 +543,15 @@ Number of Free Parameters                       34
 
 Loglikelihood
 
-          H0 Value                       -6496.849
+          H0 Value                       -6428.860
+          H0 Scaling Correction Factor       1.051
+            for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   13061.698
-          Bayesian (BIC)                 13185.159
-          Sample-Size Adjusted BIC       13077.349
+          Akaike (AIC)                   12925.720
+          Bayesian (BIC)                 13048.936
+          Sample-Size Adjusted BIC       12941.127
             (n* = (n + 2) / 24)
 
 
@@ -540,72 +562,72 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DD_SCALE   ON
-    CD_SCALE           0.104      0.092      1.132      0.258
-    CVRT_COL           0.076      0.060      1.273      0.203
+    CD_SCALE           0.014      0.055      0.249      0.803
+    CVRT_COL           0.077      0.044      1.744      0.081
 
  CD_SCALE   ON
-    BD_SCALE           0.104      0.092      1.132      0.258
-    BVRT_COL           0.076      0.060      1.273      0.203
+    BD_SCALE           0.014      0.055      0.249      0.803
+    BVRT_COL           0.077      0.044      1.744      0.081
 
  BD_SCALE   ON
-    AD_SCALE           0.104      0.092      1.132      0.258
-    AVRT_COL           0.076      0.060      1.273      0.203
+    AD_SCALE           0.014      0.055      0.249      0.803
+    AVRT_COL           0.077      0.044      1.744      0.081
 
  DVRT_COL   ON
-    CVRT_COL          -0.079      0.115     -0.691      0.490
-    CD_SCALE           0.150      0.173      0.866      0.386
+    CVRT_COL          -0.081      0.053     -1.515      0.130
+    CD_SCALE           0.137      0.064      2.145      0.032
 
  CVRT_COL   ON
-    BVRT_COL          -0.079      0.115     -0.691      0.490
-    BD_SCALE           0.150      0.173      0.866      0.386
+    BVRT_COL          -0.081      0.053     -1.515      0.130
+    BD_SCALE           0.137      0.064      2.145      0.032
 
  BVRT_COL   ON
-    AVRT_COL          -0.079      0.115     -0.691      0.490
-    AD_SCALE           0.150      0.173      0.866      0.386
+    AVRT_COL          -0.081      0.053     -1.515      0.130
+    AD_SCALE           0.137      0.064      2.145      0.032
 
  S_D_SCAL WITH
-    I_D_SCALE         -3.204      9.837     -0.326      0.745
+    I_D_SCALE         -9.921      7.854     -1.263      0.206
 
  I_VRT_CO WITH
-    I_D_SCALE        -36.948     53.121     -0.696      0.487
-    S_D_SCALE         15.621     12.969      1.205      0.228
+    I_D_SCALE        -37.887     36.149     -1.048      0.295
+    S_D_SCALE         16.259     10.481      1.551      0.121
 
  S_VRT_CO WITH
-    I_D_SCALE          0.411     12.467      0.033      0.974
-    S_D_SCALE         -4.006      5.555     -0.721      0.471
-    I_VRT_COL        -25.044     26.602     -0.941      0.346
+    I_D_SCALE          2.108     10.491      0.201      0.841
+    S_D_SCALE         -4.409      3.639     -1.212      0.226
+    I_VRT_COL        -22.819     17.533     -1.301      0.193
 
  AD_SCALE WITH
-    I_D_SCALE        128.935     26.764      4.818      0.000
-    S_D_SCALE         -2.878      7.376     -0.390      0.696
-    I_VRT_COL         -3.263     49.825     -0.065      0.948
-    S_VRT_COL          2.007     12.422      0.162      0.872
+    I_D_SCALE        151.350     24.591      6.155      0.000
+    S_D_SCALE         -6.621      5.614     -1.179      0.238
+    I_VRT_COL         -3.151     25.043     -0.126      0.900
+    S_VRT_COL          2.751      8.358      0.329      0.742
 
  AVRT_COL WITH
-    I_D_SCALE        -22.838     30.163     -0.757      0.449
-    S_D_SCALE         17.584      8.472      2.076      0.038
-    I_VRT_COL        232.460     61.255      3.795      0.000
-    S_VRT_COL         -9.649     14.092     -0.685      0.494
+    I_D_SCALE        -21.323     25.627     -0.832      0.405
+    S_D_SCALE         17.543      7.282      2.409      0.016
+    I_VRT_COL        233.171     32.271      7.225      0.000
+    S_VRT_COL         -9.005     11.255     -0.800      0.424
 
  DVRT_COL WITH
-    DD_SCALE          16.523      8.360      1.976      0.048
+    DD_SCALE          15.153      6.574      2.305      0.021
 
  CVRT_COL WITH
-    CD_SCALE          16.523      8.360      1.976      0.048
+    CD_SCALE          15.153      6.574      2.305      0.021
 
  BVRT_COL WITH
-    BD_SCALE          16.523      8.360      1.976      0.048
+    BD_SCALE          15.153      6.574      2.305      0.021
 
  AVRT_COL WITH
-    AD_SCALE          30.703     16.990      1.807      0.071
+    AD_SCALE          30.359     16.910      1.795      0.073
 
  Means
-    AD_SCALE          64.331      0.984     65.402      0.000
-    AVRT_COL          67.100      1.203     55.778      0.000
-    I_D_SCALE         49.713      6.483      7.669      0.000
-    S_D_SCALE          0.996      0.420      2.370      0.018
-    I_VRT_COL         62.858     10.613      5.923      0.000
-    S_VRT_COL         -0.948      0.712     -1.333      0.183
+    AD_SCALE          64.294      0.888     72.437      0.000
+    AVRT_COL          67.089      1.097     61.182      0.000
+    I_D_SCALE         55.352      4.038     13.706      0.000
+    S_D_SCALE          1.054      0.373      2.828      0.005
+    I_VRT_COL         63.693      5.450     11.688      0.000
+    S_VRT_COL         -0.933      0.582     -1.603      0.109
 
  Intercepts
     BD_SCALE           0.000      0.000    999.000    999.000
@@ -616,31 +638,31 @@ MODEL RESULTS
     DVRT_COL           0.000      0.000    999.000    999.000
 
  Variances
-    AD_SCALE         217.273     21.537     10.088      0.000
-    AVRT_COL         325.853     38.730      8.413      0.000
-    I_D_SCALE        125.613     43.852      2.865      0.004
-    S_D_SCALE          2.281      4.319      0.528      0.597
-    I_VRT_COL        270.684    116.633      2.321      0.020
-    S_VRT_COL         14.496     12.699      1.142      0.254
+    AD_SCALE         217.760     17.150     12.698      0.000
+    AVRT_COL         327.918     21.913     14.964      0.000
+    I_D_SCALE        167.426     35.443      4.724      0.000
+    S_D_SCALE          4.912      3.152      1.558      0.119
+    I_VRT_COL        267.598     58.552      4.570      0.000
+    S_VRT_COL         13.660      7.512      1.819      0.069
 
  Residual Variances
-    BD_SCALE          49.779      6.943      7.169      0.000
-    CD_SCALE          49.779      6.943      7.169      0.000
-    DD_SCALE          49.779      6.943      7.169      0.000
-    BVRT_COL         106.806     17.478      6.111      0.000
-    CVRT_COL         106.806     17.478      6.111      0.000
-    DVRT_COL         106.806     17.478      6.111      0.000
+    BD_SCALE          43.225      4.836      8.937      0.000
+    CD_SCALE          43.225      4.836      8.937      0.000
+    DD_SCALE          43.225      4.836      8.937      0.000
+    BVRT_COL         106.982     12.930      8.274      0.000
+    CVRT_COL         106.982     12.930      8.274      0.000
+    DVRT_COL         106.982     12.930      8.274      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.291E-07
+     Condition Number for the Information Matrix              0.302E-07
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  18:47:11
-        Ending Time:  18:47:13
-       Elapsed Time:  00:00:02
+     Beginning Time:  11:57:38
+        Ending Time:  11:57:39
+       Elapsed Time:  00:00:01
 
 
 

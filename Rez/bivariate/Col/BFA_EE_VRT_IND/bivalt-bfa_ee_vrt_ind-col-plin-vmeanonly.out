@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   6:24 PM
+03/21/2016  11:30 AM
 
 INPUT INSTRUCTIONS
 
@@ -238,7 +238,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFA_EE
@@ -316,6 +320,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_VRT_IND
 *** WARNING
   Variable name contains more than 8 characters.
@@ -328,7 +348,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   4 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   9 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -337,7 +361,7 @@ PxVx Univariate - Col Lin BFA_EE with MeanOnly VRT_IND;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -404,7 +428,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           5          52           9           1
+          1         138           5          52           9           1
           2          12           6          11          10          10
           3           5           7           1          11           2
           4          27           8          16          12           2
@@ -421,22 +445,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFA_EE       CBFA_EE       DBFA_EE       BVRT_IND      CVRT_IND
               ________      ________      ________      ________      ________
- BBFA_EE        0.710
- CBFA_EE        0.545         0.602
- DBFA_EE        0.563         0.541         0.642
- BVRT_IND       0.699         0.545         0.559         0.699
- CVRT_IND       0.545         0.602         0.541         0.545         0.602
- DVRT_IND       0.559         0.538         0.634         0.559         0.538
- ABFA_EE        0.710         0.602         0.642         0.699         0.602
- AVRT_IND       0.710         0.602         0.642         0.699         0.602
+ BBFA_EE        0.708
+ CBFA_EE        0.542         0.599
+ DBFA_EE        0.560         0.538         0.639
+ BVRT_IND       0.697         0.542         0.556         0.697
+ CVRT_IND       0.542         0.599         0.538         0.542         0.599
+ DVRT_IND       0.556         0.534         0.632         0.556         0.534
+ ABFA_EE        0.708         0.599         0.639         0.697         0.599
+ AVRT_IND       0.708         0.599         0.639         0.697         0.599
 
 
            Covariance Coverage
               DVRT_IND      ABFA_EE       AVRT_IND
               ________      ________      ________
- DVRT_IND       0.634
- ABFA_EE        0.634         1.000
- AVRT_IND       0.634         0.993         0.993
+ DVRT_IND       0.632
+ ABFA_EE        0.632         1.000
+ AVRT_IND       0.632         0.993         0.993
 
 
 SAMPLE STATISTICS
@@ -448,58 +472,58 @@ SAMPLE STATISTICS
            Means
               BBFA_EE       CBFA_EE       DBFA_EE       BVRT_IND      CVRT_IND
               ________      ________      ________      ________      ________
- 1             65.459        66.238        65.011        47.127        47.813
+ 1             65.414        66.422        65.099        47.178        47.892
 
 
            Means
               DVRT_IND      ABFA_EE       AVRT_IND
               ________      ________      ________
- 1             47.076        67.217        49.357
+ 1             47.020        67.197        49.330
 
 
            Covariances
               BBFA_EE       CBFA_EE       DBFA_EE       BVRT_IND      CVRT_IND
               ________      ________      ________      ________      ________
- BBFA_EE      306.131
- CBFA_EE      219.944       288.009
- DBFA_EE      233.351       247.728       339.468
- BVRT_IND     -13.773       -34.296         0.794       382.327
- CVRT_IND      -0.220       -12.952        14.307       265.553       398.436
- DVRT_IND      -1.018       -12.067        24.286       252.596       278.373
- ABFA_EE      235.496       205.893       224.407       -13.260        12.742
- AVRT_IND     -47.946       -46.851       -28.530       263.251       265.653
+ BBFA_EE      308.159
+ CBFA_EE      221.969       287.361
+ DBFA_EE      233.935       245.783       335.579
+ BVRT_IND     -14.798       -37.884        -5.704       380.612
+ CVRT_IND      -1.328       -16.887         6.428       260.358       392.458
+ DVRT_IND      -3.746       -15.541        14.676       245.051       268.012
+ ABFA_EE      237.053       207.764       225.835       -13.138        13.272
+ AVRT_IND     -49.440       -48.848       -33.501       261.109       261.785
 
 
            Covariances
               DVRT_IND      ABFA_EE       AVRT_IND
               ________      ________      ________
- DVRT_IND     406.298
- ABFA_EE       -8.571       278.136
- AVRT_IND     239.466       -51.420       388.121
+ DVRT_IND     392.490
+ ABFA_EE       -9.039       280.088
+ AVRT_IND     232.778       -51.864       387.357
 
 
            Correlations
               BBFA_EE       CBFA_EE       DBFA_EE       BVRT_IND      CVRT_IND
               ________      ________      ________      ________      ________
  BBFA_EE        1.000
- CBFA_EE        0.741         1.000
- DBFA_EE        0.724         0.792         1.000
- BVRT_IND      -0.040        -0.103         0.002         1.000
- CVRT_IND      -0.001        -0.038         0.039         0.680         1.000
- DVRT_IND      -0.003        -0.035         0.065         0.641         0.692
- ABFA_EE        0.807         0.727         0.730        -0.041         0.038
- AVRT_IND      -0.139        -0.140        -0.079         0.683         0.676
+ CBFA_EE        0.746         1.000
+ DBFA_EE        0.727         0.791         1.000
+ BVRT_IND      -0.043        -0.115        -0.016         1.000
+ CVRT_IND      -0.004        -0.050         0.018         0.674         1.000
+ DVRT_IND      -0.011        -0.046         0.040         0.634         0.683
+ ABFA_EE        0.807         0.732         0.737        -0.040         0.040
+ AVRT_IND      -0.143        -0.146        -0.093         0.680         0.671
 
 
            Correlations
               DVRT_IND      ABFA_EE       AVRT_IND
               ________      ________      ________
  DVRT_IND       1.000
- ABFA_EE       -0.025         1.000
- AVRT_IND       0.603        -0.157         1.000
+ ABFA_EE       -0.027         1.000
+ AVRT_IND       0.597        -0.157         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6635.190
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6568.599
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -512,15 +536,15 @@ Number of Free Parameters                       28
 
 Loglikelihood
 
-          H0 Value                       -6647.937
-          H0 Scaling Correction Factor       1.088
+          H0 Value                       -6581.132
+          H0 Scaling Correction Factor       1.094
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   13351.875
-          Bayesian (BIC)                 13453.549
-          Sample-Size Adjusted BIC       13364.763
+          Akaike (AIC)                   13218.264
+          Bayesian (BIC)                 13319.737
+          Sample-Size Adjusted BIC       13230.953
             (n* = (n + 2) / 24)
 
 
@@ -531,65 +555,65 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFA_EE    ON
-    CBFA_EE            0.258      0.096      2.689      0.007
-    CVRT_IND          -0.100      0.065     -1.528      0.127
+    CBFA_EE            0.238      0.087      2.738      0.006
+    CVRT_IND          -0.114      0.060     -1.905      0.057
 
  CBFA_EE    ON
-    BBFA_EE            0.258      0.096      2.689      0.007
-    BVRT_IND          -0.100      0.065     -1.528      0.127
+    BBFA_EE            0.238      0.087      2.738      0.006
+    BVRT_IND          -0.114      0.060     -1.905      0.057
 
  BBFA_EE    ON
-    ABFA_EE            0.258      0.096      2.689      0.007
-    AVRT_IND          -0.100      0.065     -1.528      0.127
+    ABFA_EE            0.238      0.087      2.738      0.006
+    AVRT_IND          -0.114      0.060     -1.905      0.057
 
  DVRT_IND   ON
-    CVRT_IND           0.143      0.092      1.543      0.123
-    CBFA_EE           -0.028      0.057     -0.493      0.622
+    CVRT_IND           0.138      0.085      1.618      0.106
+    CBFA_EE           -0.034      0.056     -0.605      0.545
 
  CVRT_IND   ON
-    BVRT_IND           0.143      0.092      1.543      0.123
-    BBFA_EE           -0.028      0.057     -0.493      0.622
+    BVRT_IND           0.138      0.085      1.618      0.106
+    BBFA_EE           -0.034      0.056     -0.605      0.545
 
  BVRT_IND   ON
-    AVRT_IND           0.143      0.092      1.543      0.123
-    ABFA_EE           -0.028      0.057     -0.493      0.622
+    AVRT_IND           0.138      0.085      1.618      0.106
+    ABFA_EE           -0.034      0.056     -0.605      0.545
 
  S_BFA_EE WITH
-    I_BFA_EE           2.429      4.846      0.501      0.616
+    I_BFA_EE           1.694      5.499      0.308      0.758
 
  I_VRT_IN WITH
-    I_BFA_EE          10.616     28.059      0.378      0.705
-    S_BFA_EE           8.562      7.244      1.182      0.237
+    I_BFA_EE          13.504     27.738      0.487      0.626
+    S_BFA_EE           7.691      7.421      1.036      0.300
 
  ABFA_EE  WITH
-    I_BFA_EE         142.230     39.101      3.637      0.000
-    S_BFA_EE           7.920      7.822      1.012      0.311
-    I_VRT_IND          5.247     22.939      0.229      0.819
+    I_BFA_EE         148.633     37.490      3.965      0.000
+    S_BFA_EE           7.747      7.767      0.997      0.319
+    I_VRT_IND          6.769     22.977      0.295      0.768
 
  AVRT_IND WITH
-    I_BFA_EE          -0.286     31.321     -0.009      0.993
-    S_BFA_EE           1.050      8.637      0.122      0.903
-    I_VRT_IND        211.307     36.662      5.764      0.000
+    I_BFA_EE           3.714     30.034      0.124      0.902
+    S_BFA_EE          -0.673      8.709     -0.077      0.938
+    I_VRT_IND        208.641     35.131      5.939      0.000
 
  DVRT_IND WITH
-    DBFA_EE           -0.124      8.343     -0.015      0.988
+    DBFA_EE           -1.482      8.385     -0.177      0.860
 
  CVRT_IND WITH
-    CBFA_EE           -0.124      8.343     -0.015      0.988
+    CBFA_EE           -1.482      8.385     -0.177      0.860
 
  BVRT_IND WITH
-    BBFA_EE           -0.124      8.343     -0.015      0.988
+    BBFA_EE           -1.482      8.385     -0.177      0.860
 
  AVRT_IND WITH
-    ABFA_EE          -51.416     20.272     -2.536      0.011
+    ABFA_EE          -51.860     20.414     -2.540      0.011
 
  Means
-    ABFA_EE           67.217      0.997     67.411      0.000
-    AVRT_IND          49.331      1.185     41.622      0.000
-    I_BFA_EE          52.541      6.552      8.019      0.000
-    S_BFA_EE           0.351      0.472      0.743      0.457
-    I_VRT_IND         39.693      5.263      7.541      0.000
-    S_VRT_IND          1.317      0.621      2.121      0.034
+    ABFA_EE           67.197      1.005     66.861      0.000
+    AVRT_IND          49.303      1.185     41.623      0.000
+    I_BFA_EE          54.680      5.515      9.915      0.000
+    S_BFA_EE           0.326      0.469      0.696      0.487
+    I_VRT_IND         40.285      4.915      8.196      0.000
+    S_VRT_IND          1.334      0.622      2.144      0.032
 
  Intercepts
     BBFA_EE            0.000      0.000    999.000    999.000
@@ -600,31 +624,31 @@ MODEL RESULTS
     DVRT_IND           0.000      0.000    999.000    999.000
 
  Variances
-    ABFA_EE          278.136     21.210     13.113      0.000
-    AVRT_IND         388.120     31.348     12.381      0.000
-    I_BFA_EE         104.882     41.096      2.552      0.011
-    S_BFA_EE           1.554      1.356      1.146      0.252
-    I_VRT_IND        186.413     53.359      3.494      0.000
+    ABFA_EE          280.087     21.306     13.146      0.000
+    AVRT_IND         387.357     31.568     12.270      0.000
+    I_BFA_EE         114.340     41.246      2.772      0.006
+    S_BFA_EE           1.755      1.691      1.038      0.299
+    I_VRT_IND        182.862     49.872      3.667      0.000
     S_VRT_IND          0.000      0.000    999.000    999.000
 
  Residual Variances
-    BBFA_EE           87.368     12.741      6.857      0.000
-    CBFA_EE           87.368     12.741      6.857      0.000
-    DBFA_EE           87.368     12.741      6.857      0.000
-    BVRT_IND         142.851     14.483      9.863      0.000
-    CVRT_IND         142.851     14.483      9.863      0.000
-    DVRT_IND         142.851     14.483      9.863      0.000
+    BBFA_EE           85.503     12.823      6.668      0.000
+    CBFA_EE           85.503     12.823      6.668      0.000
+    DBFA_EE           85.503     12.823      6.668      0.000
+    BVRT_IND         143.477     14.410      9.957      0.000
+    CVRT_IND         143.477     14.410      9.957      0.000
+    DVRT_IND         143.477     14.410      9.957      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.153E-07
+     Condition Number for the Information Matrix              0.427E-07
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  18:24:11
-        Ending Time:  18:24:20
-       Elapsed Time:  00:00:09
+     Beginning Time:  11:30:59
+        Ending Time:  11:31:07
+       Elapsed Time:  00:00:08
 
 
 

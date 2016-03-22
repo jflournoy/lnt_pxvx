@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:42 PM
+03/21/2016  11:08 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aS_SCALE
@@ -294,6 +298,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_S_SCALE
 *** WARNING
   Variable name contains more than 8 characters.
@@ -306,7 +326,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   4 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   9 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -315,7 +339,7 @@ PxVx Univariate - Col S_SCALE AR_LinM;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -378,7 +402,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         143           4          28           7          18
+          1         141           4          28           7          18
           2          10           5          54           8           4
           3          11           6          11
 
@@ -394,10 +418,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BS_SCALE      CS_SCALE      DS_SCALE      AS_SCALE
               ________      ________      ________      ________
- BS_SCALE       0.713
- CS_SCALE       0.548         0.602
- DS_SCALE       0.577         0.552         0.656
- AS_SCALE       0.713         0.602         0.656         1.000
+ BS_SCALE       0.711
+ CS_SCALE       0.545         0.599
+ DS_SCALE       0.574         0.549         0.653
+ AS_SCALE       0.711         0.599         0.653         1.000
 
 
 SAMPLE STATISTICS
@@ -409,28 +433,28 @@ SAMPLE STATISTICS
            Means
               BS_SCALE      CS_SCALE      DS_SCALE      AS_SCALE
               ________      ________      ________      ________
- 1             71.220        71.162        72.368        70.249
+ 1             71.279        71.238        72.534        70.343
 
 
            Covariances
               BS_SCALE      CS_SCALE      DS_SCALE      AS_SCALE
               ________      ________      ________      ________
- BS_SCALE     133.191
- CS_SCALE      90.599       144.395
- DS_SCALE      86.737       121.157       166.553
- AS_SCALE      98.511        88.693       107.393       147.616
+ BS_SCALE     133.227
+ CS_SCALE      88.937       140.647
+ DS_SCALE      84.057       115.299       158.652
+ AS_SCALE      97.204        85.007       102.123       145.197
 
 
            Correlations
               BS_SCALE      CS_SCALE      DS_SCALE      AS_SCALE
               ________      ________      ________      ________
  BS_SCALE       1.000
- CS_SCALE       0.653         1.000
- DS_SCALE       0.582         0.781         1.000
- AS_SCALE       0.703         0.608         0.685         1.000
+ CS_SCALE       0.650         1.000
+ DS_SCALE       0.578         0.772         1.000
+ AS_SCALE       0.699         0.595         0.673         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3027.884
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -2996.471
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -443,15 +467,15 @@ Number of Free Parameters                        8
 
 Loglikelihood
 
-          H0 Value                       -3038.450
-          H0 Scaling Correction Factor       1.001
+          H0 Value                       -3005.536
+          H0 Scaling Correction Factor       0.995
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                    6092.900
-          Bayesian (BIC)                  6121.950
-          Sample-Size Adjusted BIC        6096.583
+          Akaike (AIC)                    6027.071
+          Bayesian (BIC)                  6056.063
+          Sample-Size Adjusted BIC        6030.697
             (n* = (n + 2) / 24)
 
 
@@ -462,21 +486,21 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DS_SCALE   ON
-    CS_SCALE           0.330      0.046      7.148      0.000
+    CS_SCALE           0.327      0.046      7.070      0.000
 
  CS_SCALE   ON
-    BS_SCALE           0.330      0.046      7.148      0.000
+    BS_SCALE           0.327      0.046      7.070      0.000
 
  BS_SCALE   ON
-    AS_SCALE           0.330      0.046      7.148      0.000
+    AS_SCALE           0.327      0.046      7.070      0.000
 
  AS_SCALE WITH
-    I_S_SCALE         61.240      8.455      7.243      0.000
+    I_S_SCALE         59.116      8.197      7.212      0.000
 
  Means
-    AS_SCALE          70.249      0.728     96.548      0.000
-    I_S_SCALE         53.179      6.327      8.405      0.000
-    S_S_SCALE          0.370      0.364      1.016      0.310
+    AS_SCALE          70.343      0.724     97.144      0.000
+    I_S_SCALE         54.233      6.294      8.617      0.000
+    S_S_SCALE          0.425      0.363      1.171      0.242
 
  Intercepts
     BS_SCALE           0.000      0.000    999.000    999.000
@@ -484,25 +508,25 @@ MODEL RESULTS
     DS_SCALE           0.000      0.000    999.000    999.000
 
  Variances
-    AS_SCALE         147.617     10.896     13.548      0.000
-    I_S_SCALE         38.057      8.976      4.240      0.000
+    AS_SCALE         145.199     10.591     13.710      0.000
+    I_S_SCALE         36.859      8.924      4.130      0.000
     S_S_SCALE          0.000      0.000    999.000    999.000
 
  Residual Variances
-    BS_SCALE          57.230      5.345     10.707      0.000
-    CS_SCALE          57.230      5.345     10.707      0.000
-    DS_SCALE          57.230      5.345     10.707      0.000
+    BS_SCALE          56.739      5.349     10.607      0.000
+    CS_SCALE          56.739      5.349     10.607      0.000
+    DS_SCALE          56.739      5.349     10.607      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.216E-04
+     Condition Number for the Information Matrix              0.223E-04
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:42:27
-        Ending Time:  17:42:28
-       Elapsed Time:  00:00:01
+     Beginning Time:  11:08:16
+        Ending Time:  11:08:16
+       Elapsed Time:  00:00:00
 
 
 

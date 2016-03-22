@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   8:04 PM
+03/21/2016   1:16 PM
 
 INPUT INSTRUCTIONS
 
@@ -237,7 +237,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
 
   USEVARIABLES =
@@ -313,14 +317,30 @@ INPUT INSTRUCTIONS
 
 
 
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
 *** WARNING in MODEL command
   All continuous latent variable covariances involving S_USI have been fixed to 0
   because the variance of S_USI is fixed at 0.
 *** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  5
-   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  16
+   6 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -329,7 +349,7 @@ PxVx Univariate - Nat Lin BFI_C with MeanOnly USI;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         874
+Number of observations                                         863
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -374,7 +394,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns            20
+     Number of missing data patterns            22
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -383,26 +403,37 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERNS (x = not missing)
 
            1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
- BBFI_C    x     x  x     x     x     x  x  x  x        x     x
- CBFI_C    x           x  x     x  x     x  x  x           x  x  x
- DBFI_C    x     x     x  x  x           x     x  x     x        x  x
- BUSI      x     x  x     x     x        x  x                 x
- CUSI      x           x        x  x     x     x              x  x
- DUSI      x     x     x  x  x                 x  x     x     x
- ABFI_C    x  x  x  x  x  x  x  x  x  x  x  x  x     x  x  x  x  x  x
- AUSI      x  x  x  x  x  x  x  x  x  x  x  x  x  x     x  x  x  x  x
+ BBFI_C    x     x  x     x     x     x  x  x  x     x     x     x
+ CBFI_C    x           x  x     x  x     x  x  x     x        x  x  x
+ DBFI_C    x     x     x  x  x           x     x  x  x     x        x
+ BUSI      x     x  x     x     x        x  x        x           x
+ CUSI      x           x        x  x     x     x     x           x  x
+ DUSI      x     x     x  x  x                 x  x  x     x     x
+ ABFI_C    x  x  x  x  x  x  x  x  x  x  x  x  x        x  x  x  x  x
+ AUSI      x  x  x  x  x  x  x  x  x  x  x  x  x  x        x  x  x  x
+
+          21 22
+ BBFI_C
+ CBFI_C       x
+ DBFI_C    x  x
+ BUSI
+ CUSI         x
+ DUSI         x
+ ABFI_C    x
+ AUSI      x
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         497           8          45          15           1
-          2         168           9          21          16           1
-          3          26          10           5          17           1
-          4          52          11           1          18           1
-          5          21          12           1          19           2
-          6           2          13           3          20           2
-          7          23          14           1
+          1         489           9          20          17           1
+          2         168          10           5          18           1
+          3          26          11           1          19           1
+          4          47          12           1          20           2
+          5          21          13           3          21           2
+          6           2          14           1          22           1
+          7          23          15           3
+          8          44          16           1
 
 
 COVARIANCE COVERAGE OF DATA
@@ -416,22 +447,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFI_C        CBFI_C        DBFI_C        BUSI          CUSI
               ________      ________      ________      ________      ________
- BBFI_C         0.725
- CBFI_C         0.629         0.681
- DBFI_C         0.606         0.602         0.662
- BUSI           0.715         0.626         0.602         0.715
- CUSI           0.626         0.676         0.600         0.622         0.676
- DUSI           0.606         0.600         0.657         0.602         0.597
- ABFI_C         0.725         0.681         0.661         0.715         0.676
- AUSI           0.725         0.681         0.662         0.715         0.676
+ BBFI_C         0.722
+ CBFI_C         0.630         0.683
+ DBFI_C         0.608         0.605         0.666
+ BUSI           0.711         0.627         0.604         0.711
+ CUSI           0.627         0.678         0.603         0.623         0.678
+ DUSI           0.608         0.603         0.660         0.604         0.600
+ ABFI_C         0.718         0.678         0.660         0.708         0.673
+ AUSI           0.718         0.678         0.662         0.708         0.673
 
 
            Covariance Coverage
               DUSI          ABFI_C        AUSI
               ________      ________      ________
- DUSI           0.658
- ABFI_C         0.657         0.999
- AUSI           0.658         0.998         0.999
+ DUSI           0.662
+ ABFI_C         0.656         0.994
+ AUSI           0.657         0.993         0.994
 
 
 SAMPLE STATISTICS
@@ -443,47 +474,47 @@ SAMPLE STATISTICS
            Means
               BBFI_C        CBFI_C        DBFI_C        BUSI          CUSI
               ________      ________      ________      ________      ________
- 1             68.509        68.672        68.814        28.564        28.565
+ 1             68.559        68.679        68.881        28.403        28.543
 
 
            Means
               DUSI          ABFI_C        AUSI
               ________      ________      ________
- 1             28.562        68.564        29.082
+ 1             28.473        68.623        28.987
 
 
            Covariances
               BBFI_C        CBFI_C        DBFI_C        BUSI          CUSI
               ________      ________      ________      ________      ________
- BBFI_C       283.589
- CBFI_C       232.426       296.244
- DBFI_C       223.286       240.922       295.080
- BUSI          -8.070        -4.249        -1.698       276.044
- CUSI          -2.587        -1.258        -0.291       213.548       281.295
- DUSI           0.015        -6.347       -10.680       199.197       220.188
- ABFI_C       235.715       231.907       224.709         4.588        10.754
- AUSI          -7.054         0.147        -0.438       206.347       203.526
+ BBFI_C       282.255
+ CBFI_C       229.894       293.489
+ DBFI_C       224.166       240.681       296.671
+ BUSI          -6.886        -3.579        -0.445       275.305
+ CUSI          -1.902        -0.773         1.276       216.076       282.971
+ DUSI           1.797        -5.941        -8.445       200.344       218.811
+ ABFI_C       233.850       228.961       224.686         5.935        11.049
+ AUSI          -3.131         3.308         3.419       209.250       203.050
 
 
            Covariances
               DUSI          ABFI_C        AUSI
               ________      ________      ________
- DUSI         261.632
- ABFI_C         6.547       301.142
- AUSI         191.590         3.693       267.131
+ DUSI         261.116
+ ABFI_C         6.557       298.928
+ AUSI         190.402         6.633       264.628
 
 
            Correlations
               BBFI_C        CBFI_C        DBFI_C        BUSI          CUSI
               ________      ________      ________      ________      ________
  BBFI_C         1.000
- CBFI_C         0.802         1.000
- DBFI_C         0.772         0.815         1.000
- BUSI          -0.029        -0.015        -0.006         1.000
- CUSI          -0.009        -0.004        -0.001         0.766         1.000
- DUSI           0.000        -0.023        -0.038         0.741         0.812
- ABFI_C         0.807         0.776         0.754         0.016         0.037
- AUSI          -0.026         0.001        -0.002         0.760         0.742
+ CBFI_C         0.799         1.000
+ DBFI_C         0.775         0.816         1.000
+ BUSI          -0.025        -0.013        -0.002         1.000
+ CUSI          -0.007        -0.003         0.004         0.774         1.000
+ DUSI           0.007        -0.021        -0.030         0.747         0.805
+ ABFI_C         0.805         0.773         0.754         0.021         0.038
+ AUSI          -0.011         0.012         0.012         0.775         0.742
 
 
            Correlations
@@ -491,10 +522,10 @@ SAMPLE STATISTICS
               ________      ________      ________
  DUSI           1.000
  ABFI_C         0.023         1.000
- AUSI           0.725         0.013         1.000
+ AUSI           0.724         0.024         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -20713.893
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -20416.532
 
      THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO A CHANGE IN THE
      LOGLIKELIHOOD DURING THE LAST E STEP.
@@ -503,7 +534,7 @@ SAMPLE STATISTICS
      THE NUMBER OF MITERATIONS OR INCREASE THE MCONVERGENCE VALUE.  ESTIMATES
      CANNOT BE TRUSTED.
      SLOW CONVERGENCE DUE TO PARAMETER 4.
-     THE LOGLIKELIHOOD DERIVATIVE FOR THIS PARAMETER IS -0.40464663D+00.
+     THE LOGLIKELIHOOD DERIVATIVE FOR THIS PARAMETER IS -0.40855088D+00.
 
 
 
@@ -515,65 +546,65 @@ MODEL RESULTS
                     Estimate
 
  DBFI_C     ON
-    CBFI_C             0.198
-    CUSI              -0.067
+    CBFI_C             0.193
+    CUSI              -0.063
 
  CBFI_C     ON
-    BBFI_C             0.198
-    BUSI              -0.067
+    BBFI_C             0.193
+    BUSI              -0.063
 
  BBFI_C     ON
-    ABFI_C             0.198
-    AUSI              -0.067
+    ABFI_C             0.193
+    AUSI              -0.063
 
  DUSI       ON
-    CUSI              -0.017
-    CBFI_C            -0.112
+    CUSI              -0.004
+    CBFI_C            -0.107
 
  CUSI       ON
-    BUSI              -0.017
-    BBFI_C            -0.112
+    BUSI              -0.004
+    BBFI_C            -0.107
 
  BUSI       ON
-    AUSI              -0.017
-    ABFI_C            -0.112
+    AUSI              -0.004
+    ABFI_C            -0.107
 
  S_BFI_C  WITH
-    I_BFI_C            0.561
+    I_BFI_C            0.523
 
  I_USI    WITH
-    I_BFI_C           31.372
-    S_BFI_C            0.708
+    I_BFI_C           29.497
+    S_BFI_C            0.681
 
  ABFI_C   WITH
-    I_BFI_C          175.646
-    S_BFI_C            1.462
-    I_USI             20.867
+    I_BFI_C          175.627
+    S_BFI_C            1.459
+    I_USI             19.312
 
  AUSI     WITH
-    I_BFI_C           16.125
-    S_BFI_C            0.094
-    I_USI            222.389
+    I_BFI_C           18.126
+    S_BFI_C            0.042
+    I_USI            219.793
 
  DUSI     WITH
-    DBFI_C            -7.484
+    DBFI_C            -7.028
 
  CUSI     WITH
-    CBFI_C            -7.484
+    CBFI_C            -7.028
 
  BUSI     WITH
-    BBFI_C            -7.484
+    BBFI_C            -7.028
 
  AUSI     WITH
-    ABFI_C             3.656
+    ABFI_C             6.485
 
  Means
-    ABFI_C            68.556
-    AUSI              29.082
-    I_BFI_C           56.938
-    S_BFI_C            0.118
-    I_USI             35.762
-    S_USI              0.578
+    ABFI_C            68.569
+    AUSI              28.901
+    I_BFI_C           57.189
+    S_BFI_C            0.117
+    I_USI             34.904
+    S_USI              0.564
 
  Intercepts
     BBFI_C             0.000
@@ -584,20 +615,20 @@ MODEL RESULTS
     DUSI               0.000
 
  Variances
-    ABFI_C           301.080
-    AUSI             267.131
-    I_BFI_C          136.494
-    S_BFI_C            0.017
-    I_USI            286.907
+    ABFI_C           298.949
+    AUSI             264.094
+    I_BFI_C          137.981
+    S_BFI_C            0.019
+    I_USI            279.752
     S_USI              0.000
 
  Residual Variances
-    BBFI_C            66.854
-    CBFI_C            66.854
-    DBFI_C            66.854
-    BUSI              62.170
-    CUSI              62.170
-    DUSI              62.170
+    BBFI_C            66.451
+    CBFI_C            66.451
+    DBFI_C            66.451
+    BUSI              61.799
+    CUSI              61.799
+    DUSI              61.799
 
 
 MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
@@ -605,32 +636,32 @@ MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
      i_bfi_c s_bfi_c | bbfi_c cbfi_c dbfi_c AT bage_c cage_c dage_c;
      i_usi s_usi | busi cusi dusi AT bage_c cage_c dage_c;
 
-     dbfi_c ON cbfi_c*0.198 (a);
-     dbfi_c ON cusi*-0.067 (y);
-     cbfi_c ON bbfi_c*0.198 (a);
-     cbfi_c ON busi*-0.067 (y);
-     bbfi_c ON abfi_c*0.198 (a);
-     bbfi_c ON ausi*-0.067 (y);
-     dusi ON cusi*-0.017 (b);
-     dusi ON cbfi_c*-0.112 (x);
-     cusi ON busi*-0.017 (b);
-     cusi ON bbfi_c*-0.112 (x);
-     busi ON ausi*-0.017 (b);
-     busi ON abfi_c*-0.112 (x);
+     dbfi_c ON cbfi_c*0.193 (a);
+     dbfi_c ON cusi*-0.063 (y);
+     cbfi_c ON bbfi_c*0.193 (a);
+     cbfi_c ON busi*-0.063 (y);
+     bbfi_c ON abfi_c*0.193 (a);
+     bbfi_c ON ausi*-0.063 (y);
+     dusi ON cusi*-0.004 (b);
+     dusi ON cbfi_c*-0.107 (x);
+     cusi ON busi*-0.004 (b);
+     cusi ON bbfi_c*-0.107 (x);
+     busi ON ausi*-0.004 (b);
+     busi ON abfi_c*-0.107 (x);
 
-     dusi WITH dbfi_c*-7.484 (w);
-     cusi WITH cbfi_c*-7.484 (w);
-     busi WITH bbfi_c*-7.484 (w);
-     ausi WITH abfi_c*3.656;
-     s_bfi_c WITH i_bfi_c*0.561;
-     i_usi WITH i_bfi_c*31.372;
-     i_usi WITH s_bfi_c*0.708;
-     abfi_c WITH i_bfi_c*175.646;
-     abfi_c WITH s_bfi_c*1.462;
-     abfi_c WITH i_usi*20.867;
-     ausi WITH i_bfi_c*16.125;
-     ausi WITH s_bfi_c*0.094;
-     ausi WITH i_usi*222.389;
+     dusi WITH dbfi_c*-7.028 (w);
+     cusi WITH cbfi_c*-7.028 (w);
+     busi WITH bbfi_c*-7.028 (w);
+     ausi WITH abfi_c*6.485;
+     s_bfi_c WITH i_bfi_c*0.523;
+     i_usi WITH i_bfi_c*29.497;
+     i_usi WITH s_bfi_c*0.681;
+     abfi_c WITH i_bfi_c*175.627;
+     abfi_c WITH s_bfi_c*1.459;
+     abfi_c WITH i_usi*19.312;
+     ausi WITH i_bfi_c*18.126;
+     ausi WITH s_bfi_c*0.042;
+     ausi WITH i_usi*219.793;
 
      [ bbfi_c@0 ];
      [ cbfi_c@0 ];
@@ -638,31 +669,31 @@ MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
      [ busi@0 ];
      [ cusi@0 ];
      [ dusi@0 ];
-     [ abfi_c*68.556 ];
-     [ ausi*29.082 ];
-     [ i_bfi_c*56.938 ];
-     [ s_bfi_c*0.118 ];
-     [ i_usi*35.762 ];
-     [ s_usi*0.578 ];
+     [ abfi_c*68.569 ];
+     [ ausi*28.901 ];
+     [ i_bfi_c*57.189 ];
+     [ s_bfi_c*0.117 ];
+     [ i_usi*34.904 ];
+     [ s_usi*0.564 ];
 
-     bbfi_c*66.854 (c);
-     cbfi_c*66.854 (c);
-     dbfi_c*66.854 (c);
-     busi*62.170 (d);
-     cusi*62.170 (d);
-     dusi*62.170 (d);
-     abfi_c*301.080;
-     ausi*267.131;
-     i_bfi_c*136.494;
-     s_bfi_c*0.017;
-     i_usi*286.907;
+     bbfi_c*66.451 (c);
+     cbfi_c*66.451 (c);
+     dbfi_c*66.451 (c);
+     busi*61.799 (d);
+     cusi*61.799 (d);
+     dusi*61.799 (d);
+     abfi_c*298.949;
+     ausi*264.094;
+     i_bfi_c*137.981;
+     s_bfi_c*0.019;
+     i_usi*279.752;
      s_usi@0;
 
 
 
-     Beginning Time:  20:04:07
-        Ending Time:  20:05:07
-       Elapsed Time:  00:01:00
+     Beginning Time:  13:16:49
+        Ending Time:  13:17:53
+       Elapsed Time:  00:01:04
 
 
 

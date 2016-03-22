@@ -17,6 +17,7 @@ library(ggplot2)
 library(broom)
 opts_chunk$set(echo=F, message=F, warning=F)
 
+#'
 #' # Intro
 #'
 #' **Template for model comparisons:**
@@ -43,7 +44,7 @@ opts_chunk$set(echo=F, message=F, warning=F)
 loadUniFN<-'../Rez/uniMods.RData'
 
 # # Create Models
-# createModels('code/PxVx_UniTemplate.inp')
+# createModels('Code/PxVx_UniTemplate.inp')
 # 
 # setwd('E:/Projects/lnt_pxvx/Rez/univariate')
 # runModels(recursive = T)
@@ -231,7 +232,7 @@ winningModels <- modelComparisonResults %>% group_by(sample, variable) %>%
 			   winningmodel=c(LLwinner, AICwinner, BICwinner))
 	})
 
-variableTypes <- data_frame(variable=c('BFA_AC', 'BFA_AP', 'BFA_CI', 'BFA_CO', 'BFA_EA', 'BFA_EE', 'BFA_MT', 'BFA_NV', 'BFA_NW', 'BFA_OI', 'BFA_OO', 'BFI_A6', 'BFI_C', 'BFI_E', 'bfi_hp8', 'BFI_N', 'BFI_O', 'D_SCALE', 'VRT_COL', 'HRZ_COL', 'HRZ_IND', 'MVS_mc', 'S_SCALE', 'USI', 'VRT_IND', 'aspfin'),
+variableTypes <- data_frame(variable=c('BFA_AC', 'BFA_AP', 'BFA_CI', 'BFA_CO', 'BFA_EA', 'BFA_EE', 'BFA_MT', 'BFA_NV', 'BFA_NW', 'BFA_OI', 'BFA_OO', 'BFI_A6', 'BFI_C', 'BFI_E', 'bfi_hp8', 'BFI_N', 'BFI_O', 'D_SCALE', 'VRT_COL', 'HRZ_COL', 'HRZ_IND', 'MVI_POMP', 'S_SCALE', 'USI', 'VRT_IND', 'aspfin'),
 			    vartype=c(rep('p', 6),
 				      'v',
 				      rep('p', 10),
@@ -252,7 +253,7 @@ modelTallies <- winningModels %>%
 					   vartypenames[.$vartype[[1]]],
 					   ': Tally of winning models, by fit measure'),
 			    align='l'))
-		tidy(table(.))
+		tidy(table(select(., criterion, winningmodel)))
 	})
 
 winnersByCriterion <- winningModels %>% spread(criterion, winningmodel) 

@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:43 PM
+03/21/2016  11:09 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aVRT_IND
@@ -294,6 +298,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_VRT_IND
 *** WARNING
   Variable name contains more than 8 characters.
@@ -306,8 +326,8 @@ INPUT INSTRUCTIONS
 *** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  5
-   4 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  16
+   8 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -316,7 +336,7 @@ PxVx Univariate - Nat VRT_IND AR_Lin;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         873
+Number of observations                                         862
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -361,7 +381,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns             8
+     Number of missing data patterns            10
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -369,19 +389,20 @@ SUMMARY OF MISSING DATA PATTERNS
 
      MISSING DATA PATTERNS (x = not missing)
 
-           1  2  3  4  5  6  7  8
- BVRT_IND  x     x  x        x
- CVRT_IND  x           x     x  x
- DVRT_IND  x     x     x  x
+           1  2  3  4  5  6  7  8  9 10
+ BVRT_IND  x     x  x        x     x
+ CVRT_IND  x           x     x  x  x  x
+ DVRT_IND  x     x     x  x        x  x
  AVRT_IND  x  x  x  x  x  x  x  x
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         498           4          54           7          46
-          2         175           5          24           8          23
-          3          28           6          25
+          1         490           5          24           9           3
+          2         175           6          25          10           1
+          3          28           7          45
+          4          49           8          22
 
 
 COVARIANCE COVERAGE OF DATA
@@ -395,10 +416,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BVRT_IND      CVRT_IND      DVRT_IND      AVRT_IND
               ________      ________      ________      ________
- BVRT_IND       0.717
- CVRT_IND       0.623         0.677
- DVRT_IND       0.603         0.598         0.659
- AVRT_IND       0.717         0.677         0.659         1.000
+ BVRT_IND       0.713
+ CVRT_IND       0.624         0.679
+ DVRT_IND       0.604         0.601         0.662
+ AVRT_IND       0.710         0.674         0.658         0.995
 
 
 SAMPLE STATISTICS
@@ -410,28 +431,28 @@ SAMPLE STATISTICS
            Means
               BVRT_IND      CVRT_IND      DVRT_IND      AVRT_IND
               ________      ________      ________      ________
- 1             47.250        46.630        46.540        47.284
+ 1             47.156        46.372        46.367        47.169
 
 
            Covariances
               BVRT_IND      CVRT_IND      DVRT_IND      AVRT_IND
               ________      ________      ________      ________
- BVRT_IND     354.256
- CVRT_IND     260.333       389.669
- DVRT_IND     260.309       282.024       379.473
- AVRT_IND     246.345       243.481       242.051       373.277
+ BVRT_IND     355.925
+ CVRT_IND     263.489       383.588
+ DVRT_IND     261.613       280.075       377.027
+ AVRT_IND     246.567       244.832       241.169       371.594
 
 
            Correlations
               BVRT_IND      CVRT_IND      DVRT_IND      AVRT_IND
               ________      ________      ________      ________
  BVRT_IND       1.000
- CVRT_IND       0.701         1.000
- DVRT_IND       0.710         0.733         1.000
- AVRT_IND       0.677         0.638         0.643         1.000
+ CVRT_IND       0.713         1.000
+ DVRT_IND       0.714         0.736         1.000
+ AVRT_IND       0.678         0.648         0.644         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -10982.665
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -10814.648
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -444,15 +465,15 @@ Number of Free Parameters                       11
 
 Loglikelihood
 
-          H0 Value                      -10971.287
-          H0 Scaling Correction Factor       1.239
+          H0 Value                      -10800.947
+          H0 Scaling Correction Factor       1.241
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   21964.573
-          Bayesian (BIC)                 22017.064
-          Sample-Size Adjusted BIC       21982.131
+          Akaike (AIC)                   21623.894
+          Bayesian (BIC)                 21676.245
+          Sample-Size Adjusted BIC       21641.312
             (n* = (n + 2) / 24)
 
 
@@ -463,25 +484,25 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DVRT_IND   ON
-    CVRT_IND           0.090      0.049      1.846      0.065
+    CVRT_IND           0.084      0.052      1.617      0.106
 
  CVRT_IND   ON
-    BVRT_IND           0.090      0.049      1.846      0.065
+    BVRT_IND           0.084      0.052      1.617      0.106
 
  BVRT_IND   ON
-    AVRT_IND           0.090      0.049      1.846      0.065
+    AVRT_IND           0.084      0.052      1.617      0.106
 
  S_VRT_IN WITH
-    I_VRT_IND         -1.428      0.595     -2.401      0.016
-    AVRT_IND           0.010      0.834      0.012      0.990
+    I_VRT_IND         -1.543      0.607     -2.544      0.011
+    AVRT_IND           0.181      0.831      0.218      0.828
 
  AVRT_IND WITH
-    I_VRT_IND        212.811     18.613     11.433      0.000
+    I_VRT_IND        215.499     19.568     11.013      0.000
 
  Means
-    AVRT_IND          47.285      0.654     72.304      0.000
-    I_VRT_IND         42.816      2.397     17.862      0.000
-    S_VRT_IND         -0.160      0.044     -3.603      0.000
+    AVRT_IND          47.179      0.655     72.019      0.000
+    I_VRT_IND         42.938      2.547     16.856      0.000
+    S_VRT_IND         -0.159      0.044     -3.586      0.000
 
  Intercepts
     BVRT_IND           0.000      0.000    999.000    999.000
@@ -489,25 +510,25 @@ MODEL RESULTS
     DVRT_IND           0.000      0.000    999.000    999.000
 
  Variances
-    AVRT_IND         373.276     16.390     22.775      0.000
-    I_VRT_IND        205.861     28.552      7.210      0.000
-    S_VRT_IND          0.053      0.074      0.719      0.472
+    AVRT_IND         372.201     16.515     22.538      0.000
+    I_VRT_IND        206.490     30.258      6.824      0.000
+    S_VRT_IND          0.095      0.074      1.282      0.200
 
  Residual Variances
-    BVRT_IND         113.478      6.980     16.258      0.000
-    CVRT_IND         113.478      6.980     16.258      0.000
-    DVRT_IND         113.478      6.980     16.258      0.000
+    BVRT_IND         109.764      6.816     16.103      0.000
+    CVRT_IND         109.764      6.816     16.103      0.000
+    DVRT_IND         109.764      6.816     16.103      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.500E-04
+     Condition Number for the Information Matrix              0.472E-04
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:43:48
-        Ending Time:  17:43:49
-       Elapsed Time:  00:00:01
+     Beginning Time:  11:09:36
+        Ending Time:  11:09:36
+       Elapsed Time:  00:00:00
 
 
 

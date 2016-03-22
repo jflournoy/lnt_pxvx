@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:42 PM
+03/21/2016  11:08 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aUSI
@@ -291,10 +295,30 @@ INPUT INSTRUCTIONS
 
 
 *** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  3
-   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   6 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -303,7 +327,7 @@ PxVx Univariate - Col USI AR_Int;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         277
+Number of observations                                         275
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -366,7 +390,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           4          27           7          16
+          1         138           4          27           7          16
           2          12           5          55           8          10
           3           6           6          11
 
@@ -382,10 +406,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BUSI          CUSI          DUSI          AUSI
               ________      ________      ________      ________
- BUSI           0.704
- CUSI           0.549         0.606
- DUSI           0.563         0.542         0.639
- AUSI           0.704         0.606         0.639         1.000
+ BUSI           0.702
+ CUSI           0.545         0.604
+ DUSI           0.560         0.538         0.636
+ AUSI           0.702         0.604         0.636         1.000
 
 
 SAMPLE STATISTICS
@@ -397,28 +421,28 @@ SAMPLE STATISTICS
            Means
               BUSI          CUSI          DUSI          AUSI
               ________      ________      ________      ________
- 1             31.405        30.205        30.002        33.029
+ 1             31.581        30.342        29.966        33.045
 
 
            Covariances
               BUSI          CUSI          DUSI          AUSI
               ________      ________      ________      ________
- BUSI         247.139
- CUSI         183.010       252.514
- DUSI         166.160       190.104       275.350
- AUSI         178.609       177.606       173.805       248.516
+ BUSI         244.403
+ CUSI         183.069       252.870
+ DUSI         169.318       191.981       277.744
+ AUSI         181.452       178.281       174.621       249.435
 
 
            Correlations
               BUSI          CUSI          DUSI          AUSI
               ________      ________      ________      ________
  BUSI           1.000
- CUSI           0.733         1.000
- DUSI           0.637         0.721         1.000
- AUSI           0.721         0.709         0.664         1.000
+ CUSI           0.736         1.000
+ DUSI           0.650         0.724         1.000
+ AUSI           0.735         0.710         0.663         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3202.272
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3166.632
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -431,15 +455,15 @@ Number of Free Parameters                        7
 
 Loglikelihood
 
-          H0 Value                       -3204.258
-          H0 Scaling Correction Factor       1.047
+          H0 Value                       -3168.673
+          H0 Scaling Correction Factor       1.056
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                    6422.516
-          Bayesian (BIC)                  6447.884
-          Sample-Size Adjusted BIC        6425.688
+          Akaike (AIC)                    6351.346
+          Bayesian (BIC)                  6376.663
+          Sample-Size Adjusted BIC        6354.467
             (n* = (n + 2) / 24)
 
 
@@ -450,20 +474,20 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DUSI       ON
-    CUSI               0.246      0.101      2.446      0.014
+    CUSI               0.267      0.106      2.522      0.012
 
  CUSI       ON
-    BUSI               0.246      0.101      2.446      0.014
+    BUSI               0.267      0.106      2.522      0.012
 
  BUSI       ON
-    AUSI               0.246      0.101      2.446      0.014
+    AUSI               0.267      0.106      2.522      0.012
 
  AUSI     WITH
-    I_USI            126.480     23.380      5.410      0.000
+    I_USI            123.214     24.455      5.038      0.000
 
  Means
-    AUSI              33.030      0.946     34.900      0.000
-    I_USI             22.804      3.344      6.819      0.000
+    AUSI              33.045      0.952     34.702      0.000
+    I_USI             22.197      3.529      6.291      0.000
 
  Intercepts
     BUSI               0.000      0.000    999.000    999.000
@@ -471,23 +495,23 @@ MODEL RESULTS
     DUSI               0.000      0.000    999.000    999.000
 
  Variances
-    AUSI             248.535     16.857     14.744      0.000
-    I_USI             91.550     33.108      2.765      0.006
+    AUSI             249.416     16.964     14.703      0.000
+    I_USI             86.612     33.728      2.568      0.010
 
  Residual Variances
-    BUSI              91.138     11.948      7.628      0.000
-    CUSI              91.138     11.948      7.628      0.000
-    DUSI              91.138     11.948      7.628      0.000
+    BUSI              89.922     12.015      7.484      0.000
+    CUSI              89.922     12.015      7.484      0.000
+    DUSI              89.922     12.015      7.484      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.301E-03
+     Condition Number for the Information Matrix              0.268E-03
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:42:28
-        Ending Time:  17:42:28
+     Beginning Time:  11:08:16
+        Ending Time:  11:08:16
        Elapsed Time:  00:00:00
 
 

@@ -1,0 +1,310 @@
+
+title: PxVx Univariate - Nat MeanOnly BFI_E with Lin MVI_POMP;
+data: file = E:\Projects\lnt_pxvx\Data\LT_227.txt;
+
+
+variable: 
+names =
+subjid
+Sample
+aGENDER
+aAGE
+aethnic1
+aethnic2
+aedu_mom
+aedu_dad
+aEDUCATN
+bEDUCATN
+cEDUCATN
+aEMPLOYD
+bEMPLOYD
+cEMPLOYD
+dEMPLOYD
+aINCOME
+bINCOME
+cINCOME
+dINCOME
+aS_SCALE
+bS_SCALE
+cS_SCALE
+dS_SCALE
+aD_SCALE
+bD_SCALE
+cD_SCALE
+dD_SCALE
+aS_COMP
+bS_COMP
+cS_COMP
+dS_COMP
+aD_COMP
+bD_COMP
+cD_COMP
+dD_COMP
+aBFI_A
+aBFI_A6
+aBFI_C
+aBFI_E
+aBFI_HP
+aBFI_N
+aBFI_O
+bBFI_A
+bBFI_A6
+bBFI_C
+bBFI_E
+bBFI_HP
+bBFI_N
+bBFI_O
+cBFI_A
+cBFI_A6
+cBFI_C
+cBFI_E
+cBFI_HP
+cBFI_N
+cBFI_O
+dBFI_A
+dBFI_A6
+dBFI_C
+dBFI_E
+dBFI_HP
+dBFI_N
+dBFI_O
+aBFA_AC
+aBFA_AP
+aBFA_CI
+aBFA_CO
+aBFA_EA
+aBFA_EE
+aBFA_N9
+aBFA_NV
+aBFA_NW
+aBFA_OI
+aBFA_OO
+aBFA_PS
+aBFA_MT
+bBFA_AC
+bBFA_AP
+bBFA_CI
+bBFA_CO
+bBFA_EA
+bBFA_EE
+bBFA_N9
+bBFA_NV
+bBFA_NW
+bBFA_OI
+bBFA_OO
+bBFA_MT
+bBFA_PS
+cBFA_AC
+cBFA_AP
+cBFA_CI
+cBFA_CO
+cBFA_EA
+cBFA_EE
+cBFA_N9
+cBFA_NV
+cBFA_NW
+cBFA_OI
+cBFA_OO
+cBFA_MT
+cBFA_PS
+dBFA_AC
+dBFA_AP
+dBFA_CI
+dBFA_CO
+dBFA_EA
+dBFA_EE
+dBFA_N9
+dBFA_NV
+dBFA_NW
+dBFA_OI
+dBFA_OO
+dBFA_MT
+dBFA_PS
+aUSI
+bUSI
+cUSI
+dUSI
+aHRZ_IND
+bHRZ_IND
+cHRZ_IND
+dHRZ_IND
+aVRT_IND
+bVRT_IND
+cVRT_IND
+dVRT_IND
+aHRZ_COL
+bHRZ_COL
+cHRZ_COL
+dHRZ_COL
+aVRT_COL
+bVRT_COL
+cVRT_COL
+dVRT_COL
+aCOLLCTV
+bCOLLCTV
+cCOLLCTV
+dCOLLCTV
+aMVS
+bMVS
+cMVS
+dMVS
+aST
+bST
+cST
+dST
+aSD
+bSD
+cSD
+dSD
+aMVS_mc
+bMVS_mc
+cMVS_mc
+dMVS_mc
+aST_mc
+bST_mc
+cST_mc
+dST_mc
+aSD_mc
+bSD_mc
+cSD_mc
+dSD_mc
+bMEANING
+cMEANING
+dMEANING
+bMEAN_L
+cMEAN_L
+dMEAN_L
+bMEANNGc
+cMEANNGc
+dMEANNGc
+bMEANGlc
+cMEANGlc
+dMEANGlc
+bCLASSIC
+cCLASSIC
+dCLASSIC
+bCLASSCc
+cCLASSCc
+dCLASSCc
+bAGR_VAL
+cAGR_VAL
+dAGR_VAL
+bOPN_VAL
+cOPN_VAL
+dOPN_VAL
+bAGR_VLc
+cAGR_VLc
+dAGR_VLc
+bOPNVALc
+cOPNVALc
+dOPNVALc
+aMV_pomp
+bMV_pomp
+cMV_pomp
+dMV_pomp
+aST_pomp
+bST_pomp
+cST_pomp
+dST_pomp
+aSD_pomp
+bSD_pomp
+cSD_pomp
+dSD_pomp
+agoal_ec
+bgoal_ec
+cgoal_ec
+dgoal_ec
+aAspfinc
+bAspfinc
+cAspfinc
+dAspfinc
+abfi_hp8
+bbfi_hp8
+cbfi_hp8
+dbfi_hp8
+aP_S_BFI
+aP_D_BFI
+aECgoalc
+bECgoalC
+cECgoalC
+dECgoalC
+aaspfin
+baspfin
+caspfin
+daspfin
+aMVI_POMP
+bMVI_POMP
+cMVI_POMP
+dMVI_POMP;
+
+
+USEVARIABLES =
+aBFI_E
+bBFI_E
+cBFI_E
+dBFI_E
+aMVI_POMP
+bMVI_POMP
+cMVI_POMP
+dMVI_POMP
+bage_c
+cage_c
+dage_c
+;
+
+missing = all (-9999);
+
+USEOBSERVATIONS are Sample == 1; ! National Sample
+
+tscores = bage_c cage_c dage_c;
+
+DEFINE:
+bage_c = aAGE + 1 - 36;
+cage_c = aAGE + 2 - 36;
+dage_c = aAGE + 3 - 36;
+
+ANALYSIS:
+TYPE=RANDOM;
+PROCESSORS = 8; 
+
+MODEL:
+
+i_BFI_E s_BFI_E | bBFI_E cBFI_E dBFI_E AT bage_c cage_c dage_c;
+i_MVI_POMP s_MVI_POMP | bMVI_POMP cMVI_POMP dMVI_POMP AT bage_c cage_c dage_c;
+
+
+!After Bollen and Curran initial observation is not part of LGM
+
+dBFI_E on cBFI_E (a); ! Autoregressive paths constrained to equality
+cBFI_E on bBFI_E (a);
+bBFI_E on aBFI_E (a);
+
+dMVI_POMP on cMVI_POMP (b); ! Autoregressive paths constrained to equality
+cMVI_POMP on bMVI_POMP (b);
+bMVI_POMP on aMVI_POMP (b);
+
+bBFI_E cBFI_E dBFI_E (c); !Equality constraint on residuals
+bMVI_POMP cMVI_POMP dMVI_POMP (d); !Equality constraint on residuals
+
+dMVI_POMP on cBFI_E (x); ! Cross-lagged paths constrained to equality
+cMVI_POMP on bBFI_E (x);
+bMVI_POMP on aBFI_E (x);
+
+dBFI_E on cMVI_POMP (y); ! Cross-lagged paths constrained to equality
+cBFI_E on bMVI_POMP (y);
+bBFI_E on aMVI_POMP (y);
+
+dMVI_POMP with dBFI_E (w); ! within-wave correlations constrained to equality
+cMVI_POMP with cBFI_E (w);
+bMVI_POMP with bBFI_E (w);
+
+aBFI_E aMVI_POMP i_BFI_E i_MVI_POMP 
+s_MVI_POMP
+with
+s_MVI_POMP
+aBFI_E aMVI_POMP i_BFI_E i_MVI_POMP;
+
+s_BFI_E@0;
+
+
+OUTPUT: SAMPSTAT PATTERNS;

@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   9:25 PM
+03/21/2016   2:40 PM
 
 INPUT INSTRUCTIONS
 
@@ -300,7 +300,11 @@ INPUT INSTRUCTIONS
   aI_H
   bI_H
   cI_H
-  dI_H;
+  dI_H
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
 
 
@@ -393,14 +397,30 @@ INPUT INSTRUCTIONS
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
   Variable: DGOAL_ECO
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
 *** WARNING in MODEL command
   All continuous latent variable covariances involving S_ASPFIN have been fixed to 0
   because the variance of S_ASPFIN is fixed at 0.
 *** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  4
-   6 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  13
+  10 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -409,7 +429,7 @@ PxVx Univariate - Nat Lin I_O with MeanOnly aspfin;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         604
+Number of observations                                         595
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -454,7 +474,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns            46
+     Number of missing data patterns            48
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -482,36 +502,36 @@ SUMMARY OF MISSING DATA PATTERNS
  AI_O      x  x  x        x  x  x     x  x  x        x  x  x     x
  AASPFIN   x  x  x  x  x  x  x  x  x  x  x     x  x  x  x  x  x  x  x
 
-          41 42 43 44 45 46
- BI_O         x  x
- CI_O            x        x
- DI_O      x  x  x     x  x
- BASPFIN      x  x  x
- CASPFIN   x     x  x  x  x
- DASPFIN   x  x        x  x
- AI_O      x  x     x
- AASPFIN   x  x  x  x  x  x
+          41 42 43 44 45 46 47 48
+ BI_O         x  x     x
+ CI_O            x     x     x  x
+ DI_O      x  x        x  x  x  x
+ BASPFIN      x  x  x  x
+ CASPFIN   x     x  x  x  x  x  x
+ DASPFIN   x  x  x     x  x  x  x
+ AI_O      x  x     x  x
+ AASPFIN   x  x     x     x  x
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
           1         172          17           9          33           1
-          2          34          18          18          34           2
-          3          26          19          11          35           3
-          4          19          20           5          36           3
-          5           5          21           7          37          14
+          2          34          18          16          34           2
+          3          25          19          11          35           3
+          4          18          20           5          36           3
+          5           5          21           7          37          13
           6          15          22          11          38           2
           7          17          23          16          39           2
-          8          39          24           4          40           3
-          9          29          25           7          41           2
+          8          38          24           4          40           3
+          9          28          25           5          41           2
          10          17          26           6          42           6
          11           7          27          12          43           1
          12          18          28           8          44           4
          13           2          29           2          45           1
-         14           3          30           7          46           2
-         15          17          31           1
-         16          13          32           1
+         14           3          30           7          46           1
+         15          15          31           1          47           2
+         16          13          32           1          48           1
 
 
 COVARIANCE COVERAGE OF DATA
@@ -525,22 +545,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BI_O          CI_O          DI_O          BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- BI_O           0.624
- CI_O           0.455         0.589
- DI_O           0.422         0.414         0.551
- BASPFIN        0.624         0.563         0.523         0.869
- CASPFIN        0.576         0.589         0.520         0.776         0.829
- DASPFIN        0.548         0.540         0.548         0.745         0.748
- AI_O           0.445         0.419         0.384         0.593         0.571
- AASPFIN        0.623         0.589         0.551         0.868         0.829
+ BI_O           0.627
+ CI_O           0.461         0.597
+ DI_O           0.427         0.420         0.556
+ BASPFIN        0.627         0.568         0.526         0.866
+ CASPFIN        0.582         0.597         0.524         0.778         0.834
+ DASPFIN        0.555         0.548         0.555         0.748         0.753
+ AI_O           0.450         0.425         0.392         0.595         0.576
+ AASPFIN        0.622         0.592         0.553         0.861         0.829
 
 
            Covariance Coverage
               DASPFIN       AI_O          AASPFIN
               ________      ________      ________
- DASPFIN        0.800
- AI_O           0.548         0.710
- AASPFIN        0.800         0.709         0.998
+ DASPFIN        0.805
+ AI_O           0.553         0.714
+ AASPFIN        0.800         0.711         0.993
 
 
 SAMPLE STATISTICS
@@ -552,58 +572,58 @@ SAMPLE STATISTICS
            Means
               BI_O          CI_O          DI_O          BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- 1             72.242        70.853        71.487        47.503        47.778
+ 1             72.302        70.821        71.744        47.207        47.561
 
 
            Means
               DASPFIN       AI_O          AASPFIN
               ________      ________      ________
- 1             47.373        72.563        47.566
+ 1             47.104        72.711        47.227
 
 
            Covariances
               BI_O          CI_O          DI_O          BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- BI_O         401.223
- CI_O         220.839       416.652
- DI_O         205.191       215.065       414.613
- BASPFIN      -89.341       -19.292       -46.000       500.664
- CASPFIN      -64.344       -21.000       -24.134       393.683       504.678
- DASPFIN     -100.074       -22.724       -29.871       374.597       380.604
- AI_O         206.475       203.922       206.794       -63.293       -36.141
- AASPFIN      -85.156       -19.333       -47.425       377.560       358.102
+ BI_O         401.691
+ CI_O         219.125       416.186
+ DI_O         200.791       206.909       412.345
+ BASPFIN      -90.043       -22.332       -44.242       498.662
+ CASPFIN      -65.102       -27.145       -19.935       391.577       504.354
+ DASPFIN     -100.802       -28.546       -28.327       372.045       380.368
+ AI_O         203.508       201.191       205.225       -65.163       -37.805
+ AASPFIN      -84.095       -21.101       -45.310       373.101       356.751
 
 
            Covariances
               DASPFIN       AI_O          AASPFIN
               ________      ________      ________
- DASPFIN      506.600
- AI_O         -45.418       422.993
- AASPFIN      356.876       -60.561       489.320
+ DASPFIN      507.075
+ AI_O         -48.887       423.540
+ AASPFIN      353.807       -61.084       483.853
 
 
            Correlations
               BI_O          CI_O          DI_O          BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
  BI_O           1.000
- CI_O           0.540         1.000
- DI_O           0.503         0.517         1.000
- BASPFIN       -0.199        -0.042        -0.101         1.000
- CASPFIN       -0.143        -0.046        -0.053         0.783         1.000
- DASPFIN       -0.222        -0.049        -0.065         0.744         0.753
- AI_O           0.501         0.486         0.494        -0.138        -0.078
- AASPFIN       -0.192        -0.043        -0.105         0.763         0.721
+ CI_O           0.536         1.000
+ DI_O           0.493         0.499         1.000
+ BASPFIN       -0.201        -0.049        -0.098         1.000
+ CASPFIN       -0.145        -0.059        -0.044         0.781         1.000
+ DASPFIN       -0.223        -0.062        -0.062         0.740         0.752
+ AI_O           0.493         0.479         0.491        -0.142        -0.082
+ AASPFIN       -0.191        -0.047        -0.101         0.760         0.722
 
 
            Correlations
               DASPFIN       AI_O          AASPFIN
               ________      ________      ________
  DASPFIN        1.000
- AI_O          -0.098         1.000
- AASPFIN        0.717        -0.133         1.000
+ AI_O          -0.105         1.000
+ AASPFIN        0.714        -0.135         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -15262.440
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -15090.542
 
      THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO A CHANGE IN THE
      LOGLIKELIHOOD DURING THE LAST E STEP.
@@ -612,7 +632,7 @@ SAMPLE STATISTICS
      THE NUMBER OF MITERATIONS OR INCREASE THE MCONVERGENCE VALUE.  ESTIMATES
      CANNOT BE TRUSTED.
      SLOW CONVERGENCE DUE TO PARAMETER 4.
-     THE LOGLIKELIHOOD DERIVATIVE FOR THIS PARAMETER IS -0.36724910D+00.
+     THE LOGLIKELIHOOD DERIVATIVE FOR THIS PARAMETER IS -0.32149278D+00.
 
 
 
@@ -624,65 +644,65 @@ MODEL RESULTS
                     Estimate
 
  DI_O       ON
-    CI_O               0.045
-    CASPFIN            0.072
+    CI_O               0.036
+    CASPFIN            0.078
 
  CI_O       ON
-    BI_O               0.045
-    BASPFIN            0.072
+    BI_O               0.036
+    BASPFIN            0.078
 
  BI_O       ON
-    AI_O               0.045
-    AASPFIN            0.072
+    AI_O               0.036
+    AASPFIN            0.078
 
  DASPFIN    ON
-    CASPFIN           -0.064
-    CI_O               0.029
+    CASPFIN            0.003
+    CI_O               0.021
 
  CASPFIN    ON
-    BASPFIN           -0.064
-    BI_O               0.029
+    BASPFIN            0.003
+    BI_O               0.021
 
  BASPFIN    ON
-    AASPFIN           -0.064
-    AI_O               0.029
+    AASPFIN            0.003
+    AI_O               0.021
 
  S_I_O    WITH
-    I_I_O              0.794
+    I_I_O              0.786
 
  I_ASPFIN WITH
-    I_I_O           -100.013
-    S_I_O              1.442
+    I_I_O            -90.404
+    S_I_O              1.658
 
  AI_O     WITH
-    I_I_O            183.196
-    S_I_O              3.276
-    I_ASPFIN         -40.873
+    I_I_O            184.070
+    S_I_O              3.373
+    I_ASPFIN         -42.303
 
  AASPFIN  WITH
-    I_I_O            -84.071
-    S_I_O              1.451
-    I_ASPFIN         399.236
+    I_I_O            -85.798
+    S_I_O              1.605
+    I_ASPFIN         364.192
 
  DASPFIN  WITH
-    DI_O               3.016
+    DI_O               1.637
 
  CASPFIN  WITH
-    CI_O               3.016
+    CI_O               1.637
 
  BASPFIN  WITH
-    BI_O               3.016
+    BI_O               1.637
 
  AASPFIN  WITH
-    AI_O             -57.864
+    AI_O             -58.515
 
  Means
-    AI_O              73.256
-    AASPFIN           47.593
-    I_I_O             65.538
-    S_I_O             -0.173
-    I_ASPFIN          46.711
-    S_ASPFIN           0.961
+    AI_O              73.367
+    AASPFIN           47.183
+    I_I_O             66.058
+    S_I_O             -0.132
+    I_ASPFIN          44.410
+    S_ASPFIN           0.626
 
  Intercepts
     BI_O               0.000
@@ -693,20 +713,20 @@ MODEL RESULTS
     DASPFIN            0.000
 
  Variances
-    AI_O             420.401
-    AASPFIN          489.119
-    I_I_O            189.414
-    S_I_O              0.046
-    I_ASPFIN         551.020
+    AI_O             420.974
+    AASPFIN          483.092
+    I_I_O            189.491
+    S_I_O              0.053
+    I_ASPFIN         429.205
     S_ASPFIN           0.000
 
  Residual Variances
-    BI_O             202.318
-    CI_O             202.318
-    DI_O             202.318
-    BASPFIN          118.373
-    CASPFIN          118.373
-    DASPFIN          118.373
+    BI_O             204.958
+    CI_O             204.958
+    DI_O             204.958
+    BASPFIN          122.307
+    CASPFIN          122.307
+    DASPFIN          122.307
 
 
 MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
@@ -714,32 +734,32 @@ MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
      i_i_o s_i_o | bi_o ci_o di_o AT bage_c cage_c dage_c;
      i_aspfin s_aspfin | baspfin caspfin daspfin AT bage_c cage_c dage_c;
 
-     di_o ON ci_o*0.045 (a);
-     di_o ON caspfin*0.072 (y);
-     ci_o ON bi_o*0.045 (a);
-     ci_o ON baspfin*0.072 (y);
-     bi_o ON ai_o*0.045 (a);
-     bi_o ON aaspfin*0.072 (y);
-     daspfin ON caspfin*-0.064 (b);
-     daspfin ON ci_o*0.029 (x);
-     caspfin ON baspfin*-0.064 (b);
-     caspfin ON bi_o*0.029 (x);
-     baspfin ON aaspfin*-0.064 (b);
-     baspfin ON ai_o*0.029 (x);
+     di_o ON ci_o*0.036 (a);
+     di_o ON caspfin*0.078 (y);
+     ci_o ON bi_o*0.036 (a);
+     ci_o ON baspfin*0.078 (y);
+     bi_o ON ai_o*0.036 (a);
+     bi_o ON aaspfin*0.078 (y);
+     daspfin ON caspfin*0.003 (b);
+     daspfin ON ci_o*0.021 (x);
+     caspfin ON baspfin*0.003 (b);
+     caspfin ON bi_o*0.021 (x);
+     baspfin ON aaspfin*0.003 (b);
+     baspfin ON ai_o*0.021 (x);
 
-     daspfin WITH di_o*3.016 (w);
-     caspfin WITH ci_o*3.016 (w);
-     baspfin WITH bi_o*3.016 (w);
-     aaspfin WITH ai_o*-57.864;
-     s_i_o WITH i_i_o*0.794;
-     i_aspfin WITH i_i_o*-100.013;
-     i_aspfin WITH s_i_o*1.442;
-     ai_o WITH i_i_o*183.196;
-     ai_o WITH s_i_o*3.276;
-     ai_o WITH i_aspfin*-40.873;
-     aaspfin WITH i_i_o*-84.071;
-     aaspfin WITH s_i_o*1.451;
-     aaspfin WITH i_aspfin*399.236;
+     daspfin WITH di_o*1.637 (w);
+     caspfin WITH ci_o*1.637 (w);
+     baspfin WITH bi_o*1.637 (w);
+     aaspfin WITH ai_o*-58.515;
+     s_i_o WITH i_i_o*0.786;
+     i_aspfin WITH i_i_o*-90.404;
+     i_aspfin WITH s_i_o*1.658;
+     ai_o WITH i_i_o*184.070;
+     ai_o WITH s_i_o*3.373;
+     ai_o WITH i_aspfin*-42.303;
+     aaspfin WITH i_i_o*-85.798;
+     aaspfin WITH s_i_o*1.605;
+     aaspfin WITH i_aspfin*364.192;
 
      [ bi_o@0 ];
      [ ci_o@0 ];
@@ -747,31 +767,31 @@ MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
      [ baspfin@0 ];
      [ caspfin@0 ];
      [ daspfin@0 ];
-     [ ai_o*73.256 ];
-     [ aaspfin*47.593 ];
-     [ i_i_o*65.538 ];
-     [ s_i_o*-0.173 ];
-     [ i_aspfin*46.711 ];
-     [ s_aspfin*0.961 ];
+     [ ai_o*73.367 ];
+     [ aaspfin*47.183 ];
+     [ i_i_o*66.058 ];
+     [ s_i_o*-0.132 ];
+     [ i_aspfin*44.410 ];
+     [ s_aspfin*0.626 ];
 
-     bi_o*202.318 (c);
-     ci_o*202.318 (c);
-     di_o*202.318 (c);
-     baspfin*118.373 (d);
-     caspfin*118.373 (d);
-     daspfin*118.373 (d);
-     ai_o*420.401;
-     aaspfin*489.119;
-     i_i_o*189.414;
-     s_i_o*0.046;
-     i_aspfin*551.020;
+     bi_o*204.958 (c);
+     ci_o*204.958 (c);
+     di_o*204.958 (c);
+     baspfin*122.307 (d);
+     caspfin*122.307 (d);
+     daspfin*122.307 (d);
+     ai_o*420.974;
+     aaspfin*483.092;
+     i_i_o*189.491;
+     s_i_o*0.053;
+     i_aspfin*429.205;
      s_aspfin@0;
 
 
 
-     Beginning Time:  21:25:29
-        Ending Time:  21:26:15
-       Elapsed Time:  00:00:46
+     Beginning Time:  14:40:12
+        Ending Time:  14:40:59
+       Elapsed Time:  00:00:47
 
 
 

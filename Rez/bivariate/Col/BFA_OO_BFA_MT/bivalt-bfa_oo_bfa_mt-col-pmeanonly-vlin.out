@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   6:32 PM
+03/21/2016  11:41 AM
 
 INPUT INSTRUCTIONS
 
@@ -238,7 +238,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFA_OO
@@ -313,6 +317,22 @@ INPUT INSTRUCTIONS
 
 
 
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
 *** WARNING in MODEL command
   All continuous latent variable covariances involving S_BFA_OO have been fixed to 0
   because the variance of S_BFA_OO is fixed at 0.
@@ -320,7 +340,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   7 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -329,7 +353,7 @@ PxVx Univariate - Col MeanOnly BFA_OO with Lin BFA_MT;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -396,7 +420,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           4          29           7          17
+          1         138           4          29           7          17
           2          12           5          53           8          11
           3           5           6          11           9           1
 
@@ -412,22 +436,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFA_OO       CBFA_OO       DBFA_OO       BBFA_MT       CBFA_MT
               ________      ________      ________      ________      ________
- BBFA_OO        0.710
- CBFA_OO        0.545         0.602
- DBFA_OO        0.563         0.541         0.642
- BBFA_MT        0.710         0.545         0.563         0.710
- CBFA_MT        0.545         0.602         0.541         0.545         0.602
- DBFA_MT        0.563         0.541         0.642         0.563         0.541
- ABFA_OO        0.710         0.602         0.642         0.710         0.602
- ABFA_MT        0.710         0.602         0.642         0.710         0.602
+ BBFA_OO        0.708
+ CBFA_OO        0.542         0.599
+ DBFA_OO        0.560         0.538         0.639
+ BBFA_MT        0.708         0.542         0.560         0.708
+ CBFA_MT        0.542         0.599         0.538         0.542         0.599
+ DBFA_MT        0.560         0.538         0.639         0.560         0.538
+ ABFA_OO        0.708         0.599         0.639         0.708         0.599
+ ABFA_MT        0.708         0.599         0.639         0.708         0.599
 
 
            Covariance Coverage
               DBFA_MT       ABFA_OO       ABFA_MT
               ________      ________      ________
- DBFA_MT        0.642
- ABFA_OO        0.642         0.996
- ABFA_MT        0.642         0.996         1.000
+ DBFA_MT        0.639
+ ABFA_OO        0.639         0.996
+ ABFA_MT        0.639         0.996         1.000
 
 
 SAMPLE STATISTICS
@@ -439,62 +463,62 @@ SAMPLE STATISTICS
            Means
               BBFA_OO       CBFA_OO       DBFA_OO       BBFA_MT       CBFA_MT
               ________      ________      ________      ________      ________
- 1             74.219        73.018        75.133        50.090        49.871
+ 1             74.091        72.943        75.022        49.965        49.878
 
 
            Means
               DBFA_MT       ABFA_OO       ABFA_MT
               ________      ________      ________
- 1             49.232        74.988        50.456
+ 1             49.133        74.896        50.311
 
 
            Covariances
               BBFA_OO       CBFA_OO       DBFA_OO       BBFA_MT       CBFA_MT
               ________      ________      ________      ________      ________
- BBFA_OO      265.939
- CBFA_OO      214.952       237.715
- DBFA_OO      199.985       187.448       217.450
- BBFA_MT      -59.699       -56.944       -26.412       242.649
- CBFA_MT      -56.515       -59.581       -30.539       191.579       260.591
- DBFA_MT      -59.761       -63.776       -31.288       197.356       232.817
- ABFA_OO      201.456       180.825       168.748       -53.077       -46.685
- ABFA_MT      -57.738       -51.631       -28.125       182.823       168.090
+ BBFA_OO      265.596
+ CBFA_OO      216.789       240.060
+ DBFA_OO      198.975       189.513       216.826
+ BBFA_MT      -62.708       -58.250       -28.479       243.772
+ CBFA_MT      -58.818       -57.995       -33.068       194.354       259.110
+ DBFA_MT      -64.726       -61.926       -36.697       198.049       226.388
+ ABFA_OO      201.491       181.425       168.861       -55.361       -45.930
+ ABFA_MT      -62.330       -51.301       -32.850       183.191       165.676
 
 
            Covariances
               DBFA_MT       ABFA_OO       ABFA_MT
               ________      ________      ________
- DBFA_MT      292.722
- ABFA_OO      -51.553       230.892
- ABFA_MT      173.140       -45.289       227.595
+ DBFA_MT      279.410
+ ABFA_OO      -51.675       231.252
+ ABFA_MT      164.597       -46.799       223.768
 
 
            Correlations
               BBFA_OO       CBFA_OO       DBFA_OO       BBFA_MT       CBFA_MT
               ________      ________      ________      ________      ________
  BBFA_OO        1.000
- CBFA_OO        0.855         1.000
- DBFA_OO        0.832         0.824         1.000
- BBFA_MT       -0.235        -0.237        -0.115         1.000
- CBFA_MT       -0.215        -0.239        -0.128         0.762         1.000
- DBFA_MT       -0.214        -0.242        -0.124         0.741         0.843
- ABFA_OO        0.813         0.772         0.753        -0.224        -0.190
- ABFA_MT       -0.235        -0.222        -0.126         0.778         0.690
+ CBFA_OO        0.859         1.000
+ DBFA_OO        0.829         0.831         1.000
+ BBFA_MT       -0.246        -0.241        -0.124         1.000
+ CBFA_MT       -0.224        -0.233        -0.140         0.773         1.000
+ DBFA_MT       -0.238        -0.239        -0.149         0.759         0.841
+ ABFA_OO        0.813         0.770         0.754        -0.233        -0.188
+ ABFA_MT       -0.256        -0.221        -0.149         0.784         0.688
 
 
            Correlations
               DBFA_MT       ABFA_OO       ABFA_MT
               ________      ________      ________
  DBFA_MT        1.000
- ABFA_OO       -0.198         1.000
- ABFA_MT        0.671        -0.198         1.000
+ ABFA_OO       -0.203         1.000
+ ABFA_MT        0.658        -0.206         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6234.655
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6161.088
 
      WARNING:  THE MLR STANDARD ERRORS COULD NOT BE COMPUTED.  THE MLF STANDARD
-     ERRORS WERE COMPUTED INSTEAD.  THE MLR CONDITION NUMBER IS      -0.365D-06.
-     PROBLEM INVOLVING PARAMETER 21.  THIS MAY BE DUE TO NEAR SINGULARITY
+     ERRORS WERE COMPUTED INSTEAD.  THE MLR CONDITION NUMBER IS      -0.496D-05.
+     PROBLEM INVOLVING PARAMETER 22.  THIS MAY BE DUE TO NEAR SINGULARITY
      OF THE RANDOM EFFECT VARIANCE/COVARIANCE OR INCOMPLETE CONVERGENCE.
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -507,13 +531,13 @@ Number of Free Parameters                       28
 
 Loglikelihood
 
-          H0 Value                       -6250.316
+          H0 Value                       -6176.313
 
 Information Criteria
 
-          Akaike (AIC)                   12556.631
-          Bayesian (BIC)                 12658.305
-          Sample-Size Adjusted BIC       12569.520
+          Akaike (AIC)                   12408.626
+          Bayesian (BIC)                 12510.099
+          Sample-Size Adjusted BIC       12421.315
             (n* = (n + 2) / 24)
 
 
@@ -524,65 +548,65 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFA_OO    ON
-    CBFA_OO            0.100      0.073      1.374      0.170
-    CBFA_MT           -0.089      0.073     -1.221      0.222
+    CBFA_OO            0.112      0.075      1.493      0.136
+    CBFA_MT           -0.100      0.074     -1.351      0.177
 
  CBFA_OO    ON
-    BBFA_OO            0.100      0.073      1.374      0.170
-    BBFA_MT           -0.089      0.073     -1.221      0.222
+    BBFA_OO            0.112      0.075      1.493      0.136
+    BBFA_MT           -0.100      0.074     -1.351      0.177
 
  BBFA_OO    ON
-    ABFA_OO            0.100      0.073      1.374      0.170
-    ABFA_MT           -0.089      0.073     -1.221      0.222
+    ABFA_OO            0.112      0.075      1.493      0.136
+    ABFA_MT           -0.100      0.074     -1.351      0.177
 
  DBFA_MT    ON
-    CBFA_MT            0.367      0.128      2.867      0.004
-    CBFA_OO           -0.195      0.144     -1.359      0.174
+    CBFA_MT            0.314      0.120      2.625      0.009
+    CBFA_OO           -0.168      0.143     -1.170      0.242
 
  CBFA_MT    ON
-    BBFA_MT            0.367      0.128      2.867      0.004
-    BBFA_OO           -0.195      0.144     -1.359      0.174
+    BBFA_MT            0.314      0.120      2.625      0.009
+    BBFA_OO           -0.168      0.143     -1.170      0.242
 
  BBFA_MT    ON
-    ABFA_MT            0.367      0.128      2.867      0.004
-    ABFA_OO           -0.195      0.144     -1.359      0.174
+    ABFA_MT            0.314      0.120      2.625      0.009
+    ABFA_OO           -0.168      0.143     -1.170      0.242
 
  I_BFA_MT WITH
-    I_BFA_OO          21.593     33.676      0.641      0.521
+    I_BFA_OO          16.764     32.538      0.515      0.606
 
  S_BFA_MT WITH
-    I_BFA_OO          -0.416      6.540     -0.064      0.949
-    I_BFA_MT           2.454      8.549      0.287      0.774
+    I_BFA_OO          -1.345      6.546     -0.206      0.837
+    I_BFA_MT           1.718      8.229      0.209      0.835
 
  ABFA_OO  WITH
-    I_BFA_OO         161.202     27.765      5.806      0.000
-    I_BFA_MT          15.091     42.450      0.355      0.722
-    S_BFA_MT          -4.042      8.386     -0.482      0.630
+    I_BFA_OO         158.222     27.866      5.678      0.000
+    I_BFA_MT           4.528     42.226      0.107      0.915
+    S_BFA_MT          -2.983      8.018     -0.372      0.710
 
  ABFA_MT  WITH
-    I_BFA_OO         -24.434     21.768     -1.122      0.262
-    I_BFA_MT          78.491     34.364      2.284      0.022
-    S_BFA_MT           8.064      6.425      1.255      0.209
+    I_BFA_OO         -24.914     21.235     -1.173      0.241
+    I_BFA_MT          97.545     33.382      2.922      0.003
+    S_BFA_MT           2.772      6.706      0.413      0.679
 
  DBFA_MT  WITH
-    DBFA_OO           -6.425      5.066     -1.268      0.205
+    DBFA_OO           -5.807      4.655     -1.247      0.212
 
  CBFA_MT  WITH
-    CBFA_OO           -6.425      5.066     -1.268      0.205
+    CBFA_OO           -5.807      4.655     -1.247      0.212
 
  BBFA_MT  WITH
-    BBFA_OO           -6.425      5.066     -1.268      0.205
+    BBFA_OO           -5.807      4.655     -1.247      0.212
 
  ABFA_MT  WITH
-    ABFA_OO          -45.287     16.603     -2.728      0.006
+    ABFA_OO          -46.797     16.513     -2.834      0.005
 
  Means
-    ABFA_OO           75.006      1.052     71.289      0.000
-    ABFA_MT           50.456      0.980     51.475      0.000
-    I_BFA_OO          70.436      5.899     11.941      0.000
-    S_BFA_OO           0.386      0.351      1.100      0.271
-    I_BFA_MT          46.813     11.600      4.035      0.000
-    S_BFA_MT          -0.503      0.500     -1.007      0.314
+    ABFA_OO           74.915      1.051     71.302      0.000
+    ABFA_MT           50.311      0.978     51.456      0.000
+    I_BFA_OO          69.915      5.879     11.893      0.000
+    S_BFA_OO           0.399      0.350      1.138      0.255
+    I_BFA_MT          47.428     11.482      4.131      0.000
+    S_BFA_MT          -0.520      0.485     -1.073      0.283
 
  Intercepts
     BBFA_OO            0.000      0.000    999.000    999.000
@@ -593,30 +617,30 @@ MODEL RESULTS
     DBFA_MT            0.000      0.000    999.000    999.000
 
  Variances
-    ABFA_OO          230.892     25.519      9.048      0.000
-    ABFA_MT          227.595     21.805     10.438      0.000
-    I_BFA_OO         157.176     34.484      4.558      0.000
+    ABFA_OO          231.252     25.576      9.042      0.000
+    ABFA_MT          223.767     21.740     10.293      0.000
+    I_BFA_OO         152.247     34.639      4.395      0.000
     S_BFA_OO           0.000      0.000    999.000    999.000
-    I_BFA_MT          61.242     36.803      1.664      0.096
-    S_BFA_MT           0.857      4.085      0.210      0.834
+    I_BFA_MT          79.328     38.590      2.056      0.040
+    S_BFA_MT           0.538      3.986      0.135      0.893
 
  Residual Variances
-    BBFA_OO           43.240      3.664     11.803      0.000
-    CBFA_OO           43.240      3.664     11.803      0.000
-    DBFA_OO           43.240      3.664     11.803      0.000
-    BBFA_MT           69.278     10.317      6.715      0.000
-    CBFA_MT           69.278     10.317      6.715      0.000
-    DBFA_MT           69.278     10.317      6.715      0.000
+    BBFA_OO           42.850      3.626     11.816      0.000
+    CBFA_OO           42.850      3.626     11.816      0.000
+    DBFA_OO           42.850      3.626     11.816      0.000
+    BBFA_MT           62.631      9.221      6.792      0.000
+    CBFA_MT           62.631      9.221      6.792      0.000
+    DBFA_MT           62.631      9.221      6.792      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.359E-06
+     Condition Number for the Information Matrix              0.690E-07
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  18:32:11
-        Ending Time:  18:32:18
+     Beginning Time:  11:41:18
+        Ending Time:  11:41:25
        Elapsed Time:  00:00:07
 
 

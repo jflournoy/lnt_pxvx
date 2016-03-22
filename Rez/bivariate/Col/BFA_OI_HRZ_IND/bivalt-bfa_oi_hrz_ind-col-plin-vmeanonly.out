@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   6:30 PM
+03/21/2016  11:39 AM
 
 INPUT INSTRUCTIONS
 
@@ -238,7 +238,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFA_OI
@@ -316,6 +320,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_HRZ_IND
 *** WARNING
   Variable name contains more than 8 characters.
@@ -328,7 +348,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   4 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   9 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -337,7 +361,7 @@ PxVx Univariate - Col Lin BFA_OI with MeanOnly HRZ_IND;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -404,7 +428,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           5          52           9           1
+          1         138           5          52           9           1
           2          12           6          11          10          10
           3           5           7           1          11           2
           4          27           8          16          12           2
@@ -421,22 +445,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFA_OI       CBFA_OI       DBFA_OI       BHRZ_IND      CHRZ_IND
               ________      ________      ________      ________      ________
- BBFA_OI        0.710
- CBFA_OI        0.545         0.602
- DBFA_OI        0.563         0.541         0.642
- BHRZ_IND       0.699         0.545         0.559         0.699
- CHRZ_IND       0.545         0.602         0.541         0.545         0.602
- DHRZ_IND       0.559         0.538         0.634         0.559         0.538
- ABFA_OI        0.710         0.602         0.642         0.699         0.602
- AHRZ_IND       0.710         0.602         0.642         0.699         0.602
+ BBFA_OI        0.708
+ CBFA_OI        0.542         0.599
+ DBFA_OI        0.560         0.538         0.639
+ BHRZ_IND       0.697         0.542         0.556         0.697
+ CHRZ_IND       0.542         0.599         0.538         0.542         0.599
+ DHRZ_IND       0.556         0.534         0.632         0.556         0.534
+ ABFA_OI        0.708         0.599         0.639         0.697         0.599
+ AHRZ_IND       0.708         0.599         0.639         0.697         0.599
 
 
            Covariance Coverage
               DHRZ_IND      ABFA_OI       AHRZ_IND
               ________      ________      ________
- DHRZ_IND       0.634
- ABFA_OI        0.634         1.000
- AHRZ_IND       0.634         0.993         0.993
+ DHRZ_IND       0.632
+ ABFA_OI        0.632         1.000
+ AHRZ_IND       0.632         0.993         0.993
 
 
 SAMPLE STATISTICS
@@ -448,63 +472,59 @@ SAMPLE STATISTICS
            Means
               BBFA_OI       CBFA_OI       DBFA_OI       BHRZ_IND      CHRZ_IND
               ________      ________      ________      ________      ________
- 1             71.040        70.155        72.242        73.238        73.526
+ 1             71.179        70.371        72.591        73.097        73.468
 
 
            Means
               DHRZ_IND      ABFA_OI       AHRZ_IND
               ________      ________      ________
- 1             75.416        71.262        73.923
+ 1             75.522        71.399        74.059
 
 
            Covariances
               BBFA_OI       CBFA_OI       DBFA_OI       BHRZ_IND      CHRZ_IND
               ________      ________      ________      ________      ________
- BBFA_OI      211.522
- CBFA_OI      181.416       244.202
- DBFA_OI      176.252       192.690       227.245
- BHRZ_IND      72.704        55.917        56.762       265.852
- CHRZ_IND      66.504        87.569        56.888       172.052       244.628
- DHRZ_IND      13.233         7.930        23.562       145.157       140.361
- ABFA_OI      166.956       169.468       162.943        60.436        74.097
- AHRZ_IND      43.318        26.968        43.370       160.962       130.958
+ BBFA_OI      206.501
+ CBFA_OI      175.651       238.133
+ DBFA_OI      168.699       183.163       213.953
+ BHRZ_IND      73.653        58.172        60.821       266.673
+ CHRZ_IND      67.437        89.165        58.826       173.364       247.415
+ DHRZ_IND       8.013         2.674        17.694       145.419       141.137
+ ABFA_OI      162.313       164.229       155.484        61.452        75.307
+ AHRZ_IND      38.603        21.600        35.908       163.109       132.730
 
 
            Covariances
               DHRZ_IND      ABFA_OI       AHRZ_IND
               ________      ________      ________
- DHRZ_IND     258.195
- ABFA_OI       12.111       216.189
- AHRZ_IND     138.659        44.604       241.690
+ DHRZ_IND     257.323
+ ABFA_OI        7.611       212.972
+ AHRZ_IND     135.809        40.635       239.553
 
 
            Correlations
               BBFA_OI       CBFA_OI       DBFA_OI       BHRZ_IND      CHRZ_IND
               ________      ________      ________      ________      ________
  BBFA_OI        1.000
- CBFA_OI        0.798         1.000
- DBFA_OI        0.804         0.818         1.000
- BHRZ_IND       0.307         0.219         0.231         1.000
- CHRZ_IND       0.292         0.358         0.241         0.675         1.000
- DHRZ_IND       0.057         0.032         0.097         0.554         0.558
- ABFA_OI        0.781         0.738         0.735         0.252         0.322
- AHRZ_IND       0.192         0.111         0.185         0.635         0.539
+ CBFA_OI        0.792         1.000
+ DBFA_OI        0.803         0.811         1.000
+ BHRZ_IND       0.314         0.231         0.255         1.000
+ CHRZ_IND       0.298         0.367         0.256         0.675         1.000
+ DHRZ_IND       0.035         0.011         0.075         0.555         0.559
+ ABFA_OI        0.774         0.729         0.728         0.258         0.328
+ AHRZ_IND       0.174         0.090         0.159         0.645         0.545
 
 
            Correlations
               DHRZ_IND      ABFA_OI       AHRZ_IND
               ________      ________      ________
  DHRZ_IND       1.000
- ABFA_OI        0.051         1.000
- AHRZ_IND       0.555         0.195         1.000
+ ABFA_OI        0.033         1.000
+ AHRZ_IND       0.547         0.180         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6331.699
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6262.903
 
-     WARNING:  THE MLR STANDARD ERRORS COULD NOT BE COMPUTED.  THE MLF STANDARD
-     ERRORS WERE COMPUTED INSTEAD.  THE MLR CONDITION NUMBER IS      -0.425D-04.
-     PROBLEM INVOLVING PARAMETER 20.  THIS MAY BE DUE TO NEAR SINGULARITY
-     OF THE RANDOM EFFECT VARIANCE/COVARIANCE OR INCOMPLETE CONVERGENCE.
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
 
@@ -516,13 +536,15 @@ Number of Free Parameters                       28
 
 Loglikelihood
 
-          H0 Value                       -6352.830
+          H0 Value                       -6286.265
+          H0 Scaling Correction Factor       1.154
+            for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   12761.660
-          Bayesian (BIC)                 12863.333
-          Sample-Size Adjusted BIC       12774.548
+          Akaike (AIC)                   12628.529
+          Bayesian (BIC)                 12730.002
+          Sample-Size Adjusted BIC       12641.218
             (n* = (n + 2) / 24)
 
 
@@ -533,65 +555,65 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFA_OI    ON
-    CBFA_OI            0.060      0.105      0.566      0.571
-    CHRZ_IND          -0.021      0.063     -0.334      0.739
+    CBFA_OI            0.047      0.170      0.274      0.784
+    CHRZ_IND          -0.014      0.084     -0.161      0.872
 
  CBFA_OI    ON
-    BBFA_OI            0.060      0.105      0.566      0.571
-    BHRZ_IND          -0.021      0.063     -0.334      0.739
+    BBFA_OI            0.047      0.170      0.274      0.784
+    BHRZ_IND          -0.014      0.084     -0.161      0.872
 
  BBFA_OI    ON
-    ABFA_OI            0.060      0.105      0.566      0.571
-    AHRZ_IND          -0.021      0.063     -0.334      0.739
+    ABFA_OI            0.047      0.170      0.274      0.784
+    AHRZ_IND          -0.014      0.084     -0.161      0.872
 
  DHRZ_IND   ON
-    CHRZ_IND           0.142      0.091      1.556      0.120
-    CBFA_OI           -0.080      0.104     -0.771      0.441
+    CHRZ_IND           0.154      0.090      1.720      0.085
+    CBFA_OI           -0.099      0.154     -0.641      0.522
 
  CHRZ_IND   ON
-    BHRZ_IND           0.142      0.091      1.556      0.120
-    BBFA_OI           -0.080      0.104     -0.771      0.441
+    BHRZ_IND           0.154      0.090      1.720      0.085
+    BBFA_OI           -0.099      0.154     -0.641      0.522
 
  BHRZ_IND   ON
-    AHRZ_IND           0.142      0.091      1.556      0.120
-    ABFA_OI           -0.080      0.104     -0.771      0.441
+    AHRZ_IND           0.154      0.090      1.720      0.085
+    ABFA_OI           -0.099      0.154     -0.641      0.522
 
  S_BFA_OI WITH
-    I_BFA_OI           2.801      7.171      0.391      0.696
+    I_BFA_OI           2.353      8.931      0.263      0.792
 
  I_HRZ_IN WITH
-    I_BFA_OI          50.961     29.888      1.705      0.088
-    S_BFA_OI          -0.408      5.598     -0.073      0.942
+    I_BFA_OI          51.979     32.999      1.575      0.115
+    S_BFA_OI          -0.022      3.803     -0.006      0.995
 
  ABFA_OI  WITH
-    I_BFA_OI         150.194     31.618      4.750      0.000
-    S_BFA_OI           3.163      5.948      0.532      0.595
-    I_HRZ_IND         55.591     23.869      2.329      0.020
+    I_BFA_OI         148.094     40.807      3.629      0.000
+    S_BFA_OI           2.421      6.629      0.365      0.715
+    I_HRZ_IND         57.566     32.848      1.753      0.080
 
  AHRZ_IND WITH
-    I_BFA_OI          41.876     24.063      1.740      0.082
-    S_BFA_OI          -0.721      6.347     -0.114      0.910
-    I_HRZ_IND        121.930     23.537      5.180      0.000
+    I_BFA_OI          35.594     25.072      1.420      0.156
+    S_BFA_OI          -0.785      6.468     -0.121      0.903
+    I_HRZ_IND        120.544     22.859      5.273      0.000
 
  DHRZ_IND WITH
-    DBFA_OI           18.695      5.158      3.624      0.000
+    DBFA_OI           17.791      6.929      2.567      0.010
 
  CHRZ_IND WITH
-    CBFA_OI           18.695      5.158      3.624      0.000
+    CBFA_OI           17.791      6.929      2.567      0.010
 
  BHRZ_IND WITH
-    BBFA_OI           18.695      5.158      3.624      0.000
+    BBFA_OI           17.791      6.929      2.567      0.010
 
  AHRZ_IND WITH
-    ABFA_OI           44.603     13.758      3.242      0.001
+    ABFA_OI           40.634     14.894      2.728      0.006
 
  Means
-    ABFA_OI           71.262      0.949     75.128      0.000
-    AHRZ_IND          73.932      1.122     65.886      0.000
-    I_BFA_OI          67.296      8.626      7.802      0.000
-    S_BFA_OI           0.582      0.387      1.503      0.133
-    I_HRZ_IND         68.291      8.066      8.466      0.000
-    S_HRZ_IND          0.468      0.571      0.820      0.412
+    ABFA_OI           71.399      0.878     81.335      0.000
+    AHRZ_IND          74.068      0.934     79.331      0.000
+    I_BFA_OI          67.741      8.662      7.820      0.000
+    S_BFA_OI           0.654      0.350      1.871      0.061
+    I_HRZ_IND         68.495     15.010      4.563      0.000
+    S_HRZ_IND          0.570      0.513      1.112      0.266
 
  Intercepts
     BBFA_OI            0.000      0.000    999.000    999.000
@@ -602,31 +624,31 @@ MODEL RESULTS
     DHRZ_IND           0.000      0.000    999.000    999.000
 
  Variances
-    ABFA_OI          216.189     22.581      9.574      0.000
-    AHRZ_IND         241.690     23.236     10.402      0.000
-    I_BFA_OI         148.450     48.609      3.054      0.002
-    S_BFA_OI           0.874      3.280      0.266      0.790
-    I_HRZ_IND        113.377     33.604      3.374      0.001
+    ABFA_OI          212.972     15.862     13.426      0.000
+    AHRZ_IND         239.552     21.288     11.253      0.000
+    I_BFA_OI         147.162     61.034      2.411      0.016
+    S_BFA_OI           0.773      4.206      0.184      0.854
+    I_HRZ_IND        112.528     44.198      2.546      0.011
     S_HRZ_IND          0.000      0.000    999.000    999.000
 
  Residual Variances
-    BBFA_OI           44.774      6.499      6.889      0.000
-    CBFA_OI           44.774      6.499      6.889      0.000
-    DBFA_OI           44.774      6.499      6.889      0.000
-    BHRZ_IND         111.923     10.705     10.455      0.000
-    CHRZ_IND         111.923     10.705     10.455      0.000
-    DHRZ_IND         111.923     10.705     10.455      0.000
+    BBFA_OI           44.326      8.014      5.531      0.000
+    CBFA_OI           44.326      8.014      5.531      0.000
+    DBFA_OI           44.326      8.014      5.531      0.000
+    BHRZ_IND         112.327     13.798      8.141      0.000
+    CHRZ_IND         112.327     13.798      8.141      0.000
+    DHRZ_IND         112.327     13.798      8.141      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.428E-06
+     Condition Number for the Information Matrix              0.367E-06
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  18:30:50
-        Ending Time:  18:30:55
-       Elapsed Time:  00:00:05
+     Beginning Time:  11:39:26
+        Ending Time:  11:39:32
+       Elapsed Time:  00:00:06
 
 
 

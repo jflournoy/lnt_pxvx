@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:43 PM
+03/21/2016  11:08 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFA_CO
@@ -292,10 +296,26 @@ INPUT INSTRUCTIONS
 
 
 *** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  5
-   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  16
+   5 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -304,7 +324,7 @@ PxVx Univariate - Nat BFA_CO AR_Lin;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         874
+Number of observations                                         863
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -349,7 +369,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns             9
+     Number of missing data patterns            10
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -357,19 +377,20 @@ SUMMARY OF MISSING DATA PATTERNS
 
      MISSING DATA PATTERNS (x = not missing)
 
-           1  2  3  4  5  6  7  8  9
+           1  2  3  4  5  6  7  8  9 10
  BBFA_CO   x     x  x        x     x
- CBFA_CO   x           x     x  x  x
- DBFA_CO   x     x     x  x        x
+ CBFA_CO   x           x     x  x  x  x
+ DBFA_CO   x     x     x  x        x  x
  ABFA_CO   x  x  x  x  x  x  x  x
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         498           4          57           7          48
-          2         170           5          23           8          24
-          3          27           6          25           9           2
+          1         491           5          22           9           5
+          2         170           6          25          10           1
+          3          27           7          47
+          4          52           8          23
 
 
 COVARIANCE COVERAGE OF DATA
@@ -383,10 +404,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFA_CO       CBFA_CO       DBFA_CO       ABFA_CO
               ________      ________      ________      ________
- BBFA_CO        0.723
- CBFA_CO        0.627         0.681
- DBFA_CO        0.603         0.598         0.658
- ABFA_CO        0.721         0.678         0.656         0.998
+ BBFA_CO        0.721
+ CBFA_CO        0.629         0.683
+ DBFA_CO        0.606         0.601         0.662
+ ABFA_CO        0.715         0.676         0.655         0.993
 
 
 SAMPLE STATISTICS
@@ -398,28 +419,28 @@ SAMPLE STATISTICS
            Means
               BBFA_CO       CBFA_CO       DBFA_CO       ABFA_CO
               ________      ________      ________      ________
- 1             61.642        62.101        62.160        61.837
+ 1             61.697        61.961        62.269        61.874
 
 
            Covariances
               BBFA_CO       CBFA_CO       DBFA_CO       ABFA_CO
               ________      ________      ________      ________
- BBFA_CO      274.282
- CBFA_CO      219.951       264.639
- DBFA_CO      209.966       216.976       267.283
- ABFA_CO      218.388       210.829       205.049       271.563
+ BBFA_CO      276.522
+ CBFA_CO      222.898       263.592
+ DBFA_CO      214.330       219.226       272.906
+ ABFA_CO      220.912       212.676       208.965       273.750
 
 
            Correlations
               BBFA_CO       CBFA_CO       DBFA_CO       ABFA_CO
               ________      ________      ________      ________
  BBFA_CO        1.000
- CBFA_CO        0.816         1.000
- DBFA_CO        0.775         0.816         1.000
- ABFA_CO        0.800         0.786         0.761         1.000
+ CBFA_CO        0.826         1.000
+ DBFA_CO        0.780         0.817         1.000
+ ABFA_CO        0.803         0.792         0.765         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -10234.446
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -10092.566
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -432,15 +453,15 @@ Number of Free Parameters                       11
 
 Loglikelihood
 
-          H0 Value                      -10233.663
-          H0 Scaling Correction Factor       1.095
+          H0 Value                      -10093.028
+          H0 Scaling Correction Factor       1.092
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   20489.326
-          Bayesian (BIC)                 20541.830
-          Sample-Size Adjusted BIC       20506.897
+          Akaike (AIC)                   20208.056
+          Bayesian (BIC)                 20260.421
+          Sample-Size Adjusted BIC       20225.488
             (n* = (n + 2) / 24)
 
 
@@ -451,25 +472,25 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFA_CO    ON
-    CBFA_CO            0.166      0.052      3.197      0.001
+    CBFA_CO            0.167      0.055      3.008      0.003
 
  CBFA_CO    ON
-    BBFA_CO            0.166      0.052      3.197      0.001
+    BBFA_CO            0.167      0.055      3.008      0.003
 
  BBFA_CO    ON
-    ABFA_CO            0.166      0.052      3.197      0.001
+    ABFA_CO            0.167      0.055      3.008      0.003
 
  S_BFA_CO WITH
-    I_BFA_CO           0.230      0.332      0.692      0.489
-    ABFA_CO            0.857      0.433      1.977      0.048
+    I_BFA_CO           0.183      0.331      0.553      0.580
+    ABFA_CO            0.770      0.438      1.758      0.079
 
  ABFA_CO  WITH
-    I_BFA_CO         172.110     15.208     11.317      0.000
+    I_BFA_CO         174.625     16.030     10.894      0.000
 
  Means
-    ABFA_CO           61.837      0.557    110.963      0.000
-    I_BFA_CO          51.655      3.252     15.884      0.000
-    S_BFA_CO          -0.007      0.028     -0.243      0.808
+    ABFA_CO           61.881      0.563    109.868      0.000
+    I_BFA_CO          51.655      3.458     14.938      0.000
+    S_BFA_CO          -0.009      0.028     -0.317      0.751
 
  Intercepts
     BBFA_CO            0.000      0.000    999.000    999.000
@@ -477,24 +498,24 @@ MODEL RESULTS
     DBFA_CO            0.000      0.000    999.000    999.000
 
  Variances
-    ABFA_CO          271.556     12.140     22.368      0.000
-    I_BFA_CO         142.511     21.857      6.520      0.000
-    S_BFA_CO           0.023      0.033      0.713      0.476
+    ABFA_CO          273.892     12.326     22.221      0.000
+    I_BFA_CO         144.916     23.365      6.202      0.000
+    S_BFA_CO           0.024      0.033      0.742      0.458
 
  Residual Variances
-    BBFA_CO           58.913      4.246     13.875      0.000
-    CBFA_CO           58.913      4.246     13.875      0.000
-    DBFA_CO           58.913      4.246     13.875      0.000
+    BBFA_CO           57.860      4.230     13.678      0.000
+    CBFA_CO           57.860      4.230     13.678      0.000
+    DBFA_CO           57.860      4.230     13.678      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.426E-04
+     Condition Number for the Information Matrix              0.425E-04
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:43:06
-        Ending Time:  17:43:07
+     Beginning Time:  11:08:51
+        Ending Time:  11:08:52
        Elapsed Time:  00:00:01
 
 

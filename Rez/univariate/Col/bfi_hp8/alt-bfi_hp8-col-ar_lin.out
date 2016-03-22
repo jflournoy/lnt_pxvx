@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:42 PM
+03/21/2016  11:08 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   abfi_hp8
@@ -294,6 +298,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_BFI_HP8
 *** WARNING
   Variable name contains more than 8 characters.
@@ -303,7 +323,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   3 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   8 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -312,7 +336,7 @@ PxVx Univariate - Col bfi_hp8 AR_Lin;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -375,7 +399,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         143           4          28           7          18
+          1         141           4          28           7          18
           2          10           5          54           8           4
           3          11           6          11
 
@@ -391,10 +415,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFI_HP8      CBFI_HP8      DBFI_HP8      ABFI_HP8
               ________      ________      ________      ________
- BBFI_HP8       0.713
- CBFI_HP8       0.548         0.602
- DBFI_HP8       0.577         0.552         0.656
- ABFI_HP8       0.713         0.602         0.656         1.000
+ BBFI_HP8       0.711
+ CBFI_HP8       0.545         0.599
+ DBFI_HP8       0.574         0.549         0.653
+ ABFI_HP8       0.711         0.599         0.653         1.000
 
 
 SAMPLE STATISTICS
@@ -406,28 +430,28 @@ SAMPLE STATISTICS
            Means
               BBFI_HP8      CBFI_HP8      DBFI_HP8      ABFI_HP8
               ________      ________      ________      ________
- 1             65.885        65.660        68.153        64.286
+ 1             66.000        65.635        68.264        64.547
 
 
            Covariances
               BBFI_HP8      CBFI_HP8      DBFI_HP8      ABFI_HP8
               ________      ________      ________      ________
- BBFI_HP8     208.340
- CBFI_HP8     157.732       235.410
- DBFI_HP8     145.113       180.903       241.751
- ABFI_HP8     156.436       153.905       164.493       227.029
+ BBFI_HP8     208.169
+ CBFI_HP8     158.578       235.109
+ DBFI_HP8     143.300       176.167       231.574
+ ABFI_HP8     152.626       152.564       157.290       217.396
 
 
            Correlations
               BBFI_HP8      CBFI_HP8      DBFI_HP8      ABFI_HP8
               ________      ________      ________      ________
  BBFI_HP8       1.000
- CBFI_HP8       0.712         1.000
- DBFI_HP8       0.647         0.758         1.000
- ABFI_HP8       0.719         0.666         0.702         1.000
+ CBFI_HP8       0.717         1.000
+ DBFI_HP8       0.653         0.755         1.000
+ ABFI_HP8       0.717         0.675         0.701         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3195.678
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3154.934
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -440,15 +464,15 @@ Number of Free Parameters                       11
 
 Loglikelihood
 
-          H0 Value                       -3198.684
-          H0 Scaling Correction Factor       0.971
+          H0 Value                       -3157.531
+          H0 Scaling Correction Factor       0.973
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                    6419.368
-          Bayesian (BIC)                  6459.312
-          Sample-Size Adjusted BIC        6424.432
+          Akaike (AIC)                    6337.063
+          Bayesian (BIC)                  6376.927
+          Sample-Size Adjusted BIC        6342.048
             (n* = (n + 2) / 24)
 
 
@@ -459,25 +483,25 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFI_HP8   ON
-    CBFI_HP8           0.253      0.047      5.434      0.000
+    CBFI_HP8           0.193      0.052      3.754      0.000
 
  CBFI_HP8   ON
-    BBFI_HP8           0.253      0.047      5.434      0.000
+    BBFI_HP8           0.193      0.052      3.754      0.000
 
  BBFI_HP8   ON
-    ABFI_HP8           0.253      0.047      5.434      0.000
+    ABFI_HP8           0.193      0.052      3.754      0.000
 
  S_BFI_HP WITH
-    I_BFI_HP8         92.540     60.905      1.519      0.129
-    ABFI_HP8           8.986      6.904      1.302      0.193
+    I_BFI_HP8         95.857     61.262      1.565      0.118
+    ABFI_HP8           4.855      6.404      0.758      0.448
 
  ABFI_HP8 WITH
-    I_BFI_HP8        232.778     94.065      2.475      0.013
+    I_BFI_HP8        185.241     85.850      2.158      0.031
 
  Means
-    ABFI_HP8          64.286      0.902     71.308      0.000
-    I_BFI_HP8         60.710      6.304      9.630      0.000
-    S_BFI_HP8          0.782      0.417      1.876      0.061
+    ABFI_HP8          64.547      0.886     72.812      0.000
+    I_BFI_HP8         66.125      6.231     10.613      0.000
+    S_BFI_HP8          0.894      0.413      2.167      0.030
 
  Intercepts
     BBFI_HP8           0.000      0.000    999.000    999.000
@@ -485,24 +509,24 @@ MODEL RESULTS
     DBFI_HP8           0.000      0.000    999.000    999.000
 
  Variances
-    ABFI_HP8         227.028     17.593     12.905      0.000
-    I_BFI_HP8       1373.694    844.752      1.626      0.104
-    S_BFI_HP8          6.608      4.404      1.500      0.134
+    ABFI_HP8         217.395     15.350     14.163      0.000
+    I_BFI_HP8       1417.142    852.296      1.663      0.096
+    S_BFI_HP8          6.947      4.423      1.571      0.116
 
  Residual Variances
-    BBFI_HP8          71.965      8.768      8.208      0.000
-    CBFI_HP8          71.965      8.768      8.208      0.000
-    DBFI_HP8          71.965      8.768      8.208      0.000
+    BBFI_HP8          67.215      9.052      7.425      0.000
+    CBFI_HP8          67.215      9.052      7.425      0.000
+    DBFI_HP8          67.215      9.052      7.425      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.200E-05
+     Condition Number for the Information Matrix              0.106E-05
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:42:20
-        Ending Time:  17:42:20
+     Beginning Time:  11:08:08
+        Ending Time:  11:08:08
        Elapsed Time:  00:00:00
 
 

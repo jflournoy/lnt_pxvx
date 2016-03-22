@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:42 PM
+03/21/2016  11:08 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aaspfin
@@ -291,6 +295,22 @@ INPUT INSTRUCTIONS
 
 
 
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
 *** WARNING in MODEL command
   All continuous latent variable covariances involving S_ASPFIN have been fixed to 0
   because the variance of S_ASPFIN is fixed at 0.
@@ -301,8 +321,8 @@ INPUT INSTRUCTIONS
 *** WARNING
   Data set contains cases with missing on time scores but non-missing on the
   corresponding dependent variables.  These cases were not included in the analysis.
-  Number of such cases:  5
-   3 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+  Number of such cases:  16
+   7 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -311,7 +331,7 @@ PxVx Univariate - Nat aspfin AR_LinM;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         873
+Number of observations                                         862
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -356,7 +376,7 @@ Input data format  FREE
 
 SUMMARY OF DATA
 
-     Number of missing data patterns             9
+     Number of missing data patterns            11
 
 
 SUMMARY OF MISSING DATA PATTERNS
@@ -364,19 +384,20 @@ SUMMARY OF MISSING DATA PATTERNS
 
      MISSING DATA PATTERNS (x = not missing)
 
-           1  2  3  4  5  6  7  8  9
- BASPFIN   x     x  x        x     x
- CASPFIN   x           x     x  x
- DASPFIN   x     x     x  x
+           1  2  3  4  5  6  7  8  9 10 11
+ BASPFIN   x     x  x        x     x  x
+ CASPFIN   x           x     x  x     x  x
+ DASPFIN   x     x     x  x           x  x
  AASPFIN   x  x  x  x  x  x  x  x
 
 
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         500           4          53           7          47
-          2         173           5          23           8          24
-          3          27           6          25           9           1
+          1         492           5          23           9           1
+          2         173           6          25          10           3
+          3          27           7          46          11           1
+          4          48           8          23
 
 
 COVARIANCE COVERAGE OF DATA
@@ -390,10 +411,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BASPFIN       CASPFIN       DASPFIN       AASPFIN
               ________      ________      ________      ________
- BASPFIN        0.719
- CASPFIN        0.627         0.680
- DASPFIN        0.604         0.599         0.659
- AASPFIN        0.718         0.680         0.659         0.999
+ BASPFIN        0.716
+ CASPFIN        0.628         0.682
+ DASPFIN        0.606         0.602         0.662
+ AASPFIN        0.711         0.677         0.658         0.994
 
 
 SAMPLE STATISTICS
@@ -405,16 +426,16 @@ SAMPLE STATISTICS
            Means
               BASPFIN       CASPFIN       DASPFIN       AASPFIN
               ________      ________      ________      ________
- 1             48.620        48.987        48.621        48.700
+ 1             48.439        48.792        48.532        48.498
 
 
            Covariances
               BASPFIN       CASPFIN       DASPFIN       AASPFIN
               ________      ________      ________      ________
- BASPFIN      522.406
- CASPFIN      422.639       533.573
- DASPFIN      408.487       414.121       535.581
- AASPFIN      394.778       382.671       374.385       497.538
+ BASPFIN      523.948
+ CASPFIN      423.012       531.906
+ DASPFIN      410.845       418.096       541.793
+ AASPFIN      393.439       381.772       376.002       494.186
 
 
            Correlations
@@ -422,11 +443,11 @@ SAMPLE STATISTICS
               ________      ________      ________      ________
  BASPFIN        1.000
  CASPFIN        0.801         1.000
- DASPFIN        0.772         0.775         1.000
- AASPFIN        0.774         0.743         0.725         1.000
+ DASPFIN        0.771         0.779         1.000
+ AASPFIN        0.773         0.745         0.727         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -11195.321
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -11041.952
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -439,15 +460,15 @@ Number of Free Parameters                        8
 
 Loglikelihood
 
-          H0 Value                      -11197.807
-          H0 Scaling Correction Factor       1.163
+          H0 Value                      -11043.925
+          H0 Scaling Correction Factor       1.169
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   22411.615
-          Bayesian (BIC)                 22449.790
-          Sample-Size Adjusted BIC       22424.384
+          Akaike (AIC)                   22103.851
+          Bayesian (BIC)                 22141.925
+          Sample-Size Adjusted BIC       22116.519
             (n* = (n + 2) / 24)
 
 
@@ -458,21 +479,21 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DASPFIN    ON
-    CASPFIN            0.110      0.049      2.257      0.024
+    CASPFIN            0.114      0.052      2.212      0.027
 
  CASPFIN    ON
-    BASPFIN            0.110      0.049      2.257      0.024
+    BASPFIN            0.114      0.052      2.212      0.027
 
  BASPFIN    ON
-    AASPFIN            0.110      0.049      2.257      0.024
+    AASPFIN            0.114      0.052      2.212      0.027
 
  AASPFIN  WITH
-    I_ASPFIN         337.423     26.758     12.610      0.000
+    I_ASPFIN         335.971     27.709     12.125      0.000
 
  Means
-    AASPFIN           48.701      0.754     64.610      0.000
-    I_ASPFIN          43.359      2.521     17.196      0.000
-    S_ASPFIN           0.011      0.044      0.250      0.803
+    AASPFIN           48.492      0.761     63.707      0.000
+    I_ASPFIN          43.003      2.647     16.245      0.000
+    S_ASPFIN           0.009      0.044      0.211      0.833
 
  Intercepts
     BASPFIN            0.000      0.000    999.000    999.000
@@ -480,25 +501,25 @@ MODEL RESULTS
     DASPFIN            0.000      0.000    999.000    999.000
 
  Variances
-    AASPFIN          497.534     21.071     23.612      0.000
-    I_ASPFIN         323.192     42.420      7.619      0.000
+    AASPFIN          494.616     21.219     23.310      0.000
+    I_ASPFIN         322.232     44.562      7.231      0.000
     S_ASPFIN           0.000      0.000    999.000    999.000
 
  Residual Variances
-    BASPFIN          123.275      8.232     14.975      0.000
-    CASPFIN          123.275      8.232     14.975      0.000
-    DASPFIN          123.275      8.232     14.975      0.000
+    BASPFIN          123.290      8.360     14.748      0.000
+    CASPFIN          123.290      8.360     14.748      0.000
+    DASPFIN          123.290      8.360     14.748      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.629E-03
+     Condition Number for the Information Matrix              0.700E-04
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:42:56
-        Ending Time:  17:42:57
-       Elapsed Time:  00:00:01
+     Beginning Time:  11:08:45
+        Ending Time:  11:08:45
+       Elapsed Time:  00:00:00
 
 
 

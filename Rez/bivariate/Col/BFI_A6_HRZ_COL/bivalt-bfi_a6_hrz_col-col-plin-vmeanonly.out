@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   6:34 PM
+03/21/2016  11:43 AM
 
 INPUT INSTRUCTIONS
 
@@ -238,7 +238,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFI_A6
@@ -316,6 +320,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_HRZ_COL
 *** WARNING
   Variable name contains more than 8 characters.
@@ -328,7 +348,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   4 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   9 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -337,7 +361,7 @@ PxVx Univariate - Col Lin BFI_A6 with MeanOnly HRZ_COL;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -404,7 +428,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           6          11          11           1
+          1         138           6          11          11           1
           2          10           7           1          12           4
           3           2           8          16          13           2
           4          26           9           9          14           2
@@ -422,22 +446,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFI_A6       CBFI_A6       DBFI_A6       BHRZ_COL      CHRZ_COL
               ________      ________      ________      ________      ________
- BBFI_A6        0.713
- CBFI_A6        0.548         0.602
- DBFI_A6        0.577         0.552         0.656
- BHRZ_COL       0.699         0.545         0.570         0.699
- CHRZ_COL       0.548         0.602         0.552         0.545         0.602
- DHRZ_COL       0.563         0.538         0.634         0.559         0.538
- ABFI_A6        0.713         0.602         0.656         0.699         0.602
- AHRZ_COL       0.713         0.602         0.656         0.699         0.602
+ BBFI_A6        0.711
+ CBFI_A6        0.545         0.599
+ DBFI_A6        0.574         0.549         0.653
+ BHRZ_COL       0.697         0.542         0.567         0.697
+ CHRZ_COL       0.545         0.599         0.549         0.542         0.599
+ DHRZ_COL       0.560         0.534         0.632         0.556         0.534
+ ABFI_A6        0.711         0.599         0.653         0.697         0.599
+ AHRZ_COL       0.711         0.599         0.653         0.697         0.599
 
 
            Covariance Coverage
               DHRZ_COL      ABFI_A6       AHRZ_COL
               ________      ________      ________
- DHRZ_COL       0.634
- ABFI_A6        0.634         1.000
- AHRZ_COL       0.634         0.993         0.993
+ DHRZ_COL       0.632
+ ABFI_A6        0.632         1.000
+ AHRZ_COL       0.632         0.993         0.993
 
 
 SAMPLE STATISTICS
@@ -449,59 +473,63 @@ SAMPLE STATISTICS
            Means
               BBFI_A6       CBFI_A6       DBFI_A6       BHRZ_COL      CHRZ_COL
               ________      ________      ________      ________      ________
- 1             60.182        59.948        63.016        74.033        74.022
+ 1             60.246        59.898        63.181        73.893        74.104
 
 
            Means
               DHRZ_COL      ABFI_A6       AHRZ_COL
               ________      ________      ________
- 1             74.821        60.810        71.600
+ 1             74.915        60.922        71.643
 
 
            Covariances
               BBFI_A6       CBFI_A6       DBFI_A6       BHRZ_COL      CHRZ_COL
               ________      ________      ________      ________      ________
- BBFI_A6      266.672
- CBFI_A6      177.632       239.353
- DBFI_A6      173.922       155.237       245.245
- BHRZ_COL      64.109        36.997        59.809       206.315
- CHRZ_COL      57.122        61.947        59.398       130.820       180.353
- DHRZ_COL      62.022        44.575        69.553       123.044       115.164
- ABFI_A6      207.862       178.426       161.329        63.327        53.837
- AHRZ_COL      62.024        58.812        65.169       107.331       109.292
+ BBFI_A6      268.517
+ CBFI_A6      180.426       240.978
+ DBFI_A6      175.201       150.782       231.998
+ BHRZ_COL      66.757        38.972        65.311       207.814
+ CHRZ_COL      57.363        60.622        54.015       134.030       180.279
+ DHRZ_COL      60.671        45.277        67.829       124.717       114.871
+ ABFI_A6      209.453       178.563       152.236        67.804        49.817
+ AHRZ_COL      63.333        57.395        57.047       111.100       107.012
 
 
            Covariances
               DHRZ_COL      ABFI_A6       AHRZ_COL
               ________      ________      ________
- DHRZ_COL     209.720
- ABFI_A6       67.261       294.868
- AHRZ_COL     120.204        83.179       193.787
+ DHRZ_COL     210.728
+ ABFI_A6       66.274       292.272
+ AHRZ_COL     120.417        79.852       191.441
 
 
            Correlations
               BBFI_A6       CBFI_A6       DBFI_A6       BHRZ_COL      CHRZ_COL
               ________      ________      ________      ________      ________
  BBFI_A6        1.000
- CBFI_A6        0.703         1.000
- DBFI_A6        0.680         0.641         1.000
- BHRZ_COL       0.273         0.166         0.266         1.000
- CHRZ_COL       0.260         0.298         0.282         0.678         1.000
- DHRZ_COL       0.262         0.199         0.307         0.592         0.592
- ABFI_A6        0.741         0.672         0.600         0.257         0.233
- AHRZ_COL       0.273         0.273         0.299         0.537         0.585
+ CBFI_A6        0.709         1.000
+ DBFI_A6        0.702         0.638         1.000
+ BHRZ_COL       0.283         0.174         0.297         1.000
+ CHRZ_COL       0.261         0.291         0.264         0.692         1.000
+ DHRZ_COL       0.255         0.201         0.307         0.596         0.589
+ ABFI_A6        0.748         0.673         0.585         0.275         0.217
+ AHRZ_COL       0.279         0.267         0.271         0.557         0.576
 
 
            Correlations
               DHRZ_COL      ABFI_A6       AHRZ_COL
               ________      ________      ________
  DHRZ_COL       1.000
- ABFI_A6        0.270         1.000
- AHRZ_COL       0.596         0.348         1.000
+ ABFI_A6        0.267         1.000
+ AHRZ_COL       0.600         0.338         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6417.526
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6341.304
 
+     WARNING:  THE MLR STANDARD ERRORS COULD NOT BE COMPUTED.  THE MLF STANDARD
+     ERRORS WERE COMPUTED INSTEAD.  THE MLR CONDITION NUMBER IS      -0.187D-03.
+     PROBLEM INVOLVING PARAMETER 20.  THIS MAY BE DUE TO NEAR SINGULARITY
+     OF THE RANDOM EFFECT VARIANCE/COVARIANCE OR INCOMPLETE CONVERGENCE.
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
 
@@ -513,15 +541,13 @@ Number of Free Parameters                       28
 
 Loglikelihood
 
-          H0 Value                       -6428.237
-          H0 Scaling Correction Factor       1.261
-            for MLR
+          H0 Value                       -6354.036
 
 Information Criteria
 
-          Akaike (AIC)                   12912.473
-          Bayesian (BIC)                 13014.147
-          Sample-Size Adjusted BIC       12925.361
+          Akaike (AIC)                   12764.072
+          Bayesian (BIC)                 12865.545
+          Sample-Size Adjusted BIC       12776.761
             (n* = (n + 2) / 24)
 
 
@@ -532,65 +558,65 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFI_A6    ON
-    CBFI_A6            0.048      0.413      0.115      0.908
-    CHRZ_COL          -0.064      0.155     -0.412      0.680
+    CBFI_A6            0.030      0.119      0.251      0.802
+    CHRZ_COL          -0.086      0.072     -1.192      0.233
 
  CBFI_A6    ON
-    BBFI_A6            0.048      0.413      0.115      0.908
-    BHRZ_COL          -0.064      0.155     -0.412      0.680
+    BBFI_A6            0.030      0.119      0.251      0.802
+    BHRZ_COL          -0.086      0.072     -1.192      0.233
 
  BBFI_A6    ON
-    ABFI_A6            0.048      0.413      0.115      0.908
-    AHRZ_COL          -0.064      0.155     -0.412      0.680
+    ABFI_A6            0.030      0.119      0.251      0.802
+    AHRZ_COL          -0.086      0.072     -1.192      0.233
 
  DHRZ_COL   ON
-    CHRZ_COL          -0.010      0.101     -0.102      0.918
-    CBFI_A6           -0.003      0.080     -0.033      0.974
+    CHRZ_COL           0.004      0.083      0.043      0.965
+    CBFI_A6           -0.002      0.068     -0.028      0.978
 
  CHRZ_COL   ON
-    BHRZ_COL          -0.010      0.101     -0.102      0.918
-    BBFI_A6           -0.003      0.080     -0.033      0.974
+    BHRZ_COL           0.004      0.083      0.043      0.965
+    BBFI_A6           -0.002      0.068     -0.028      0.978
 
  BHRZ_COL   ON
-    AHRZ_COL          -0.010      0.101     -0.102      0.918
-    ABFI_A6           -0.003      0.080     -0.033      0.974
+    AHRZ_COL           0.004      0.083      0.043      0.965
+    ABFI_A6           -0.002      0.068     -0.028      0.978
 
  S_BFI_A6 WITH
-    I_BFI_A6         -15.338     32.276     -0.475      0.635
+    I_BFI_A6         -18.614     19.515     -0.954      0.340
 
  I_HRZ_CO WITH
-    I_BFI_A6          45.450     56.085      0.810      0.418
-    S_BFI_A6           6.906      7.210      0.958      0.338
+    I_BFI_A6          50.707     29.233      1.735      0.083
+    S_BFI_A6           6.407      6.149      1.042      0.297
 
  ABFI_A6  WITH
-    I_BFI_A6         215.703    161.057      1.339      0.180
-    S_BFI_A6         -19.010     29.202     -0.651      0.515
-    I_HRZ_COL         63.113     23.442      2.692      0.007
+    I_BFI_A6         228.483     45.660      5.004      0.000
+    S_BFI_A6         -23.959     10.298     -2.327      0.020
+    I_HRZ_COL         62.666     21.903      2.861      0.004
 
  AHRZ_COL WITH
-    I_BFI_A6          61.128     75.344      0.811      0.417
-    S_BFI_A6           2.983     16.013      0.186      0.852
-    I_HRZ_COL        113.892     18.035      6.315      0.000
+    I_BFI_A6          72.526     25.383      2.857      0.004
+    S_BFI_A6          -1.901      7.545     -0.252      0.801
+    I_HRZ_COL        112.976     20.014      5.645      0.000
 
  DHRZ_COL WITH
-    DBFI_A6           11.671      7.324      1.593      0.111
+    DBFI_A6           10.743      5.063      2.122      0.034
 
  CHRZ_COL WITH
-    CBFI_A6           11.671      7.324      1.593      0.111
+    CBFI_A6           10.743      5.063      2.122      0.034
 
  BHRZ_COL WITH
-    BBFI_A6           11.671      7.324      1.593      0.111
+    BBFI_A6           10.743      5.063      2.122      0.034
 
  AHRZ_COL WITH
-    ABFI_A6           83.179     15.703      5.297      0.000
+    ABFI_A6           79.852     16.159      4.942      0.000
 
  Means
-    ABFI_A6           60.810      1.027     59.212      0.000
-    AHRZ_COL          71.593      0.836     85.598      0.000
-    I_BFI_A6          60.429     33.273      1.816      0.069
-    S_BFI_A6           1.141      0.505      2.260      0.024
-    I_HRZ_COL         76.012      7.825      9.714      0.000
-    S_HRZ_COL         -0.441      0.436     -1.012      0.312
+    ABFI_A6           60.922      1.096     55.607      0.000
+    AHRZ_COL          71.636      0.886     80.833      0.000
+    I_BFI_A6          63.074      7.540      8.365      0.000
+    S_BFI_A6           1.191      0.528      2.257      0.024
+    I_HRZ_COL         74.858      6.599     11.344      0.000
+    S_HRZ_COL         -0.392      0.465     -0.843      0.399
 
  Intercepts
     BBFI_A6            0.000      0.000    999.000    999.000
@@ -601,31 +627,31 @@ MODEL RESULTS
     DHRZ_COL           0.000      0.000    999.000    999.000
 
  Variances
-    ABFI_A6          294.868     23.368     12.618      0.000
-    AHRZ_COL         193.787     15.988     12.121      0.000
-    I_BFI_A6         201.489    263.584      0.764      0.445
-    S_BFI_A6           4.577     10.713      0.427      0.669
-    I_HRZ_COL        126.310     30.284      4.171      0.000
+    ABFI_A6          292.271     28.828     10.139      0.000
+    AHRZ_COL         191.441     18.078     10.590      0.000
+    I_BFI_A6         224.903     88.539      2.540      0.011
+    S_BFI_A6           4.638      7.780      0.596      0.551
+    I_HRZ_COL        124.424     31.932      3.897      0.000
     S_HRZ_COL          0.000      0.000    999.000    999.000
 
  Residual Variances
-    BBFI_A6           79.514     30.012      2.649      0.008
-    CBFI_A6           79.514     30.012      2.649      0.008
-    DBFI_A6           79.514     30.012      2.649      0.008
-    BHRZ_COL          76.050      8.983      8.466      0.000
-    CHRZ_COL          76.050      8.983      8.466      0.000
-    DHRZ_COL          76.050      8.983      8.466      0.000
+    BBFI_A6           74.830     11.454      6.533      0.000
+    CBFI_A6           74.830     11.454      6.533      0.000
+    DBFI_A6           74.830     11.454      6.533      0.000
+    BHRZ_COL          75.842      7.402     10.247      0.000
+    CHRZ_COL          75.842      7.402     10.247      0.000
+    DHRZ_COL          75.842      7.402     10.247      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.829E-06
+     Condition Number for the Information Matrix              0.620E-06
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  18:34:17
-        Ending Time:  18:34:24
-       Elapsed Time:  00:00:07
+     Beginning Time:  11:43:26
+        Ending Time:  11:43:32
+       Elapsed Time:  00:00:06
 
 
 

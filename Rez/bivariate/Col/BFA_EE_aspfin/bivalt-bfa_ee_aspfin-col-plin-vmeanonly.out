@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   6:21 PM
+03/21/2016  11:27 AM
 
 INPUT INSTRUCTIONS
 
@@ -238,7 +238,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFA_EE
@@ -313,6 +317,22 @@ INPUT INSTRUCTIONS
 
 
 
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
 *** WARNING in MODEL command
   All continuous latent variable covariances involving S_ASPFIN have been fixed to 0
   because the variance of S_ASPFIN is fixed at 0.
@@ -320,7 +340,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   7 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -329,7 +353,7 @@ PxVx Univariate - Col Lin BFA_EE with MeanOnly aspfin;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -396,7 +420,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           5          53           9          11
+          1         138           5          53           9          11
           2          12           6          11          10           1
           3           5           7           1          11           1
           4          28           8          16
@@ -413,22 +437,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFA_EE       CBFA_EE       DBFA_EE       BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- BBFA_EE        0.710
- CBFA_EE        0.545         0.602
- DBFA_EE        0.563         0.541         0.642
- BASPFIN        0.703         0.545         0.559         0.703
- CASPFIN        0.545         0.602         0.541         0.545         0.602
- DASPFIN        0.559         0.541         0.638         0.559         0.541
- ABFA_EE        0.710         0.602         0.642         0.703         0.602
- AASPFIN        0.710         0.602         0.642         0.703         0.602
+ BBFA_EE        0.708
+ CBFA_EE        0.542         0.599
+ DBFA_EE        0.560         0.538         0.639
+ BASPFIN        0.700         0.542         0.556         0.700
+ CASPFIN        0.542         0.599         0.538         0.542         0.599
+ DASPFIN        0.556         0.538         0.635         0.556         0.538
+ ABFA_EE        0.708         0.599         0.639         0.700         0.599
+ AASPFIN        0.708         0.599         0.639         0.700         0.599
 
 
            Covariance Coverage
               DASPFIN       ABFA_EE       AASPFIN
               ________      ________      ________
- DASPFIN        0.638
- ABFA_EE        0.638         1.000
- AASPFIN        0.638         0.996         0.996
+ DASPFIN        0.635
+ ABFA_EE        0.635         1.000
+ AASPFIN        0.635         0.996         0.996
 
 
 SAMPLE STATISTICS
@@ -440,58 +464,58 @@ SAMPLE STATISTICS
            Means
               BBFA_EE       CBFA_EE       DBFA_EE       BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- 1             65.368        66.082        65.071        47.542        46.539
+ 1             65.319        66.252        65.155        47.546        46.384
 
 
            Means
               DASPFIN       ABFA_EE       AASPFIN
               ________      ________      ________
- 1             47.895        67.217        47.412
+ 1             48.010        67.197        47.357
 
 
            Covariances
               BBFA_EE       CBFA_EE       DBFA_EE       BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- BBFA_EE      307.700
- CBFA_EE      220.933       288.111
- DBFA_EE      234.764       247.594       339.051
- BASPFIN       -0.920       -25.607        18.938       535.591
- CASPFIN       18.271        10.796        50.454       341.820       492.384
- DASPFIN      -13.966       -11.472        34.209       393.744       391.604
- ABFA_EE      236.103       206.444       224.157         6.472        53.559
- AASPFIN      -10.021       -43.175        12.495       420.385       331.655
+ BBFA_EE      309.761
+ CBFA_EE      222.886       287.493
+ DBFA_EE      235.603       245.920       335.702
+ BASPFIN       -2.204       -27.555        14.511       538.459
+ CASPFIN       16.095        10.128        45.047       339.650       486.630
+ DASPFIN      -16.057       -17.288        23.980       391.174       385.008
+ ABFA_EE      237.669       208.413       225.907         6.340        53.784
+ AASPFIN      -12.199       -45.942         4.987       419.149       324.152
 
 
            Covariances
               DASPFIN       ABFA_EE       AASPFIN
               ________      ________      ________
- DASPFIN      554.878
- ABFA_EE       15.863       278.136
- AASPFIN      356.745         9.995       540.568
+ DASPFIN      543.872
+ ABFA_EE       16.278       280.088
+ AASPFIN      347.851         9.916       535.188
 
 
            Correlations
               BBFA_EE       CBFA_EE       DBFA_EE       BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
  BBFA_EE        1.000
- CBFA_EE        0.742         1.000
- DBFA_EE        0.727         0.792         1.000
- BASPFIN       -0.002        -0.065         0.044         1.000
- CASPFIN        0.047         0.029         0.123         0.666         1.000
- DASPFIN       -0.034        -0.029         0.079         0.722         0.749
- ABFA_EE        0.807         0.729         0.730         0.017         0.145
- AASPFIN       -0.025        -0.109         0.029         0.781         0.643
+ CBFA_EE        0.747         1.000
+ DBFA_EE        0.731         0.792         1.000
+ BASPFIN       -0.005        -0.070         0.034         1.000
+ CASPFIN        0.041         0.027         0.111         0.664         1.000
+ DASPFIN       -0.039        -0.044         0.056         0.723         0.748
+ ABFA_EE        0.807         0.734         0.737         0.016         0.146
+ AASPFIN       -0.030        -0.117         0.012         0.781         0.635
 
 
            Correlations
               DASPFIN       ABFA_EE       AASPFIN
               ________      ________      ________
  DASPFIN        1.000
- ABFA_EE        0.040         1.000
- AASPFIN        0.651         0.026         1.000
+ ABFA_EE        0.042         1.000
+ AASPFIN        0.645         0.026         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6730.474
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6661.974
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -504,15 +528,15 @@ Number of Free Parameters                       28
 
 Loglikelihood
 
-          H0 Value                       -6753.806
-          H0 Scaling Correction Factor       1.102
+          H0 Value                       -6684.717
+          H0 Scaling Correction Factor       1.137
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   13563.612
-          Bayesian (BIC)                 13665.286
-          Sample-Size Adjusted BIC       13576.500
+          Akaike (AIC)                   13425.433
+          Bayesian (BIC)                 13526.906
+          Sample-Size Adjusted BIC       13438.122
             (n* = (n + 2) / 24)
 
 
@@ -523,65 +547,65 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFA_EE    ON
-    CBFA_EE            0.187      0.083      2.251      0.024
-    CASPFIN           -0.008      0.052     -0.146      0.884
+    CBFA_EE            0.173      0.075      2.311      0.021
+    CASPFIN           -0.010      0.062     -0.167      0.868
 
  CBFA_EE    ON
-    BBFA_EE            0.187      0.083      2.251      0.024
-    BASPFIN           -0.008      0.052     -0.146      0.884
+    BBFA_EE            0.173      0.075      2.311      0.021
+    BASPFIN           -0.010      0.062     -0.167      0.868
 
  BBFA_EE    ON
-    ABFA_EE            0.187      0.083      2.251      0.024
-    AASPFIN           -0.008      0.052     -0.146      0.884
+    ABFA_EE            0.173      0.075      2.311      0.021
+    AASPFIN           -0.010      0.062     -0.167      0.868
 
  DASPFIN    ON
-    CASPFIN            0.227      0.063      3.614      0.000
-    CBFA_EE           -0.053      0.102     -0.516      0.606
+    CASPFIN            0.236      0.077      3.063      0.002
+    CBFA_EE           -0.080      0.105     -0.767      0.443
 
  CASPFIN    ON
-    BASPFIN            0.227      0.063      3.614      0.000
-    BBFA_EE           -0.053      0.102     -0.516      0.606
+    BASPFIN            0.236      0.077      3.063      0.002
+    BBFA_EE           -0.080      0.105     -0.767      0.443
 
  BASPFIN    ON
-    AASPFIN            0.227      0.063      3.614      0.000
-    ABFA_EE           -0.053      0.102     -0.516      0.606
+    AASPFIN            0.236      0.077      3.063      0.002
+    ABFA_EE           -0.080      0.105     -0.767      0.443
 
  S_BFA_EE WITH
-    I_BFA_EE           2.070      5.778      0.358      0.720
+    I_BFA_EE           1.506      6.952      0.217      0.829
 
  I_ASPFIN WITH
-    I_BFA_EE          -1.950     40.363     -0.048      0.961
-    S_BFA_EE          10.712      8.206      1.305      0.192
+    I_BFA_EE           5.013     42.903      0.117      0.907
+    S_BFA_EE           9.259      7.972      1.161      0.245
 
  ABFA_EE  WITH
-    I_BFA_EE         170.306     37.865      4.498      0.000
-    S_BFA_EE           3.584      8.127      0.441      0.659
-    I_ASPFIN          32.387     30.813      1.051      0.293
+    I_BFA_EE         175.560     35.882      4.893      0.000
+    S_BFA_EE           3.444      7.897      0.436      0.663
+    I_ASPFIN          39.174     31.626      1.239      0.215
 
  AASPFIN  WITH
-    I_BFA_EE         -24.900     42.754     -0.582      0.560
-    S_BFA_EE           9.628     11.234      0.857      0.391
-    I_ASPFIN         270.166     40.713      6.636      0.000
+    I_BFA_EE         -23.376     48.060     -0.486      0.627
+    S_BFA_EE           7.430     11.629      0.639      0.523
+    I_ASPFIN         261.217     45.152      5.785      0.000
 
  DASPFIN  WITH
-    DBFA_EE            5.898      9.556      0.617      0.537
+    DBFA_EE            4.961      9.763      0.508      0.611
 
  CASPFIN  WITH
-    CBFA_EE            5.898      9.556      0.617      0.537
+    CBFA_EE            4.961      9.763      0.508      0.611
 
  BASPFIN  WITH
-    BBFA_EE            5.898      9.556      0.617      0.537
+    BBFA_EE            4.961      9.763      0.508      0.611
 
  AASPFIN  WITH
-    ABFA_EE            9.994     23.000      0.435      0.664
+    ABFA_EE            9.916     23.153      0.428      0.668
 
  Means
-    ABFA_EE           67.217      0.998     67.363      0.000
-    AASPFIN           47.415      1.383     34.272      0.000
-    I_BFA_EE          53.007      4.199     12.624      0.000
-    S_BFA_EE           0.226      0.407      0.556      0.578
-    I_ASPFIN          42.449      5.539      7.664      0.000
-    S_ASPFIN          -1.137      0.650     -1.750      0.080
+    ABFA_EE           67.197      1.004     66.937      0.000
+    AASPFIN           47.360      1.377     34.386      0.000
+    I_BFA_EE          54.076      4.397     12.297      0.000
+    S_BFA_EE           0.240      0.409      0.585      0.558
+    I_ASPFIN          43.619      6.207      7.027      0.000
+    S_ASPFIN          -1.025      0.651     -1.574      0.116
 
  Intercepts
     BBFA_EE            0.000      0.000    999.000    999.000
@@ -592,30 +616,30 @@ MODEL RESULTS
     DASPFIN            0.000      0.000    999.000    999.000
 
  Variances
-    ABFA_EE          278.136     21.220     13.107      0.000
-    AASPFIN          540.568     37.587     14.382      0.000
-    I_BFA_EE         135.190     46.869      2.884      0.004
-    S_BFA_EE           1.721      1.970      0.874      0.382
-    I_ASPFIN         208.103     45.253      4.599      0.000
+    ABFA_EE          280.087     21.313     13.142      0.000
+    AASPFIN          535.188     37.601     14.233      0.000
+    I_BFA_EE         142.665     46.186      3.089      0.002
+    S_BFA_EE           1.797      2.622      0.685      0.493
+    I_ASPFIN         201.295     52.015      3.870      0.000
     S_ASPFIN           0.000      0.000    999.000    999.000
 
  Residual Variances
-    BBFA_EE           82.244     11.935      6.891      0.000
-    CBFA_EE           82.244     11.935      6.891      0.000
-    DBFA_EE           82.244     11.935      6.891      0.000
-    BASPFIN          172.292     19.614      8.784      0.000
-    CASPFIN          172.292     19.614      8.784      0.000
-    DASPFIN          172.292     19.614      8.784      0.000
+    BBFA_EE           81.048     12.422      6.525      0.000
+    CBFA_EE           81.048     12.422      6.525      0.000
+    DBFA_EE           81.048     12.422      6.525      0.000
+    BASPFIN          172.106     20.202      8.519      0.000
+    CASPFIN          172.106     20.202      8.519      0.000
+    DASPFIN          172.106     20.202      8.519      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.337E-07
+     Condition Number for the Information Matrix              0.136E-06
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  18:21:19
-        Ending Time:  18:21:27
+     Beginning Time:  11:27:40
+        Ending Time:  11:27:48
        Elapsed Time:  00:00:08
 
 

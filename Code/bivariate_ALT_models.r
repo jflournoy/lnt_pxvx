@@ -37,7 +37,7 @@ opts_chunk$set(echo=F, message=F, warning=F, dev='svg')
 loadBiFN<-'../Rez/biMods.RData'
 
 # # Create Models
-# createModels('code/PxVx_BiTemplate.inp')
+# createModels('Code/PxVx_BiTemplate.inp')
 # 
 # setwd('E:/Projects/lnt_pxvx/Rez/bivariate')
 # runModels(recursive = T)
@@ -46,7 +46,7 @@ loadBiFN<-'../Rez/biMods.RData'
 # setwd('../Rez/bivariate')
 # saveBiFN<-'../biMods.RData'
 # biModelOut<-readModels(recursive = T,
-# 			filefilter='ALT.*')
+# 		       filefilter='ALT.*')
 # biModelOut_df <- data_frame(model=biModelOut)
 # save(biModelOut_df,file=saveBiFN)
 # setwd('../../Code')
@@ -256,7 +256,7 @@ paramsummaries %>%
 	filter(sample=='Nat', 
 	       paramgroup=='B ON A',
 	       bivPathDir=='Target: Pers',
-	       vVar!='MVS_mc') %>%
+	       !str_detect(pVar, '^I_')) %>%
 	ggplot(aes(x=as.numeric(factor(vVar)), y=est))+
 	geom_hline(yintercept=0, color='red')+
 	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
@@ -276,7 +276,7 @@ paramsummaries %>%
 	filter(sample=='Nat', 
 	       paramgroup=='B ON A',
 	       bivPathDir=='Target: Val',
-	       vVar!='MVS_mc') %>%
+	       !str_detect(pVar, '^I_')) %>%
 	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
 	geom_hline(yintercept=0, color='red')+
 	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
@@ -288,26 +288,49 @@ paramsummaries %>%
 # 	coord_cartesian(y=c(0, .3))+
 	scale_colour_manual(values=cbbPalette)
 
+
 #' 
-#' ## National: MVS_mc 
+#' ## National Informants: Effects on personality across variable combinations and model types
 #' 
-#+fig.height=5, fig.width=10
+#+fig.height=15, fig.width=10
 paramsummaries %>%
 	filter(sample=='Nat', 
 	       paramgroup=='B ON A',
-	       vVar=='MVS_mc') %>%
-	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
+	       bivPathDir=='Target: Pers',
+	       str_detect(pVar, '^I_')) %>%
+	ggplot(aes(x=as.numeric(factor(vVar)), y=est))+
 	geom_hline(yintercept=0, color='red')+
-	geom_bar(aes(fill=modelCombo), 
-		 stat='identity', position='dodge', 
-		 alpha=1, size=1)+
-	facet_wrap(~bivPathType+bivPathDir, scales='free_y')+
-	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$pVar))),
-			   labels=levels(factor(paramsummaries$pVar)))+
+	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
+	facet_grid(pVar~bivPathType+bivPathDir)+
+	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$vVar))),
+			   labels=levels(factor(paramsummaries$vVar)))+
 	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
 	      panel.background=element_rect(fill='white'))+
 # 	coord_cartesian(y=c(0, .3))+
-	scale_fill_manual(values=cbbPalette)
+	scale_colour_manual(values=cbbPalette)
+
+#' 
+#' ## National Informants: Effects on values across variable combinations and model types
+#' 
+
+infpVarFactor <- factor(paramsummaries$pVar[str_detect(paramsummaries$pVar, '^I_')])
+
+#+fig.height=10, fig.width=10
+paramsummaries %>%
+	filter(sample=='Nat', 
+	       paramgroup=='B ON A',
+	       bivPathDir=='Target: Val',
+	       str_detect(pVar, '^I_')) %>%
+	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
+	geom_hline(yintercept=0, color='red')+
+	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
+	facet_grid(vVar~bivPathType+bivPathDir)+
+	scale_x_continuous(breaks=unique(as.numeric(infpVarFactor)),
+			   labels=levels(infpVarFactor))+
+	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
+	      panel.background=element_rect(fill='white'))+
+# 	coord_cartesian(y=c(0, .3))+
+	scale_colour_manual(values=cbbPalette)
 
 
 #' 
@@ -317,8 +340,7 @@ paramsummaries %>%
 paramsummaries %>%
 	filter(sample=='Col', 
 	       paramgroup=='B ON A',
-	       bivPathDir=='Target: Pers',
-	       vVar!='MVS_mc') %>%
+	       bivPathDir=='Target: Pers') %>%
 	ggplot(aes(x=as.numeric(factor(vVar)), y=est))+
 	geom_hline(yintercept=0, color='red')+
 	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
@@ -337,8 +359,7 @@ paramsummaries %>%
 paramsummaries %>%
 	filter(sample=='Col', 
 	       paramgroup=='B ON A',
-	       bivPathDir=='Target: Val',
-	       vVar!='MVS_mc') %>%
+	       bivPathDir=='Target: Val') %>%
 	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
 	geom_hline(yintercept=0, color='red')+
 	geom_line(aes(color=modelCombo), alpha=.9, size=1)+
@@ -350,26 +371,92 @@ paramsummaries %>%
 # 	coord_cartesian(y=c(0, .3))+
 	scale_colour_manual(values=cbbPalette)
 
-#' 
-#' ## COllege: MVS_mc 
-#' 
-#+fig.height=5, fig.width=10
+
+#'
+#' ## National Personality: Stability of AR component
+#'
+
+#+fig.height=30, fig.width=5
 paramsummaries %>%
-	filter(sample=='Col', 
+	filter(sample=='Nat',
 	       paramgroup=='B ON A',
-	       vVar=='MVS_mc') %>%
-	ggplot(aes(x=as.numeric(factor(pVar)), y=est))+
+	       bivPathType=='Within Var',
+	       modelCombo=='Lin_Lin',
+	       bivPathDir=='Target: Pers') %>%
+	ggplot(aes(x=factor(vVar), y=est))+
 	geom_hline(yintercept=0, color='red')+
-	geom_bar(aes(fill=modelCombo), 
-		 stat='identity', position='dodge', 
-		 alpha=1, size=1)+
-	facet_wrap(~bivPathType+bivPathDir, scales='free_y')+
-	scale_x_continuous(breaks=unique(as.numeric(factor(paramsummaries$pVar))),
-			   labels=levels(factor(paramsummaries$pVar)))+
+	geom_point()+
+	geom_errorbar(aes(ymin=est-1.96*se, ymax=est+1.96*se), width=.5)+
+	facet_grid(pVar~1)+
 	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
 	      panel.background=element_rect(fill='white'))+
-# 	coord_cartesian(y=c(0, .3))+
-	scale_fill_manual(values=cbbPalette)
+ 	coord_cartesian(y=c(-.3, .6))+
+	scale_colour_manual(values=cbbPalette)
+
+#'
+#' ## National Values: Stability of AR component
+#'
+
+#+fig.height=10, fig.width=5
+paramsummaries %>%
+	filter(sample=='Nat',
+	       paramgroup=='B ON A',
+	       bivPathType=='Within Var',
+	       modelCombo=='Lin_Lin',
+	       bivPathDir=='Target: Val') %>%
+	ggplot(aes(x=factor(pVar), y=est))+
+	geom_hline(yintercept=0, color='red')+
+	geom_point()+
+	geom_errorbar(aes(ymin=est-1.96*se, ymax=est+1.96*se), width=.5)+
+	facet_grid(vVar~1)+
+	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
+	      panel.background=element_rect(fill='white'))+
+ 	coord_cartesian(y=c(-.1, .3))+
+	scale_colour_manual(values=cbbPalette)
+
+
+#'
+#' ## College Personality: Stability of AR component
+#'
+
+#+fig.height=23, fig.width=5
+paramsummaries %>%
+	filter(sample=='Col',
+	       paramgroup=='B ON A',
+	       bivPathType=='Within Var',
+	       modelCombo=='Lin_Lin',
+	       bivPathDir=='Target: Pers') %>%
+	ggplot(aes(x=factor(vVar), y=est))+
+	geom_hline(yintercept=0, color='red')+
+	geom_point()+
+	geom_errorbar(aes(ymin=est-1.96*se, ymax=est+1.96*se), width=.5)+
+	facet_grid(pVar~1)+
+	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
+	      panel.background=element_rect(fill='white'))+
+ 	coord_cartesian(y=c(-.4, .6))+
+	scale_colour_manual(values=cbbPalette)
+
+#'
+#' ## College Values: Stability of AR component
+#'
+
+#+fig.height=10, fig.width=5
+paramsummaries %>%
+	filter(sample=='Col',
+	       paramgroup=='B ON A',
+	       bivPathType=='Within Var',
+	       modelCombo=='Lin_Lin',
+	       bivPathDir=='Target: Val') %>%
+	ggplot(aes(x=factor(pVar), y=est))+
+	geom_hline(yintercept=0, color='red')+
+	geom_point()+
+	geom_errorbar(aes(ymin=est-1.96*se, ymax=est+1.96*se), width=.5)+
+	facet_grid(vVar~1)+
+	theme(axis.text.x=element_text(angle=360-45, hjust=0, size=8),
+	      panel.background=element_rect(fill='white'))+
+ 	coord_cartesian(y=c(-.9, .9))+
+	scale_colour_manual(values=cbbPalette)
+
 
 #' 
 #' ## National: Within-wave correlations across variable combinations and model types

@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:42 PM
+03/21/2016  11:08 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aVRT_COL
@@ -294,6 +298,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_VRT_COL
 *** WARNING
   Variable name contains more than 8 characters.
@@ -306,7 +326,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  3
-   4 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   9 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -315,7 +339,7 @@ PxVx Univariate - Col VRT_COL AR_LinM;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         277
+Number of observations                                         275
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -378,7 +402,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           4          27           7          16
+          1         138           4          27           7          16
           2          12           5          55           8          10
           3           6           6          11
 
@@ -394,10 +418,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BVRT_COL      CVRT_COL      DVRT_COL      AVRT_COL
               ________      ________      ________      ________
- BVRT_COL       0.704
- CVRT_COL       0.549         0.606
- DVRT_COL       0.563         0.542         0.639
- AVRT_COL       0.704         0.606         0.639         1.000
+ BVRT_COL       0.702
+ CVRT_COL       0.545         0.604
+ DVRT_COL       0.560         0.538         0.636
+ AVRT_COL       0.702         0.604         0.636         1.000
 
 
 SAMPLE STATISTICS
@@ -409,28 +433,28 @@ SAMPLE STATISTICS
            Means
               BVRT_COL      CVRT_COL      DVRT_COL      AVRT_COL
               ________      ________      ________      ________
- 1             66.484        64.160        64.691        67.095
+ 1             66.368        64.155        64.699        67.083
 
 
            Covariances
               BVRT_COL      CVRT_COL      DVRT_COL      AVRT_COL
               ________      ________      ________      ________
- BVRT_COL     313.707
- CVRT_COL     181.290       298.680
- DVRT_COL     202.993       200.676       341.188
- AVRT_COL     202.005       182.528       207.123       325.870
+ BVRT_COL     312.488
+ CVRT_COL     180.945       300.813
+ DVRT_COL     205.217       202.806       344.234
+ AVRT_COL     202.286       183.300       208.843       327.936
 
 
            Correlations
               BVRT_COL      CVRT_COL      DVRT_COL      AVRT_COL
               ________      ________      ________      ________
  BVRT_COL       1.000
- CVRT_COL       0.592         1.000
- DVRT_COL       0.620         0.629         1.000
- AVRT_COL       0.632         0.585         0.621         1.000
+ CVRT_COL       0.590         1.000
+ DVRT_COL       0.626         0.630         1.000
+ AVRT_COL       0.632         0.584         0.622         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3357.119
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3325.942
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -443,15 +467,15 @@ Number of Free Parameters                        8
 
 Loglikelihood
 
-          H0 Value                       -3359.116
-          H0 Scaling Correction Factor       1.014
+          H0 Value                       -3327.977
+          H0 Scaling Correction Factor       1.011
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                    6734.232
-          Bayesian (BIC)                  6763.224
-          Sample-Size Adjusted BIC        6737.857
+          Akaike (AIC)                    6671.954
+          Bayesian (BIC)                  6700.888
+          Sample-Size Adjusted BIC        6675.522
             (n* = (n + 2) / 24)
 
 
@@ -462,21 +486,21 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DVRT_COL   ON
-    CVRT_COL           0.045      0.070      0.637      0.524
+    CVRT_COL           0.041      0.070      0.587      0.557
 
  CVRT_COL   ON
-    BVRT_COL           0.045      0.070      0.637      0.524
+    BVRT_COL           0.041      0.070      0.587      0.557
 
  BVRT_COL   ON
-    AVRT_COL           0.045      0.070      0.637      0.524
+    AVRT_COL           0.041      0.070      0.587      0.557
 
  AVRT_COL WITH
-    I_VRT_COL        186.119     23.971      7.764      0.000
+    I_VRT_COL        187.839     24.011      7.823      0.000
 
  Means
-    AVRT_COL          67.096      1.086     61.805      0.000
-    I_VRT_COL         52.096      7.677      6.786      0.000
-    S_VRT_COL         -0.753      0.581     -1.296      0.195
+    AVRT_COL          67.083      1.090     61.538      0.000
+    I_VRT_COL         52.775      7.705      6.849      0.000
+    S_VRT_COL         -0.719      0.583     -1.234      0.217
 
  Intercepts
     BVRT_COL           0.000      0.000    999.000    999.000
@@ -484,24 +508,24 @@ MODEL RESULTS
     DVRT_COL           0.000      0.000    999.000    999.000
 
  Variances
-    AVRT_COL         325.949     21.822     14.937      0.000
-    I_VRT_COL        174.041     35.022      4.969      0.000
+    AVRT_COL         327.868     21.909     14.965      0.000
+    I_VRT_COL        176.997     34.986      5.059      0.000
     S_VRT_COL          0.000      0.000    999.000    999.000
 
  Residual Variances
-    BVRT_COL         126.841     12.409     10.222      0.000
-    CVRT_COL         126.841     12.409     10.222      0.000
-    DVRT_COL         126.841     12.409     10.222      0.000
+    BVRT_COL         126.387     12.422     10.175      0.000
+    CVRT_COL         126.387     12.422     10.175      0.000
+    DVRT_COL         126.387     12.422     10.175      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.222E-03
+     Condition Number for the Information Matrix              0.225E-03
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:42:29
-        Ending Time:  17:42:29
+     Beginning Time:  11:08:18
+        Ending Time:  11:08:18
        Elapsed Time:  00:00:00
 
 

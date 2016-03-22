@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   6:17 PM
+03/21/2016  11:23 AM
 
 INPUT INSTRUCTIONS
 
@@ -238,7 +238,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFA_CO
@@ -313,6 +317,22 @@ INPUT INSTRUCTIONS
 
 
 
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
 *** WARNING in MODEL command
   All continuous latent variable covariances involving S_ASPFIN have been fixed to 0
   because the variance of S_ASPFIN is fixed at 0.
@@ -320,7 +340,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   7 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -329,7 +353,7 @@ PxVx Univariate - Col Lin BFA_CO with MeanOnly aspfin;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -396,7 +420,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           5          52           9          11
+          1         138           5          52           9          11
           2          12           6          11          10           1
           3           5           7           1          11           1
           4          28           8          16          12           1
@@ -413,22 +437,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFA_CO       CBFA_CO       DBFA_CO       BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- BBFA_CO        0.710
- CBFA_CO        0.545         0.602
- DBFA_CO        0.563         0.541         0.642
- BASPFIN        0.703         0.545         0.559         0.703
- CASPFIN        0.545         0.602         0.541         0.545         0.602
- DASPFIN        0.559         0.541         0.638         0.559         0.541
- ABFA_CO        0.710         0.602         0.642         0.703         0.602
- AASPFIN        0.710         0.602         0.642         0.703         0.602
+ BBFA_CO        0.708
+ CBFA_CO        0.542         0.599
+ DBFA_CO        0.560         0.538         0.639
+ BASPFIN        0.700         0.542         0.556         0.700
+ CASPFIN        0.542         0.599         0.538         0.542         0.599
+ DASPFIN        0.556         0.538         0.635         0.556         0.538
+ ABFA_CO        0.708         0.599         0.639         0.700         0.599
+ AASPFIN        0.708         0.599         0.639         0.700         0.599
 
 
            Covariance Coverage
               DASPFIN       ABFA_CO       AASPFIN
               ________      ________      ________
- DASPFIN        0.638
- ABFA_CO        0.638         0.996
- AASPFIN        0.638         0.993         0.996
+ DASPFIN        0.635
+ ABFA_CO        0.635         0.996
+ AASPFIN        0.635         0.993         0.996
 
 
 SAMPLE STATISTICS
@@ -440,58 +464,58 @@ SAMPLE STATISTICS
            Means
               BBFA_CO       CBFA_CO       DBFA_CO       BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- 1             59.762        60.129        59.862        47.423        46.344
+ 1             59.639        60.142        59.920        47.429        46.193
 
 
            Means
               DASPFIN       ABFA_CO       AASPFIN
               ________      ________      ________
- 1             48.057        59.255        47.413
+ 1             48.170        59.182        47.358
 
 
            Covariances
               BBFA_CO       CBFA_CO       DBFA_CO       BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
- BBFA_CO      300.639
- CBFA_CO      215.325       287.216
- DBFA_CO      197.515       215.779       261.721
- BASPFIN       82.378        62.724        68.975       539.632
- CASPFIN       64.908        75.240        78.465       344.888       494.792
- DASPFIN       16.143        21.420        35.778       398.723       395.558
- ABFA_CO      229.347       188.642       180.689        76.121        80.282
- AASPFIN       51.627        60.004        52.114       422.252       333.982
+ BBFA_CO      300.935
+ CBFA_CO      218.046       287.675
+ DBFA_CO      200.023       217.106       264.014
+ BASPFIN       83.345        60.282        69.370       542.971
+ CASPFIN       63.374        70.434        78.726       343.356       489.654
+ DASPFIN       19.137        14.307        34.470       396.902       389.939
+ ABFA_CO      229.722       189.042       182.225        75.446        77.193
+ AASPFIN       51.651        54.383        51.797       421.162       326.843
 
 
            Covariances
               DASPFIN       ABFA_CO       AASPFIN
               ________      ________      ________
- DASPFIN      561.333
- ABFA_CO       37.993       284.261
- AASPFIN      360.079        87.534       540.471
+ DASPFIN      550.819
+ ABFA_CO       36.293       285.095
+ AASPFIN      351.507        85.528       535.095
 
 
            Correlations
               BBFA_CO       CBFA_CO       DBFA_CO       BASPFIN       CASPFIN
               ________      ________      ________      ________      ________
  BBFA_CO        1.000
- CBFA_CO        0.733         1.000
- DBFA_CO        0.704         0.787         1.000
- BASPFIN        0.205         0.159         0.184         1.000
- CASPFIN        0.168         0.200         0.218         0.667         1.000
- DASPFIN        0.039         0.053         0.093         0.724         0.751
- ABFA_CO        0.785         0.660         0.662         0.194         0.214
- AASPFIN        0.128         0.152         0.139         0.782         0.646
+ CBFA_CO        0.741         1.000
+ DBFA_CO        0.710         0.788         1.000
+ BASPFIN        0.206         0.153         0.183         1.000
+ CASPFIN        0.165         0.188         0.219         0.666         1.000
+ DASPFIN        0.047         0.036         0.090         0.726         0.751
+ ABFA_CO        0.784         0.660         0.664         0.192         0.207
+ AASPFIN        0.129         0.139         0.138         0.781         0.639
 
 
            Correlations
               DASPFIN       ABFA_CO       AASPFIN
               ________      ________      ________
  DASPFIN        1.000
- ABFA_CO        0.095         1.000
- AASPFIN        0.654         0.223         1.000
+ ABFA_CO        0.092         1.000
+ AASPFIN        0.647         0.219         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6721.578
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6654.555
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -504,15 +528,15 @@ Number of Free Parameters                       28
 
 Loglikelihood
 
-          H0 Value                       -6739.914
-          H0 Scaling Correction Factor       1.031
+          H0 Value                       -6672.619
+          H0 Scaling Correction Factor       1.027
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   13535.828
-          Bayesian (BIC)                 13637.502
-          Sample-Size Adjusted BIC       13548.716
+          Akaike (AIC)                   13401.238
+          Bayesian (BIC)                 13502.710
+          Sample-Size Adjusted BIC       13413.926
             (n* = (n + 2) / 24)
 
 
@@ -523,65 +547,65 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFA_CO    ON
-    CBFA_CO            0.280      0.058      4.853      0.000
-    CASPFIN           -0.003      0.076     -0.038      0.970
+    CBFA_CO            0.287      0.060      4.797      0.000
+    CASPFIN            0.005      0.072      0.072      0.943
 
  CBFA_CO    ON
-    BBFA_CO            0.280      0.058      4.853      0.000
-    BASPFIN           -0.003      0.076     -0.038      0.970
+    BBFA_CO            0.287      0.060      4.797      0.000
+    BASPFIN            0.005      0.072      0.072      0.943
 
  BBFA_CO    ON
-    ABFA_CO            0.280      0.058      4.853      0.000
-    AASPFIN           -0.003      0.076     -0.038      0.970
+    ABFA_CO            0.287      0.060      4.797      0.000
+    AASPFIN            0.005      0.072      0.072      0.943
 
  DASPFIN    ON
-    CASPFIN            0.240      0.100      2.401      0.016
-    CBFA_CO           -0.067      0.081     -0.832      0.406
+    CASPFIN            0.246      0.095      2.594      0.009
+    CBFA_CO           -0.085      0.079     -1.085      0.278
 
  CASPFIN    ON
-    BASPFIN            0.240      0.100      2.401      0.016
-    BBFA_CO           -0.067      0.081     -0.832      0.406
+    BASPFIN            0.246      0.095      2.594      0.009
+    BBFA_CO           -0.085      0.079     -1.085      0.278
 
  BASPFIN    ON
-    AASPFIN            0.240      0.100      2.401      0.016
-    ABFA_CO           -0.067      0.081     -0.832      0.406
+    AASPFIN            0.246      0.095      2.594      0.009
+    ABFA_CO           -0.085      0.079     -1.085      0.278
 
  S_BFA_CO WITH
-    I_BFA_CO         -10.227     10.437     -0.980      0.327
+    I_BFA_CO         -10.589     10.583     -1.001      0.317
 
  I_ASPFIN WITH
-    I_BFA_CO          26.898     36.226      0.743      0.458
-    S_BFA_CO           5.420      7.767      0.698      0.485
+    I_BFA_CO          26.742     34.758      0.769      0.442
+    S_BFA_CO           5.171      7.840      0.660      0.510
 
  ABFA_CO  WITH
-    I_BFA_CO         149.089     26.304      5.668      0.000
-    S_BFA_CO          -6.947      8.070     -0.861      0.389
-    I_ASPFIN          62.971     26.332      2.391      0.017
+    I_BFA_CO         145.819     26.533      5.496      0.000
+    S_BFA_CO          -6.117      8.103     -0.755      0.450
+    I_ASPFIN          65.678     26.002      2.526      0.012
 
  AASPFIN  WITH
-    I_BFA_CO          19.884     51.405      0.387      0.699
-    S_BFA_CO           8.397     12.413      0.676      0.499
-    I_ASPFIN         273.003     51.329      5.319      0.000
+    I_BFA_CO          11.872     48.993      0.242      0.809
+    S_BFA_CO           9.828     12.283      0.800      0.424
+    I_ASPFIN         267.055     48.970      5.453      0.000
 
  DASPFIN  WITH
-    DBFA_CO           12.456      8.712      1.430      0.153
+    DBFA_CO           12.453      8.580      1.451      0.147
 
  CASPFIN  WITH
-    CBFA_CO           12.456      8.712      1.430      0.153
+    CBFA_CO           12.453      8.580      1.451      0.147
 
  BASPFIN  WITH
-    BBFA_CO           12.456      8.712      1.430      0.153
+    BBFA_CO           12.453      8.580      1.451      0.147
 
  AASPFIN  WITH
-    ABFA_CO           87.534     24.473      3.577      0.000
+    ABFA_CO           85.529     24.518      3.488      0.000
 
  Means
-    ABFA_CO           59.255      1.010     58.688      0.000
-    AASPFIN           47.413      1.402     33.827      0.000
-    I_BFA_CO          43.625      2.852     15.296      0.000
-    S_BFA_CO          -0.137      0.460     -0.297      0.766
-    I_ASPFIN          39.493      4.876      8.100      0.000
-    S_ASPFIN           0.235      0.634      0.370      0.711
+    ABFA_CO           59.182      1.014     58.385      0.000
+    AASPFIN           47.358      1.395     33.953      0.000
+    I_BFA_CO          42.715      2.650     16.118      0.000
+    S_BFA_CO          -0.074      0.463     -0.159      0.874
+    I_ASPFIN          40.202      4.594      8.751      0.000
+    S_ASPFIN           0.271      0.636      0.427      0.670
 
  Intercepts
     BBFA_CO            0.000      0.000    999.000    999.000
@@ -592,30 +616,30 @@ MODEL RESULTS
     DASPFIN            0.000      0.000    999.000    999.000
 
  Variances
-    ABFA_CO          284.262     21.071     13.490      0.000
-    AASPFIN          540.471     37.572     14.385      0.000
-    I_BFA_CO         124.065     42.958      2.888      0.004
-    S_BFA_CO           3.799      4.137      0.918      0.358
-    I_ASPFIN         209.014     64.573      3.237      0.001
+    ABFA_CO          285.097     21.191     13.454      0.000
+    AASPFIN          535.094     37.585     14.237      0.000
+    I_BFA_CO         123.356     43.791      2.817      0.005
+    S_BFA_CO           3.965      4.206      0.943      0.346
+    I_ASPFIN         205.512     60.653      3.388      0.001
     S_ASPFIN           0.000      0.000    999.000    999.000
 
  Residual Variances
-    BBFA_CO           80.701      8.540      9.449      0.000
-    CBFA_CO           80.701      8.540      9.449      0.000
-    DBFA_CO           80.701      8.540      9.449      0.000
-    BASPFIN          171.236     20.208      8.474      0.000
-    CASPFIN          171.236     20.208      8.474      0.000
-    DASPFIN          171.236     20.208      8.474      0.000
+    BBFA_CO           79.859      8.691      9.188      0.000
+    CBFA_CO           79.859      8.691      9.188      0.000
+    DBFA_CO           79.859      8.691      9.188      0.000
+    BASPFIN          170.618     20.014      8.525      0.000
+    CASPFIN          170.618     20.014      8.525      0.000
+    DASPFIN          170.618     20.014      8.525      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.159E-05
+     Condition Number for the Information Matrix              0.818E-06
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  18:17:37
-        Ending Time:  18:17:38
+     Beginning Time:  11:23:20
+        Ending Time:  11:23:21
        Elapsed Time:  00:00:01
 
 

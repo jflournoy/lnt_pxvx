@@ -1,8 +1,11 @@
 library(dplyr)
 # library(tidyr)
+# setwd('E:/Projects/lnt_pxvx/Code/')
 
 newages <- read.csv('../Data/LnT_new_age_vars_all.csv') %>%
 	select(subjid, matches('^aage$'))
+
+newages$aage[newages$subjid == 2922] <- 27 # as determined by bage and cage = 28, 29 respectively
 
 newmvi <- read.csv('../Data/LnT_new_mvi_vars_all.csv') %>%
 	select(subjid, matches('POMP'))
@@ -527,11 +530,11 @@ baseInfDFColNames <- c('subjid',
 		       'cI_H',
 		       'dI_H')
 
-baseMainDF <- read.table('../Data/LT_227.old.csv', sep=',', header=F,
+baseMainDF <- read.table('../Data/LT_227.old.txt', sep='\t', header=F,
 			 na.strings=-9999,
 			 col.names=baseMainDFColNames)
 
-baseInfDF <- read.table('../Data/LT_informants3.old.csv', sep=',', header=F,
+baseInfDF <- read.table('../Data/LT_informants3.old.txt', sep='\t', header=F,
 			na.strings=-9999,
 			col.names=baseInfDFColNames)
 
@@ -543,9 +546,9 @@ newBaseInfDF <- baseInfDF %>% select(-matches('^aage')) %>%
 	left_join(newages, by='subjid') %>% select_(.dots=baseInfDFColNames) %>%
 	left_join(newmvi, by='subjid')
 
-write.table(newBaseMainDF, file = "../Data/LT_227.csv", append = FALSE, quote = TRUE, sep = ",",
+write.table(newBaseMainDF, file = "../Data/LT_227.txt", append = FALSE, quote = TRUE, sep = "\t",
 	    eol = "\n", na = "-9999", dec = ".", row.names = FALSE,   
 	    col.names = FALSE)                                    
-write.table(newBaseInfDF, file = "../Data/LT_informants3.csv", append = FALSE, quote = TRUE, sep = ",",
+write.table(newBaseInfDF, file = "../Data/LT_informants3.txt", append = FALSE, quote = TRUE, sep = "\t",
 	    eol = "\n", na = "-9999", dec = ".", row.names = FALSE,   
 	    col.names = FALSE)                                    

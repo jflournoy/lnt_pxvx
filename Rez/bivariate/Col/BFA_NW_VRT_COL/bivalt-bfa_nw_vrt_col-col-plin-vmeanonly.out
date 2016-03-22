@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-03/09/2016   6:29 PM
+03/21/2016  11:38 AM
 
 INPUT INSTRUCTIONS
 
@@ -238,7 +238,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFA_NW
@@ -316,6 +320,22 @@ INPUT INSTRUCTIONS
 *** WARNING
   Variable name contains more than 8 characters.
   Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
   Variable: I_VRT_COL
 *** WARNING
   Variable name contains more than 8 characters.
@@ -328,7 +348,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   4 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   9 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -337,7 +361,7 @@ PxVx Univariate - Col Lin BFA_NW with MeanOnly VRT_COL;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    6
 Number of independent variables                                  2
@@ -404,7 +428,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           6          11          11           2
+          1         138           6          11          11           2
           2          12           7           1          12           1
           3           5           8          16          13           2
           4          27           9           1
@@ -422,22 +446,22 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFA_NW       CBFA_NW       DBFA_NW       BVRT_COL      CVRT_COL
               ________      ________      ________      ________      ________
- BBFA_NW        0.710
- CBFA_NW        0.545         0.602
- DBFA_NW        0.563         0.541         0.642
- BVRT_COL       0.699         0.545         0.559         0.699
- CVRT_COL       0.545         0.602         0.541         0.545         0.602
- DVRT_COL       0.559         0.538         0.634         0.559         0.538
- ABFA_NW        0.710         0.602         0.642         0.699         0.602
- AVRT_COL       0.710         0.602         0.642         0.699         0.602
+ BBFA_NW        0.708
+ CBFA_NW        0.542         0.599
+ DBFA_NW        0.560         0.538         0.639
+ BVRT_COL       0.697         0.542         0.556         0.697
+ CVRT_COL       0.542         0.599         0.538         0.542         0.599
+ DVRT_COL       0.556         0.534         0.632         0.556         0.534
+ ABFA_NW        0.708         0.599         0.639         0.697         0.599
+ AVRT_COL       0.708         0.599         0.639         0.697         0.599
 
 
            Covariance Coverage
               DVRT_COL      ABFA_NW       AVRT_COL
               ________      ________      ________
- DVRT_COL       0.634
- ABFA_NW        0.634         0.996
- AVRT_COL       0.634         0.989         0.993
+ DVRT_COL       0.632
+ ABFA_NW        0.632         0.996
+ AVRT_COL       0.632         0.989         0.993
 
 
 SAMPLE STATISTICS
@@ -449,58 +473,58 @@ SAMPLE STATISTICS
            Means
               BBFA_NW       CBFA_NW       DBFA_NW       BVRT_COL      CVRT_COL
               ________      ________      ________      ________      ________
- 1             47.889        47.674        47.406        66.411        64.107
+ 1             47.700        47.397        47.026        66.288        64.097
 
 
            Means
               DVRT_COL      ABFA_NW       AVRT_COL
               ________      ________      ________
- 1             64.692        48.509        67.097
+ 1             64.699        48.421        67.085
 
 
            Covariances
               BBFA_NW       CBFA_NW       DBFA_NW       BVRT_COL      CVRT_COL
               ________      ________      ________      ________      ________
- BBFA_NW      352.695
- CBFA_NW      257.691       363.269
- DBFA_NW      259.842       270.168       324.977
- BVRT_COL       2.783       -20.147       -39.063       313.945
- CVRT_COL      16.473       -15.681       -28.290       181.030       297.453
- DVRT_COL       6.995       -20.964       -27.437       202.212       199.412
- ABFA_NW      241.771       222.659       220.870        27.102        -8.012
- AVRT_COL      12.332       -20.911       -12.440       202.915       181.532
+ BBFA_NW      351.502
+ CBFA_NW      253.469       358.078
+ DBFA_NW      253.715       260.845       311.788
+ BVRT_COL       0.422       -24.148       -45.904       312.639
+ CVRT_COL      16.985       -16.285       -29.495       180.511       299.410
+ DVRT_COL       7.222       -20.968       -26.905       204.102       201.342
+ ABFA_NW      242.228       221.152       216.039        22.934       -10.279
+ AVRT_COL      12.442       -21.333       -13.148       203.234       182.139
 
 
            Covariances
               DVRT_COL      ABFA_NW       AVRT_COL
               ________      ________      ________
- DVRT_COL     340.407
- ABFA_NW       -9.564       334.151
- AVRT_COL     206.576        -4.783       325.870
+ DVRT_COL     343.465
+ ABFA_NW       -8.369       332.043
+ AVRT_COL     208.293        -5.958       327.936
 
 
            Correlations
               BBFA_NW       CBFA_NW       DBFA_NW       BVRT_COL      CVRT_COL
               ________      ________      ________      ________      ________
  BBFA_NW        1.000
- CBFA_NW        0.720         1.000
- DBFA_NW        0.768         0.786         1.000
- BVRT_COL       0.008        -0.060        -0.122         1.000
- CVRT_COL       0.051        -0.048        -0.091         0.592         1.000
- DVRT_COL       0.020        -0.060        -0.082         0.619         0.627
- ABFA_NW        0.704         0.639         0.670         0.084        -0.025
- AVRT_COL       0.036        -0.061        -0.038         0.634         0.583
+ CBFA_NW        0.714         1.000
+ DBFA_NW        0.766         0.781         1.000
+ BVRT_COL       0.001        -0.072        -0.147         1.000
+ CVRT_COL       0.052        -0.050        -0.097         0.590         1.000
+ DVRT_COL       0.021        -0.060        -0.082         0.623         0.628
+ ABFA_NW        0.709         0.641         0.671         0.071        -0.033
+ AVRT_COL       0.037        -0.062        -0.041         0.635         0.581
 
 
            Correlations
               DVRT_COL      ABFA_NW       AVRT_COL
               ________      ________      ________
  DVRT_COL       1.000
- ABFA_NW       -0.028         1.000
- AVRT_COL       0.620        -0.014         1.000
+ ABFA_NW       -0.025         1.000
+ AVRT_COL       0.621        -0.018         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6675.041
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -6605.529
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -513,15 +537,15 @@ Number of Free Parameters                       28
 
 Loglikelihood
 
-          H0 Value                       -6685.506
-          H0 Scaling Correction Factor       0.975
+          H0 Value                       -6617.288
+          H0 Scaling Correction Factor       0.993
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                   13427.013
-          Bayesian (BIC)                 13528.687
-          Sample-Size Adjusted BIC       13439.901
+          Akaike (AIC)                   13290.576
+          Bayesian (BIC)                 13392.048
+          Sample-Size Adjusted BIC       13303.264
             (n* = (n + 2) / 24)
 
 
@@ -532,65 +556,65 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFA_NW    ON
-    CBFA_NW            0.083      0.091      0.920      0.358
-    CVRT_COL           0.014      0.051      0.273      0.785
+    CBFA_NW            0.060      0.085      0.706      0.480
+    CVRT_COL           0.020      0.071      0.277      0.782
 
  CBFA_NW    ON
-    BBFA_NW            0.083      0.091      0.920      0.358
-    BVRT_COL           0.014      0.051      0.273      0.785
+    BBFA_NW            0.060      0.085      0.706      0.480
+    BVRT_COL           0.020      0.071      0.277      0.782
 
  BBFA_NW    ON
-    ABFA_NW            0.083      0.091      0.920      0.358
-    AVRT_COL           0.014      0.051      0.273      0.785
+    ABFA_NW            0.060      0.085      0.706      0.480
+    AVRT_COL           0.020      0.071      0.277      0.782
 
  DVRT_COL   ON
-    CVRT_COL           0.028      0.050      0.566      0.572
-    CBFA_NW            0.173      0.062      2.795      0.005
+    CVRT_COL           0.022      0.067      0.323      0.747
+    CBFA_NW            0.179      0.065      2.737      0.006
 
  CVRT_COL   ON
-    BVRT_COL           0.028      0.050      0.566      0.572
-    BBFA_NW            0.173      0.062      2.795      0.005
+    BVRT_COL           0.022      0.067      0.323      0.747
+    BBFA_NW            0.179      0.065      2.737      0.006
 
  BVRT_COL   ON
-    AVRT_COL           0.028      0.050      0.566      0.572
-    ABFA_NW            0.173      0.062      2.795      0.005
+    AVRT_COL           0.022      0.067      0.323      0.747
+    ABFA_NW            0.179      0.065      2.737      0.006
 
  S_BFA_NW WITH
-    I_BFA_NW          -7.200      8.224     -0.875      0.381
+    I_BFA_NW          -8.929      8.285     -1.078      0.281
 
  I_VRT_CO WITH
-    I_BFA_NW         -32.042     32.019     -1.001      0.317
-    S_BFA_NW         -14.357      7.376     -1.946      0.052
+    I_BFA_NW         -35.122     36.508     -0.962      0.336
+    S_BFA_NW         -15.577      7.496     -2.078      0.038
 
  ABFA_NW  WITH
-    I_BFA_NW         204.477     45.105      4.533      0.000
-    S_BFA_NW           1.774     10.585      0.168      0.867
-    I_VRT_COL        -41.420     25.397     -1.631      0.103
+    I_BFA_NW         216.764     43.545      4.978      0.000
+    S_BFA_NW          -2.228      9.961     -0.224      0.823
+    I_VRT_COL        -44.642     26.074     -1.712      0.087
 
  AVRT_COL WITH
-    I_BFA_NW          21.967     30.365      0.723      0.469
-    S_BFA_NW         -15.861      9.161     -1.731      0.083
-    I_VRT_COL        190.642     21.803      8.744      0.000
+    I_BFA_NW          21.336     35.743      0.597      0.551
+    S_BFA_NW         -16.512      9.699     -1.702      0.089
+    I_VRT_COL        193.252     24.551      7.871      0.000
 
  DVRT_COL WITH
-    DBFA_NW            6.081      6.375      0.954      0.340
+    DBFA_NW            7.643      6.647      1.150      0.250
 
  CVRT_COL WITH
-    CBFA_NW            6.081      6.375      0.954      0.340
+    CBFA_NW            7.643      6.647      1.150      0.250
 
  BVRT_COL WITH
-    BBFA_NW            6.081      6.375      0.954      0.340
+    BBFA_NW            7.643      6.647      1.150      0.250
 
  AVRT_COL WITH
-    ABFA_NW           -4.783     20.238     -0.236      0.813
+    ABFA_NW           -5.958     20.375     -0.292      0.770
 
  Means
-    ABFA_NW           48.508      1.095     44.287      0.000
-    AVRT_COL          67.095      1.084     61.905      0.000
-    I_BFA_NW          42.952      4.354      9.864      0.000
-    S_BFA_NW          -0.140      0.468     -0.300      0.764
-    I_VRT_COL         56.340      4.213     13.373      0.000
-    S_VRT_COL         -0.643      0.564     -1.140      0.254
+    ABFA_NW           48.420      1.096     44.164      0.000
+    AVRT_COL          67.083      1.085     61.826      0.000
+    I_BFA_NW          43.536      5.404      8.056      0.000
+    S_BFA_NW          -0.189      0.474     -0.399      0.690
+    I_VRT_COL         56.487      5.527     10.221      0.000
+    S_VRT_COL         -0.646      0.576     -1.122      0.262
 
  Intercepts
     BBFA_NW            0.000      0.000    999.000    999.000
@@ -601,31 +625,31 @@ MODEL RESULTS
     DVRT_COL           0.000      0.000    999.000    999.000
 
  Variances
-    ABFA_NW          334.150     27.034     12.360      0.000
-    AVRT_COL         325.870     21.811     14.941      0.000
-    I_BFA_NW         237.491     61.151      3.884      0.000
-    S_BFA_NW           2.729      1.991      1.371      0.170
-    I_VRT_COL        190.216     31.773      5.987      0.000
+    ABFA_NW          332.043     27.054     12.273      0.000
+    AVRT_COL         327.936     21.918     14.962      0.000
+    I_BFA_NW         250.780     61.951      4.048      0.000
+    S_BFA_NW           2.892      2.009      1.440      0.150
+    I_VRT_COL        195.457     37.796      5.171      0.000
     S_VRT_COL          0.000      0.000    999.000    999.000
 
  Residual Variances
-    BBFA_NW           86.361      9.519      9.073      0.000
-    CBFA_NW           86.361      9.519      9.073      0.000
-    DBFA_NW           86.361      9.519      9.073      0.000
-    BVRT_COL         123.202     11.192     11.008      0.000
-    CVRT_COL         123.202     11.192     11.008      0.000
-    DVRT_COL         123.202     11.192     11.008      0.000
+    BBFA_NW           84.621      9.270      9.128      0.000
+    CBFA_NW           84.621      9.270      9.128      0.000
+    DBFA_NW           84.621      9.270      9.128      0.000
+    BVRT_COL         122.594     11.585     10.582      0.000
+    CVRT_COL         122.594     11.585     10.582      0.000
+    DVRT_COL         122.594     11.585     10.582      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.414E-06
+     Condition Number for the Information Matrix              0.476E-06
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  18:29:21
-        Ending Time:  18:29:26
-       Elapsed Time:  00:00:05
+     Beginning Time:  11:38:02
+        Ending Time:  11:38:09
+       Elapsed Time:  00:00:07
 
 
 

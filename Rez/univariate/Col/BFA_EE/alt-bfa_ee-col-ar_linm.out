@@ -1,6 +1,6 @@
 Mplus VERSION 6.12
 MUTHEN & MUTHEN
-02/28/2016   5:42 PM
+03/21/2016  11:07 AM
 
 INPUT INSTRUCTIONS
 
@@ -236,7 +236,11 @@ INPUT INSTRUCTIONS
   aaspfin
   baspfin
   caspfin
-  daspfin;
+  daspfin
+  aMVI_POMP
+  bMVI_POMP
+  cMVI_POMP
+  dMVI_POMP;
 
   USEVARIABLES =
   aBFA_EE
@@ -291,6 +295,22 @@ INPUT INSTRUCTIONS
 
 
 
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: AMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: BMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: CMVI_POMP
+*** WARNING
+  Variable name contains more than 8 characters.
+  Only the first 8 characters will be printed in the output.
+  Variable: DMVI_POMP
 *** WARNING in MODEL command
   All continuous latent variable covariances involving S_BFA_EE have been fixed to 0
   because the variance of S_BFA_EE is fixed at 0.
@@ -298,7 +318,11 @@ INPUT INSTRUCTIONS
   Data set contains cases with missing on all variables.
   These cases were not included in the analysis.
   Number of cases with missing on all variables:  1
-   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  2
+   7 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
 
 
 
@@ -307,7 +331,7 @@ PxVx Univariate - Col BFA_EE AR_LinM;
 SUMMARY OF ANALYSIS
 
 Number of groups                                                 1
-Number of observations                                         279
+Number of observations                                         277
 
 Number of dependent variables                                    3
 Number of independent variables                                  1
@@ -370,7 +394,7 @@ SUMMARY OF MISSING DATA PATTERNS
      MISSING DATA PATTERN FREQUENCIES
 
     Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
-          1         140           4          29           7          17
+          1         138           4          29           7          17
           2          12           5          54           8          11
           3           5           6          11
 
@@ -386,10 +410,10 @@ Minimum covariance coverage value   0.100
            Covariance Coverage
               BBFA_EE       CBFA_EE       DBFA_EE       ABFA_EE
               ________      ________      ________      ________
- BBFA_EE        0.710
- CBFA_EE        0.545         0.602
- DBFA_EE        0.563         0.541         0.642
- ABFA_EE        0.710         0.602         0.642         1.000
+ BBFA_EE        0.708
+ CBFA_EE        0.542         0.599
+ DBFA_EE        0.560         0.538         0.639
+ ABFA_EE        0.708         0.599         0.639         1.000
 
 
 SAMPLE STATISTICS
@@ -401,28 +425,28 @@ SAMPLE STATISTICS
            Means
               BBFA_EE       CBFA_EE       DBFA_EE       ABFA_EE
               ________      ________      ________      ________
- 1             65.474        66.195        65.013        67.217
+ 1             65.427        66.368        65.101        67.197
 
 
            Covariances
               BBFA_EE       CBFA_EE       DBFA_EE       ABFA_EE
               ________      ________      ________      ________
- BBFA_EE      306.053
- CBFA_EE      217.727       284.682
- DBFA_EE      232.356       245.292       337.945
- ABFA_EE      235.451       204.256       223.413       278.136
+ BBFA_EE      308.102
+ CBFA_EE      219.641       283.942
+ DBFA_EE      233.162       243.505       334.473
+ ABFA_EE      237.017       206.102       225.123       280.088
 
 
            Correlations
               BBFA_EE       CBFA_EE       DBFA_EE       ABFA_EE
               ________      ________      ________      ________
  BBFA_EE        1.000
- CBFA_EE        0.738         1.000
- DBFA_EE        0.722         0.791         1.000
- ABFA_EE        0.807         0.726         0.729         1.000
+ CBFA_EE        0.743         1.000
+ DBFA_EE        0.726         0.790         1.000
+ ABFA_EE        0.807         0.731         0.736         1.000
 
 
-     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3239.711
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -3206.826
 
 
 THE MODEL ESTIMATION TERMINATED NORMALLY
@@ -435,15 +459,15 @@ Number of Free Parameters                        8
 
 Loglikelihood
 
-          H0 Value                       -3243.537
-          H0 Scaling Correction Factor       1.207
+          H0 Value                       -3210.492
+          H0 Scaling Correction Factor       1.227
             for MLR
 
 Information Criteria
 
-          Akaike (AIC)                    6503.075
-          Bayesian (BIC)                  6532.124
-          Sample-Size Adjusted BIC        6506.757
+          Akaike (AIC)                    6436.984
+          Bayesian (BIC)                  6465.976
+          Sample-Size Adjusted BIC        6440.609
             (n* = (n + 2) / 24)
 
 
@@ -454,21 +478,21 @@ MODEL RESULTS
                     Estimate       S.E.  Est./S.E.    P-Value
 
  DBFA_EE    ON
-    CBFA_EE            0.321      0.085      3.800      0.000
+    CBFA_EE            0.299      0.086      3.470      0.001
 
  CBFA_EE    ON
-    BBFA_EE            0.321      0.085      3.800      0.000
+    BBFA_EE            0.299      0.086      3.470      0.001
 
  BBFA_EE    ON
-    ABFA_EE            0.321      0.085      3.800      0.000
+    ABFA_EE            0.299      0.086      3.470      0.001
 
  ABFA_EE  WITH
-    I_BFA_EE         144.550     27.387      5.278      0.000
+    I_BFA_EE         151.192     28.272      5.348      0.000
 
  Means
-    ABFA_EE           67.219      0.998     67.365      0.000
-    I_BFA_EE          50.302      6.583      7.641      0.000
-    S_BFA_EE           0.450      0.444      1.013      0.311
+    ABFA_EE           67.197      1.004     66.948      0.000
+    I_BFA_EE          51.576      6.704      7.693      0.000
+    S_BFA_EE           0.429      0.444      0.968      0.333
 
  Intercepts
     BBFA_EE            0.000      0.000    999.000    999.000
@@ -476,25 +500,25 @@ MODEL RESULTS
     DBFA_EE            0.000      0.000    999.000    999.000
 
  Variances
-    ABFA_EE          278.145     21.207     13.116      0.000
-    I_BFA_EE          96.748     34.024      2.843      0.004
+    ABFA_EE          280.087     21.301     13.149      0.000
+    I_BFA_EE         104.569     36.388      2.874      0.004
     S_BFA_EE           0.000      0.000    999.000    999.000
 
  Residual Variances
-    BBFA_EE           92.898     13.583      6.839      0.000
-    CBFA_EE           92.898     13.583      6.839      0.000
-    DBFA_EE           92.898     13.583      6.839      0.000
+    BBFA_EE           91.030     13.822      6.586      0.000
+    CBFA_EE           91.030     13.822      6.586      0.000
+    DBFA_EE           91.030     13.822      6.586      0.000
 
 
 QUALITY OF NUMERICAL RESULTS
 
-     Condition Number for the Information Matrix              0.788E-04
+     Condition Number for the Information Matrix              0.861E-04
        (ratio of smallest to largest eigenvalue)
 
 
-     Beginning Time:  17:42:02
-        Ending Time:  17:42:02
-       Elapsed Time:  00:00:00
+     Beginning Time:  11:07:50
+        Ending Time:  11:07:51
+       Elapsed Time:  00:00:01
 
 
 
