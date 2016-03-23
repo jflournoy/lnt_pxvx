@@ -289,14 +289,14 @@ allParams_w_sampleLong <- paramsummaries %>% as.data.table %>%
 	spread(EfDir_Param, value) %>%
 	arrange(ScaleName) 
 
-latexLevels <- str_replace(levels(allParams_w_sampleLong$ScaleName),
-			   '( BFI| BFAS)',
-			   '\\\\textsubscript{\\1}')
+latexLevels <- str_replace_all(levels(allParams_w_sampleLong$ScaleName),
+			   c(' (BFI|BFAS)'='\\\\textsubscript{\\1}',
+			     ` `='\\\\ '))
 
 allParams_w_sampleLongLatex <- allParams_w_sampleLong %>%
-	mutate(ScaleNameLatex=factor(str_replace(ScaleName,
-					       '( BFI| BFAS)',
-					       '\\\\textsubscript{\\1}'),
+	mutate(ScaleNameLatex=factor(str_replace_all(ScaleName,
+						 c(' (BFI|BFAS)'='\\\\textsubscript{\\1}',
+						 ` `='\\\\ ')),
 				   levels=latexLevels))
 
 table_options(justification='r')
@@ -342,5 +342,5 @@ nada <- allParams_w_sampleLongLatex %>%
 ---
 title: "results_summary.r"
 author: "jflournoy"
-date: "Wed Mar 23 16:00:39 2016"
+date: "Wed Mar 23 16:07:00 2016"
 ---
