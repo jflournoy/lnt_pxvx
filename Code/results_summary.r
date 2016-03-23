@@ -356,7 +356,7 @@ nada <- allParams_w_sampleLong %>%
 				   (`r PV`=`rPiVi est.stars`)), 
 				  data=.) # %>% cat #%>% latex()
 		csvFilename <- paste0('../Rez/csv/', unique(.$vVar), '.csv')
-		write.csv.tabular(atable, file=csvFilename, HTMLleftpad=F, HTMLrightpad=F)
+		write.csv.tabular(atable, file=csvFilename, leftpad=F)
 		data_frame(aHTMLTable=list(atable))
 	})
 
