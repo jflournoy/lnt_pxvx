@@ -273,13 +273,16 @@ allParams_w_sampleLong <- paramsummaries %>% as.data.table %>%
 			      str_replace_all(bivPathDir, 
 					      c('Target: Pers'='VtoP',
 						'Target: Val'='PtoV'))),
+	       est.stars=ifelse(pval<.05, 
+			     sprintf('*%.2f*', est),
+			     sprintf('%.2f', est)),
 	       est.bf=ifelse(pval<.05, 
 			     sprintf('\\textbf{%.2f}', est),
 			     sprintf('%.2f', est)),
 	       ci.u=est+1.96*se,
 	       ci.l=est-1.96*se) %>%
 	select(ScaleName, vVar, sample, colName, 
-	       Estimator, N, est, est.bf, se, 
+	       Estimator, N, est, est.bf, est.stars,  se, 
 	       ci.u, ci.l, pval) %>% 
 	gather(parameter, value, -(ScaleName:colName)) %>%
 	unite(EfDir_Param, colName, parameter, sep=' ') %>%
@@ -313,17 +316,18 @@ nada <- allParams_w_sampleLongLatex %>%
 	do({
 		atable <- tabular(Heading()*(scale=Factor(ScaleNameLatex, texify=F))~
 				  Heading()*I2*
-				  Heading()*(sample=factor(sample, 
-							   levels=c('Nat', 'Col', 'Inf'),
-							   labels=c('National Sample',
-								    'Student Sample',
-								    'Informant Sample')))*
-				     Justify(r)*
-				     ((N=`PtoV N`)+
-				      (`$P\\rightarrow V$`=`PtoV est.bf`)+
-				      (`$V\\rightarrow P$`=`VtoP est.bf`)+
-				      (`$r_{P_{i}V_{i}}$`=`rPiVi est.bf`)), 
-				     data=.) # %>% cat #%>% latex()
+				  Heading()*Justify(c)*
+				  (sample=factor(sample, 
+						 levels=c('Nat', 'Col', 'Inf'),
+						 labels=c('National Sample',
+							  'Student Sample',
+							  'Informant Sample')))*
+				  Justify(r)*
+				  ((N=`PtoV N`)+
+				   (`$P\\rightarrow V$`=`PtoV est.bf`)+
+				   (`$V\\rightarrow P$`=`VtoP est.bf`)+
+				   (`$r_{P_{i}V_{i}}$`=`rPiVi est.bf`)), 
+				  data=.) # %>% cat #%>% latex()
 		cat('\n\\begin{table}')
 		cat(paste0('\n\\caption{Auto-Regressive Associations Between \\textbf{',
 			  vVarNames[unique(.$vVar)],
@@ -334,31 +338,25 @@ nada <- allParams_w_sampleLongLatex %>%
 		cat('\\end{table}\n')
 		data_frame(aHTMLTable=list(atable))
 	})
-# 
-# nada <- allParams_w_sampleLong %>% 
-# 	group_by(vVar) %>%
-# 	do({
-# 		atable <- tabular(Heading()*(scale=Factor(ScaleName))~
-# 				  Heading()*I2*
-# 				  Heading()*(sample=factor(sample, 
-# 							   levels=c('Nat', 'Col', 'Inf'),
-# 							   labels=c('National Sample',
-# 								    'Student Sample',
-# 								    'Informant Sample')))*
-# 				     Justify(r)*
-# 				     ((N=`PtoV N`)+
-# 				      (`P -> V$`=`PtoV est.bf`)+
-# 				      (`V -> P$`=`VtoP est.bf`)+
-# 				      (`r_{P_{i}V_{i}}$`=`rPiVi est.bf`)), 
-# 				     data=.) # %>% cat #%>% latex()
-# 		cat('\n\\begin{table}')
-# 		cat(paste0('\n\\caption{Auto-Regressive Associations Between \\textbf{',
-# 			  vVarNames[unique(.$vVar)],
-# 			  '} and Personality Scales, Accounting for Age}\n'))
-# 		cat('\\begin{adjustbox}{max width=\\columnwidth, min width=\\columnwidth}\n')
-# 		latex(atable)
-# 		cat('\\end{adjustbox}\n')
-# 		cat('\\end{table}\n')
-# 		data_frame(aHTMLTable=list(atable))
-# 	})
-# 
+
+nada <- allParams_w_sampleLong %>% 
+	group_by(vVar) %>%
+	do({
+		atable <- tabular(Heading()*(scale=Factor(ScaleName))~
+				  Heading()*I2*
+				  Heading()*(sample=factor(sample, 
+							   levels=c('Nat', 'Col', 'Inf'),
+							   labels=c('National Sample',
+								    'Student Sample',
+								    'Informant Sample')))*
+				  Justify(r)*
+				  ((N=`PtoV N`)+
+				   (`P -> V$`=`PtoV est.stars`)+
+				   (`V -> P$`=`VtoP est.stars`)+
+				   (`r PV`=`rPiVi est.stars`)), 
+				  data=.) # %>% cat #%>% latex()
+		csvFilename <- paste0('../Rez/csv/', unique(.$vVar), '.csv')
+		write.csv.tabular(atable, file=csvFilename, HTMLleftpad=F, HTMLrightpad=F)
+		data_frame(aHTMLTable=list(atable))
+	})
+
