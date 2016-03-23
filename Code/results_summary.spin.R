@@ -170,23 +170,23 @@ pVarInfNames <- c(I_A="BFI_A6",
 		  I_S="S_SCALE")
 
 pVarNames <- c(S_SCALE="Social Self-Regulation",
-	       BFI_C="Conscientiousness BFI",
-	       BFA_CI="Industriousness BFAS", 
-	       BFA_CO="Orderliness BFAS", 
-	       bfi_hp8="Honesty/Propriety BFI", 
+	       BFI_C=" Conscientiousness BFI",
+	       BFA_CI="  Industriousness BFAS", 
+	       BFA_CO="  Orderliness BFAS", 
+	       bfi_hp8=" Honesty/Propriety BFI", 
 	       BFI_A6="Agreeableness-Six BFI", 
-	       BFA_AC="Compassion BFAS", 
-	       BFA_AP="Politeness BFAS", 
-	       BFI_N="Neuroticism BFI", 
-	       BFA_NV="Volatility BFAS", 
-	       BFA_NW="Withdrawal BFAS", 
+	       BFA_AC="  Compassion BFAS", 
+	       BFA_AP="  Politeness BFAS", 
+	       BFI_N=" Neuroticism BFI", 
+	       BFA_NV="  Volatility BFAS", 
+	       BFA_NW="  Withdrawal BFAS", 
 	       D_SCALE="Dynamism", 
-	       BFI_E="Extraversion BFI", 
-	       BFA_EA="Assertiveness BFAS", 
-	       BFA_EE="Enthusiasm BFAS", 
-	       BFI_O="Openness BFI", 
-	       BFA_OI="Intellect BFAS", 
-	       BFA_OO="Openness BFAS")
+	       BFI_E=" Extraversion BFI", 
+	       BFA_EA="  Assertiveness BFAS", 
+	       BFA_EE="  Enthusiasm BFAS", 
+	       BFI_O=" Openness BFI", 
+	       BFA_OI="  Intellect BFAS", 
+	       BFA_OO="  Openness BFAS")
 
 XLparams_w <- paramsummaries %>% as.data.table %>% 
 	filter(bivPathType=='Across Var',
@@ -296,7 +296,7 @@ allParams_w_sampleLongLatex <- allParams_w_sampleLong %>%
 					       '\\\\textsubscript{\\1}'),
 				   levels=latexLevels))
 
-
+table_options(justification='r')
 nada <- booktabs()
 vVarNames <- c('aspfin'='Financial Aspirations',
 	       'BFA_MT'='Materialism',
