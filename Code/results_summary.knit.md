@@ -7,25 +7,9 @@ output:
 
 
 
-# Intro
+# What models are these results from?
 
-**Template for models:**
-
-![](bi_model.png "Template for bivartiate models")
-
-The above diagram captures all 4 possible models combinations. The black
-is the univariate ALT model, and the blue adds all paths we estimate for the 
-bivariate ALT. Red paths show the paths constrained to be 0 in the 
-mean-only (fixed slope) model. Letter labels indicate paths constrained
-to be equal.
-
-
-
-
-
-## What models are these results from?
-
-### National
+## National
 
 
 
@@ -34,7 +18,7 @@ to be equal.
 All models are full linear -> linear
 
 
-### College
+## College
 
 
 
@@ -48,12 +32,6 @@ with restricted slope variance for HRZ_IND.
 # Parameter Summaries
 
 The tables summarize the results of the models.
-
-
-
-
-
-# Well Formatted Summaries
 
 
 
@@ -310,5 +288,5 @@ Openness\textsubscript{ BFAS}  & \multicolumn{1}{r}{863} & \multicolumn{1}{r}{-0
 ---
 title: "results_summary.r"
 author: "jflournoy"
-date: "Wed Mar 23 15:49:11 2016"
+date: "Wed Mar 23 15:51:19 2016"
 ---

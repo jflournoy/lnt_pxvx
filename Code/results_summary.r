@@ -26,19 +26,6 @@ I2 <- function(x){
 	}
 }
 
-#'
-#' # Intro
-#'
-#' **Template for models:**
-#'
-#'![](bi_model.png "Template for bivartiate models")
-#'
-#' The above diagram captures all 4 possible models combinations. The black
-#' is the univariate ALT model, and the blue adds all paths we estimate for the 
-#' bivariate ALT. Red paths show the paths constrained to be 0 in the 
-#' mean-only (fixed slope) model. Letter labels indicate paths constrained
-#' to be equal.
-#'
 
 loadBiFN<-'../Rez/biMods.RData'
 load(loadBiFN)
@@ -71,9 +58,9 @@ convSum <- summaries %>%
 	       modComboScore=(numErrors==0)*(1+!stdErrorWarn))
 
 #'
-#' ## What models are these results from?
+#' # What models are these results from?
 #'
-#' ### National
+#' ## National
 #'
 
 modelComboSelection_l <- convSum %>% 
@@ -109,7 +96,7 @@ modelComboSelection <- modelComboSelection_l %>%
 #'
 
 #'
-#' ### College
+#' ## College
 #'
 
 load('../Rez/winningUniModels.RData')
@@ -309,9 +296,6 @@ allParams_w_sampleLongLatex <- allParams_w_sampleLong %>%
 					       '\\\\textsubscript{\\1}'),
 				   levels=latexLevels))
 
-#'
-#' # Well Formatted Summaries
-#'
 
 nada <- booktabs()
 vVarNames <- c('aspfin'='Financial Aspirations',
