@@ -4,10 +4,6 @@
 #'  pdf_document
 #'---
 
-
-# #'  html_document:
-# #'    toc: true
-
 #+ echo=F, warning=F, message=F
 library(MplusAutomation)
 library(knitr)
@@ -109,26 +105,17 @@ modelComboSelection <- modelComboSelection_l %>%
 	spread(vVar, bestCombo)
 			
 #'	
-# modelComboSelection %>% ungroup %>%
-# 	filter(sample=='Nat') %>%
-# 	select(-sample) %>%
-# 	kable
 #' All models are full linear -> linear
 #'
 
 #'
 #' ### College
 #'
-# modelComboSelection %>% ungroup %>%
-# 	filter(sample=='Col') %>%
-# 	select(-sample) %>%
-# 	kable
-# 
+
 load('../Rez/winningUniModels.RData')
 
 winnersByCriterion <- winnersByCriterion %>% ungroup %>%
 	mutate(sample=ifelse(sample=='Inf', 'Nat', sample))
-
 
 winNames <- c('AIC', 'BIC', 'LL')
 names(winNames) <- paste0(winNames,'_P')
@@ -136,11 +123,6 @@ winnersByCriterionP <- winnersByCriterion %>% rename_(.dots=winNames)
 names(winNames) <- paste0(winNames,'_V')
 winnersByCriterionV <- winnersByCriterion %>% rename_(.dots=winNames)
 
-# modelComboSelection_l %>% 
-# 	filter(bestCombo != 'Lin_Lin') %>%
-# 	left_join(winnersByCriterionP, by=c('sample'='sample', 'pVar'='variable')) %>%
-# 	left_join(winnersByCriterionV, by=c('sample'='sample', 'vVar'='variable')) %>%
-# 	kable()
 
 #'
 #' Only the full model testing HRZ_IND with D_SCALE didn't converge. We can use
@@ -152,6 +134,7 @@ winnersByCriterionV <- winnersByCriterion %>% rename_(.dots=winNames)
 #' # Parameter Summaries
 #'
 #' The tables summarize the results of the models.
+#'
 
 paramsummaries <- biModelOut_df %>% rowwise %>%
 	do({
@@ -257,24 +240,6 @@ IIparams_w <- paramsummaries %>% as.data.table %>%
 	spread(Sample_EfDir_Param, value) %>%
 	arrange(ScaleName) 
 
-# #+'thing1', results='asis'
-# nada <- XLparams_w %>% arrange(ScaleName) %>%
-# 	group_by(vVar) %>%
-# 	do({
-# 		print(kable(., caption=unique(.$vVar)))
-# 		data_frame()
-# 	})
-# 
-# 
-# #+'thing2', results='asis'
-# nada <- IIparams_w %>% arrange(ScaleName) %>%
-# 	group_by(vVar) %>%
-# 	do({
-# 		print(kable(., caption=unique(.$vVar)))
-# 		data_frame()
-# 	})
-# 
-
 allParams_w <- paramsummaries %>% as.data.table %>% 
 	filter(bivPathType=='Across Var',
 	       paramgroup %in% c('B ON A','I WITH I'),
@@ -300,22 +265,6 @@ allParams_w <- paramsummaries %>% as.data.table %>%
 	unite(Sample_EfDir_Param, sample, colName, parameter, sep=' ') %>%
 	spread(Sample_EfDir_Param, value) %>%
 	arrange(ScaleName) 
-
-
-
-# #+'thing3', results='asis'
-# nada <- allParams_w %>% arrange(ScaleName) %>%
-# 	group_by(vVar) %>%
-# 	do({
-# 		print(kable(., caption=unique(.$vVar)))
-# 		data_frame()
-# 	})
-# # paramsummaries
-# 	unique(paramsummaries$bivPathDir)
-# 	unique(paramsummaries$bivPathType)
-# 	unique(paramsummaries$paramgroup)
-# 
-# 		
 
 allParams_w_sampleLong <- paramsummaries %>% as.data.table %>% 
 	filter(bivPathType=='Across Var',
@@ -363,15 +312,6 @@ allParams_w_sampleLongLatex <- allParams_w_sampleLong %>%
 #'
 #' # Well Formatted Summaries
 #'
-
-# tabular(ScaleName~Heading()*I2*Heading()*(sample=factor(sample, levels=c('Nat', 'Inf', 'Col')))*
-# 	((N=`PtoV N`)+
-# 	 (`$P\rightarrow V$`=`PtoV est.bf`)+
-# 	 (`$V\rightarrow P$`=`VtoP est.bf`)+
-# 	 (`$r_{P_{i}V_{i}}$`=`rPiVi est.bf`)), 
-# 	data=filter(allParams_w_sampleLongLatex, vVar=='aspfin' )) #%>% latex()
-# table_options(justification='r') 
-
 
 nada <- booktabs()
 vVarNames <- c('aspfin'='Financial Aspirations',
