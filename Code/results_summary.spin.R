@@ -274,8 +274,8 @@ allParams_w_sampleLong <- paramsummaries %>% as.data.table %>%
 					      c('Target: Pers'='VtoP',
 						'Target: Val'='PtoV'))),
 	       est.bf=ifelse(pval<.05, 
-			     str_replace(est, '(.*)', '\\\\textbf{\\1}'),
-			     est),
+			     sprintf('\\\\textbf{%.2f}', est),
+			     sprintf('%.2f', est)),
 	       ci.u=est+1.96*se,
 	       ci.l=est-1.96*se) %>%
 	select(ScaleName, vVar, sample, colName, 
@@ -318,7 +318,8 @@ nada <- allParams_w_sampleLongLatex %>%
 							   labels=c('National Sample',
 								    'Student Sample',
 								    'Informant Sample')))*
-				     Justify(r)*((N=`PtoV N`)+
+				     Justify(r)*
+				     ((N=`PtoV N`)+
 				      (`$P\\rightarrow V$`=`PtoV est.bf`)+
 				      (`$V\\rightarrow P$`=`VtoP est.bf`)+
 				      (`$r_{P_{i}V_{i}}$`=`rPiVi est.bf`)), 
