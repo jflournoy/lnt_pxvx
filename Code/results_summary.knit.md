@@ -49,7 +49,7 @@ Social\ Self-Regulation  & 863 & -0.06 & -0.04 & 5.25 & 277 & -0.07 & -0.06 & 28
 \ \ Industriousness\textsubscript{BFAS}  & 863 & \\textbf{0.11} & -0.03 & 10.95 & 277 & 0.00 & -0.08 & 143.67 &  &  &  &  \\
 \ \ Orderliness\textsubscript{BFAS}  & 863 & 0.00 & -0.04 & \\textbf{53.14} & 277 & -0.06 & -0.07 & 126.42 &  &  &  &  \\
 \ Honesty/Propriety\textsubscript{BFI}  & 863 & -0.05 & -0.00 & -38.65 & 277 & -0.07 & -0.08 & 50.56 &  &  &  &  \\
-Agreeableness-Six\textsubscript{BFI}  & 863 & -0.04 & -0.01 & -34.80 & 277 & -0.06 & -0.09 & -35.21 & 595 & -0.01 & 0.05 & 14.62 \\
+\ Agreeableness-Six\textsubscript{BFI}  & 863 & -0.04 & -0.01 & -34.80 & 277 & -0.06 & -0.09 & -35.21 & 595 & -0.01 & 0.05 & 14.62 \\
 \ \ Compassion\textsubscript{BFAS}  & 863 & 0.06 & -0.03 & \\textbf{-55.54} & 277 & -0.03 & -0.01 & -46.98 &  &  &  &  \\
 \ \ Politeness\textsubscript{BFAS}  & 863 & -0.01 & -0.04 & -28.52 & 277 & -0.11 & \\textbf{-0.08} & -40.39 &  &  &  &  \\
 \ Neuroticism\textsubscript{BFI}  & 863 & -0.05 & 0.05 & -20.51 & 277 & 0.01 & -0.07 & 8.32 & 595 & -0.01 & -0.11 & -2.58 \\
@@ -80,7 +80,7 @@ Social\ Self-Regulation  & 863 & -0.06 & \\textbf{-0.11} & -9.63 & 277 & -0.19 &
 \ \ Industriousness\textsubscript{BFAS}  & 863 & 0.04 & 0.01 & -26.90 & 277 & -0.04 & \\textbf{-0.19} & \\textbf{64.59} &  &  &  &  \\
 \ \ Orderliness\textsubscript{BFAS}  & 863 & -0.07 & -0.09 & \\textbf{56.43} & 277 & 0.13 & -0.08 & 45.57 &  &  &  &  \\
 \ Honesty/Propriety\textsubscript{BFI}  & 863 & -0.03 & \\textbf{-0.10} & -18.28 & 277 & -0.02 & -0.07 & 20.89 &  &  &  &  \\
-Agreeableness-Six\textsubscript{BFI}  & 863 & \\textbf{-0.07} & \\textbf{-0.11} & \\textbf{-34.21} & 277 & -0.13 & -0.19 & -12.89 & 595 & 0.01 & 0.01 & -23.84 \\
+\ Agreeableness-Six\textsubscript{BFI}  & 863 & \\textbf{-0.07} & \\textbf{-0.11} & \\textbf{-34.21} & 277 & -0.13 & -0.19 & -12.89 & 595 & 0.01 & 0.01 & -23.84 \\
 \ \ Compassion\textsubscript{BFAS}  & 863 & -0.04 & -0.07 & -2.87 & 277 & -0.19 & -0.17 & 57.50 &  &  &  &  \\
 \ \ Politeness\textsubscript{BFAS}  & 863 & -0.03 & -0.05 & \\textbf{-24.29} & 277 & -0.13 & -0.20 & 20.84 &  &  &  &  \\
 \ Neuroticism\textsubscript{BFI}  & 863 & -0.00 & 0.08 & \\textbf{51.61} & 277 & -0.09 & -0.12 & \\textbf{96.78} & 595 & -0.01 & 0.07 & 20.79 \\
@@ -111,7 +111,7 @@ Social\ Self-Regulation  & 863 & \\textbf{0.10} & 0.06 & \\textbf{64.24} & 277 &
 \ \ Industriousness\textsubscript{BFAS}  & 863 & -0.01 & 0.02 & \\textbf{53.93} & 277 & -0.04 & -0.01 & 3.63 &  &  &  &  \\
 \ \ Orderliness\textsubscript{BFAS}  & 863 & 0.04 & 0.06 & 4.49 & 277 & \\textbf{-0.07} & 0.02 & 30.68 &  &  &  &  \\
 \ Honesty/Propriety\textsubscript{BFI}  & 863 & 0.02 & 0.04 & \\textbf{53.88} & 277 & -0.10 & -0.14 & 54.94 &  &  &  &  \\
-Agreeableness-Six\textsubscript{BFI}  & 863 & 0.07 & \\textbf{0.08} & \\textbf{69.59} & 277 & -0.00 & -0.07 & 41.76 & 595 & 0.03 & -0.08 & \\textbf{101.28} \\
+\ Agreeableness-Six\textsubscript{BFI}  & 863 & 0.07 & \\textbf{0.08} & \\textbf{69.59} & 277 & -0.00 & -0.07 & 41.76 & 595 & 0.03 & -0.08 & \\textbf{101.28} \\
 \ \ Compassion\textsubscript{BFAS}  & 863 & 0.07 & 0.02 & \\textbf{79.01} & 277 & 0.10 & -0.01 & \\textbf{106.38} &  &  &  &  \\
 \ \ Politeness\textsubscript{BFAS}  & 863 & 0.04 & -0.02 & \\textbf{79.02} & 277 & -0.03 & -0.12 & \\textbf{84.61} &  &  &  &  \\
 \ Neuroticism\textsubscript{BFI}  & 863 & -0.06 & -0.05 & -28.11 & 277 & -0.01 & 0.07 & 19.12 & 595 & -0.05 & -0.06 & -17.50 \\
@@ -142,7 +142,7 @@ Social\ Self-Regulation  & 863 & \\textbf{-0.10} & 0.01 & 11.24 & 277 & 0.06 & -
 \ \ Industriousness\textsubscript{BFAS}  & 863 & 0.01 & 0.04 & 18.25 & 277 & -0.07 & -0.12 & \\textbf{114.70} &  &  &  &  \\
 \ \ Orderliness\textsubscript{BFAS}  & 863 & 0.03 & -0.01 & 12.31 & 277 & 0.17 & -0.09 & 35.13 &  &  &  &  \\
 \ Honesty/Propriety\textsubscript{BFI}  & 863 & -0.07 & -0.02 & 6.97 & 277 & -0.00 & -0.07 & 34.66 &  &  &  &  \\
-Agreeableness-Six\textsubscript{BFI}  & 863 & -0.04 & -0.02 & -20.24 & 277 & -0.08 & -0.10 & 14.11 & 595 & 0.01 & -0.10 & -23.88 \\
+\ Agreeableness-Six\textsubscript{BFI}  & 863 & -0.04 & -0.02 & -20.24 & 277 & -0.08 & -0.10 & 14.11 & 595 & 0.01 & -0.10 & -23.88 \\
 \ \ Compassion\textsubscript{BFAS}  & 863 & -0.04 & 0.01 & -11.13 & 277 & 0.13 & -0.01 & 10.87 &  &  &  &  \\
 \ \ Politeness\textsubscript{BFAS}  & 863 & -0.01 & -0.06 & -2.53 & 277 & -0.10 & -0.16 & 46.96 &  &  &  &  \\
 \ Neuroticism\textsubscript{BFI}  & 863 & -0.05 & -0.06 & 13.29 & 277 & -0.11 & -0.03 & 25.11 & 595 & 0.02 & -0.06 & -8.74 \\
@@ -173,7 +173,7 @@ Social\ Self-Regulation  & 863 & 0.03 & 0.08 & 8.81 & 277 & -0.05 & -0.21 & \\te
 \ \ Industriousness\textsubscript{BFAS}  & 863 & -0.01 & 0.04 & -4.61 & 277 & -0.07 & -0.25 & 29.30 &  &  &  &  \\
 \ \ Orderliness\textsubscript{BFAS}  & 863 & 0.00 & -0.03 & \\textbf{-20.55} & 277 & 0.02 & -0.07 & -21.97 &  &  &  &  \\
 \ Honesty/Propriety\textsubscript{BFI}  & 863 & -0.01 & 0.10 & \\textbf{22.49} & 277 & -0.04 & -0.07 & 42.81 &  &  &  &  \\
-Agreeableness-Six\textsubscript{BFI}  & 863 & 0.00 & 0.05 & \\textbf{25.31} & 277 & -0.03 & -0.03 & \\textbf{64.02} & 595 & 0.01 & -0.00 & -4.83 \\
+\ Agreeableness-Six\textsubscript{BFI}  & 863 & 0.00 & 0.05 & \\textbf{25.31} & 277 & -0.03 & -0.03 & \\textbf{64.02} & 595 & 0.01 & -0.00 & -4.83 \\
 \ \ Compassion\textsubscript{BFAS}  & 863 & 0.00 & 0.13 & \\textbf{26.59} & 277 & -0.03 & -0.13 & \\textbf{81.48} &  &  &  &  \\
 \ \ Politeness\textsubscript{BFAS}  & 863 & -0.02 & 0.06 & \\textbf{27.31} & 277 & -0.03 & -0.20 & \\textbf{81.59} &  &  &  &  \\
 \ Neuroticism\textsubscript{BFI}  & 863 & 0.01 & \\textbf{-0.15} & 4.80 & 277 & 0.03 & 0.33 & -43.93 & 595 & -0.01 & -0.14 & 28.75 \\
@@ -204,7 +204,7 @@ Social\ Self-Regulation  & 863 & -0.05 & -0.06 & -11.61 & 277 & 0.17 & -0.03 & -
 \ \ Industriousness\textsubscript{BFAS}  & 863 & 0.00 & 0.03 & 2.79 & 277 & 0.00 & \\textbf{-0.18} & 39.18 &  &  &  &  \\
 \ \ Orderliness\textsubscript{BFAS}  & 863 & -0.03 & \\textbf{-0.08} & \\textbf{33.12} & 277 & -0.05 & \\textbf{0.17} & -13.76 &  &  &  &  \\
 \ Honesty/Propriety\textsubscript{BFI}  & 863 & -0.05 & \\textbf{-0.09} & -23.04 & 277 & \\textbf{0.19} & 0.10 & -69.12 &  &  &  &  \\
-Agreeableness-Six\textsubscript{BFI}  & 863 & 0.06 & -0.04 & \\textbf{-54.08} & 277 & -0.08 & 0.01 & 10.12 & 595 & -0.01 & -0.10 & 11.23 \\
+\ Agreeableness-Six\textsubscript{BFI}  & 863 & 0.06 & -0.04 & \\textbf{-54.08} & 277 & -0.08 & 0.01 & 10.12 & 595 & -0.01 & -0.10 & 11.23 \\
 \ \ Compassion\textsubscript{BFAS}  & 863 & -0.01 & -0.03 & \\textbf{-55.44} & 277 & -0.11 & \\textbf{-0.17} & 12.06 &  &  &  &  \\
 \ \ Politeness\textsubscript{BFAS}  & 863 & 0.00 & -0.04 & \\textbf{-40.91} & 277 & -0.04 & -0.00 & -39.41 &  &  &  &  \\
 \ Neuroticism\textsubscript{BFI}  & 863 & \\textbf{-0.07} & 0.01 & \\textbf{30.73} & 277 & \\textbf{-0.18} & -0.03 & 53.77 & 595 & 0.02 & 0.08 & -25.57 \\
@@ -235,7 +235,7 @@ Social\ Self-Regulation  & 863 & 0.05 & 0.01 & \\textbf{57.42} & 277 & \\textbf{
 \ \ Industriousness\textsubscript{BFAS}  & 863 & 0.03 & 0.01 & \\textbf{45.55} & 277 & 0.09 & \\textbf{-0.17} & 75.02 &  &  &  &  \\
 \ \ Orderliness\textsubscript{BFAS}  & 863 & 0.04 & -0.01 & 32.76 & 277 & -0.14 & -0.02 & 100.38 &  &  &  &  \\
 \ Honesty/Propriety\textsubscript{BFI}  & 863 & 0.00 & 0.02 & \\textbf{38.14} & 277 & 0.07 & -0.06 & \\textbf{61.35} &  &  &  &  \\
-Agreeableness-Six\textsubscript{BFI}  & 863 & 0.08 & 0.03 & 18.39 & 277 & 0.07 & -0.04 & -28.36 & 595 & 0.03 & 0.05 & \\textbf{58.95} \\
+\ Agreeableness-Six\textsubscript{BFI}  & 863 & 0.08 & 0.03 & 18.39 & 277 & 0.07 & -0.04 & -28.36 & 595 & 0.03 & 0.05 & \\textbf{58.95} \\
 \ \ Compassion\textsubscript{BFAS}  & 863 & 0.05 & 0.01 & \\textbf{38.99} & 277 & \\textbf{0.30} & 0.03 & 7.61 &  &  &  &  \\
 \ \ Politeness\textsubscript{BFAS}  & 863 & -0.03 & 0.01 & \\textbf{72.73} & 277 & 0.10 & -0.05 & 49.36 &  &  &  &  \\
 \ Neuroticism\textsubscript{BFI}  & 863 & -0.02 & 0.00 & -13.21 & 277 & \\textbf{0.18} & \\textbf{0.11} & -51.95 & 595 & 0.03 & -0.10 & -33.64 \\
@@ -266,7 +266,7 @@ Social\ Self-Regulation  & 863 & -0.07 & -0.02 & \\textbf{-31.08} & 277 & 0.06 &
 \ \ Industriousness\textsubscript{BFAS}  & 863 & 0.00 & 0.03 & -8.39 & 277 & -0.06 & -0.12 & 134.91 &  &  &  &  \\
 \ \ Orderliness\textsubscript{BFAS}  & 863 & 0.03 & -0.00 & 13.02 & 277 & 0.12 & 0.00 & 74.87 &  &  &  &  \\
 \ Honesty/Propriety\textsubscript{BFI}  & 863 & -0.03 & -0.03 & \\textbf{-50.19} & 277 & \\textbf{0.15} & 0.11 & \\textbf{-115.96} &  &  &  &  \\
-Agreeableness-Six\textsubscript{BFI}  & 863 & -0.05 & -0.01 & \\textbf{-52.42} & 277 & -0.01 & 0.01 & -156.99 & 595 & -0.03 & -0.06 & 6.68 \\
+\ Agreeableness-Six\textsubscript{BFI}  & 863 & -0.05 & -0.01 & \\textbf{-52.42} & 277 & -0.01 & 0.01 & -156.99 & 595 & -0.03 & -0.06 & 6.68 \\
 \ \ Compassion\textsubscript{BFAS}  & 863 & -0.01 & \\textbf{-0.09} & \\textbf{-35.92} & 277 & \\textbf{0.09} & 0.02 & \\textbf{-98.92} &  &  &  &  \\
 \ \ Politeness\textsubscript{BFAS}  & 863 & -0.05 & \\textbf{-0.09} & \\textbf{-53.21} & 277 & -0.21 & -0.00 & -57.36 &  &  &  &  \\
 \ Neuroticism\textsubscript{BFI}  & 863 & 0.03 & 0.04 & 1.20 & 277 & 0.04 & 0.03 & -30.78 & 595 & -0.04 & 0.00 & 5.87 \\
@@ -288,5 +288,5 @@ Dynamism  & 863 & -0.03 & -0.01 & \\textbf{36.52} & 277 & 0.09 & -0.03 & 1.81 & 
 ---
 title: "results_summary.r"
 author: "jflournoy"
-date: "Wed Mar 23 16:16:32 2016"
+date: "Wed Mar 23 16:17:59 2016"
 ---
