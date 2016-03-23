@@ -1,14 +1,14 @@
-#'---
-#'title: "Life and Time - PxVx - Results Summary"
-#'output:
-#'  pdf_document
-#'---
+---
+title: "Life and Time - PxVx - Results Summary"
+output:
+ pdf_document
+---
 
-
+```{r }
 # #'  html_document:
 # #'    toc: true
 
-#+ echo=F, warning=F, message=F
+```{r echo=F, warning=F, message=F}
 library(MplusAutomation)
 library(knitr)
 library(dplyr)
@@ -29,21 +29,23 @@ I2 <- function(x){
 		I(x)
 	}
 }
+```
 
-#'
-#' # Intro
-#'
-#' **Template for models:**
-#'
-#'![](bi_model.png "Template for bivartiate models")
-#'
-#' The above diagram captures all 4 possible models combinations. The black
-#' is the univariate ALT model, and the blue adds all paths we estimate for the 
-#' bivariate ALT. Red paths show the paths constrained to be 0 in the 
-#' mean-only (fixed slope) model. Letter labels indicate paths constrained
-#' to be equal.
-#'
 
+# Intro
+
+**Template for models:**
+
+![](bi_model.png "Template for bivartiate models")
+
+The above diagram captures all 4 possible models combinations. The black
+is the univariate ALT model, and the blue adds all paths we estimate for the 
+bivariate ALT. Red paths show the paths constrained to be 0 in the 
+mean-only (fixed slope) model. Letter labels indicate paths constrained
+to be equal.
+
+
+```{r }
 loadBiFN<-'../Rez/biMods.RData'
 load(loadBiFN)
 
@@ -73,13 +75,15 @@ convSum <- summaries %>%
 				    '(Lin|Mean)\\w*_(Lin|Mean)\\w*',
 				    'P \\1 - V \\2'),
 	       modComboScore=(numErrors==0)*(1+!stdErrorWarn))
+```
 
-#'
-#' ## What models are these results from?
-#'
-#' ### National
-#'
 
+## What models are these results from?
+
+### National
+
+
+```{r }
 modelComboSelection_l <- convSum %>% 
 	group_by(sample, pVar, vVar) %>%
 	do({	
@@ -107,18 +111,24 @@ modelComboSelection_l <- convSum %>%
 modelComboSelection <- modelComboSelection_l %>%
 	select(-AIC_biv, -BIC_biv) %>%
 	spread(vVar, bestCombo)
-			
-#'	
+```
+
+	
+
+```{r }
 # modelComboSelection %>% ungroup %>%
 # 	filter(sample=='Nat') %>%
 # 	select(-sample) %>%
 # 	kable
-#' All models are full linear -> linear
-#'
+```
 
-#'
-#' ### College
-#'
+All models are full linear -> linear
+
+
+### College
+
+
+```{r }
 # modelComboSelection %>% ungroup %>%
 # 	filter(sample=='Col') %>%
 # 	select(-sample) %>%
@@ -141,18 +151,19 @@ winnersByCriterionV <- winnersByCriterion %>% rename_(.dots=winNames)
 # 	left_join(winnersByCriterionP, by=c('sample'='sample', 'pVar'='variable')) %>%
 # 	left_join(winnersByCriterionV, by=c('sample'='sample', 'vVar'='variable')) %>%
 # 	kable()
+```
 
-#'
-#' Only the full model testing HRZ_IND with D_SCALE didn't converge. We can use
-#' univariate fit statistics to determine that we should choose to use the model 
-#' with restricted slope variance for HRZ_IND.
-#'
 
-#'
-#' # Parameter Summaries
-#'
-#' The tables summarize the results of the models.
+Only the full model testing HRZ_IND with D_SCALE didn't converge. We can use
+univariate fit statistics to determine that we should choose to use the model 
+with restricted slope variance for HRZ_IND.
 
+
+# Parameter Summaries
+
+The tables summarize the results of the models.
+
+```{r }
 paramsummaries <- biModelOut_df %>% rowwise %>%
 	do({
 		if(length(.[[1]]$errors)==0){
@@ -359,11 +370,13 @@ allParams_w_sampleLongLatex <- allParams_w_sampleLong %>%
 					       '( BFI| BFAS)',
 					       '\\\\textsubscript{\\1}'),
 				   levels=latexLevels))
+```
 
-#'
-#' # Well Formatted Summaries
-#'
 
+# Well Formatted Summaries
+
+
+```{r }
 # tabular(ScaleName~Heading()*I2*Heading()*(sample=factor(sample, levels=c('Nat', 'Inf', 'Col')))*
 # 	((N=`PtoV N`)+
 # 	 (`$P\rightarrow V$`=`PtoV est.bf`)+
@@ -371,8 +384,6 @@ allParams_w_sampleLongLatex <- allParams_w_sampleLong %>%
 # 	 (`$r_{P_{i}V_{i}}$`=`rPiVi est.bf`)), 
 # 	data=filter(allParams_w_sampleLongLatex, vVar=='aspfin' )) #%>% latex()
 # table_options(justification='r') 
-
-
 nada <- booktabs()
 vVarNames <- c('aspfin'='Financial Aspirations',
 	       'BFA_MT'='Materialism',
@@ -383,7 +394,7 @@ vVarNames <- c('aspfin'='Financial Aspirations',
 	       'VRT_COL'='Vertical Collectivism',
 	       'VRT_IND'='Vertical Individualism')
 
-#+'thing4', results='asis'
+```{r 'thing4', results='asis'}
 nada <- allParams_w_sampleLongLatex %>% 
 	group_by(vVar) %>%
 	do({
@@ -409,4 +420,11 @@ nada <- allParams_w_sampleLongLatex %>%
 		cat('\\end{table}\n')
 		data_frame(aHTMLTable=list(atable))
 	})
+```
 
+
+---
+title: "results_summary.r"
+author: "jflournoy"
+date: "Wed Mar 23 15:41:11 2016"
+---

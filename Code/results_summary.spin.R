@@ -371,8 +371,6 @@ allParams_w_sampleLongLatex <- allParams_w_sampleLong %>%
 # 	 (`$r_{P_{i}V_{i}}$`=`rPiVi est.bf`)), 
 # 	data=filter(allParams_w_sampleLongLatex, vVar=='aspfin' )) #%>% latex()
 # table_options(justification='r') 
-
-
 nada <- booktabs()
 vVarNames <- c('aspfin'='Financial Aspirations',
 	       'BFA_MT'='Materialism',
