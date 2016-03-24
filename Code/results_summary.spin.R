@@ -344,7 +344,7 @@ nada <- allParams_w_sampleLongLatex %>%
 				  ((N=`PtoV N`)+
 				   (`$P\\rightarrow V$`=`PtoV est.bf`)+
 				   (`$V\\rightarrow P$`=`VtoP est.bf`)+
-				   (`$\\text{Cov}_{P_{i}V_{i}}$`=`covPiVi est.bf`)+
+# 				   (`$\\text{Cov}_{P_{i}V_{i}}$`=`covPiVi est.bf`)+
 				   (`$\\text{r}_{P_{i}V_{i}}$`=`rPiVi est.bf`)), 
 				  data=.) # %>% cat #%>% latex()
 		cat('\n\\begin{table}')
@@ -372,7 +372,7 @@ nada <- allParams_w_sampleLong %>%
 				  ((N=`PtoV N`)+
 				   (`P -> V$`=`PtoV est.stars`)+
 				   (`V -> P$`=`VtoP est.stars`)+
-				   (`cov PV`=`covPiVi est.stars`)+
+# 				   (`cov PV`=`covPiVi est.stars`)+
 				   (`r PV`=`rPiVi est.stars`)), 
 				  data=.) # %>% cat #%>% latex()
 		csvFilename <- paste0('../Rez/csv/', unique(.$vVar), '.csv')
