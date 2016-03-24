@@ -137,30 +137,48 @@ paramsummaries <- biModelOut_df %>% rowwise %>%
 		}
 		someParams.df
 	}) %>%
-  extract(Title, 
-          c('sample', 
-	    'modelTypeP', 'pVar', 
-	    'modelTypeV', 'vVar'),
-          'PxVx Univariate - (\\w+) (\\w+) ([\\w_]+) with (\\w+) ([\\w_]+)') %>%
-mutate(paramstatement=paste(paramHeader, param, sep='.'),
-       paramgroup=str_replace(paramstatement, 
-			      '^([ABCDSI]|Means|Intercepts|Variances|Residual\\.Variances).*?\\.(ON|WITH)*\\.*([ABCDIS]).*',
-			      '\\1 \\2 \\3'),
-       withoron=str_detect(paramstatement, '\\.(WITH|ON)\\.'),
-       firstVar=str_replace(paramstatement,'[ABCDIS](.*)\\.(WITH|ON)\\.[ABCDIS].*','\\1'),
-       secondVar=str_replace(paramstatement,'[ABCDIS].*\\.(WITH|ON)\\.[ABCDIS](.*)','\\2'),
-       bivPathType=ifelse(!is.na(firstVar) & !is.na(secondVar) & withoron,
-	    		  ifelse(firstVar==secondVar,
-				     'Within Var',
- 				     'Across Var'),
-			  'Other'),
-       bivPathDir=ifelse(str_detect(paramstatement, '\\.ON\\.'),
-			 ifelse(str_to_upper(firstVar)==str_to_upper(pVar),
-				'Target: Pers',
-				'Target: Val'),
-			 NA)) %>%
-	unite(modelCombo, modelTypeP, modelTypeV)
-
+	extract(Title, 
+		c('sample', 
+		  'modelTypeP', 'pVar', 
+		  'modelTypeV', 'vVar'),
+		'PxVx Univariate - (\\w+) (\\w+) ([\\w_]+) with (\\w+) ([\\w_]+)') %>%
+	mutate(paramstatement=paste(paramHeader, param, sep='.'),
+	       paramgroup=str_replace(paramstatement, 
+				      '^([ABCDSI]|Means|Intercepts|Variances|Residual\\.Variances).*?\\.(ON|WITH)*\\.*([ABCDIS]).*',
+				      '\\1 \\2 \\3'),
+	       withoron=str_detect(paramstatement, '\\.(WITH|ON)\\.'),
+	       firstVar=str_replace(paramstatement,'[ABCDIS](.*)\\.(WITH|ON)\\.[ABCDIS].*','\\1'),
+	       secondVar=str_replace(paramstatement,'[ABCDIS].*\\.(WITH|ON)\\.[ABCDIS](.*)','\\2'),
+	       bivPathType=ifelse(!is.na(firstVar) & !is.na(secondVar) & withoron,
+				  ifelse(firstVar==secondVar,
+					 'Within Var',
+					 'Across Var'),
+				  'Other'),
+	       bivPathDir=ifelse(str_detect(paramstatement, '\\.ON\\.'),
+				 ifelse(str_to_upper(firstVar)==str_to_upper(pVar),
+					'Target: Pers',
+					'Target: Val'),
+				 NA)) %>%
+	unite(modelCombo, modelTypeP, modelTypeV) %>%
+	group_by(pVar, vVar, modelCombo, sample) %>%
+	do({
+		varsI <- .$est[.$paramgroup=='Variances  I']
+		if(!length(varsI) %in% c(0,2)){
+			stop(paste0('Too many intercept variances in ', 
+				    paste0(unique(.[, c('pVar','vVar','modelCombo','sample')]), 
+					   collapse=' '),
+				    ': ',
+				    paste0(varsI, collapse=', ')))
+		} else if(length(varsI)==0){
+			.
+		} else {
+			stdIwithIRow <- .[.$paramgroup=='I WITH I', ]
+			stdIwithIRow$paramgroup <- 'I WITH I STD'
+			covPIVI <- stdIwithIRow$est
+			stdIwithIRow$est <- covPIVI/prod(varsI^.5)
+			rbind(.,stdIwithIRow)
+		}
+	})
 pVarInfNames <- c(I_A="BFI_A6",
 		  I_C="BFI_C",
 		  I_D="D_SCALE",
@@ -229,7 +247,7 @@ IIparams_w <- paramsummaries %>% as.data.table %>%
 
 allParams_w <- paramsummaries %>% as.data.table %>% 
 	filter(bivPathType=='Across Var',
-	       paramgroup %in% c('B ON A','I WITH I'),
+	       paramgroup %in% c('B ON A','I WITH I', 'I WITH I STD'),
 	       ifelse(pVar=='D_SCALE' & vVar=='HRZ_IND' & sample=='Col',
 		      modelCombo=='Lin_MeanOnly',
 		      modelCombo=='Lin_Lin')) %>%
@@ -241,9 +259,9 @@ allParams_w <- paramsummaries %>% as.data.table %>%
 			   pVar),
 	       ScaleName=factor(pVarNames[pVar], levels=pVarNames),
 	       colName=ifelse(is.na(bivPathDir),
-			      ifelse(str_detect(paramgroup, 'I WITH I'), 
-				     'rPiVi', 
-				     paramgroup),
+			      str_replace_all(paramgroup, 
+					      c('^I WITH I STD$'='rPiVi',
+						'^I WITH I$'='covPiVi')), 
 			      str_replace_all(bivPathDir, 
 					      c('Target: Pers'='VtoP',
 						'Target: Val'='PtoV')))) %>%
@@ -255,7 +273,7 @@ allParams_w <- paramsummaries %>% as.data.table %>%
 
 allParams_w_sampleLong <- paramsummaries %>% as.data.table %>% 
 	filter(bivPathType=='Across Var',
-	       paramgroup %in% c('B ON A','I WITH I'),
+	       paramgroup %in% c('B ON A','I WITH I', 'I WITH I STD'),
 	       ifelse(pVar=='D_SCALE' & vVar=='HRZ_IND' & sample=='Col',
 		      modelCombo=='Lin_MeanOnly',
 		      modelCombo=='Lin_Lin')) %>%
@@ -267,9 +285,9 @@ allParams_w_sampleLong <- paramsummaries %>% as.data.table %>%
 			   pVar),
 	       ScaleName=factor(pVarNames[pVar], levels=pVarNames),
 	       colName=ifelse(is.na(bivPathDir),
-			      ifelse(str_detect(paramgroup, 'I WITH I'), 
-				     'rPiVi', 
-				     paramgroup),
+			      str_replace_all(paramgroup, 
+					      c('^I WITH I STD$'='rPiVi',
+						'^I WITH I$'='covPiVi')), 
 			      str_replace_all(bivPathDir, 
 					      c('Target: Pers'='VtoP',
 						'Target: Val'='PtoV'))),
@@ -326,7 +344,8 @@ nada <- allParams_w_sampleLongLatex %>%
 				  ((N=`PtoV N`)+
 				   (`$P\\rightarrow V$`=`PtoV est.bf`)+
 				   (`$V\\rightarrow P$`=`VtoP est.bf`)+
-				   (`$\\text{Cov}_{P_{i}V_{i}}$`=`rPiVi est.bf`)), 
+				   (`$\\text{Cov}_{P_{i}V_{i}}$`=`covPiVi est.bf`)+
+				   (`$\\text{r}_{P_{i}V_{i}}$`=`rPiVi est.bf`)), 
 				  data=.) # %>% cat #%>% latex()
 		cat('\n\\begin{table}')
 		cat(paste0('\n\\caption{Auto-Regressive Associations Between \\textbf{',
@@ -353,6 +372,7 @@ nada <- allParams_w_sampleLong %>%
 				  ((N=`PtoV N`)+
 				   (`P -> V$`=`PtoV est.stars`)+
 				   (`V -> P$`=`VtoP est.stars`)+
+				   (`cov PV`=`covPiVi est.stars`)+
 				   (`r PV`=`rPiVi est.stars`)), 
 				  data=.) # %>% cat #%>% latex()
 		csvFilename <- paste0('../Rez/csv/', unique(.$vVar), '.csv')
