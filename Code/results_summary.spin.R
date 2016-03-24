@@ -370,8 +370,8 @@ nada <- allParams_w_sampleLong %>%
 								    'Informant Sample')))*
 				  Justify(r)*
 				  ((N=`PtoV N`)+
-				   (`P -> V$`=`PtoV est.stars`)+
-				   (`V -> P$`=`VtoP est.stars`)+
+				   (`P -> V`=`PtoV est.stars`)+
+				   (`V -> P`=`VtoP est.stars`)+
 # 				   (`cov PV`=`covPiVi est.stars`)+
 				   (`r PV`=`rPiVi est.stars`)), 
 				  data=.) # %>% cat #%>% latex()

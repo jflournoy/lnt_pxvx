@@ -288,5 +288,5 @@ Dynamism  & 863 & -0.03 & -0.01 & \textbf{0.21} & 277 & 0.09 & -0.03 & 0.01 & 59
 ---
 title: "results_summary.r"
 author: "jflournoy"
-date: "Thu Mar 24 11:25:25 2016"
+date: "Thu Mar 24 11:31:10 2016"
 ---
