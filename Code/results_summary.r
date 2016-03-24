@@ -326,7 +326,7 @@ nada <- allParams_w_sampleLongLatex %>%
 				  ((N=`PtoV N`)+
 				   (`$P\\rightarrow V$`=`PtoV est.bf`)+
 				   (`$V\\rightarrow P$`=`VtoP est.bf`)+
-				   (`$r_{P_{i}V_{i}}$`=`rPiVi est.bf`)), 
+				   (`$\\text{Cov}_{P_{i}V_{i}}$`=`rPiVi est.bf`)), 
 				  data=.) # %>% cat #%>% latex()
 		cat('\n\\begin{table}')
 		cat(paste0('\n\\caption{Auto-Regressive Associations Between \\textbf{',
