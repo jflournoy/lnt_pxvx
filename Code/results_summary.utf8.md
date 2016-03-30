@@ -285,8 +285,44 @@ Dynamism  & 863 & -0.03 & -0.01 & \textbf{0.21} & 277 & 0.09 & -0.03 & 0.01 & 59
 \end{table}
 
 
+# Figures
+
+
+
+
+\includegraphics[width=3,height=12]{results_summary_files/figure-latex/unnamed-chunk-6-1} 
+
+
+
+\includegraphics[width=3,height=12]{results_summary_files/figure-latex/unnamed-chunk-6-2} 
+
+
+
+\includegraphics[width=3,height=12]{results_summary_files/figure-latex/unnamed-chunk-6-3} 
+
+
+
+\includegraphics[width=3,height=12]{results_summary_files/figure-latex/unnamed-chunk-6-4} 
+
+
+
+\includegraphics[width=3,height=12]{results_summary_files/figure-latex/unnamed-chunk-6-5} 
+
+
+
+\includegraphics[width=3,height=12]{results_summary_files/figure-latex/unnamed-chunk-6-6} 
+
+
+
+\includegraphics[width=3,height=12]{results_summary_files/figure-latex/unnamed-chunk-6-7} 
+
+
+
+\includegraphics[width=3,height=12]{results_summary_files/figure-latex/unnamed-chunk-6-8} 
+
+
 ---
 title: "results_summary.r"
 author: "jflournoy"
-date: "Thu Mar 24 11:31:10 2016"
+date: "Wed Mar 30 10:33:06 2016"
 ---

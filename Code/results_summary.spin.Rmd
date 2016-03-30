@@ -16,7 +16,8 @@ library(ggplot2)
 library(broom)
 library(data.table)
 library(tables)
-opts_chunk$set(echo=F, message=F, warning=F, dev='svg')
+library(cowplot)
+opts_chunk$set(echo=F, message=F, warning=F, dev='pdf')
 
 I2 <- function(x){
 	if (length(x)==0){
@@ -26,6 +27,11 @@ I2 <- function(x){
 	}
 }
 
+
+jftheme <- theme_cowplot()+
+	theme(axis.line=element_line(size=0),
+	      strip.background=element_rect(fill='white'))
+theme_set(jftheme)
 
 loadBiFN<-'../Rez/biMods.RData'
 load(loadBiFN)
@@ -248,7 +254,7 @@ IIparams_w <- paramsummaries %>% as.data.table %>%
 	spread(Sample_EfDir_Param, value) %>%
 	arrange(ScaleName) 
 
-allParams_w <- paramsummaries %>% as.data.table %>% 
+allParams <- paramsummaries %>% as.data.table %>% 
 	filter(bivPathType=='Across Var',
 	       paramgroup %in% c('B ON A','I WITH I', 'I WITH I STD'),
 	       ifelse(pVar=='D_SCALE' & vVar=='HRZ_IND' & sample=='Col',
@@ -268,13 +274,15 @@ allParams_w <- paramsummaries %>% as.data.table %>%
 			      str_replace_all(bivPathDir, 
 					      c('Target: Pers'='VtoP',
 						'Target: Val'='PtoV')))) %>%
-	select(ScaleName, vVar, sample, colName, Estimator, N, est, se, pval) %>% 
+	select(ScaleName, vVar, sample, colName, Estimator, N, est, se, pval) 
+
+allParams_w <- allParams %>% 
 	gather(parameter, value, -(ScaleName:colName)) %>%
 	unite(Sample_EfDir_Param, sample, colName, parameter, sep=' ') %>%
 	spread(Sample_EfDir_Param, value) %>%
 	arrange(ScaleName) 
 
-allParams_w_sampleLong <- paramsummaries %>% as.data.table %>% 
+allParams <- paramsummaries %>% as.data.table %>% 
 	filter(bivPathType=='Across Var',
 	       paramgroup %in% c('B ON A','I WITH I', 'I WITH I STD'),
 	       ifelse(pVar=='D_SCALE' & vVar=='HRZ_IND' & sample=='Col',
@@ -304,7 +312,8 @@ allParams_w_sampleLong <- paramsummaries %>% as.data.table %>%
 	       ci.l=est-1.96*se) %>%
 	select(ScaleName, vVar, sample, colName, 
 	       Estimator, N, est, est.bf, est.stars,  se, 
-	       ci.u, ci.l, pval) %>% 
+	       ci.u, ci.l, pval) 
+allParams_w_sampleLong  <- allParams %>% 
 	gather(parameter, value, -(ScaleName:colName)) %>%
 	unite(EfDir_Param, colName, parameter, sep=' ') %>%
 	spread(EfDir_Param, value) %>%
@@ -382,11 +391,67 @@ nada <- allParams_w_sampleLong %>%
 		write.csv.tabular(atable, file=csvFilename, leftpad=F)
 		data_frame(aHTMLTable=list(atable))
 	})
+
+
+# 
+# allParams %>%
+# 	filter(vVar=='USI', colName %in% c('VtoP', 'PtoV')) %>%
+# 	mutate(colName=factor(colName, levels=c('VtoP', 'PtoV')),
+# 	       sample=factor(sample, levels=rev(c('Nat', 'Col', 'Inf')))) %>%
+# 	ggplot(aes(x=factor(ScaleName, levels=rev(levels(ScaleName))), 
+# 		   y=est, ymin=ci.l, ymax=ci.u)) +
+# 	geom_hline(yintercept=0, color='black', alpha=.5)+
+# 	geom_errorbar(width=0, position=position_dodge(width=.5), aes(group=sample))+
+# 	geom_point(color='black', aes(shape=sample), position=position_dodge(width=.5), size=2)+
+# 	facet_wrap(~colName, ncol=2)+
+# 	scale_shape_discrete(breaks=c('Nat', 'Col', 'Inf'))+
+# 	labs(y='Estimate with 95% CI', x='Personality Variable', title='thing thing')+
+# 	coord_flip()
+```
+
+
+# Figures
+
+
+```{r }
+maxCI <- allParams %>% as_data_frame %>% ungroup %>%
+	filter(colName %in% c('VtoP', 'PtoV')) %>%
+	do({data_frame(value=apply(cbind(abs(.$est+1.96*.$se), abs(.$est-1.96*.$se)),
+			   1,
+			   max))})
+
+# ggplot(maxCI, aes(x=value))+geom_histogram(binwidth=.1)+coord_cartesian(x=c(0, 1))
+
+```{r fig.width=6, fig.height=12}
+thePlots <- allParams %>% as_data_frame %>%
+	group_by(vVar) %>%
+	filter(colName %in% c('VtoP', 'PtoV')) %>%
+	mutate(colNameFac=factor(colName, levels=c('VtoP', 'PtoV'), labels=c('V to P', 'P to V')),
+	       sampleFac=factor(sample, levels=rev(c('Nat', 'Col', 'Inf')))) %>%
+	do({
+		aPlot <- ggplot(., aes(x=factor(ScaleName, levels=rev(levels(ScaleName))), 
+			   y=est, ymin=ci.l, ymax=ci.u)) +
+		   geom_hline(yintercept=0, color='black', alpha=.5)+
+		   geom_errorbar(width=0, position=position_dodge(width=.5), aes(group=sampleFac))+
+		   geom_point(aes(shape=sampleFac), 
+			      color='black', position=position_dodge(width=.5), size=2)+
+		   facet_wrap(~colNameFac, ncol=2)+
+		   scale_shape_discrete(breaks=c('Nat', 'Col', 'Inf'), 
+					labels=c('National', 'College', 'Informant'))+
+		   labs(y='Estimate with 95% CI', x='Personality Variable', 
+			shape='Sample',
+			title=vVarNames[.$vVar[[1]]])+
+		   coord_flip(y=c(-.5, .5))+
+		   theme(axis.text.x=element_text(angle=360-45, hjust=0))
+	        print(aPlot)
+		cat('\n\n\n')
+		data_frame(plot=list(aPlot))
+	})
 ```
 
 
 ---
 title: "results_summary.r"
 author: "jflournoy"
-date: "Thu Mar 24 11:31:10 2016"
+date: "Wed Mar 30 10:33:06 2016"
 ---
