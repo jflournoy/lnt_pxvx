@@ -426,7 +426,7 @@ thePlots <- allParams %>% as_data_frame %>%
 	do({
 		aPlot <- ggplot(., aes(x=factor(ScaleName, levels=rev(levels(ScaleName))), 
 			   y=est, ymin=ci.l, ymax=ci.u)) +
-		   geom_hline(yintercept=0, color='black', alpha=.5)+
+		   geom_hline(yintercept=0, color='black', alpha=.25, size=.25)+
 		   geom_errorbar(width=0, position=position_dodge(width=.5), aes(group=sampleFac))+
 		   geom_point(aes(shape=sampleFac), 
 			      color='black', position=position_dodge(width=.5), size=2)+
