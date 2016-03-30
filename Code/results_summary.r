@@ -417,7 +417,7 @@ maxCI <- allParams %>% as_data_frame %>% ungroup %>%
 
 # ggplot(maxCI, aes(x=value))+geom_histogram(binwidth=.1)+coord_cartesian(x=c(0, 1))
 
-#+fig.width=6, fig.height=12
+#+fig.width=7, fig.height=9
 thePlots <- allParams %>% as_data_frame %>%
 	group_by(vVar) %>%
 	filter(colName %in% c('VtoP', 'PtoV')) %>%
