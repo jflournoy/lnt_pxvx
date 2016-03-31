@@ -186,6 +186,7 @@ paramsummaries <- biModelOut_df %>% rowwise %>%
 		}
 	})
 pVarInfNames <- c(I_A="BFI_A6",
+		  I_H="bfi_hp8",
 		  I_C="BFI_C",
 		  I_D="D_SCALE",
 		  I_E="BFI_E",
