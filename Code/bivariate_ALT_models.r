@@ -40,7 +40,7 @@ loadBiFN<-'../Rez/biMods.RData'
 # createModels('Code/PxVx_BiTemplate.inp')
 # 
 # setwd('E:/Projects/lnt_pxvx/Rez/bivariate')
-# runModels(recursive = T)
+# runModels(recursive = T, replaceOutfile='never')
 
 # # Read models
 # setwd('../Rez/bivariate')
