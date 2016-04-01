@@ -168,6 +168,7 @@ paramsummaries <- biModelOut_df %>% rowwise %>%
 	unite(modelCombo, modelTypeP, modelTypeV) %>%
 	group_by(pVar, vVar, modelCombo, sample) %>%
 	do({
+		varsS <- .$est[.$paramgroup=='Variances  S']
 		varsI <- .$est[.$paramgroup=='Variances  I']
 		if(!length(varsI) %in% c(0,2)){
 			stop(paste0('Too many intercept variances in ', 
@@ -176,15 +177,33 @@ paramsummaries <- biModelOut_df %>% rowwise %>%
 				    ': ',
 				    paste0(varsI, collapse=', ')))
 		} else if(length(varsI)==0){
-			.
+			withIDF <- .
 		} else {
 			stdIwithIRow <- .[.$paramgroup=='I WITH I', ]
 			stdIwithIRow$paramgroup <- 'I WITH I STD'
 			covPIVI <- stdIwithIRow$est
 			stdIwithIRow$est <- covPIVI/prod(varsI^.5)
-			rbind(.,stdIwithIRow)
+			withIDF <- rbind(.,stdIwithIRow)
 		}
+		if(!length(varsS) %in% c(0,2)){
+			stop(paste0('Too many slope variances in ', 
+				    paste0(unique(.[, c('pVar','vVar','modelCombo','sample')]), 
+					   collapse=' '),
+				    ': ',
+				    paste0(varsS, collapse=', ')))
+		} else if(length(varsS)==0 | 
+			  any(!.$modelCombo == 'Lin_Lin')){
+			withIandSDF <- withIDF
+		} else {
+			stdSwithSRow <- .[.$paramgroup=='S WITH S', ]
+			stdSwithSRow$paramgroup <- 'S WITH S STD'
+			covPSVS <- stdSwithSRow$est
+			stdSwithSRow$est <- covPSVS/prod(varsS^.5)
+			withIandSDF <- rbind(withIDF,stdSwithSRow)
+		}
+		withIandSDF
 	})
+
 pVarInfNames <- c(I_A="BFI_A6",
 		  I_H="bfi_hp8",
 		  I_C="BFI_C",
@@ -252,9 +271,39 @@ IIparams_w <- paramsummaries %>% as.data.table %>%
 	spread(Sample_EfDir_Param, value) %>%
 	arrange(ScaleName) 
 
+# allParams <- paramsummaries %>% as.data.table %>% 
+# 	filter(bivPathType=='Across Var',
+# 	       paramgroup %in% c('B ON A','I WITH I', 'I WITH I STD'),
+# 	       ifelse(pVar=='D_SCALE' & vVar=='HRZ_IND' & sample=='Col',
+# 		      modelCombo=='Lin_MeanOnly',
+# 		      modelCombo=='Lin_Lin')) %>%
+# 	mutate(sample=ifelse(str_detect(pVar, '^I_'),
+# 			     'Inf',
+# 			     sample),
+# 	       pVar=ifelse(str_detect(pVar, '^I_'),
+# 			   pVarInfNames[pVar],
+# 			   pVar),
+# 	       ScaleName=factor(pVarNames[pVar], levels=pVarNames),
+# 	       colName=ifelse(is.na(bivPathDir),
+# 			      str_replace_all(paramgroup, 
+# 					      c('^I WITH I STD$'='rPiVi',
+# 						'^I WITH I$'='covPiVi')), 
+# 			      str_replace_all(bivPathDir, 
+# 					      c('Target: Pers'='VtoP',
+# 						'Target: Val'='PtoV')))) %>%
+# 	select(ScaleName, vVar, sample, colName, Estimator, N, est, se, pval) 
+# 
+# allParams_w <- allParams %>% 
+# 	gather(parameter, value, -(ScaleName:colName)) %>%
+# 	unite(Sample_EfDir_Param, sample, colName, parameter, sep=' ') %>%
+# 	spread(Sample_EfDir_Param, value) %>%
+# 	arrange(ScaleName) 
+# 
+
 allParams <- paramsummaries %>% as.data.table %>% 
 	filter(bivPathType=='Across Var',
-	       paramgroup %in% c('B ON A','I WITH I', 'I WITH I STD'),
+	       paramgroup %in% c('B ON A','I WITH I', 'I WITH I STD',
+				 'S WITH S', 'S WITH S STD'),
 	       ifelse(pVar=='D_SCALE' & vVar=='HRZ_IND' & sample=='Col',
 		      modelCombo=='Lin_MeanOnly',
 		      modelCombo=='Lin_Lin')) %>%
@@ -268,35 +317,9 @@ allParams <- paramsummaries %>% as.data.table %>%
 	       colName=ifelse(is.na(bivPathDir),
 			      str_replace_all(paramgroup, 
 					      c('^I WITH I STD$'='rPiVi',
-						'^I WITH I$'='covPiVi')), 
-			      str_replace_all(bivPathDir, 
-					      c('Target: Pers'='VtoP',
-						'Target: Val'='PtoV')))) %>%
-	select(ScaleName, vVar, sample, colName, Estimator, N, est, se, pval) 
-
-allParams_w <- allParams %>% 
-	gather(parameter, value, -(ScaleName:colName)) %>%
-	unite(Sample_EfDir_Param, sample, colName, parameter, sep=' ') %>%
-	spread(Sample_EfDir_Param, value) %>%
-	arrange(ScaleName) 
-
-allParams <- paramsummaries %>% as.data.table %>% 
-	filter(bivPathType=='Across Var',
-	       paramgroup %in% c('B ON A','I WITH I', 'I WITH I STD'),
-	       ifelse(pVar=='D_SCALE' & vVar=='HRZ_IND' & sample=='Col',
-		      modelCombo=='Lin_MeanOnly',
-		      modelCombo=='Lin_Lin')) %>%
-	mutate(sample=ifelse(str_detect(pVar, '^I_'),
-			     'Inf',
-			     sample),
-	       pVar=ifelse(str_detect(pVar, '^I_'),
-			   pVarInfNames[pVar],
-			   pVar),
-	       ScaleName=factor(pVarNames[pVar], levels=pVarNames),
-	       colName=ifelse(is.na(bivPathDir),
-			      str_replace_all(paramgroup, 
-					      c('^I WITH I STD$'='rPiVi',
-						'^I WITH I$'='covPiVi')), 
+						'^I WITH I$'='covPiVi',
+						'^S WITH S STD$'='rPsVs',
+						'^S WITH S$'='covPsVs')), 
 			      str_replace_all(bivPathDir, 
 					      c('Target: Pers'='VtoP',
 						'Target: Val'='PtoV'))),
@@ -310,7 +333,7 @@ allParams <- paramsummaries %>% as.data.table %>%
 	       ci.l=est-1.96*se) %>%
 	select(ScaleName, vVar, sample, colName, 
 	       Estimator, N, est, est.bf, est.stars,  se, 
-	       ci.u, ci.l, pval) 
+	       ci.u, ci.l, pval, pVar) 
 allParams_w_sampleLong  <- allParams %>% 
 	gather(parameter, value, -(ScaleName:colName)) %>%
 	unite(EfDir_Param, colName, parameter, sep=' ') %>%
@@ -418,8 +441,40 @@ maxCI <- allParams %>% as_data_frame %>% ungroup %>%
 
 # ggplot(maxCI, aes(x=value))+geom_histogram(binwidth=.1)+coord_cartesian(x=c(0, 1))
 
+allParamsWithMeanOnly <- paramsummaries %>% as.data.table %>% 
+	filter(bivPathType=='Across Var',
+	       paramgroup %in% c('B ON A','I WITH I', 'I WITH I STD'),
+	       ifelse(pVar=='D_SCALE' & vVar=='HRZ_IND' & sample=='Col',
+		      modelCombo=='Lin_MeanOnly' | modelCombo=='MeanOnly_MeanOnly',
+		      modelCombo=='Lin_Lin' | modelCombo=='MeanOnly_MeanOnly')) %>%
+	mutate(sample=ifelse(str_detect(pVar, '^I_'),
+			     'Inf',
+			     sample),
+	       pVar=ifelse(str_detect(pVar, '^I_'),
+			   pVarInfNames[pVar],
+			   pVar),
+	       ScaleName=factor(pVarNames[pVar], levels=pVarNames),
+	       colName=ifelse(is.na(bivPathDir),
+			      str_replace_all(paramgroup, 
+					      c('^I WITH I STD$'='rPiVi',
+						'^I WITH I$'='covPiVi')), 
+			      str_replace_all(bivPathDir, 
+					      c('Target: Pers'='VtoP',
+						'Target: Val'='PtoV'))),
+	       est.stars=ifelse(pval<.05, 
+			     sprintf('*%.2f*', est),
+			     sprintf('%.2f', est)),
+	       est.bf=ifelse(pval<.05, 
+			     sprintf('\\textbf{%.2f}', est),
+			     sprintf('%.2f', est)),
+	       ci.u=est+1.96*se,
+	       ci.l=est-1.96*se) %>%
+	select(ScaleName, vVar, sample, colName, 
+	       Estimator, N, est, est.bf, est.stars,  se, 
+	       ci.u, ci.l, pval, modelCombo) 
+
 #+fig.width=7, fig.height=9
-thePlots <- allParams %>% as_data_frame %>%
+theForestPlots <- allParams %>% as_data_frame %>%
 	group_by(vVar) %>%
 	filter(colName %in% c('VtoP', 'PtoV')) %>%
 	mutate(colNameFac=factor(colName, levels=c('VtoP', 'PtoV'), labels=c('V to P', 'P to V')),
@@ -443,3 +498,81 @@ thePlots <- allParams %>% as_data_frame %>%
 		cat('\n\n\n')
 		data_frame(plot=list(aPlot))
 	})
+
+
+
+#+fig.width=7, fig.height=15
+theForestPlotsMoreModels <- allParamsWithMeanOnly %>% as_data_frame %>%
+	filter(colName %in% c('VtoP', 'PtoV')) %>%
+	mutate(colNameFac=factor(colName, levels=c('VtoP', 'PtoV'), labels=c('V to P', 'P to V')),
+	       sampleFac=factor(sample, levels=rev(c('Nat', 'Col', 'Inf')))) %>%
+	unite(sampleModel, sampleFac, modelCombo, remove=F) %>%
+	group_by(vVar) %>%
+	do({
+		aPlot <- ggplot(., aes(x=factor(ScaleName, levels=rev(levels(ScaleName))), 
+			   y=est, ymin=ci.l, ymax=ci.u)) +
+		   geom_hline(yintercept=0, color='black', alpha=.25, size=.25)+
+		   geom_errorbar(aes(group=sampleModel, color=modelCombo), 
+				 width=0, position=position_dodge(width=.5))+
+		   geom_point(aes(shape=sampleFac, color=modelCombo, group=sampleModel), 
+			      position=position_dodge(width=.5), size=2)+
+		   facet_wrap(~colNameFac, ncol=2)+
+		   scale_shape_discrete(breaks=c('Nat', 'Col', 'Inf'), 
+					labels=c('National', 'College', 'Informant'))+
+		   scale_color_discrete(breaks=c('Lin_Lin', 'Lin_MeanOnly', 'MeanOnly_MeanOnly'), 
+					labels=c('Bi-model Slope Var',
+						 'P-model Slope Var',
+						 'No Slope Var'))+
+		   labs(y='Estimate with 95% CI', x='Personality Variable', 
+			shape='Sample',
+			title=vVarNames[.$vVar[[1]]],
+			color='Model Type')+
+		   coord_flip(y=c(-.5, .5))+
+		   theme(axis.text.x=element_text(angle=360-45, hjust=0))
+	        print(aPlot)
+		cat('\n\n\n')
+		data_frame(plot=list(aPlot))
+	})
+
+theHeatMapsI <- allParams %>% as_data_frame %>%
+	filter(colName %in% c('rPiVi')) %>%
+	mutate(sampleFac=factor(sample, levels=c('Nat', 'Col', 'Inf'),
+				labels=c('National', 'College', 'Informant')),
+	       VvarName=vVarNames[vVar],
+	       ScaleName=factor(ScaleName, levels=rev(levels(ScaleName)))) %>% 
+# 	filter(sampleFac=='Nat') %>%
+	group_by(sampleFac) %>%
+	do({
+		aPlot <- ggplot(., aes(x=VvarName, y=ScaleName))+
+			geom_raster(aes(fill=est))+
+			geom_text(aes(label=round(est, 2)), size=3, alpha=.2)+
+			scale_fill_gradient2()+
+			theme(axis.text.x=element_text(angle=360-45, hjust=0))+
+			labs(x='', y='', fill=expression(italic(r)[italic(i)]),
+			     title=paste0('Intercept to Intercept Correlations: ',
+					  unique(.$sampleFac), ' Sample'))
+		print(aPlot)
+		data_frame(plot=list(aPlot))
+	})
+
+theHeatMapsI <- allParams %>% as_data_frame %>%
+	filter(colName %in% c('rPsVs')) %>%
+	mutate(sampleFac=factor(sample, levels=c('Nat', 'Col', 'Inf'),
+				labels=c('National', 'College', 'Informant')),
+	       VvarName=vVarNames[vVar],
+	       ScaleName=factor(ScaleName, levels=rev(levels(ScaleName)))) %>% 
+# 	filter(sampleFac=='Nat') %>%
+	group_by(sampleFac) %>%
+	do({
+		aPlot <- ggplot(., aes(x=VvarName, y=ScaleName))+
+			geom_raster(aes(fill=est))+
+			geom_text(aes(label=round(est, 2)), size=3, alpha=.2)+
+			scale_fill_gradient2()+
+			theme(axis.text.x=element_text(angle=360-45, hjust=0))+
+			labs(x='', y='', fill=expression(italic(r)[italic(i)]),
+			     title=paste0('Slope to Slope Correlations: ',
+					  unique(.$sampleFac), ' Sample'))
+		print(aPlot)
+		data_frame(plot=list(aPlot))
+	})
+
