@@ -374,11 +374,11 @@ nada <- allParams_w_sampleLongLatex %>%
 							  'Student Sample',
 							  'Informant Sample')))*
 				  Justify(r)*
-				  ((N=`PtoV N`)+
-				   (`$P\\rightarrow V$`=`PtoV est.bf`)+
+				  ((`$P\\rightarrow V$`=`PtoV est.bf`)+
 				   (`$V\\rightarrow P$`=`VtoP est.bf`)+
 # 				   (`$\\text{Cov}_{P_{i}V_{i}}$`=`covPiVi est.bf`)+
-				   (`$\\text{r}_{P_{i}V_{i}}$`=`rPiVi est.bf`)), 
+				   (`$\\text{r}_{P_{i}V_{i}}$`=`rPiVi est.bf`)+
+				   (`$\\text{r}_{P_{s}V_{s}}$`=`rPsVs est.bf`)), 
 				  data=.) # %>% cat #%>% latex()
 		cat('\n\\begin{table}')
 		cat(paste0('\n\\caption{Auto-Regressive Associations Between \\textbf{',
@@ -501,38 +501,38 @@ theForestPlots <- allParams %>% as_data_frame %>%
 
 
 
-#+fig.width=7, fig.height=15
-theForestPlotsMoreModels <- allParamsWithMeanOnly %>% as_data_frame %>%
-	filter(colName %in% c('VtoP', 'PtoV')) %>%
-	mutate(colNameFac=factor(colName, levels=c('VtoP', 'PtoV'), labels=c('V to P', 'P to V')),
-	       sampleFac=factor(sample, levels=rev(c('Nat', 'Col', 'Inf')))) %>%
-	unite(sampleModel, sampleFac, modelCombo, remove=F) %>%
-	group_by(vVar) %>%
-	do({
-		aPlot <- ggplot(., aes(x=factor(ScaleName, levels=rev(levels(ScaleName))), 
-			   y=est, ymin=ci.l, ymax=ci.u)) +
-		   geom_hline(yintercept=0, color='black', alpha=.25, size=.25)+
-		   geom_errorbar(aes(group=sampleModel, color=modelCombo), 
-				 width=0, position=position_dodge(width=.5))+
-		   geom_point(aes(shape=sampleFac, color=modelCombo, group=sampleModel), 
-			      position=position_dodge(width=.5), size=2)+
-		   facet_wrap(~colNameFac, ncol=2)+
-		   scale_shape_discrete(breaks=c('Nat', 'Col', 'Inf'), 
-					labels=c('National', 'College', 'Informant'))+
-		   scale_color_discrete(breaks=c('Lin_Lin', 'Lin_MeanOnly', 'MeanOnly_MeanOnly'), 
-					labels=c('Bi-model Slope Var',
-						 'P-model Slope Var',
-						 'No Slope Var'))+
-		   labs(y='Estimate with 95% CI', x='Personality Variable', 
-			shape='Sample',
-			title=vVarNames[.$vVar[[1]]],
-			color='Model Type')+
-		   coord_flip(y=c(-.5, .5))+
-		   theme(axis.text.x=element_text(angle=360-45, hjust=0))
-	        print(aPlot)
-		cat('\n\n\n')
-		data_frame(plot=list(aPlot))
-	})
+# #+fig.width=7, fig.height=15
+# theForestPlotsMoreModels <- allParamsWithMeanOnly %>% as_data_frame %>%
+# 	filter(colName %in% c('VtoP', 'PtoV')) %>%
+# 	mutate(colNameFac=factor(colName, levels=c('VtoP', 'PtoV'), labels=c('V to P', 'P to V')),
+# 	       sampleFac=factor(sample, levels=rev(c('Nat', 'Col', 'Inf')))) %>%
+# 	unite(sampleModel, sampleFac, modelCombo, remove=F) %>%
+# 	group_by(vVar) %>%
+# 	do({
+# 		aPlot <- ggplot(., aes(x=factor(ScaleName, levels=rev(levels(ScaleName))), 
+# 			   y=est, ymin=ci.l, ymax=ci.u)) +
+# 		   geom_hline(yintercept=0, color='black', alpha=.25, size=.25)+
+# 		   geom_errorbar(aes(group=sampleModel, color=modelCombo), 
+# 				 width=0, position=position_dodge(width=.5))+
+# 		   geom_point(aes(shape=sampleFac, color=modelCombo, group=sampleModel), 
+# 			      position=position_dodge(width=.5), size=2)+
+# 		   facet_wrap(~colNameFac, ncol=2)+
+# 		   scale_shape_discrete(breaks=c('Nat', 'Col', 'Inf'), 
+# 					labels=c('National', 'College', 'Informant'))+
+# 		   scale_color_discrete(breaks=c('Lin_Lin', 'Lin_MeanOnly', 'MeanOnly_MeanOnly'), 
+# 					labels=c('Bi-model Slope Var',
+# 						 'P-model Slope Var',
+# 						 'No Slope Var'))+
+# 		   labs(y='Estimate with 95% CI', x='Personality Variable', 
+# 			shape='Sample',
+# 			title=vVarNames[.$vVar[[1]]],
+# 			color='Model Type')+
+# 		   coord_flip(y=c(-.5, .5))+
+# 		   theme(axis.text.x=element_text(angle=360-45, hjust=0))
+# 	        print(aPlot)
+# 		cat('\n\n\n')
+# 		data_frame(plot=list(aPlot))
+# 	})
 
 theHeatMapsI <- allParams %>% as_data_frame %>%
 	filter(colName %in% c('rPiVi')) %>%
@@ -552,10 +552,11 @@ theHeatMapsI <- allParams %>% as_data_frame %>%
 			     title=paste0('Intercept to Intercept Correlations: ',
 					  unique(.$sampleFac), ' Sample'))
 		print(aPlot)
+		cat('\n\n\n')
 		data_frame(plot=list(aPlot))
 	})
 
-theHeatMapsI <- allParams %>% as_data_frame %>%
+theHeatMapsS <- allParams %>% as_data_frame %>%
 	filter(colName %in% c('rPsVs')) %>%
 	mutate(sampleFac=factor(sample, levels=c('Nat', 'Col', 'Inf'),
 				labels=c('National', 'College', 'Informant')),
@@ -573,6 +574,7 @@ theHeatMapsI <- allParams %>% as_data_frame %>%
 			     title=paste0('Slope to Slope Correlations: ',
 					  unique(.$sampleFac), ' Sample'))
 		print(aPlot)
+		cat('\n\n\n')
 		data_frame(plot=list(aPlot))
 	})
 
