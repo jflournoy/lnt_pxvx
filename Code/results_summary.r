@@ -17,6 +17,7 @@ library(broom)
 library(data.table)
 library(tables)
 library(cowplot)
+library(psych)
 opts_chunk$set(echo=F, message=F, warning=F, dev='pdf')
 
 I2 <- function(x){
@@ -692,6 +693,46 @@ cat('\\begin{adjustbox}{max width=\\columnwidth, min width=\\columnwidth}\n')
 latex(atable)
 cat('\\end{adjustbox}\n')
 cat('\\end{table}\n')
+
+#'
+#' # Values over time
+#'
+
+vWaveVarNames <- lapply(c('a', 'b', 'c', 'd'), paste, 
+			 c(names(vVarNames)), sep='') %>% 
+	unlist
+
+valuesFIMLcors <- baseMainDF %>% filter(Sample==1) %>%
+	select_(.dots=vWaveVarNames) %>%
+	corFiml %>% as.data.frame %>%
+	mutate(valueVar=rownames(.)) %>%
+	extract(valueVar, c('wave', 'valueVar'),
+		'([abcd])(\\w+_*\\w+)') %>%
+	gather(key, value, -wave, -valueVar)
+
+someTables <- valuesFIMLcors %>% group_by(valueVar) %>%
+	do({
+		aTableData <- filter(., str_detect(key, .$valueVar[[1]])) %>%
+			unite(waveVar, wave, valueVar, sep='') %>%
+			mutate(value=round(value, 2))
+		aTable <- tabular(Heading() * factor(waveVar) ~ 
+			Heading() * factor(key) * 
+			Heading() *  I * Heading() * value, 
+			data=aTableData)
+		print(aTable %>% latex)
+		data_frame(table=list(aTable), 
+			   tableDat=list(aTableData))
+	})
+	
+
+
+baseMainDF %>% filter(Sample==1) %>%
+	select_(.dots=vWaveVarNames) %>%
+	gather(key, value) %>%
+	extract(key, c('wave', 'var'),
+		'([abcd])(\\w+_*\\w+)') %>% 
+	mutate(wave=c(a=1, b=2, c=3, d=4)[wave]) 
+
 
 loadBiFN<-'../Rez/biMods.RData'
 load(loadBiFN)
