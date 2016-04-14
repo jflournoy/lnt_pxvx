@@ -663,9 +663,9 @@ atable <- tabular(Heading()*(scale=Factor(ScaleNameLatex, texify=F))~
 		  data=filter(Summaries, Sample==1)) # %>% cat #%>% latex()
 cat('\n\\begin{table}')
 cat('\n\\caption{National Sample Descriptive Statistics}\n')
-cat('\\begin{adjustbox}{max width=\\columnwidth, min width=\\columnwidth}\n')
+# cat('\\begin{adjustbox}{max width=\\columnwidth, min width=\\columnwidth}\n')
 latex(atable)
-cat('\\end{adjustbox}\n')
+# cat('\\end{adjustbox}\n')
 cat('\\end{table}\n')
 
 #+results='asis'
@@ -676,9 +676,9 @@ atable <- tabular(Heading()*(scale=Factor(ScaleNameLatex, texify=F))~
 		  data=filter(Summaries, Sample==2)) # %>% cat #%>% latex()
 cat('\n\\begin{table}')
 cat('\n\\caption{College Sample Descriptive Statistics}\n')
-cat('\\begin{adjustbox}{max width=\\columnwidth, min width=\\columnwidth}\n')
+# cat('\\begin{adjustbox}{max width=\\columnwidth, min width=\\columnwidth}\n')
 latex(atable)
-cat('\\end{adjustbox}\n')
+# cat('\\end{adjustbox}\n')
 cat('\\end{table}\n')
 
 #+results='asis'
@@ -689,9 +689,9 @@ atable <- tabular(Heading()*(scale=Factor(ScaleNameLatex, texify=F))~
 		  data=infSummaries) # %>% cat #%>% latex()
 cat('\n\\begin{table}')
 cat('\n\\caption{Informant Sample Descriptive Statistics}\n')
-cat('\\begin{adjustbox}{max width=\\columnwidth, min width=\\columnwidth}\n')
+# cat('\\begin{adjustbox}{max width=\\columnwidth, min width=\\columnwidth}\n')
 latex(atable)
-cat('\\end{adjustbox}\n')
+# cat('\\end{adjustbox}\n')
 cat('\\end{table}\n')
 
 #'
@@ -710,6 +710,11 @@ valuesFIMLcors <- baseMainDF %>% filter(Sample==1) %>%
 		'([abcd])(\\w+_*\\w+)') %>%
 	gather(key, value, -wave, -valueVar)
 
+#'
+#'\clearpage
+#'
+
+#+results='asis'
 someTables <- valuesFIMLcors %>% group_by(valueVar) %>%
 	do({
 		aTableData <- filter(., str_detect(key, .$valueVar[[1]])) %>%
@@ -719,12 +724,22 @@ someTables <- valuesFIMLcors %>% group_by(valueVar) %>%
 			Heading() * factor(key) * 
 			Heading() *  I * Heading() * value, 
 			data=aTableData)
+		cat('\n\\begin{table}')
+		cat(paste0('\n\\caption{',
+			   vVarNames[.$valueVar[[1]]]
+			   ,': cross-wave correlations}\n'))
+# 		cat('\\begin{adjustbox}{max width=\\columnwidth, min width=\\columnwidth}\n')
 		print(aTable %>% latex)
+# 		cat('\\end{adjustbox}\n')
+		cat('\\end{table}\n')
 		data_frame(table=list(aTable), 
 			   tableDat=list(aTableData))
 	})
 	
 
+#'
+#'\clearpage
+#'
 
 baseMainDF %>% filter(Sample==1) %>%
 	select_(.dots=vWaveVarNames) %>%
