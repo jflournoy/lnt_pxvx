@@ -1,7 +1,9 @@
 #'---
 #'title: "Life and Time - PxVx - Results Summary"
 #'output:
-#'  pdf_document
+#'  pdf_document:
+#'    includes:
+#'      in_header: header.tex
 #'---
 
 #+ echo=F, warning=F, message=F
@@ -66,7 +68,7 @@ vVarNames <- c('aspfin'='Financial Aspirations',
 	       'BFA_MT'='Materialism',
 	       'HRZ_COL'='Horizontal Collectivism',
 	       'HRZ_IND'='Horizontal Individualism',
-	       'MVI_POMP'='the Mature Values Index',
+	       'MVI_POMP'='Mature Values Index',
 	       'USI'='Unmitigated Self-Interest',
 	       'VRT_COL'='Vertical Collectivism',
 	       'VRT_IND'='Vertical Individualism')
@@ -662,6 +664,7 @@ atable <- tabular(Heading()*(scale=Factor(ScaleNameLatex, texify=F))~
 		  Heading()*(value),
 		  data=filter(Summaries, Sample==1)) # %>% cat #%>% latex()
 cat('\n\\begin{table}')
+cat('\n\\centering')
 cat('\n\\caption{National Sample Descriptive Statistics}\n')
 # cat('\\begin{adjustbox}{max width=\\columnwidth, min width=\\columnwidth}\n')
 latex(atable)
@@ -675,6 +678,7 @@ atable <- tabular(Heading()*(scale=Factor(ScaleNameLatex, texify=F))~
 		  Heading()*(value),
 		  data=filter(Summaries, Sample==2)) # %>% cat #%>% latex()
 cat('\n\\begin{table}')
+cat('\n\\centering')
 cat('\n\\caption{College Sample Descriptive Statistics}\n')
 # cat('\\begin{adjustbox}{max width=\\columnwidth, min width=\\columnwidth}\n')
 latex(atable)
@@ -688,6 +692,7 @@ atable <- tabular(Heading()*(scale=Factor(ScaleNameLatex, texify=F))~
 		  Heading()*(value),
 		  data=infSummaries) # %>% cat #%>% latex()
 cat('\n\\begin{table}')
+cat('\n\\centering')
 cat('\n\\caption{Informant Sample Descriptive Statistics}\n')
 # cat('\\begin{adjustbox}{max width=\\columnwidth, min width=\\columnwidth}\n')
 latex(atable)
@@ -695,14 +700,14 @@ latex(atable)
 cat('\\end{table}\n')
 
 #'
-#' # Values over time
+#' # Values over time: National
 #'
 
 vWaveVarNames <- lapply(c('a', 'b', 'c', 'd'), paste, 
 			 c(names(vVarNames)), sep='') %>% 
 	unlist
 
-valuesFIMLcors <- baseMainDF %>% filter(Sample==1) %>%
+valuesFIMLcorsNat <- baseMainDF %>% filter(Sample==1) %>%
 	select_(.dots=vWaveVarNames) %>%
 	corFiml %>% as.data.frame %>%
 	mutate(valueVar=rownames(.)) %>%
@@ -715,7 +720,7 @@ valuesFIMLcors <- baseMainDF %>% filter(Sample==1) %>%
 #'
 
 #+results='asis'
-someTables <- valuesFIMLcors %>% group_by(valueVar) %>%
+someTables <- valuesFIMLcorsNat %>% group_by(valueVar) %>%
 	do({
 		aTableData <- filter(., str_detect(key, .$valueVar[[1]])) %>%
 			unite(waveVar, wave, valueVar, sep='') %>%
@@ -725,6 +730,86 @@ someTables <- valuesFIMLcors %>% group_by(valueVar) %>%
 			Heading() *  I * Heading() * value, 
 			data=aTableData)
 		cat('\n\\begin{table}')
+		cat('\n\\centering')
+		cat(paste0('\n\\caption{',
+			   vVarNames[.$valueVar[[1]]]
+			   ,': cross-wave correlations}\n'))
+# 		cat('\\begin{adjustbox}{max width=\\columnwidth, min width=\\columnwidth}\n')
+		print(aTable %>% latex)
+# 		cat('\\end{adjustbox}\n')
+		cat('\\end{table}\n')
+		data_frame(table=list(aTable), 
+			   tableDat=list(aTableData))
+	})
+	
+
+baseMainDF.long <- baseMainDF %>%
+	select_(.dots=c(vWaveVarNames, 'Sample', 'subjid', 'aage')) %>%
+	gather(variable, score, -subjid, -Sample, -aage) %>%
+	extract(variable, c('wave', 'valueVar'),
+		'([abcd])(\\w+_*\\w+)') %>%
+	mutate(age=aage+c('a'=0, 'b'=1, 'c'=2, 'd'=3)[wave]) %>%
+	group_by(Sample, valueVar) %>%
+	mutate(mean=mean(score, na.rm=T), sd=sd(score, na.rm=T)) %>%
+	arrange(Sample, subjid, wave, valueVar) 
+
+#'
+#' # Values over time: National - Plots
+#'
+#' *NB: Three participants have age at wave 1 that is 56 or greater. These
+#' are not shown in the below plots.*
+#'
+#'\clearpage
+#'
+
+#+fig.width=7.5, fig.height=5, cache=T
+natValPlots <- baseMainDF.long %>% filter(Sample==1, aage<56) %>% 
+	group_by(valueVar) %>%
+	do({
+		aPlot <- ggplot(., aes(x=age, y=score))+
+			geom_line(aes(group=subjid), alpha=.08)+
+			geom_line(aes(group=subjid), stat='smooth', 
+				  method=lm, alpha=.13, color='blue')+
+			geom_smooth(method='loess', color='red', se=T) +
+			coord_cartesian(y=c(0, 100))+
+			labs(x='Age', y='Score', 
+			     title=vVarNames[.$valueVar[[1]]])
+		print(aPlot)
+		data_frame(plot=list(aPlot)) 
+	})
+
+#'
+#' # Values over time: College
+#'
+
+vWaveVarNames <- lapply(c('a', 'b', 'c', 'd'), paste, 
+			 c(names(vVarNames)), sep='') %>% 
+	unlist
+
+valuesFIMLcorsCol <- baseMainDF %>% filter(Sample==2) %>%
+	select_(.dots=vWaveVarNames) %>%
+	corFiml %>% as.data.frame %>%
+	mutate(valueVar=rownames(.)) %>%
+	extract(valueVar, c('wave', 'valueVar'),
+		'([abcd])(\\w+_*\\w+)') %>%
+	gather(key, value, -wave, -valueVar)
+
+#'
+#'\clearpage
+#'
+
+#+results='asis'
+someTables <- valuesFIMLcorsCol %>% group_by(valueVar) %>%
+	do({
+		aTableData <- filter(., str_detect(key, .$valueVar[[1]])) %>%
+			unite(waveVar, wave, valueVar, sep='') %>%
+			mutate(value=round(value, 2))
+		aTable <- tabular(Heading() * factor(waveVar) ~ 
+			Heading() * factor(key) * 
+			Heading() *  I * Heading() * value, 
+			data=aTableData)
+		cat('\n\\begin{table}')
+		cat('\n\\centering')
 		cat(paste0('\n\\caption{',
 			   vVarNames[.$valueVar[[1]]]
 			   ,': cross-wave correlations}\n'))
@@ -738,15 +823,32 @@ someTables <- valuesFIMLcors %>% group_by(valueVar) %>%
 	
 
 #'
+#' # Values over time: College - Plots
+#'
+#'
 #'\clearpage
 #'
 
-baseMainDF %>% filter(Sample==1) %>%
-	select_(.dots=vWaveVarNames) %>%
-	gather(key, value) %>%
-	extract(key, c('wave', 'var'),
-		'([abcd])(\\w+_*\\w+)') %>% 
-	mutate(wave=c(a=1, b=2, c=3, d=4)[wave]) 
+#+fig.width=7.5, fig.height=5, cache=T
+natValPlots <- baseMainDF.long %>% filter(Sample==2) %>% 
+	group_by(valueVar) %>%
+	do({
+		aPlot <- ggplot(., aes(x=age, y=score))+
+			geom_line(aes(group=subjid), alpha=.08)+
+			geom_line(aes(group=subjid), stat='smooth', 
+				  method=lm, alpha=.13, color='blue')+
+			geom_smooth(method='loess', color='red', se=T) +
+			coord_cartesian(y=c(0, 100))+
+			labs(x='Age', y='Score', 
+			     title=vVarNames[.$valueVar[[1]]])
+		print(aPlot)
+		data_frame(plot=list(aPlot)) 
+	})
+
+#'
+#'\clearpage
+#'
+
 
 
 loadBiFN<-'../Rez/biMods.RData'
@@ -777,7 +879,23 @@ convSum <- summaries %>%
 	mutate(modComboText=str_replace(modCombo, 
 				    '(Lin|Mean)\\w*_(Lin|Mean)\\w*',
 				    'P \\1 - V \\2'),
-	       modComboScore=(numErrors==0)*(1+!stdErrorWarn))
+	       modComboScore=(numErrors==0)*(1+!stdErrorWarn),
+	       modComboRank=c('Lin_Lin'=3, 'Lin_MeanOnly'=2,
+			      'MeanOnly_Lin'=2, 'MeanOnly_MeanOnly'=1)[modCombo])
+
+convSum %>% filter(modComboScore==2) %>%
+	select(sample, pVar, vVar, modCombo, modComboRank) %>%
+	group_by(sample, pVar, vVar) %>%
+	do({
+		data_frame(
+		sample=.$sample[[1]], 
+		pVar=.$pVar[[1]],
+		vVar=.$vVar[[1]],
+		modCombo=.$modCombo[.$modComboRank==max(.$modComboRank)])
+	}) %>%
+       	group_by(sample, pVar, vVar) %>%
+	filter(n()>1) %>%
+	kable
 
 #'
 #' # What models are these results from?
@@ -1062,6 +1180,7 @@ nada <- allParams_w_sampleLongLatex %>%
 				   (`$\\text{r}_{P_{s}V_{s}}$`=`rPsVs est.bf`)), 
 				  data=.) # %>% cat #%>% latex()
 		cat('\n\\begin{table}')
+		cat('\n\\centering')
 		cat(paste0('\n\\caption{Auto-Regressive Associations Between \\textbf{',
 			  vVarNames[unique(.$vVar)],
 			  '} and Personality Scales, Accounting for Age}\n'))
