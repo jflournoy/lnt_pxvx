@@ -908,10 +908,10 @@ modsToUse <- convSum %>%
 				    pVar=.$pVar[[1]],
 				    vVar=.$vVar[[1]])
 		if(.$pVar[[1]]=='bfi_hp8' & .$vVar[[1]]=='HRZ_COL'){
-			theDF$modCombo <- 'MeanOnly_MeanOnly'
+			theDF$modelCombo <- 'MeanOnly_MeanOnly'
 		} else {
 			otb <- filter(., modComboScore==2)
-			theDF$modCombo <- otb$modCombo[otb$modComboRank==max(otb$modComboRank)]
+			theDF$modelCombo <- otb$modCombo[otb$modComboRank==max(otb$modComboRank)]
 		}
 		theDF
 	}) 
@@ -953,12 +953,13 @@ modelComboSelection <- modelComboSelection_l %>%
 	select(-AIC_biv, -BIC_biv) %>%
 	spread(vVar, bestCombo)
 			
-modsToUse %>% filter(sample=='Nat', modCombo!='Lin_Lin') %>%
+modsToUse %>% filter(sample=='Nat', modelCombo!='Lin_Lin') %>%
 	ungroup %>% select(-sample) %>%
 	kable(caption='Best MLR models, National: All non-lin-lin')
 
 #'	
-#' Except for the models in the above table, all models are full linear -> linear, with
+#' Except for the models in the above table, all models are full linear $\leftrightarrow$ 
+#' linear, with
 #' free slope variances and corresponding covariances. Slope variance for the Mature
 #' Values Index was preferred when paired with informant reports based on univariate
 #' model fit. All BFI HP $\leftrightarrow$ HRZ_COL models had to fall back to MLF 
@@ -980,16 +981,17 @@ winnersByCriterionP <- winnersByCriterion %>% rename_(.dots=winNames)
 names(winNames) <- paste0(winNames,'_V')
 winnersByCriterionV <- winnersByCriterion %>% rename_(.dots=winNames)
 
-modsToUse %>% filter(sample=='Col', modCombo=='Lin_MeanOnly') %>%
+modsToUse %>% filter(sample=='Col', modelCombo=='Lin_MeanOnly') %>%
 	ungroup %>% select(-sample) %>%
 	kable(caption='Best MLR models, College: All Linear to Linear-Mean-Only')
 
-modsToUse %>% filter(sample=='Col', modCombo!='Lin_Lin' & modCombo!='Lin_MeanOnly') %>%
+modsToUse %>% filter(sample=='Col', modelCombo!='Lin_Lin' & modelCombo!='Lin_MeanOnly') %>%
 	ungroup %>% select(-sample) %>%
 	kable(caption='Best MLR models, College: Other non-lin-lin')
 
 #'	
-#' Except for the models in the above tables, all models are full linear -> linear, with
+#' Except for the models in the above tables, all models are full linear $\leftrightarrow$ 
+#' linear, with
 #' free slope variances and corresponding covariances. For the college sample, the decision
 #' was made to retain slope variance for personality variables when possible.
 #'
@@ -1144,13 +1146,13 @@ IIparams_w <- paramsummaries %>% as.data.table %>%
 # 	arrange(ScaleName) 
 # 
 
-allParams <- paramsummaries %>% as.data.table %>% 
+
+
+allParams <- left_join(ungroup(modsToUse), paramsummaries) %>%
+	as.data.table %>% 
 	filter(bivPathType=='Across Var',
 	       paramgroup %in% c('B ON A','I WITH I', 'I WITH I STD',
-				 'S WITH S', 'S WITH S STD'),
-	       ifelse(pVar=='D_SCALE' & vVar=='HRZ_IND' & sample=='Col',
-		      modelCombo=='Lin_MeanOnly',
-		      modelCombo=='Lin_Lin')) %>%
+				 'S WITH S', 'S WITH S STD')) %>%
 	mutate(sample=ifelse(str_detect(pVar, '^I_'),
 			     'Inf',
 			     sample),
@@ -1175,7 +1177,7 @@ allParams <- paramsummaries %>% as.data.table %>%
 			     sprintf('%.2f', est)),
 	       ci.u=est+1.96*se,
 	       ci.l=est-1.96*se) %>%
-	select(ScaleName, vVar, sample, colName, 
+	select(ScaleName, vVar, sample, modelCombo, colName, 
 	       Estimator, N, est, est.bf, est.stars,  se, 
 	       ci.u, ci.l, pval, pVar) 
 allParams_w_sampleLong  <- allParams %>% 
@@ -1278,12 +1280,10 @@ maxCI <- allParams %>% as_data_frame %>% ungroup %>%
 
 # ggplot(maxCI, aes(x=value))+geom_histogram(binwidth=.1)+coord_cartesian(x=c(0, 1))
 
-allParamsWithMeanOnly <- paramsummaries %>% as.data.table %>% 
+allParamsWithMeanOnly <- left_join(ungroup(modsToUse), paramsummaries) %>%
+	as.data.table %>% 
 	filter(bivPathType=='Across Var',
-	       paramgroup %in% c('B ON A','I WITH I', 'I WITH I STD'),
-	       ifelse(pVar=='D_SCALE' & vVar=='HRZ_IND' & sample=='Col',
-		      modelCombo=='Lin_MeanOnly' | modelCombo=='MeanOnly_MeanOnly',
-		      modelCombo=='Lin_Lin' | modelCombo=='MeanOnly_MeanOnly')) %>%
+	       paramgroup %in% c('B ON A','I WITH I', 'I WITH I STD')) %>%
 	mutate(sample=ifelse(str_detect(pVar, '^I_'),
 			     'Inf',
 			     sample),
