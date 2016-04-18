@@ -235,8 +235,10 @@ winningModels <- modelComparisonResults %>% group_by(sample, variable) %>%
 variableTypes <- data_frame(variable=c('BFA_AC', 'BFA_AP', 'BFA_CI', 'BFA_CO', 'BFA_EA', 'BFA_EE', 'BFA_MT', 'BFA_NV', 'BFA_NW', 'BFA_OI', 'BFA_OO', 'BFI_A6', 'BFI_C', 'BFI_E', 'bfi_hp8', 'BFI_N', 'BFI_O', 'D_SCALE', 'VRT_COL', 'HRZ_COL', 'HRZ_IND', 'MVI_POMP', 'S_SCALE', 'USI', 'VRT_IND', 'aspfin'),
 			    vartype=c(rep('p', 6),
 				      'v',
-				      rep('p', 10),
-				      rep('v', 9)))
+				      rep('p', 11),
+				      rep('v', 4),
+				      'p',
+				      rep('v', 3)))
 
 #+results='asis'
 modelTallies <- winningModels %>%
