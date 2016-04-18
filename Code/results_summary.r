@@ -879,23 +879,45 @@ convSum <- summaries %>%
 	mutate(modComboText=str_replace(modCombo, 
 				    '(Lin|Mean)\\w*_(Lin|Mean)\\w*',
 				    'P \\1 - V \\2'),
-	       modComboScore=(numErrors==0)*(1+!stdErrorWarn),
-	       modComboRank=c('Lin_Lin'=3, 'Lin_MeanOnly'=2,
-			      'MeanOnly_Lin'=2, 'MeanOnly_MeanOnly'=1)[modCombo])
-
-convSum %>% filter(modComboScore==2) %>%
-	select(sample, pVar, vVar, modCombo, modComboRank) %>%
+	       modComboScore=(numErrors==0)*(1+!stdErrorWarn)) %>%
 	group_by(sample, pVar, vVar) %>%
 	do({
-		data_frame(
-		sample=.$sample[[1]], 
-		pVar=.$pVar[[1]],
-		vVar=.$vVar[[1]],
-		modCombo=.$modCombo[.$modComboRank==max(.$modComboRank)])
-	}) %>%
-       	group_by(sample, pVar, vVar) %>%
-	filter(n()>1) %>%
-	kable
+		theDF <- .
+		if(.$sample[[1]] == 'Col'){
+			modComboRank=c('Lin_Lin'=3, 'Lin_MeanOnly'=2,
+				       'MeanOnly_Lin'=1, 'MeanOnly_MeanOnly'=0)[.$modCombo]
+		} else if(.$sample[[1]] == 'Nat' & 
+			  .$vVar[[1]] == 'MVI_POMP' &
+			  .$pVar[[1]] %in% c('I_C', 'I_H')) {
+			modComboRank=c('Lin_Lin'=3, 'Lin_MeanOnly'=1,
+				       'MeanOnly_Lin'=2, 'MeanOnly_MeanOnly'=0)[.$modCombo]
+		} else {
+			modComboRank=c('Lin_Lin'=3, 'Lin_MeanOnly'=2,
+				       'MeanOnly_Lin'=2, 'MeanOnly_MeanOnly'=0)[.$modCombo]
+		}
+		theDF$modComboRank <- modComboRank
+		theDF
+	})
+
+
+modsToUse <- convSum %>% 
+	select(sample, pVar, vVar, modCombo, modComboRank, modComboScore) %>%
+	group_by(sample, pVar, vVar) %>%
+	do({	
+		theDF <- data_frame(sample=.$sample[[1]], 
+				    pVar=.$pVar[[1]],
+				    vVar=.$vVar[[1]])
+		if(.$pVar[[1]]=='bfi_hp8' & .$vVar[[1]]=='HRZ_COL'){
+			theDF$modCombo <- 'MeanOnly_MeanOnly'
+		} else {
+			otb <- filter(., modComboScore==2)
+			theDF$modCombo <- otb$modCombo[otb$modComboRank==max(otb$modComboRank)]
+		}
+		theDF
+	}) 
+
+			
+
 
 #'
 #' # What models are these results from?
@@ -931,8 +953,16 @@ modelComboSelection <- modelComboSelection_l %>%
 	select(-AIC_biv, -BIC_biv) %>%
 	spread(vVar, bestCombo)
 			
+modsToUse %>% filter(sample=='Nat', modCombo!='Lin_Lin') %>%
+	ungroup %>% select(-sample) %>%
+	kable(caption='Best MLR models, National: All non-lin-lin')
+
 #'	
-#' All models are full linear -> linear
+#' Except for the models in the above table, all models are full linear -> linear, with
+#' free slope variances and corresponding covariances. Slope variance for the Mature
+#' Values Index was preferred when paired with informant reports based on univariate
+#' model fit. All BFI HP $\leftrightarrow$ HRZ_COL models had to fall back to MLF 
+#' estimators, and thus the simplest model (no linear slope variance) was retained.
 #'
 
 #'
@@ -950,11 +980,18 @@ winnersByCriterionP <- winnersByCriterion %>% rename_(.dots=winNames)
 names(winNames) <- paste0(winNames,'_V')
 winnersByCriterionV <- winnersByCriterion %>% rename_(.dots=winNames)
 
+modsToUse %>% filter(sample=='Col', modCombo=='Lin_MeanOnly') %>%
+	ungroup %>% select(-sample) %>%
+	kable(caption='Best MLR models, College: All Linear to Linear-Mean-Only')
 
-#'
-#' Only the full model testing HRZ_IND with D_SCALE didn't converge. We can use
-#' univariate fit statistics to determine that we should choose to use the model 
-#' with restricted slope variance for HRZ_IND.
+modsToUse %>% filter(sample=='Col', modCombo!='Lin_Lin' & modCombo!='Lin_MeanOnly') %>%
+	ungroup %>% select(-sample) %>%
+	kable(caption='Best MLR models, College: Other non-lin-lin')
+
+#'	
+#' Except for the models in the above tables, all models are full linear -> linear, with
+#' free slope variances and corresponding covariances. For the college sample, the decision
+#' was made to retain slope variance for personality variables when possible.
 #'
 
 #'
