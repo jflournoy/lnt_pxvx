@@ -1269,7 +1269,7 @@ nada <- allParams_w_sampleLong %>%
 # 	coord_flip()
 
 #'
-#' # Figures
+#' # Cross-lag Parameter Plots
 #'
 
 maxCI <- allParams %>% as_data_frame %>% ungroup %>%
@@ -1371,11 +1371,22 @@ theForestPlots <- allParams %>% as_data_frame %>%
 # 		data_frame(plot=list(aPlot))
 # 	})
 
+#'
+#' # Latent Variable Correlation Tables
+#'
+
+
+#+fig.width=7, fig.height=6
+vVarFactorLevelOrder <- Summaries %>% 
+	filter(Sample==1, sumstat=='mean', wave=='1', ScaleName %in% vVarNames) %>%
+	arrange(value) %>% select(ScaleName) %>% 
+	unlist %>% as.character
+
 theHeatMapsI <- allParams %>% as_data_frame %>%
 	filter(colName %in% c('rPiVi')) %>%
 	mutate(sampleFac=factor(sample, levels=c('Nat', 'Col', 'Inf'),
 				labels=c('National', 'College', 'Informant')),
-	       VvarName=vVarNames[vVar],
+	       VvarName=factor(vVarNames[vVar], levels=vVarFactorLevelOrder),
 	       ScaleName=factor(ScaleName, levels=rev(levels(ScaleName)))) %>% 
 # 	filter(sampleFac=='Nat') %>%
 	group_by(sampleFac) %>%
@@ -1397,7 +1408,7 @@ theHeatMapsS <- allParams %>% as_data_frame %>%
 	filter(colName %in% c('rPsVs')) %>%
 	mutate(sampleFac=factor(sample, levels=c('Nat', 'Col', 'Inf'),
 				labels=c('National', 'College', 'Informant')),
-	       VvarName=vVarNames[vVar],
+	       VvarName=factor(vVarNames[vVar], levels=vVarFactorLevelOrder),
 	       ScaleName=factor(ScaleName, levels=rev(levels(ScaleName)))) %>% 
 # 	filter(sampleFac=='Nat') %>%
 	group_by(sampleFac) %>%
