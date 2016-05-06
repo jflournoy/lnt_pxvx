@@ -907,7 +907,10 @@ modsToUse <- convSum %>%
 		theDF <- data_frame(sample=.$sample[[1]], 
 				    pVar=.$pVar[[1]],
 				    vVar=.$vVar[[1]])
-		if(.$pVar[[1]]=='bfi_hp8' & .$vVar[[1]]=='HRZ_COL'){
+		if((.$pVar[[1]]=='bfi_hp8' & .$vVar[[1]]=='HRZ_COL')|
+		   (.$vVar[[1]]=='MVI_POMP' & .$pVar[[1]] %in% c('I_C', 'I_H'))){
+			theDF$modelCombo <- 'MeanOnly_MeanOnly'
+		} else if (.$sample[[1]]=='Col'){
 			theDF$modelCombo <- 'MeanOnly_MeanOnly'
 		} else {
 			otb <- filter(., modComboScore==2)
@@ -915,8 +918,6 @@ modsToUse <- convSum %>%
 		}
 		theDF
 	}) 
-
-			
 
 
 #'
@@ -957,6 +958,49 @@ modsToUse %>% filter(sample=='Nat', modelCombo!='Lin_Lin') %>%
 	ungroup %>% select(-sample) %>%
 	kable(caption='Best MLR models, National: All non-lin-lin')
 
+#'
+#'
+#'
+#+fig.height=11, fig.width=8.5
+convSum %>% filter(sample=='Nat') %>%
+	select(pVar, vVar, modCombo, AIC) %>%
+	spread(modCombo, AIC) %>%
+	mutate(Lin_Lin=Lin_Lin-MeanOnly_MeanOnly,
+	       Lin_MeanOnly=Lin_MeanOnly-MeanOnly_MeanOnly,
+	       MeanOnly_Lin=MeanOnly_Lin-MeanOnly_MeanOnly,
+	       MeanOnly_MeanOnly=MeanOnly_MeanOnly-MeanOnly_MeanOnly) %>%
+	select(-MeanOnly_MeanOnly) %>%
+	gather(modCombo, AIC, Lin_Lin:MeanOnly_Lin) %>%
+	ggplot(aes(y=AIC, x=1))+
+	geom_bar(stat='identity', position=position_dodge(),
+		 aes(ymin=0, fill=modCombo))+
+	geom_hline(yintercept=0)+
+	facet_grid(pVar~vVar)+
+	labs(x='College AIC difference from intercept-variance-only models')+
+	scale_x_continuous(breaks=NULL)
+
+#'
+#'
+#'
+
+#+fig.height=11, fig.width=8.5
+convSum %>% filter(sample=='Nat') %>%
+	select(pVar, vVar, modCombo, BIC) %>%
+	spread(modCombo, BIC) %>%
+	mutate(Lin_Lin=Lin_Lin-MeanOnly_MeanOnly,
+	       Lin_MeanOnly=Lin_MeanOnly-MeanOnly_MeanOnly,
+	       MeanOnly_Lin=MeanOnly_Lin-MeanOnly_MeanOnly,
+	       MeanOnly_MeanOnly=MeanOnly_MeanOnly-MeanOnly_MeanOnly) %>%
+	select(-MeanOnly_MeanOnly) %>%
+	gather(modCombo, BIC, Lin_Lin:MeanOnly_Lin) %>%
+	ggplot(aes(y=BIC, x=1))+
+	geom_bar(stat='identity', position=position_dodge(),
+		 aes(ymin=0, fill=modCombo))+
+	geom_hline(yintercept=0)+
+	facet_grid(pVar~vVar)+
+	labs(x='College BIC difference from intercept-variance-only models')+
+	scale_x_continuous(breaks=NULL)
+
 #'	
 #' Except for the models in the above table, all models are full linear $\leftrightarrow$ 
 #' linear, with
@@ -981,20 +1025,59 @@ winnersByCriterionP <- winnersByCriterion %>% rename_(.dots=winNames)
 names(winNames) <- paste0(winNames,'_V')
 winnersByCriterionV <- winnersByCriterion %>% rename_(.dots=winNames)
 
-modsToUse %>% filter(sample=='Col', modelCombo=='Lin_MeanOnly') %>%
-	ungroup %>% select(-sample) %>%
-	kable(caption='Best MLR models, College: All Linear to Linear-Mean-Only')
+# modsToUse %>% filter(sample=='Col', modelCombo=='Lin_MeanOnly') %>%
+# 	ungroup %>% select(-sample) %>%
+# 	kable(caption='Best MLR models, College: All Linear to Linear-Mean-Only')
+# 
+# modsToUse %>% filter(sample=='Col', modelCombo!='Lin_Lin' & modelCombo!='Lin_MeanOnly') %>%
+# 	ungroup %>% select(-sample) %>%
+# 	kable(caption='Best MLR models, College: Other non-lin-lin')
 
-modsToUse %>% filter(sample=='Col', modelCombo!='Lin_Lin' & modelCombo!='Lin_MeanOnly') %>%
-	ungroup %>% select(-sample) %>%
-	kable(caption='Best MLR models, College: Other non-lin-lin')
+#'
+#'
+#'
+#+fig.height=11, fig.width=8.5
+convSum %>% filter(sample=='Col') %>%
+	select(pVar, vVar, modCombo, AIC) %>%
+	spread(modCombo, AIC) %>%
+	mutate(Lin_Lin=Lin_Lin-MeanOnly_MeanOnly,
+	       Lin_MeanOnly=Lin_MeanOnly-MeanOnly_MeanOnly,
+	       MeanOnly_Lin=MeanOnly_Lin-MeanOnly_MeanOnly,
+	       MeanOnly_MeanOnly=MeanOnly_MeanOnly-MeanOnly_MeanOnly) %>%
+	select(-MeanOnly_MeanOnly) %>%
+	gather(modCombo, AIC, Lin_Lin:MeanOnly_Lin) %>%
+	ggplot(aes(y=AIC, x=1))+
+	geom_bar(stat='identity', position=position_dodge(),
+		 aes(ymin=0, fill=modCombo))+
+	geom_hline(yintercept=0)+
+	facet_grid(pVar~vVar)+
+	labs(x='College AIC difference from intercept-variance-only models')+
+	scale_x_continuous(breaks=NULL)
+#'
+#'
+#'
+#+fig.height=11, fig.width=8.5
+convSum %>% filter(sample=='Col') %>%
+	select(pVar, vVar, modCombo, BIC) %>%
+	spread(modCombo, BIC) %>%
+	mutate(Lin_Lin=Lin_Lin-MeanOnly_MeanOnly,
+	       Lin_MeanOnly=Lin_MeanOnly-MeanOnly_MeanOnly,
+	       MeanOnly_Lin=MeanOnly_Lin-MeanOnly_MeanOnly,
+	       MeanOnly_MeanOnly=MeanOnly_MeanOnly-MeanOnly_MeanOnly) %>%
+	select(-MeanOnly_MeanOnly) %>%
+	gather(modCombo, BIC, Lin_Lin:MeanOnly_Lin) %>%
+	ggplot(aes(y=BIC, x=1))+
+	geom_bar(stat='identity', position=position_dodge(),
+		 aes(ymin=0, fill=modCombo))+
+	geom_hline(yintercept=0)+
+	facet_grid(pVar~vVar)+
+	labs(x='College BIC difference from intercept-variance-only models')+
+	scale_x_continuous(breaks=NULL)
 
 #'	
-#' Except for the models in the above tables, all models are full linear $\leftrightarrow$ 
+#' All models are linear $\leftrightarrow$ 
 #' linear, with
-#' free slope variances and corresponding covariances. For the college sample, the decision
-#' was made to retain slope variance for personality variables when possible.
-#'
+#' no slope variances. 
 
 #'
 #' # Parameter Summaries
@@ -1267,7 +1350,9 @@ nada <- allParams_w_sampleLong %>%
 # 	scale_shape_discrete(breaks=c('Nat', 'Col', 'Inf'))+
 # 	labs(y='Estimate with 95% CI', x='Personality Variable', title='thing thing')+
 # 	coord_flip()
-
+#'
+#'\clearpage
+#'\newpage	
 #'
 #' # Cross-lag Parameter Plots
 #'
