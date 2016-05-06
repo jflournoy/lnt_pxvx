@@ -958,11 +958,21 @@ modsToUse %>% filter(sample=='Nat', modelCombo!='Lin_Lin') %>%
 	ungroup %>% select(-sample) %>%
 	kable(caption='Best MLR models, National: All non-lin-lin')
 
+#'	
+#' Except for the models in the above table, all models are full linear $\leftrightarrow$ 
+#' linear, with
+#' free slope variances and corresponding covariances. Slope variance for the Mature
+#' Values Index was preferred when paired with informant reports based on univariate
+#' model fit. All BFI HP $\leftrightarrow$ HRZ_COL models had to fall back to MLF 
+#' estimators, and thus the simplest model (no linear slope variance) was retained.
+#'
+#' Below you can see a comparison of model fit across model types for each combination.
+#'
 #'
 #'
 #'
 #+fig.height=11, fig.width=8.5
-convSum %>% filter(sample=='Nat') %>%
+convSum %>% filter(sample=='Nat', !grepl('^I_\\w', pVar)) %>%
 	select(pVar, vVar, modCombo, AIC) %>%
 	spread(modCombo, AIC) %>%
 	mutate(Lin_Lin=Lin_Lin-MeanOnly_MeanOnly,
@@ -974,17 +984,24 @@ convSum %>% filter(sample=='Nat') %>%
 	ggplot(aes(y=AIC, x=1))+
 	geom_bar(stat='identity', position=position_dodge(),
 		 aes(ymin=0, fill=modCombo))+
+	scale_fill_grey()+ 
 	geom_hline(yintercept=0)+
 	facet_grid(pVar~vVar)+
-	labs(x='College AIC difference from intercept-variance-only models')+
-	scale_x_continuous(breaks=NULL)
+	labs(x='National AIC difference from intercept-variance-only models')+
+	scale_x_continuous(breaks=NULL)+
+	theme(strip.text.y = element_text(size = 8),
+	      strip.text.x = element_text(size = 8))
+#'	
+#' All models are linear $\leftrightarrow$ 
+#' linear, with
+#' no slope variances. 
 
 #'
 #'
 #'
 
 #+fig.height=11, fig.width=8.5
-convSum %>% filter(sample=='Nat') %>%
+convSum %>% filter(sample=='Nat', !grepl('^I_\\w', pVar)) %>%
 	select(pVar, vVar, modCombo, BIC) %>%
 	spread(modCombo, BIC) %>%
 	mutate(Lin_Lin=Lin_Lin-MeanOnly_MeanOnly,
@@ -996,19 +1013,64 @@ convSum %>% filter(sample=='Nat') %>%
 	ggplot(aes(y=BIC, x=1))+
 	geom_bar(stat='identity', position=position_dodge(),
 		 aes(ymin=0, fill=modCombo))+
+	scale_fill_grey()+ 
 	geom_hline(yintercept=0)+
 	facet_grid(pVar~vVar)+
-	labs(x='College BIC difference from intercept-variance-only models')+
-	scale_x_continuous(breaks=NULL)
+	labs(x='National BIC difference from intercept-variance-only models')+
+	scale_x_continuous(breaks=NULL)+
+	theme(strip.text.y = element_text(size = 8),
+	      strip.text.x = element_text(size = 8))
 
-#'	
-#' Except for the models in the above table, all models are full linear $\leftrightarrow$ 
-#' linear, with
-#' free slope variances and corresponding covariances. Slope variance for the Mature
-#' Values Index was preferred when paired with informant reports based on univariate
-#' model fit. All BFI HP $\leftrightarrow$ HRZ_COL models had to fall back to MLF 
-#' estimators, and thus the simplest model (no linear slope variance) was retained.
+
 #'
+#'
+#'
+#+fig.height=5, fig.width=8.5
+convSum %>% filter(sample=='Nat', grepl('^I_\\w', pVar)) %>%
+	select(pVar, vVar, modCombo, AIC) %>%
+	spread(modCombo, AIC) %>%
+	mutate(Lin_Lin=Lin_Lin-MeanOnly_MeanOnly,
+	       Lin_MeanOnly=Lin_MeanOnly-MeanOnly_MeanOnly,
+	       MeanOnly_Lin=MeanOnly_Lin-MeanOnly_MeanOnly,
+	       MeanOnly_MeanOnly=MeanOnly_MeanOnly-MeanOnly_MeanOnly) %>%
+	select(-MeanOnly_MeanOnly) %>%
+	gather(modCombo, AIC, Lin_Lin:MeanOnly_Lin) %>%
+	ggplot(aes(y=AIC, x=1))+
+	geom_bar(stat='identity', position=position_dodge(),
+		 aes(ymin=0, fill=modCombo))+
+	scale_fill_grey()+ 
+	geom_hline(yintercept=0)+
+	facet_grid(pVar~vVar)+
+	labs(x='National informant AIC difference from intercept-variance-only models')+
+	scale_x_continuous(breaks=NULL)+
+	theme(strip.text.y = element_text(size = 8),
+	      strip.text.x = element_text(size = 8))
+
+#'
+#'
+#'
+
+#+fig.height=5, fig.width=8.5
+convSum %>% filter(sample=='Nat', grepl('^I_\\w', pVar)) %>%
+	select(pVar, vVar, modCombo, BIC) %>%
+	spread(modCombo, BIC) %>%
+	mutate(Lin_Lin=Lin_Lin-MeanOnly_MeanOnly,
+	       Lin_MeanOnly=Lin_MeanOnly-MeanOnly_MeanOnly,
+	       MeanOnly_Lin=MeanOnly_Lin-MeanOnly_MeanOnly,
+	       MeanOnly_MeanOnly=MeanOnly_MeanOnly-MeanOnly_MeanOnly) %>%
+	select(-MeanOnly_MeanOnly) %>%
+	gather(modCombo, BIC, Lin_Lin:MeanOnly_Lin) %>%
+	ggplot(aes(y=BIC, x=1))+
+	geom_bar(stat='identity', position=position_dodge(),
+		 aes(ymin=0, fill=modCombo))+
+	scale_fill_grey()+ 
+	geom_hline(yintercept=0)+
+	facet_grid(pVar~vVar)+
+	labs(x='National informant BIC difference from intercept-variance-only models')+
+	scale_x_continuous(breaks=NULL)+
+	theme(strip.text.y = element_text(size = 8),
+	      strip.text.x = element_text(size = 8))
+
 
 #'
 #' ## College
@@ -1033,6 +1095,10 @@ winnersByCriterionV <- winnersByCriterion %>% rename_(.dots=winNames)
 # 	ungroup %>% select(-sample) %>%
 # 	kable(caption='Best MLR models, College: Other non-lin-lin')
 
+#'	
+#' All models are linear $\leftrightarrow$ 
+#' linear, with
+#' no slope variances. 
 #'
 #'
 #'
@@ -1049,10 +1115,13 @@ convSum %>% filter(sample=='Col') %>%
 	ggplot(aes(y=AIC, x=1))+
 	geom_bar(stat='identity', position=position_dodge(),
 		 aes(ymin=0, fill=modCombo))+
+	scale_fill_grey()+ 
 	geom_hline(yintercept=0)+
 	facet_grid(pVar~vVar)+
 	labs(x='College AIC difference from intercept-variance-only models')+
-	scale_x_continuous(breaks=NULL)
+	scale_x_continuous(breaks=NULL)+
+	theme(strip.text.y = element_text(size = 8),
+	      strip.text.x = element_text(size = 8))
 #'
 #'
 #'
@@ -1069,15 +1138,14 @@ convSum %>% filter(sample=='Col') %>%
 	ggplot(aes(y=BIC, x=1))+
 	geom_bar(stat='identity', position=position_dodge(),
 		 aes(ymin=0, fill=modCombo))+
+	scale_fill_grey()+ 
 	geom_hline(yintercept=0)+
 	facet_grid(pVar~vVar)+
 	labs(x='College BIC difference from intercept-variance-only models')+
-	scale_x_continuous(breaks=NULL)
+	scale_x_continuous(breaks=NULL)+
+	theme(strip.text.y = element_text(size = 8),
+	      strip.text.x = element_text(size = 8))
 
-#'	
-#' All models are linear $\leftrightarrow$ 
-#' linear, with
-#' no slope variances. 
 
 #'
 #' # Parameter Summaries
