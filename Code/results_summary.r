@@ -1648,21 +1648,22 @@ allUniParams <- uniparamsummaries %>%
 			     sprintf('%.2f', est)),
 	       ci.u=est+1.96*se,
 	       ci.l=est-1.96*se) %>%
-	select(ScaleName, vVar, sample, modelCombo, colName, 
+	select(ScaleName, variable, sample, modelType, colName, 
 	       Estimator, N, est, est.bf, est.stars,  se, 
-	       ci.u, ci.l, pval, pVar) 
-allParams_w_sampleLong  <- allParams %>% 
+	       ci.u, ci.l, pval ) 
+
+allUniParams_w_sampleLong  <- allUniParams %>% 
 	gather(parameter, value, -(ScaleName:colName)) %>%
 	unite(EfDir_Param, colName, parameter, sep=' ') %>%
 	spread(EfDir_Param, value) %>%
 	arrange(ScaleName) 
 
 
-latexLevels <- str_replace_all(levels(allParams_w_sampleLong$ScaleName),
+latexLevels <- str_replace_all(levels(allUniParams_w_sampleLong$ScaleName),
 			   c(' (BFI|BFAS)'='\\\\textsubscript{\\1}',
 			     ` `='\\\\ '))
 
-allParams_w_sampleLongLatex <- allParams_w_sampleLong %>%
+allUniParams_w_sampleLongLatex <- allUniParams_w_sampleLong %>%
 	mutate(ScaleNameLatex=factor(str_replace_all(ScaleName,
 						 c(' (BFI|BFAS)'='\\\\textsubscript{\\1}',
 						 ` `='\\\\ ')),
@@ -1671,7 +1672,7 @@ table_options(justification='r')
 nada <- booktabs()
 
 #+'thing4', results='asis'
-nada <- allParams_w_sampleLongLatex %>% 
+nada <- allUniParams_w_sampleLongLatex %>% 
 	group_by(vVar) %>%
 	do({
 		atable <- tabular(Heading()*(scale=Factor(ScaleNameLatex, texify=F))~
