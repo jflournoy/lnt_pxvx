@@ -921,7 +921,7 @@ modsToUse <- convSum %>%
 
 
 #'
-#' # What models are these results from?
+#' # Model Selection
 #'
 #' ## National
 #'
@@ -961,9 +961,8 @@ modsToUse %>% filter(sample=='Nat', modelCombo!='Lin_Lin') %>%
 #'	
 #' Except for the models in the above table, all models are full linear $\leftrightarrow$ 
 #' linear, with
-#' free slope variances and corresponding covariances. Slope variance for the Mature
-#' Values Index was preferred when paired with informant reports based on univariate
-#' model fit. All BFI HP $\leftrightarrow$ HRZ_COL models had to fall back to MLF 
+#' free slope and intercept variances and corresponding covariances. The above models
+#' full bivariate specification had to to fall back to MLF 
 #' estimators, and thus the simplest model (no linear slope variance) was retained.
 #'
 #' Below you can see a comparison of model fit across model types for each combination.
@@ -1297,8 +1296,6 @@ IIparams_w <- paramsummaries %>% as.data.table %>%
 # 	arrange(ScaleName) 
 # 
 
-
-
 allParams <- left_join(ungroup(modsToUse), paramsummaries) %>%
 	as.data.table %>% 
 	filter(bivPathType=='Across Var',
@@ -1580,10 +1577,126 @@ theHeatMapsS <- allParams %>% as_data_frame %>%
 		data_frame(plot=list(aPlot))
 	})
 
-
 #'
-#' # Univariate growth curves
-#'	
-#' ## Parameter summaries
+#' # Univariate ALT models
 #'
 
+loadUniFN<-'../Rez/uniMods.RData'
+load(loadUniFN)
+
+summaries <- uniModelOut_df %>% rowwise %>%
+  do({
+    aSummary <- .[[1]]$summaries
+    as_data_frame(aSummary)
+  }) %>%
+  extract(Title, 
+          c('sample', 'variable', 'modelType'),
+          'PxVx Univariate - (\\w+) ([\\w_]+) ([\\w_]+)')
+
+uniparamsummaries <- uniModelOut_df %>% rowwise %>%
+	do({
+		if(length(.[[1]]$errors)==0){
+			someParams <- .[[1]]$parameters$unstandardized
+			someParams.df <- as_data_frame(someParams) %>%
+				mutate(est_se=as.numeric(ifelse(est_se == '*********', NA, est_se)))
+			someParams.df$Title <- as.character(.[[1]]$summaries$Title)
+			someParams.df$N <- .[[1]]$summaries$Observations
+			someParams.df$Estimator <- .[[1]]$summaries$Estimator
+		} else {
+			someParams.df <- data_frame(Title=as.character(.[[1]]$summaries$Title))
+		}
+		someParams.df
+	}) %>%
+	extract(Title, 
+		c('sample', 'variable', 'modelType'),
+		'PxVx Univariate - (\\w+) ([\\w_]+) ([\\w_]+)') %>%
+	mutate(paramstatement=paste(paramHeader, param, sep='.'),
+	       paramgroup=str_replace(paramstatement, 
+				      '^([ABCDS]|Means|Intercepts|Variances|Residual\\.Variances).*?\\.(ON|WITH)*\\.*([ABCDIS]).*',
+				      '\\1 \\2 \\3'), 
+	       withoron=str_detect(paramstatement, '\\.(WITH|ON)\\.'),
+	       firstVar=str_replace(paramstatement,'[ABCDIS](.*)\\.(WITH|ON)\\.[ABCDIS].*','\\1'),
+	       secondVar=str_replace(paramstatement,'[ABCDIS].*\\.(WITH|ON)\\.[ABCDIS](.*)','\\2')) 
+
+
+allVarNames <- c(pVarNames, vVarNames)	
+allUniParams <- uniparamsummaries %>%
+	as.data.table %>% 
+	filter(modelType=='AR_Lin',
+	       paramgroup %in% c('B ON A','A WITH I',
+				 'Means  A', 'Means  I',
+				 'Means  S', 'Variances  I',
+				 'Variances  S', 'S with I',
+				 'S WITH A')) %>%
+	mutate(sample=ifelse(str_detect(variable, '^I_'),
+			     'Inf',
+			     sample),
+	       variable=ifelse(str_detect(variable, '^I_'),
+			   pVarInfNames[variable],
+			   variable),
+	       ScaleName=factor(allVarNames[variable], levels=allVarNames),
+	       colName=str_replace_all(paramgroup, 
+				       c('^I WITH I STD$'='rPiVi',
+					 '^I WITH I$'='covPiVi',
+					 '^S WITH S STD$'='rPsVs',
+					 '^S WITH S$'='covPsVs')),
+	       est.stars=ifelse(pval<.05, 
+			     sprintf('*%.2f*', est),
+			     sprintf('%.2f', est)),
+	       est.bf=ifelse(pval<.05, 
+			     sprintf('\\textbf{%.2f}', est),
+			     sprintf('%.2f', est)),
+	       ci.u=est+1.96*se,
+	       ci.l=est-1.96*se) %>%
+	select(ScaleName, vVar, sample, modelCombo, colName, 
+	       Estimator, N, est, est.bf, est.stars,  se, 
+	       ci.u, ci.l, pval, pVar) 
+allParams_w_sampleLong  <- allParams %>% 
+	gather(parameter, value, -(ScaleName:colName)) %>%
+	unite(EfDir_Param, colName, parameter, sep=' ') %>%
+	spread(EfDir_Param, value) %>%
+	arrange(ScaleName) 
+
+
+latexLevels <- str_replace_all(levels(allParams_w_sampleLong$ScaleName),
+			   c(' (BFI|BFAS)'='\\\\textsubscript{\\1}',
+			     ` `='\\\\ '))
+
+allParams_w_sampleLongLatex <- allParams_w_sampleLong %>%
+	mutate(ScaleNameLatex=factor(str_replace_all(ScaleName,
+						 c(' (BFI|BFAS)'='\\\\textsubscript{\\1}',
+						 ` `='\\\\ ')),
+				   levels=latexLevels))
+table_options(justification='r')
+nada <- booktabs()
+
+#+'thing4', results='asis'
+nada <- allParams_w_sampleLongLatex %>% 
+	group_by(vVar) %>%
+	do({
+		atable <- tabular(Heading()*(scale=Factor(ScaleNameLatex, texify=F))~
+				  Heading()*I2*
+				  Heading()*Justify(c)*
+				  (sample=factor(sample, 
+						 levels=c('Nat', 'Col', 'Inf'),
+						 labels=c('National Sample',
+							  'Student Sample',
+							  'Informant Sample')))*
+				  Justify(r)*
+				  ((`$P\\rightarrow V$`=`PtoV est.bf`)+
+				   (`$V\\rightarrow P$`=`VtoP est.bf`)+
+# 				   (`$\\text{Cov}_{P_{i}V_{i}}$`=`covPiVi est.bf`)+
+				   (`$\\text{r}_{P_{i}V_{i}}$`=`rPiVi est.bf`)+
+				   (`$\\text{r}_{P_{s}V_{s}}$`=`rPsVs est.bf`)), 
+				  data=.) # %>% cat #%>% latex()
+		cat('\n\\begin{table}')
+		cat('\n\\centering')
+		cat(paste0('\n\\caption{Auto-Regressive Associations Between \\textbf{',
+			  vVarNames[unique(.$vVar)],
+			  '} and Personality Scales, Accounting for Age}\n'))
+		cat('\\begin{adjustbox}{max width=\\columnwidth, min width=\\columnwidth}\n')
+		latex(atable)
+		cat('\\end{adjustbox}\n')
+		cat('\\end{table}\n')
+		data_frame(aHTMLTable=list(atable))
+	})
