@@ -1326,10 +1326,11 @@ allParams <- left_join(ungroup(modsToUse), paramsummaries) %>%
 	       est.bf=ifelse(pval<.05, 
 			     sprintf('\\textbf{%.2f}', est),
 			     sprintf('%.2f', est)),
+	       se.d=sprintf('%.2f', se),
 	       ci.u=est+1.96*se,
 	       ci.l=est-1.96*se) %>%
 	select(ScaleName, vVar, sample, modelCombo, colName, 
-	       Estimator, N, est, est.bf, est.stars,  se, 
+	       Estimator, N, est, est.bf, est.stars,  se, se.d,
 	       ci.u, ci.l, pval, pVar) 
 allParams_w_sampleLong  <- allParams %>% 
 	gather(parameter, value, -(ScaleName:colName)) %>%
@@ -1364,10 +1365,9 @@ nada <- allParams_w_sampleLongLatex %>%
 							  'Informant Sample')))*
 				  Justify(r)*
 				  ((`$P\\rightarrow V$`=`PtoV est.bf`)+
+				   (`$\\text{SE}_{\\text{PtoV}}$`=`PtoV se.d`)+
 				   (`$V\\rightarrow P$`=`VtoP est.bf`)+
-# 				   (`$\\text{Cov}_{P_{i}V_{i}}$`=`covPiVi est.bf`)+
-				   (`$\\text{r}_{P_{i}V_{i}}$`=`rPiVi est.bf`)+
-				   (`$\\text{r}_{P_{s}V_{s}}$`=`rPsVs est.bf`)), 
+				   (`$\\text{SE}_{\\text{VtoP}}$`=`VtoP se.d`)), 
 				  data=.) # %>% cat #%>% latex()
 		cat('\n\\begin{table}')
 		cat('\n\\centering')
@@ -1527,6 +1527,7 @@ theForestPlots <- allParams %>% as_data_frame %>%
 #'
 #' # Latent Variable Correlation Tables
 #'
+#'
 
 
 #+fig.width=7, fig.height=6
@@ -1546,8 +1547,8 @@ theHeatMapsI <- allParams %>% as_data_frame %>%
 	do({
 		aPlot <- ggplot(., aes(x=VvarName, y=ScaleName))+
 			geom_raster(aes(fill=est))+
-			geom_text(aes(label=round(est, 2)), size=3, alpha=.2)+
-			scale_fill_gradient2()+
+			geom_text(aes(label=sprintf('%.2f', round(est, 2))), size=3, alpha=.5)+
+			scale_fill_gradient2(low='blue', high='red')+
 			theme(axis.text.x=element_text(angle=360-45, hjust=0))+
 			labs(x='', y='', fill=expression(italic(r)[italic(i)]),
 			     title=paste0('Intercept to Intercept Correlations: ',
@@ -1568,8 +1569,8 @@ theHeatMapsS <- allParams %>% as_data_frame %>%
 	do({
 		aPlot <- ggplot(., aes(x=VvarName, y=ScaleName))+
 			geom_raster(aes(fill=est))+
-			geom_text(aes(label=round(est, 2)), size=3, alpha=.2)+
-			scale_fill_gradient2()+
+			geom_text(aes(label=sprintf('%.2f', round(est, 2))), size=3, alpha=.5)+
+			scale_fill_gradient2(low='blue', high='red')+
 			theme(axis.text.x=element_text(angle=360-45, hjust=0))+
 			labs(x='', y='', fill=expression(italic(r)[italic(i)]),
 			     title=paste0('Slope to Slope Correlations: ',
