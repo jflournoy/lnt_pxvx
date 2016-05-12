@@ -1548,7 +1548,7 @@ theHeatMapsI <- allParams %>% as_data_frame %>%
 		aPlot <- ggplot(., aes(x=VvarName, y=ScaleName))+
 			geom_raster(aes(fill=est))+
 			geom_text(aes(label=sprintf('%.2f', round(est, 2))), size=3, alpha=.5)+
-			scale_fill_gradient2(low='blue', high='red')+
+			scale_fill_gradient2(low='blue', high='red', limits=c(-1, 1))+
 			theme(axis.text.x=element_text(angle=360-45, hjust=0))+
 			labs(x='', y='', fill=expression(italic(r)[italic(i)]),
 			     title=paste0('Intercept to Intercept Correlations: ',
@@ -1570,7 +1570,7 @@ theHeatMapsS <- allParams %>% as_data_frame %>%
 		aPlot <- ggplot(., aes(x=VvarName, y=ScaleName))+
 			geom_raster(aes(fill=est))+
 			geom_text(aes(label=sprintf('%.2f', round(est, 2))), size=3, alpha=.5)+
-			scale_fill_gradient2(low='blue', high='red')+
+			scale_fill_gradient2(low='blue', high='red', limits=c(-1, 1))+
 			theme(axis.text.x=element_text(angle=360-45, hjust=0))+
 			labs(x='', y='', fill=expression(italic(r)[italic(i)]),
 			     title=paste0('Slope to Slope Correlations: ',
@@ -1579,4 +1579,11 @@ theHeatMapsS <- allParams %>% as_data_frame %>%
 		cat('\n\n\n')
 		data_frame(plot=list(aPlot))
 	})
+
+
+#'
+#' # Univariate growth curves
+#'	
+#' ## Parameter summaries
+#'
 
