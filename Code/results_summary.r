@@ -1671,9 +1671,9 @@ allUniParams_w_sampleLongLatex <- allUniParams_w_sampleLong %>%
 table_options(justification='r')
 nada <- booktabs()
 
-#+'thing4', results='asis'
+#+'thing5', results='asis'
 nada <- allUniParams_w_sampleLongLatex %>% 
-	group_by(vVar) %>%
+	ungroup() %>% filter(modelType=='AR_Lin', sample!='Inf') %>%
 	do({
 		atable <- tabular(Heading()*(scale=Factor(ScaleNameLatex, texify=F))~
 				  Heading()*I2*
@@ -1684,11 +1684,12 @@ nada <- allUniParams_w_sampleLongLatex %>%
 							  'Student Sample',
 							  'Informant Sample')))*
 				  Justify(r)*
-				  ((`$P\\rightarrow V$`=`PtoV est.bf`)+
-				   (`$V\\rightarrow P$`=`VtoP est.bf`)+
-# 				   (`$\\text{Cov}_{P_{i}V_{i}}$`=`covPiVi est.bf`)+
-				   (`$\\text{r}_{P_{i}V_{i}}$`=`rPiVi est.bf`)+
-				   (`$\\text{r}_{P_{s}V_{s}}$`=`rPsVs est.bf`)), 
+				  ((`$\\mu_{\\text{I}}$`=`Means  I est.bf`)+
+				   (`$\\sigma^{2}_{\\text{I}}$`=`Variances  I est.bf`)+
+				   (`$\\mu_{\\text{S}}$`=`Means  S est.bf`)+
+				   (`$\\sigma^{2}_{\\text{S}}$`=`Variances  S est.bf`)+
+				   (`$\\text{R}_{\\text{yy}}$`= `B ON A est.bf`)
+				   ), 
 				  data=.) # %>% cat #%>% latex()
 		cat('\n\\begin{table}')
 		cat('\n\\centering')
