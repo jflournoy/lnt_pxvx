@@ -1673,7 +1673,7 @@ nada <- booktabs()
 
 #+'thing5', results='asis'
 nada <- allUniParams_w_sampleLongLatex %>% 
-	ungroup() %>% filter(modelType=='AR_Lin', sample!='Inf') %>%
+	ungroup() %>% filter(modelType=='AR_Lin') %>%
 	do({
 		atable <- tabular(Heading()*(scale=Factor(ScaleNameLatex, texify=F))~
 				  Heading()*I2*
@@ -1693,9 +1693,7 @@ nada <- allUniParams_w_sampleLongLatex %>%
 				  data=.) # %>% cat #%>% latex()
 		cat('\n\\begin{table}')
 		cat('\n\\centering')
-		cat(paste0('\n\\caption{Auto-Regressive Associations Between \\textbf{',
-			  vVarNames[unique(.$vVar)],
-			  '} and Personality Scales, Accounting for Age}\n'))
+		cat(paste0('\n\\caption{Univariate ALT Models: Selected Parameter Estimates}\n'))
 		cat('\\begin{adjustbox}{max width=\\columnwidth, min width=\\columnwidth}\n')
 		latex(atable)
 		cat('\\end{adjustbox}\n')
