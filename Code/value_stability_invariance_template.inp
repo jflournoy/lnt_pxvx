@@ -1,21 +1,21 @@
 [[init]]
 iterators = subsetnum which invarlevel;
 
-subsetnum = 1:2
+subsetnum = 1;
 which = 1:8;
-invarlevel = 1:3;
+invarlevel = 1:2;
 
 var#which = BFA_MT HRZ_COL HRZ_IND MVI_POMP USI	VRT_COL VRT_IND aspfin;
-subsetNames#subsetnum = Nat Col;
+subsetNames#subsetnum = Nat;
 datafile = LT_227.txt;
-subsetMeanAge#subsetnum = 36 20.5;
-invarname#invarlevel = none within across;
+subsetMeanAge#subsetnum = 36;
+invarname#invarlevel = longitudinal group;
 
 filename="Stability-[[var#which]]-[[subsetNames#subsetnum]]-[[invarname#invarlevel]].inp";
-outputDirectory="E:\Projects\lnt_pxvx\Rez\univariate\[[subsetNames#which]]\[[var#which]]";
+outputDirectory="~/code/lnt_pxvx/Rez/stability/[[subsetNames#subsetnum]]/[[var#which]]";
 [[/init]]
 
-title: Stability of values - [[subsetNames#subsetnum]] [[var#which]] [[invarname#invarlevel]];
+title: Stability of values - Nat [[var#which]] [[invarname#invarlevel]];
 data: file = E:\Projects\lnt_pxvx\Data\[[datafile]];
 
 variable: 
@@ -252,7 +252,6 @@ bMVI_POMP
 cMVI_POMP
 dMVI_POMP;
 
-
 USEVARIABLES =
 a[[var#which]]
 b[[var#which]]
@@ -260,6 +259,7 @@ c[[var#which]]
 d[[var#which]]
 aAGE
 ;
+
 
 missing = all (-9999);
 
@@ -271,38 +271,83 @@ USEOBSERVATIONS are Sample == 1; ! National Sample
 USEOBSERVATIONS are Sample == 2; ! College Sample
 [[/subsetnum == 2]]
 
+grouping = aAGE (0=d2, 1=d3, 2=d4, 3=d5);
+
+DEFINE:
+
+cut aAGE (29 39 49);
+
 ANALYSIS:
-TYPE=RANDOM;
-PROCESSORS = 8; 
+type = general;
+estimator = ml;
+processors = 8; 
+
+[[invarlevel == 2]]
 
 MODEL:
 
-[[growthtype == 1]]
-i_[[var#which]] | b[[var#which]] c[[var#which]] d[[var#which]] AT bage_c cage_c dage_c;
-[[/growthtype == 1]]
+a[[var#which]] WITH b[[var#which]] (a);
+b[[var#which]] WITH c[[var#which]] (a);
+c[[var#which]] WITH d[[var#which]] (a);
 
-[[growthtype > 1]]
-i_[[var#which]] s_[[var#which]] | b[[var#which]] c[[var#which]] d[[var#which]] AT bage_c cage_c dage_c;
-[[/growthtype > 1]]
+a[[var#which]] WITH c[[var#which]] (b);
+b[[var#which]] WITH d[[var#which]] (b);
 
-!After Bollen and Curran initial observation is not part of LGM
+a[[var#which]] WITH d[[var#which]] (c);
 
-d[[var#which]] on c[[var#which]] (a); ! Autoregressive paths constrained to equality
-c[[var#which]] on b[[var#which]] (a);
-b[[var#which]] on a[[var#which]] (a);
+[[/invarlevel == 2]]
+[[invarlevel == 1]]
+MODEL:
+a[[var#which]] WITH b[[var#which]];
+b[[var#which]] WITH c[[var#which]];
+c[[var#which]] WITH d[[var#which]];
 
-b[[var#which]] c[[var#which]] d[[var#which]] (c); !Equality constraint on residuals
+a[[var#which]] WITH c[[var#which]];
+b[[var#which]] WITH d[[var#which]];
 
-a[[var#which]] i_[[var#which]]
-WITH
-a[[var#which]] i_[[var#which]];
+a[[var#which]] WITH d[[var#which]];
 
-[[growthtype == 2]]
-s_[[var#which]]@0;
-[[/growthtype == 2]]
+MODEL d2:
+a[[var#which]] WITH b[[var#which]] (a2);
+b[[var#which]] WITH c[[var#which]] (a2);
+c[[var#which]] WITH d[[var#which]] (a2);
 
-[[growthtype > 2]]
-s_[[var#which]] WITH i_[[var#which]] a[[var#which]];
-[[/growthtype > 2]]
+a[[var#which]] WITH c[[var#which]] (b2);
+b[[var#which]] WITH d[[var#which]] (b2);
+
+a[[var#which]] WITH d[[var#which]] (c2);
+
+MODEL d3:
+a[[var#which]] WITH b[[var#which]] (a3);
+b[[var#which]] WITH c[[var#which]] (a3);
+c[[var#which]] WITH d[[var#which]] (a3);
+
+a[[var#which]] WITH c[[var#which]] (b3);
+b[[var#which]] WITH d[[var#which]] (b3);
+
+a[[var#which]] WITH d[[var#which]] (c3);
+
+MODEL d4:
+a[[var#which]] WITH b[[var#which]] (a4);
+b[[var#which]] WITH c[[var#which]] (a4);
+c[[var#which]] WITH d[[var#which]] (a4);
+
+a[[var#which]] WITH c[[var#which]] (b4);
+b[[var#which]] WITH d[[var#which]] (b4);
+
+a[[var#which]] WITH d[[var#which]] (c4);
+
+MODEL d5:
+a[[var#which]] WITH b[[var#which]] (a5);
+b[[var#which]] WITH c[[var#which]] (a5);
+c[[var#which]] WITH d[[var#which]] (a5);
+
+a[[var#which]] WITH c[[var#which]] (b5);
+b[[var#which]] WITH d[[var#which]] (b5);
+
+a[[var#which]] WITH d[[var#which]] (c5);
+
+[[/invarlevel == 1]]
+
 
 OUTPUT: SAMPSTAT PATTERNS;
