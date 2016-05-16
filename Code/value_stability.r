@@ -17,21 +17,22 @@ opts_chunk$set(echo=F, message=F, warning=F)
 # Set working directory to that which contains Code, Data, etc
 # setwd('E:/Projects/lnt_pxvx/')
 
-loadUniFN<-'../Rez/stability.RData'
+loadStbFN<-'../Rez/stability.RData'
 
-# Create Models
-createModels('Code/value_stability_invariance_template.inp')
-
-# setwd('E:/Projects/lnt_pxvx/Rez/univariate')
+# # Create Models
+# createModels('Code/value_stability_invariance_template.inp')
+# createModels('Code/value_stability_invariance_template-Col.inp')
+# 
+# setwd('E:/Projects/lnt_pxvx/Rez/stability')
 # runModels(recursive = T)
-
+# 
 # # Read models
-# setwd('../Rez/univariate')
-# saveUniFN<-'../uniMods.RData'
-# uniModelOut<-readModels(recursive = T,
-# 			filefilter='ALT.*')
-# uniModelOut_df <- data_frame(model=uniModelOut)
-# save(uniModelOut_df,file=saveUniFN)
+# # setwd('../Rez/stability')
+# saveStbFN<-'../stability.RData'
+# stbModelOut<-readModels(recursive = T,
+# 			filefilter='stability.*')
+# stbModelOut_df <- data_frame(model=stbModelOut)
+# save(stbModelOut_df,file=saveStbFN)
 # setwd('../../Code')
 
-load(loadUniFN)
+load(loadStbFN)

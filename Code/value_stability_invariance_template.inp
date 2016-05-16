@@ -12,7 +12,7 @@ subsetMeanAge#subsetnum = 36;
 invarname#invarlevel = longitudinal group;
 
 filename="Stability-[[var#which]]-[[subsetNames#subsetnum]]-[[invarname#invarlevel]].inp";
-outputDirectory="~/code/lnt_pxvx/Rez/stability/[[subsetNames#subsetnum]]/[[var#which]]";
+outputDirectory="E:/Projects/lnt_pxvx/Rez/stability/[[subsetNames#subsetnum]]/[[var#which]]";
 [[/init]]
 
 title: Stability of values - Nat [[var#which]] [[invarname#invarlevel]];
@@ -295,6 +295,8 @@ b[[var#which]] WITH d[[var#which]] (b);
 
 a[[var#which]] WITH d[[var#which]] (c);
 
+a[[var#which]] b[[var#which]] c[[var#which]] d[[var#which]] (e);
+
 [[/invarlevel == 2]]
 [[invarlevel == 1]]
 MODEL:
@@ -317,6 +319,8 @@ b[[var#which]] WITH d[[var#which]] (b2);
 
 a[[var#which]] WITH d[[var#which]] (c2);
 
+a[[var#which]] b[[var#which]] c[[var#which]] d[[var#which]] (e2);
+
 MODEL d3:
 a[[var#which]] WITH b[[var#which]] (a3);
 b[[var#which]] WITH c[[var#which]] (a3);
@@ -326,6 +330,8 @@ a[[var#which]] WITH c[[var#which]] (b3);
 b[[var#which]] WITH d[[var#which]] (b3);
 
 a[[var#which]] WITH d[[var#which]] (c3);
+
+a[[var#which]] b[[var#which]] c[[var#which]] d[[var#which]] (e3);
 
 MODEL d4:
 a[[var#which]] WITH b[[var#which]] (a4);
@@ -337,6 +343,8 @@ b[[var#which]] WITH d[[var#which]] (b4);
 
 a[[var#which]] WITH d[[var#which]] (c4);
 
+a[[var#which]] b[[var#which]] c[[var#which]] d[[var#which]] (e4);
+
 MODEL d5:
 a[[var#which]] WITH b[[var#which]] (a5);
 b[[var#which]] WITH c[[var#which]] (a5);
@@ -347,7 +355,9 @@ b[[var#which]] WITH d[[var#which]] (b5);
 
 a[[var#which]] WITH d[[var#which]] (c5);
 
+a[[var#which]] b[[var#which]] c[[var#which]] d[[var#which]] (e5);
+
 [[/invarlevel == 1]]
 
 
-OUTPUT: SAMPSTAT PATTERNS;
+OUTPUT: SAMPSTAT PATTERNS STDYX;
