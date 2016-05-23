@@ -32,8 +32,9 @@ I2 <- function(x){
 
 
 jftheme <- theme_cowplot()+
-	theme(axis.line=element_line(size=0),
-	      strip.background=element_rect(fill='white'))
+	theme(axis.line=element_line(size=0, color='white'),
+	      strip.background=element_rect(fill='white')
+	      )
 theme_set(jftheme)
 
 pVarInfNames <- c(I_A="BFI_A6",
@@ -639,6 +640,14 @@ Summaries <- baseMainDF %>%
 				     levels=str_replace_all(levels(ScaleName),
 							    c(' (BFI|BFAS)'='\\\\textsubscript{\\1}',
 							      ` `='\\\\ '))))
+
+# This sets up a nice order for the values variables
+vVarFactorLevelOrder <- Summaries %>% 
+	filter(Sample==1, sumstat=='mean', wave=='1', ScaleName %in% vVarNames) %>%
+	arrange(value) %>% select(ScaleName) %>% 
+	unlist %>% as.character
+
+vVarNames <- vVarNames[unlist(lapply(vVarFactorLevelOrder, grep, vVarNames))]
 
 infSummaries <- baseInfDF %>% filter(Sample==1) %>%
 	select_(.dots=c(vpInfWaveVarNames)) %>% 
@@ -1362,9 +1371,9 @@ nada <- allParams_w_sampleLongLatex %>%
 							  'Informant Sample')))*
 				  Justify(r)*
 				  ((`$P\\rightarrow V$`=`PtoV est.bf`)+
-				   (`$\\text{SE}_{\\text{PtoV}}$`=`PtoV se.d`)+
+				   (`SE`=`PtoV se.d`)+
 				   (`$V\\rightarrow P$`=`VtoP est.bf`)+
-				   (`$\\text{SE}_{\\text{VtoP}}$`=`VtoP se.d`)), 
+				   (`SE`=`VtoP se.d`)), 
 				  data=.) # %>% cat #%>% latex()
 		cat('\n\\begin{table}')
 		cat('\n\\centering')
@@ -1375,7 +1384,7 @@ nada <- allParams_w_sampleLongLatex %>%
 		latex(atable)
 		cat('\\end{adjustbox}\n')
 		cat('\\end{table}\n')
-		data_frame(aHTMLTable=list(atable))
+		data_frame(aTable=list(atable))
 	})
 
 nada <- allParams_w_sampleLong %>% 
@@ -1383,21 +1392,21 @@ nada <- allParams_w_sampleLong %>%
 	do({
 		atable <- tabular(Heading()*(scale=Factor(ScaleName))~
 				  Heading()*I2*
-				  Heading()*(sample=factor(sample, 
-							   levels=c('Nat', 'Col', 'Inf'),
-							   labels=c('National Sample',
-								    'Student Sample',
-								    'Informant Sample')))*
+				  Heading()*Justify(c)*
+				  (sample=factor(sample, 
+						 levels=c('Nat', 'Col', 'Inf'),
+						 labels=c('National Sample',
+							  'Student Sample',
+							  'Informant Sample')))*
 				  Justify(r)*
-				  ((N=`PtoV N`)+
-				   (`P -> V`=`PtoV est.stars`)+
-				   (`V -> P`=`VtoP est.stars`)+
-# 				   (`cov PV`=`covPiVi est.stars`)+
-				   (`r PV`=`rPiVi est.stars`)), 
+				  ((`P to V`=`PtoV est.stars`)+
+				   (`SE`=`PtoV se.d`)+
+				   (`V to P`=`VtoP est.stars`)+
+				   (`SE`=`VtoP se.d`)), 
 				  data=.) # %>% cat #%>% latex()
 		csvFilename <- paste0('../Rez/csv/', unique(.$vVar), '.csv')
 		write.csv.tabular(atable, file=csvFilename, leftpad=F)
-		data_frame(aHTMLTable=list(atable))
+		data_frame(aTable=list(atable))
 	})
 
 
@@ -1528,11 +1537,6 @@ theForestPlots <- allParams %>% as_data_frame %>%
 
 
 #+fig.width=7, fig.height=6
-vVarFactorLevelOrder <- Summaries %>% 
-	filter(Sample==1, sumstat=='mean', wave=='1', ScaleName %in% vVarNames) %>%
-	arrange(value) %>% select(ScaleName) %>% 
-	unlist %>% as.character
-
 theHeatMapsI <- allParams %>% as_data_frame %>%
 	filter(colName %in% c('rPiVi')) %>%
 	mutate(sampleFac=factor(sample, levels=c('Nat', 'Col', 'Inf'),
@@ -1544,7 +1548,10 @@ theHeatMapsI <- allParams %>% as_data_frame %>%
 	do({
 		aPlot <- ggplot(., aes(x=VvarName, y=ScaleName))+
 			geom_raster(aes(fill=est))+
-			geom_text(aes(label=sprintf('%.2f', round(est, 2))), size=3, alpha=.5)+
+			geom_text(aes(label=sub('\\d+(\\.\\d+)', '\\1', 
+						sprintf('%.2f', 
+							round(est, 2)))),
+				  size=3.5, alpha=.8)+
 			scale_fill_gradient2(low='blue', high='red', limits=c(-1, 1))+
 			theme(axis.text.x=element_text(angle=360-45, hjust=0))+
 			labs(x='', y='', fill=expression(italic(r)[italic(i)]),
@@ -1566,10 +1573,13 @@ theHeatMapsS <- allParams %>% as_data_frame %>%
 	do({
 		aPlot <- ggplot(., aes(x=VvarName, y=ScaleName))+
 			geom_raster(aes(fill=est))+
-			geom_text(aes(label=sprintf('%.2f', round(est, 2))), size=3, alpha=.5)+
+			geom_text(aes(label=sub('\\d+(\\.\\d+)', '\\1', 
+						sprintf('%.2f', 
+							round(est, 2)))),
+				  size=3.5, alpha=.8)+
 			scale_fill_gradient2(low='blue', high='red', limits=c(-1, 1))+
 			theme(axis.text.x=element_text(angle=360-45, hjust=0))+
-			labs(x='', y='', fill=expression(italic(r)[italic(i)]),
+			labs(x='', y='', fill=expression(italic(r)[italic(s)]),
 			     title=paste0('Slope to Slope Correlations: ',
 					  unique(.$sampleFac), ' Sample'))
 		print(aPlot)
@@ -1671,18 +1681,26 @@ allUniParams_w_sampleLongLatex <- allUniParams_w_sampleLong %>%
 table_options(justification='r')
 nada <- booktabs()
 
+
+vVarLevels <- str_replace_all(vVarNames,
+			      c(' (BFI|BFAS)'='\\\\textsubscript{\\1}',
+				` `='\\\\ '))
+
 #+'thing5', results='asis'
 nada <- allUniParams_w_sampleLongLatex %>% 
-	ungroup() %>% filter(modelType=='AR_Lin') %>%
+	ungroup() %>% 
+	filter(modelType=='AR_Lin',
+	       ScaleName %in% vVarNames,
+	       sample=='Nat') %>%
+	mutate(ScaleNameLatex=factor(ScaleNameLatex, levels=vVarLevels)) %>%
 	do({
-		atable <- tabular(Heading()*(scale=Factor(ScaleNameLatex, texify=F))~
+		atable <- tabular(Heading()*(scale=Factor(ScaleNameLatex, 
+							  texify=F))~
 				  Heading()*I2*
 				  Heading()*Justify(c)*
 				  (sample=factor(sample, 
-						 levels=c('Nat', 'Col', 'Inf'),
-						 labels=c('National Sample',
-							  'Student Sample',
-							  'Informant Sample')))*
+						 levels=c('Nat'),
+						 labels=c('National Sample')))*
 				  Justify(r)*
 				  ((`$\\mu_{\\text{I}}$`=`Means  I est.bf`)+
 				   (`$\\sigma^{2}_{\\text{I}}$`=`Variances  I est.bf`)+
@@ -1700,3 +1718,26 @@ nada <- allUniParams_w_sampleLongLatex %>%
 		cat('\\end{table}\n')
 		data_frame(aHTMLTable=list(atable))
 	})
+
+nada <- allParams_w_sampleLong %>% 
+	group_by(vVar) %>%
+	do({
+		atable <- tabular(Heading()*(scale=Factor(ScaleName))~
+				  Heading()*I2*
+				  Heading()*Justify(c)*
+				  (sample=factor(sample, 
+						 levels=c('Nat', 'Col', 'Inf'),
+						 labels=c('National Sample',
+							  'Student Sample',
+							  'Informant Sample')))*
+				  Justify(r)*
+				  ((`P to V`=`PtoV est.stars`)+
+				   (`SE`=`PtoV se.d`)+
+				   (`V to P`=`VtoP est.stars`)+
+				   (`SE`=`VtoP se.d`)), 
+				  data=.) # %>% cat #%>% latex()
+		csvFilename <- paste0('../Rez/csv/', unique(.$vVar), '.csv')
+		write.csv.tabular(atable, file=csvFilename, leftpad=F)
+		data_frame(aTable=list(atable))
+	})
+
