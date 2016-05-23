@@ -1719,24 +1719,28 @@ nada <- allUniParams_w_sampleLongLatex %>%
 		data_frame(aHTMLTable=list(atable))
 	})
 
-nada <- allParams_w_sampleLong %>% 
-	group_by(vVar) %>%
+nada <- allUniParams_w_sampleLongLatex %>% 
+	ungroup() %>% 
+	filter(modelType=='AR_Lin',
+	       ScaleName %in% vVarNames,
+	       sample=='Nat') %>%
+	mutate(ScaleName=factor(ScaleName, levels=vVarNames)) %>%
 	do({
 		atable <- tabular(Heading()*(scale=Factor(ScaleName))~
 				  Heading()*I2*
 				  Heading()*Justify(c)*
 				  (sample=factor(sample, 
-						 levels=c('Nat', 'Col', 'Inf'),
-						 labels=c('National Sample',
-							  'Student Sample',
-							  'Informant Sample')))*
+						 levels=c('Nat'),
+						 labels=c('National Sample')))*
 				  Justify(r)*
-				  ((`P to V`=`PtoV est.stars`)+
-				   (`SE`=`PtoV se.d`)+
-				   (`V to P`=`VtoP est.stars`)+
-				   (`SE`=`VtoP se.d`)), 
-				  data=.) # %>% cat #%>% latex()
-		csvFilename <- paste0('../Rez/csv/', unique(.$vVar), '.csv')
+				  ((`mu_I`=`Means  I est.stars`)+
+				   (`s^2_I`=`Variances  I est.stars`)+
+				   (`mu_S`=`Means  S est.stars`)+
+				   (`s^2_S`=`Variances  S est.stars`)+
+				   (`R_yy`= `B ON A est.stars`)
+				   ),
+				  data=.) 
+		csvFilename <- paste0('../Rez/csv/univariate.csv')
 		write.csv.tabular(atable, file=csvFilename, leftpad=F)
 		data_frame(aTable=list(atable))
 	})
