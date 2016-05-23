@@ -14,6 +14,8 @@ library(stringr)
 library(ggplot2)
 opts_chunk$set(echo=F, message=F, warning=F)
 
+source('./ggplottheme.r')
+
 # Set working directory to that which contains Code, Data, etc
 # setwd('E:/Projects/lnt_pxvx/')
 
@@ -215,3 +217,26 @@ nada <- paramsummaries %>% filter(modelType=='longitudinal',
 		cat('\n\n\n')
 		data_frame(table=list(atable), variable=avar)
 	})
+
+#'
+#'
+#'	
+#+fig.width=9, fig.height=6
+paramsummaries %>% filter(modelType=='longitudinal',
+			  paramgroup %in% c('A WITH B', 'A WITH C', 'A WITH D'),
+			  sample=='Nat') %>%
+	select(variable, Group, est, se, paramgroup) %>%
+	mutate(Group=factor(str_replace(Group, 'D([2345])', '\\10\'s')),
+	       LL=est-1.96*se,
+	       UL=est+1.96*se,
+	       lag=as.numeric(as.factor(paramgroup))) %>%
+	ggplot(aes(Group, est))+
+	geom_point(size=1)+
+	geom_errorbar(aes(ymin=LL, ymax=UL), width=0)+
+	facet_grid(lag~variable)+
+	coord_cartesian(y=c(0, 1))+
+	theme(axis.text.x=element_text(angle=360-45, hjust=0))+
+	labs(title="Age and Value Stability, National Sample",
+	     x="Age Group",
+	     y="Correlation with 95% CI")
+	
