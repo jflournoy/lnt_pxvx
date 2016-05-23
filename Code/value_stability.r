@@ -108,7 +108,7 @@ nada <- summaries %>%
 			       CFI, TLI) %>%
 			rename(`RMSEA [90% CI]`=RMSEA) %>%
 			kable(digits=2, caption=paste0('Sample: ', asamp),
-			      align=c('l', rep('r', 4)), format='html')
+			      align=c('l', rep('r', 4)))
 		print(atable)
 		cat('\n\n\n')
 		data_frame(table=list(atable), sample=asamp)
@@ -145,7 +145,7 @@ nada <- summaries %>%
 			       CFI, TLI) %>%
 			rename(`RMSEA [90% CI]`=RMSEA) %>%
 			kable(digits=2, caption=paste0('Sample: ', asamp),
-			      align=c('l', rep('r', 4)), format='html')
+			      align=c('l', rep('r', 4)))
 		print(atable)
 		cat('\n\n\n')
 		data_frame(table=list(atable), sample=asamp)
