@@ -78,6 +78,81 @@ summaryDiffs <- summaryTableLong %>%
 #'
 #' # Model Fit
 #'
+#' ## Absolute fit of longitudinal invariance models
+#'
+#'
+#+results='asis'
+nada <- summaries %>%
+	filter(modelType=='longitudinal') %>%
+	group_by(sample) %>%
+	do({
+		asamp <- unique(.$sample)
+		atable <- as_data_frame(.) %>% 
+			mutate_each(funs(gsub('^0(\\.\\d+)',
+					      '\\1', 
+					      sprintf('%.2f', .))),
+				    CFI, TLI, 
+				    RMSEA_Estimate, 
+				    RMSEA_90CI_LB, 
+				    RMSEA_90CI_UB, 
+				    SRMR) %>%
+			mutate(RMSEA=paste0(RMSEA_Estimate,
+					    ' [',
+					    RMSEA_90CI_LB,
+					    ',',
+					    RMSEA_90CI_UB,
+					    ']')) %>%
+			select(variable,
+			       RMSEA,
+			       SRMR,
+			       CFI, TLI) %>%
+			rename(`RMSEA [90% CI]`=RMSEA) %>%
+			kable(digits=2, caption=paste0('Sample: ', asamp),
+			      align=c('l', rep('r', 4)), format='html')
+		print(atable)
+		cat('\n\n\n')
+		data_frame(table=list(atable), sample=asamp)
+	})
+
+#'
+#' ## Absolute fit of group invariance models
+#'
+#+results='asis'
+nada <- summaries %>%
+	filter(modelType=='group',
+	       sample=='Nat') %>%
+	group_by(sample) %>%
+	do({
+		asamp <- unique(.$sample)
+		atable <- as_data_frame(.) %>% 
+			mutate_each(funs(gsub('^0(\\.\\d+)',
+					      '\\1', 
+					      sprintf('%.2f', .))),
+				    CFI, TLI, 
+				    RMSEA_Estimate, 
+				    RMSEA_90CI_LB, 
+				    RMSEA_90CI_UB, 
+				    SRMR) %>%
+			mutate(RMSEA=paste0(RMSEA_Estimate,
+					    ' [',
+					    RMSEA_90CI_LB,
+					    ',',
+					    RMSEA_90CI_UB,
+					    ']')) %>%
+			select(variable,
+			       RMSEA,
+			       SRMR,
+			       CFI, TLI) %>%
+			rename(`RMSEA [90% CI]`=RMSEA) %>%
+			kable(digits=2, caption=paste0('Sample: ', asamp),
+			      align=c('l', rep('r', 4)), format='html')
+		print(atable)
+		cat('\n\n\n')
+		data_frame(table=list(atable), sample=asamp)
+	})
+
+#'
+#' ## Relative fit
 #'
 #+results='asis'
 nada <- bind_rows(summaryTableLong, summaryDiffs) %>%
