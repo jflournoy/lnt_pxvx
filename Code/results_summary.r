@@ -1554,13 +1554,15 @@ theHeatMapsI <- allParams %>% as_data_frame %>%
 				  size=3.5, alpha=.8)+
 			scale_fill_gradient2(low='blue', high='red', limits=c(-1, 1))+
 			theme(axis.text.x=element_text(angle=360-45, hjust=0))+
-			labs(x='', y='', fill=expression(italic(r)[italic(i)]),
-			     title=paste0('Intercept to Intercept Correlations: ',
-					  unique(.$sampleFac), ' Sample'))
+			labs(x='', y='', fill=expression(italic(r)[italic(i)]))
 		print(aPlot)
 		cat('\n\n\n')
 		data_frame(plot=list(aPlot))
 	})
+
+ggsave(theHeatMapsI$plot[[1]], units='in', width=8.00, height=5.5, dpi=300, filename='../Rez/heatmapNat.png')	
+ggsave(theHeatMapsI$plot[[2]], units='in', width=8.00, height=5.5, dpi=300, filename='../Rez/heatmapCol.png')	
+ggsave(theHeatMapsI$plot[[3]], units='in', width=8.00, height=5.5, dpi=300, filename='../Rez/heatmapInf.png')	
 
 theHeatMapsS <- allParams %>% as_data_frame %>%
 	filter(colName %in% c('rPsVs')) %>%
