@@ -44,7 +44,7 @@ opts_chunk$set(echo=F, message=F, warning=F)
 loadUniFN<-'../Rez/uniMods.RData'
 
 # # Create Models
-# createModels('Code/PxVx_UniTemplate.inp')
+# createModels('Code/PxVx_UniRICLPMTemplate.inp')
 # 
 # setwd('E:/Projects/lnt_pxvx/Rez/univariate')
 # runModels(recursive = T)

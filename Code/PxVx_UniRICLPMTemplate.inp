@@ -10,8 +10,8 @@ subsetNames#which = Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat Nat 
 datafile#which = LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_227.txt LT_informants3.txt LT_informants3.txt LT_informants3.txt LT_informants3.txt LT_informants3.txt LT_informants3.txt LT_informants3.txt;
 subsetMeanAge#which = 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 20.5 20.5 20.5 20.5 20.5 20.5 20.5;
 
-filename="ALT-[[var#which]]-[[subsetNames#which]]-[[growthTypeDesc#growthtype]].inp";
-outputDirectory="/Users/johnflournoy/Documents/lnt_pxvx/Rez/univariate/[[subsetNames#which]]\[[var#which]]";
+filename="RICLPM-[[var#which]]-[[subsetNames#which]]-[[growthTypeDesc#growthtype]].inp";
+outputDirectory="/Users/johnflournoy/Documents/lnt_pxvx/Rez/univariate-riclpm/[[subsetNames#which]]/[[var#which]]";
 [[/init]]
 
 title: PxVx Univariate - [[subsetNames#which]] [[var#which]] [[growthTypeDesc#growthtype]];
@@ -557,6 +557,7 @@ a[[var#which]]
 b[[var#which]]
 c[[var#which]]
 d[[var#which]]
+aage_c
 bage_c
 cage_c
 dage_c
@@ -579,9 +580,10 @@ USEOBSERVATIONS are Sample == 1; ! National Sample, informant's data
 [[/which > 52]]
 
 
-tscores = bage_c cage_c dage_c;
+tscores = aage_c bage_c cage_c dage_c;
 
 DEFINE:
+aage_c = aAGE + 0 - [[subsetMeanAge#which]];
 bage_c = aAGE + 1 - [[subsetMeanAge#which]];
 cage_c = aAGE + 2 - [[subsetMeanAge#which]];
 dage_c = aAGE + 3 - [[subsetMeanAge#which]];
@@ -612,18 +614,24 @@ p2 on p1 (a);
 
 p1 WITH p1;
 
-b[[var#which]] c[[var#which]] d[[var#which]] (c); !Equality constraint on residuals
+!residual variances on observed scores set to 0s
+a[[var#which]]@0;
+b[[var#which]]@0;
+c[[var#which]]@0;
+d[[var#which]]@0;
 
-a[[var#which]] i_[[var#which]]
-WITH
-a[[var#which]] i_[[var#which]];
+
+p2 p3 p4 (c); !Equality constraint on residuals
+
+i_[[var#which]] WITH p1@0;
 
 [[growthtype == 2]]
 s_[[var#which]]@0;
 [[/growthtype == 2]]
 
 [[growthtype > 2]]
-s_[[var#which]] WITH i_[[var#which]] a[[var#which]];
+s_[[var#which]] WITH i_[[var#which]];
+s_[[var#which]] WITH p1@0;
 [[/growthtype > 2]]
 
 OUTPUT: SAMPSTAT PATTERNS;
