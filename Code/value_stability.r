@@ -173,7 +173,7 @@ nada <- bind_rows(summaryTableLong, summaryDiffs) %>%
 			mutate(Parameters=ifelse(is.na(Parameters),
 						 '',
 						 Parameters)) %>%
-			kable(digits=2, caption=paste0('Sample: ', asamp))
+			kable(caption=paste0('Sample: ', asamp))
 		print(atable)
 		cat('\n\n\n')
 		data_frame(table=list(atable), sample=asamp)
@@ -207,6 +207,7 @@ nada <- paramsummaries %>% filter(modelType=='longitudinal',
 	select(variable, Group, est, paramgroup) %>%
 	group_by(variable, Group) %>%
 	spread(paramgroup, est) %>%
+  ungroup() %>%
 	mutate(Group=str_replace(Group, 'D([2345])', '\\10\'s')) %>%
 	group_by(variable) %>%
 	do({
