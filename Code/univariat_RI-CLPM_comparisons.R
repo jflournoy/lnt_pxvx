@@ -23,28 +23,18 @@ opts_chunk$set(echo=F, message=F, warning=F)
 #'
 #'![](initial_model.png "Template for model comparisons")
 #'
-#' The above diagram captures all 3 models we wish to compare. The black portion
-#' is the base, intercept-only ALT model (**AR_Int**). We estimate 7 parameters: the initial
-#' status (`a X`) variance and mean, the autoregressive parameter constrained 
-#' to be equal between all four waves (`AR`), the residual variances for waves
-#' 2-4 constrained to be equal (`v`), and a latent intercept mean, variance, and
-#' covariance with initial status.
-#'
-#' The blue portion shows the addition of one parameter 
-#' to capture the mean of a latent slope (`S X`), which gives us the 
-#' **AR_LinM** model below. Finally, the red portion shows the addition of 
-#' three parameters: the latent slope variance, and covariance with
-#' the latent intercept, and initial status (**AR_Lin** below).
+#' Using [Latent Curve Model with Structured Residuals](http://psycnet.apa.org/fulltext/2013-44751-001.pdf) -- see [example code](http://curran.web.unc.edu/lcm-sr-data-code/).
 #'
 
 # Set working directory to that which contains Code, Data, etc
 # setwd('E:/Projects/lnt_pxvx/')
 # setwd('/Users/johnflournoy/Documents/lnt_pxvx/')
+# setwd("~/Documents/lnt_pxvx")
 
-loadUniFN<-'../Rez/uniMods.RData'
+loadUniFN<-'../Rez/uniLCMSRMods.RData'
 
 # # Create Models
-# createModels('Code/PxVx_UniRICLPMTemplate.inp')
+# createModels('Code/PxVx_UniLCMSRTemplate.inp')
 # 
 # setwd('E:/Projects/lnt_pxvx/Rez/univariate')
 # runModels(recursive = T)
