@@ -33,7 +33,7 @@ I2 <- function(x){
 
 jftheme <- theme_cowplot()+
 	theme(axis.line=element_line(size=0, color='white'),
-	      strip.background=element_rect(fill='white')
+	      strip.background=element_rect(fill='gray')
 	      )
 theme_set(jftheme)
 

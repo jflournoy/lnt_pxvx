@@ -16,6 +16,14 @@ library(ggplot2)
 library(broom)
 opts_chunk$set(echo=F, message=F, warning=F)
 
+library(cowplot)
+jftheme <- theme_cowplot()+
+  theme(axis.line=element_line(size=0),
+        strip.background=element_rect(fill='white'))
+theme_set(jftheme)
+
+
+
 #'
 #' # Intro
 #'
@@ -86,7 +94,15 @@ paramNames <- c(`P4.ON.P3` = 'AR',
                 `Variances  I` = 'i_var',
                 `Variances  S` = 's_var')
 
-nada <- paramsummaries %>%
+variableTypes <- data_frame(variable=c('BFA_AC', 'BFA_AP', 'BFA_CI', 'BFA_CO', 'BFA_EA', 'BFA_EE', 'BFA_MT', 'BFA_NV', 'BFA_NW', 'BFA_OI', 'BFA_OO', 'BFI_A6', 'BFI_C', 'BFI_E', 'bfi_hp8', 'BFI_N', 'BFI_O', 'D_SCALE', 'VRT_COL', 'HRZ_COL', 'HRZ_IND', 'MVI_POMP', 'S_SCALE', 'USI', 'VRT_IND', 'aspfin'),
+                            vartype=c(rep('p', 6),
+                                      'v',
+                                      rep('p', 11),
+                                      rep('v', 4),
+                                      'p',
+                                      rep('v', 3)))
+
+summary_data_for_tables <- paramsummaries %>%
   left_join(variableTypes) %>%
   filter(modelType == 'AR_Lin', sample == 'Nat') %>%
   filter((paramstatement == 'P4.ON.P3') |
@@ -95,7 +111,9 @@ nada <- paramsummaries %>%
   mutate(param = paramNames[paramgroup],
          vartype = factor(vartype, levels = c('v', 'p'))) %>%
   select(variable, param, est, se, pval, vartype) %>%
-  arrange(desc(vartype), variable, param) %>%
+  arrange(desc(vartype), variable, param)
+
+nada <- summary_data_for_tables %>%
   group_by(vartype, variable) %>%
   do({
     caption <- paste0('Variable: ',
@@ -253,13 +271,6 @@ winningModels <- modelComparisonResults %>% group_by(sample, variable) %>%
 			   winningmodel=c(LLwinner, AICwinner, BICwinner))
 	})
 
-variableTypes <- data_frame(variable=c('BFA_AC', 'BFA_AP', 'BFA_CI', 'BFA_CO', 'BFA_EA', 'BFA_EE', 'BFA_MT', 'BFA_NV', 'BFA_NW', 'BFA_OI', 'BFA_OO', 'BFI_A6', 'BFI_C', 'BFI_E', 'bfi_hp8', 'BFI_N', 'BFI_O', 'D_SCALE', 'VRT_COL', 'HRZ_COL', 'HRZ_IND', 'MVI_POMP', 'S_SCALE', 'USI', 'VRT_IND', 'aspfin'),
-			    vartype=c(rep('p', 6),
-				      'v',
-				      rep('p', 11),
-				      rep('v', 4),
-				      'p',
-				      rep('v', 3)))
 
 #+results='asis'
 modelTallies <- winningModels %>%
@@ -332,4 +343,332 @@ kable(winnersByCriterion,
 # 	      axis.text.x=element_text(angle=360-45))+
 # 	coord_cartesian(y=c(0,15))
 
+#'
+#' # Load the raw data
+#' 
 
+pVarNames <- c(S_SCALE="Social Self-Regulation",
+               BFI_C=" Conscientiousness BFI",
+               BFA_CI="  Industriousness BFAS", 
+               BFA_CO="  Orderliness BFAS", 
+               bfi_hp8=" Honesty/Propriety BFI", 
+               BFI_A6=" Agreeableness-Six BFI", 
+               BFA_AC="  Compassion BFAS", 
+               BFA_AP="  Politeness BFAS", 
+               BFI_N=" Neuroticism BFI", 
+               BFA_NV="  Volatility BFAS", 
+               BFA_NW="  Withdrawal BFAS", 
+               D_SCALE="Dynamism", 
+               BFI_E=" Extraversion BFI", 
+               BFA_EA="  Assertiveness BFAS", 
+               BFA_EE="  Enthusiasm BFAS", 
+               BFI_O=" Openness BFI", 
+               BFA_OI="  Intellect BFAS", 
+               BFA_OO="  Openness BFAS")
+
+vVarNames <- c(
+  'USI'='Unmitigated Self-Interest',
+  'VRT_IND'='Vertical Individualism',
+  'BFA_MT'='Materialism',
+  'aspfin'='Financial Aspirations',
+  'MVI_POMP'='Mature Values Index',
+  'VRT_COL'='Vertical Collectivism',
+  'HRZ_COL'='Horizontal Collectivism',
+  'HRZ_IND'='Horizontal Individualism'
+)
+
+baseMainDFColNames <- c(
+  'subjid',
+  'Sample',
+  'aGENDER',
+  'aage',
+  'aethnic1',
+  'aethnic2',
+  'aedu_mom',
+  'aedu_dad',
+  'aEDUCATN',
+  'bEDUCATN',
+  'cEDUCATN',
+  'aEMPLOYD',
+  'bEMPLOYD',
+  'cEMPLOYD',
+  'dEMPLOYD',
+  'aINCOME',
+  'bINCOME',
+  'cINCOME',
+  'dINCOME',
+  'aS_SCALE',
+  'bS_SCALE',
+  'cS_SCALE',
+  'dS_SCALE',
+  'aD_SCALE',
+  'bD_SCALE',
+  'cD_SCALE',
+  'dD_SCALE',
+  'aS_COMP',
+  'bS_COMP',
+  'cS_COMP',
+  'dS_COMP',
+  'aD_COMP',
+  'bD_COMP',
+  'cD_COMP',
+  'dD_COMP',
+  'aBFI_A',
+  'aBFI_A6',
+  'aBFI_C',
+  'aBFI_E',
+  'aBFI_HP',
+  'aBFI_N',
+  'aBFI_O',
+  'bBFI_A',
+  'bBFI_A6',
+  'bBFI_C',
+  'bBFI_E',
+  'bBFI_HP',
+  'bBFI_N',
+  'bBFI_O',
+  'cBFI_A',
+  'cBFI_A6',
+  'cBFI_C',
+  'cBFI_E',
+  'cBFI_HP',
+  'cBFI_N',
+  'cBFI_O',
+  'dBFI_A',
+  'dBFI_A6',
+  'dBFI_C',
+  'dBFI_E',
+  'dBFI_HP',
+  'dBFI_N',
+  'dBFI_O',
+  'aBFA_AC',
+  'aBFA_AP',
+  'aBFA_CI',
+  'aBFA_CO',
+  'aBFA_EA',
+  'aBFA_EE',
+  'aBFA_N9',
+  'aBFA_NV',
+  'aBFA_NW',
+  'aBFA_OI',
+  'aBFA_OO',
+  'aBFA_PS',
+  'aBFA_MT',
+  'bBFA_AC',
+  'bBFA_AP',
+  'bBFA_CI',
+  'bBFA_CO',
+  'bBFA_EA',
+  'bBFA_EE',
+  'bBFA_N9',
+  'bBFA_NV',
+  'bBFA_NW',
+  'bBFA_OI',
+  'bBFA_OO',
+  'bBFA_MT',
+  'bBFA_PS',
+  'cBFA_AC',
+  'cBFA_AP',
+  'cBFA_CI',
+  'cBFA_CO',
+  'cBFA_EA',
+  'cBFA_EE',
+  'cBFA_N9',
+  'cBFA_NV',
+  'cBFA_NW',
+  'cBFA_OI',
+  'cBFA_OO',
+  'cBFA_MT',
+  'cBFA_PS',
+  'dBFA_AC',
+  'dBFA_AP',
+  'dBFA_CI',
+  'dBFA_CO',
+  'dBFA_EA',
+  'dBFA_EE',
+  'dBFA_N9',
+  'dBFA_NV',
+  'dBFA_NW',
+  'dBFA_OI',
+  'dBFA_OO',
+  'dBFA_MT',
+  'dBFA_PS',
+  'aUSI',
+  'bUSI',
+  'cUSI',
+  'dUSI',
+  'aHRZ_IND',
+  'bHRZ_IND',
+  'cHRZ_IND',
+  'dHRZ_IND',
+  'aVRT_IND',
+  'bVRT_IND',
+  'cVRT_IND',
+  'dVRT_IND',
+  'aHRZ_COL',
+  'bHRZ_COL',
+  'cHRZ_COL',
+  'dHRZ_COL',
+  'aVRT_COL',
+  'bVRT_COL',
+  'cVRT_COL',
+  'dVRT_COL',
+  'aCOLLCTV',
+  'bCOLLCTV',
+  'cCOLLCTV',
+  'dCOLLCTV',
+  'aMVS',
+  'bMVS',
+  'cMVS',
+  'dMVS',
+  'aST',
+  'bST',
+  'cST',
+  'dST',
+  'aSD',
+  'bSD',
+  'cSD',
+  'dSD',
+  'aMVS_mc',
+  'bMVS_mc',
+  'cMVS_mc',
+  'dMVS_mc',
+  'aST_mc',
+  'bST_mc',
+  'cST_mc',
+  'dST_mc',
+  'aSD_mc',
+  'bSD_mc',
+  'cSD_mc',
+  'dSD_mc',
+  'bMEANING',
+  'cMEANING',
+  'dMEANING',
+  'bMEAN_L',
+  'cMEAN_L',
+  'dMEAN_L',
+  'bMEANNGc',
+  'cMEANNGc',
+  'dMEANNGc',
+  'bMEANGlc',
+  'cMEANGlc',
+  'dMEANGlc',
+  'bCLASSIC',
+  'cCLASSIC',
+  'dCLASSIC',
+  'bCLASSCc',
+  'cCLASSCc',
+  'dCLASSCc',
+  'bAGR_VAL',
+  'cAGR_VAL',
+  'dAGR_VAL',
+  'bOPN_VAL',
+  'cOPN_VAL',
+  'dOPN_VAL',
+  'bAGR_VLc',
+  'cAGR_VLc',
+  'dAGR_VLc',
+  'bOPNVALc',
+  'cOPNVALc',
+  'dOPNVALc',
+  'aMV_pomp',
+  'bMV_pomp',
+  'cMV_pomp',
+  'dMV_pomp',
+  'aST_pomp',
+  'bST_pomp',
+  'cST_pomp',
+  'dST_pomp',
+  'aSD_pomp',
+  'bSD_pomp',
+  'cSD_pomp',
+  'dSD_pomp',
+  'agoal_ec',
+  'bgoal_ec',
+  'cgoal_ec',
+  'dgoal_ec',
+  'aAspfinc',
+  'bAspfinc',
+  'cAspfinc',
+  'dAspfinc',
+  'abfi_hp8',
+  'bbfi_hp8',
+  'cbfi_hp8',
+  'dbfi_hp8',
+  'aP_S_BFI',
+  'aP_D_BFI',
+  'aECgoalc',
+  'bECgoalC',
+  'cECgoalC',
+  'dECgoalC',
+  'aaspfin',
+  'baspfin',
+  'caspfin',
+  'daspfin',
+  'aMVI_POMP',
+  'bMVI_POMP',
+  'cMVI_POMP',
+  'dMVI_POMP'
+)
+
+baseMainDF <- read.table('../Data/LT_227.txt', sep='\t', header=F,
+                         na.strings=-9999,
+                         col.names=baseMainDFColNames)
+
+vWaveVarNames <- lapply(c('a', 'b', 'c', 'd'), paste, 
+                         c(names(vVarNames)), sep='') %>% 
+  unlist
+
+stderr <- function(x) sqrt(var(x,na.rm=TRUE)/length(na.omit(x)))
+
+#mean age is 36
+summary_data_for_tables_w <- summary_data_for_tables %>%
+  select(variable, param, est) %>%
+  filter(param %in% c('i_mu', 's_mu'), variable %in% names(vVarNames)) %>%
+  spread(param, est) %>%
+  mutate(i_age_zero = i_mu - 36 * s_mu) %>%
+  mutate(variable = factor(variable, levels = names(vVarNames), labels = vVarNames))
+
+vDF <- baseMainDF %>% 
+  filter(aage > 20 & aage < 56, Sample == 1) %>%
+  select_(.dots = c(vWaveVarNames, 'aage', 'subjid')) %>%
+  mutate(bage = aage + 1, cage = aage + 2, dage = aage + 3) %>%
+  gather(key, value, -subjid) %>%
+  extract(key, c('wave', 'var'), regex = '([abcd])([\\w_]+)')%>%
+  spread(var, value) %>%
+  gather(variable, value, -subjid, -wave, -age) %>%
+  mutate(half_decade = (age - 1) %/% 5 * 5 + 2.5) %>%
+  group_by(wave, half_decade, variable) %>%
+  summarize(mean = mean(value, na.rm = T), 
+            stderr = stderr(value), 
+            n = length(na.omit(value)), 
+            se_u = mean + stderr, 
+            se_l = mean - stderr,
+            ci_u = mean + qt(.975, df=n-1) * stderr,
+            ci_l = mean - qt(.975, df=n-1) * stderr) %>%
+  mutate(variable = factor(variable, levels = names(vVarNames), labels = vVarNames))
+
+mygray <- '#cccccc'
+
+v_plot <- vDF %>%
+  filter(wave == 'a') %>%
+  left_join(summary_data_for_tables_w) %>%
+  ggplot(aes(x = half_decade, y = mean)) +
+  geom_errorbar(aes(ymin = ci_l, ymax = ci_u),
+                width = 0, color = '#999999',
+                position = position_dodge(width = 2)) + 
+  geom_point(position = position_dodge(width = 2), color = '#999999') + 
+  # geom_line(position = position_dodge(width = 2))+
+  geom_abline(aes(intercept = i_age_zero, slope = s_mu)) + 
+  facet_wrap(~variable, ncol = 2) + 
+  scale_x_continuous(breaks = seq(20,50,5)) + 
+  theme(panel.border = element_rect(fill = NA, color = mygray, size = 1, linetype = 1),
+        strip.background = element_rect(fill=mygray, color = mygray, size = 1, linetype = 1),
+        axis.line.x = element_line(color = mygray, size = .5, linetype = 1),
+        axis.line.y = element_line(color = mygray, size = .5, linetype = 1),
+        panel.spacing = unit(0, units = 'in')) + 
+  labs(x="",y="")
+
+print(v_plot)
+
+ggsave(plot = v_plot, filename = 'v_plot.pdf', width = 7.5, height = 9.5, units = 'in')
