@@ -223,21 +223,67 @@ nada <- paramsummaries %>% filter(modelType=='longitudinal',
 #'
 #'	
 #+fig.width=9, fig.height=6
+vVarNames <- c(
+  'USI'='Unmitigated\n Self-Interest',
+  'VRT_IND'='Vertical\n Individualism',
+  'BFA_MT'='Materialism',
+  'aspfin'='Financial\n Aspirations',
+  'MVI_POMP'='Mature\n Values Index',
+  'VRT_COL'='Vertical\n Collectivism',
+  'HRZ_COL'='Horizontal\n Collectivism',
+  'HRZ_IND'='Horizontal\n Individualism'
+)
+
+bordergray <- '#dddddd'
+meangray <- '#777777'
+
 paramsummaries %>% filter(modelType=='longitudinal',
 			  paramgroup %in% c('A WITH B', 'A WITH C', 'A WITH D'),
 			  sample=='Nat') %>%
-	select(variable, Group, est, se, paramgroup) %>%
+  mutate(variable = factor(variable, levels = names(vVarNames), labels = vVarNames)) %>%
+	select(variable, Group, est, se, paramgroup) %>% ungroup() %>%
 	mutate(Group=factor(str_replace(Group, 'D([2345])', '\\10\'s')),
 	       LL=est-1.96*se,
 	       UL=est+1.96*se,
-	       lag=as.numeric(as.factor(paramgroup))) %>%
+	       lag=factor(as.numeric(as.factor(paramgroup)), levels = c(1,2,3), labels = c('1-year lag', '2-year lag', '3-year lag'))) %>%
 	ggplot(aes(Group, est))+
+  geom_hline(yintercept = .6, color = bordergray, linetype = 3) +
 	geom_point(size=1)+
 	geom_errorbar(aes(ymin=LL, ymax=UL), width=0)+
 	facet_grid(lag~variable)+
-	coord_cartesian(y=c(0, 1))+
-	theme(axis.text.x=element_text(angle=360-45, hjust=0))+
-	labs(title="Age and Value Stability, National Sample",
-	     x="Age Group",
-	     y="Correlation with 95% CI")
+	coord_cartesian(y=c(.3, 1))+
+  scale_y_continuous(breaks = c(.4,.6,.8,1)) +
+	theme(axis.text.x=element_text(angle=360-45, hjust=0),
+	      panel.border = element_rect(fill = NA, color = bordergray, size = 1, linetype = 1),
+	      strip.background = element_rect(fill=bordergray, color = bordergray, size = 1, linetype = 1),
+	      axis.line.x = element_line(color = NA, size = .5, linetype = 1),
+	      axis.line.y = element_line(color = NA, size = .5, linetype = 1),
+	      panel.spacing = unit(0, units = 'in')) + 
+	labs(x="Age Decade Group",
+	     y="Correlation, 95% CI")
 	
+paramsummaries %>% filter(modelType=='longitudinal',
+                          paramgroup %in% c('A WITH B', 'A WITH C', 'A WITH D'),
+                          sample=='Nat') %>%
+  mutate(variable = factor(variable, levels = names(vVarNames), labels = vVarNames)) %>%
+  select(variable, Group, est, se, paramgroup) %>% ungroup() %>%
+  mutate(Group=factor(str_replace(Group, 'D([2345])', '\\10\'s')),
+         LL=est-1.96*se,
+         UL=est+1.96*se,
+         lag=factor(as.numeric(as.factor(paramgroup)), levels = c(1,2,3), labels = c('1-year lag', '2-year lag', '3-year lag'))) %>%
+  ggplot(aes(x = Group, y = est, alpha = lag, group = lag))+
+  geom_hline(yintercept = .6, color = bordergray, linetype = 3) +
+  geom_point(size=1, position = position_dodge(width = .65))+
+  geom_errorbar(aes(ymin=LL, ymax=UL), width=0, position = position_dodge(width = .65))+
+  facet_grid(~variable)+
+  coord_cartesian(y=c(.3, 1))+
+  scale_y_continuous(breaks = c(.4,.6,.8,1)) +
+  scale_alpha_discrete(range = c(1, .3)) +
+  theme(axis.text.x=element_text(angle=360-45, hjust=0),
+        panel.border = element_rect(fill = NA, color = bordergray, size = 1, linetype = 1),
+        strip.background = element_rect(fill=bordergray, color = bordergray, size = 1, linetype = 1),
+        axis.line.x = element_line(color = NA, size = .5, linetype = 1),
+        axis.line.y = element_line(color = NA, size = .5, linetype = 1),
+        panel.spacing = unit(0, units = 'in')) + 
+  labs(x="Age Decade Group",
+       y="Correlation, 95% CI")
