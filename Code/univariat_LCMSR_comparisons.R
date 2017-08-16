@@ -669,8 +669,8 @@ v_plot <- vDF %>%
         axis.line.x = element_line(color = NA, size = .5, linetype = 1),
         axis.line.y = element_line(color = NA, size = .5, linetype = 1),
         panel.spacing = unit(0, units = 'in')) + 
-  labs(x="",y="")
+  labs(y="Scale Score (in POMP units)",x="Age")
 
 print(v_plot)
 
-ggsave(plot = v_plot, filename = 'v_plot.pdf', width = 7.5, height = 9.5, units = 'in')
+ggsave(plot = v_plot, filename = 'v_plot.png', width = 7.5, height = 9.5, units = 'in', dpi = 300)
