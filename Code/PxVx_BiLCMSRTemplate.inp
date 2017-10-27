@@ -1,6 +1,7 @@
 [[init]]
-iterators = whichP whichV;
+iterators = whichP whichV constrain;
 
+constrain = 1:2;
 whichP = 1:44;
 whichV = 1:8;
 
@@ -24,11 +25,13 @@ subsetMeanAge#whichP = 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36 36
 36 36 36 36 36 36 36 36 
 20.5 20.5 20.5 20.5 20.5 20.5 20.5 20.5 20.5 20.5 20.5 20.5 20.5 20.5 20.5 20.5 20.5 20.5;
 
-filename="BivLCM-SR-[[varP#whichP]]_[[varV#whichV]]-[[subsetNames#whichP]]-PLin-VLin.inp";
+constype#constrain = "-Uncons" "";
+
+filename="BivLCM-SR-[[varP#whichP]]_[[varV#whichV]]-[[subsetNames#whichP]][[constype#constrain]]-PLin-VLin.inp";
 outputDirectory="~/code_new/lnt_pxvx/Rez/bivariate-lcmsr/[[subsetNames#whichP]]/[[varP#whichP]]_[[varV#whichV]]";
 [[/init]]
 
-title: PxVx Bivariate LCM-SR - [[subsetNames#whichP]] Linear [[varP#whichP]] with Linear [[varV#whichV]];
+title: PxVx Bivariate LCM-SR[[constype#constrain]] - [[subsetNames#whichP]] Linear [[varP#whichP]] with Linear [[varV#whichV]];
 data: file = /Users/johnflournoy/code/lnt_pxvx/Data/[[datafile#whichP]];
 
 [[whichP > 18]]
@@ -896,6 +899,32 @@ d[[varV#whichV]]@0;
 [v3@0];
 [v4@0];
 
+[[constrain == 1]]
+p4 on p3; 
+p3 on p2;
+p2 on p1;
+
+v4 on v3; 
+v3 on v2;
+v2 on v1;
+
+p4 on v3;
+p3 on v2;
+p2 on v1;
+
+v4 on p3;
+v3 on p2;
+v2 on p1;
+
+p1 with v1;
+p2 with v2;
+p3 with v3;
+p4 with v4;
+
+p2 p3 p4; ! estimate variances of residual "factors"
+v2 v3 v4; ! estimate variances of residual "factors"
+[[/constrain == 1]]
+[[constrain == 2]]
 p4 on p3 (a); ! Autoregressive paths constrained to equality
 p3 on p2 (a);
 p2 on p1 (a);
@@ -919,5 +948,6 @@ p4 with v4 (e);
 
 p2 p3 p4 (f); ! estimate variances of residual "factors"
 v2 v3 v4 (g); ! estimate variances of residual "factors"
+[[/constrain == 2]]
 
 OUTPUT: SAMPSTAT PATTERNS;

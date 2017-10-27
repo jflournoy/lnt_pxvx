@@ -1,0 +1,351 @@
+
+title: PxVx Bivariate LCM-SR-Uncons - Nat Linear BFA_NW with Linear VRT_COL;
+data: file = /Users/johnflournoy/code/lnt_pxvx/Data/LT_227.txt;
+
+
+variable: 
+names =
+subjid
+Sample
+aGENDER
+aAGE
+aethnic1
+aethnic2
+aedu_mom
+aedu_dad
+aEDUCATN
+bEDUCATN
+cEDUCATN
+aEMPLOYD
+bEMPLOYD
+cEMPLOYD
+dEMPLOYD
+aINCOME
+bINCOME
+cINCOME
+dINCOME
+aS_SCALE
+bS_SCALE
+cS_SCALE
+dS_SCALE
+aD_SCALE
+bD_SCALE
+cD_SCALE
+dD_SCALE
+aS_COMP
+bS_COMP
+cS_COMP
+dS_COMP
+aD_COMP
+bD_COMP
+cD_COMP
+dD_COMP
+aBFI_A
+aBFI_A6
+aBFI_C
+aBFI_E
+aBFI_HP
+aBFI_N
+aBFI_O
+bBFI_A
+bBFI_A6
+bBFI_C
+bBFI_E
+bBFI_HP
+bBFI_N
+bBFI_O
+cBFI_A
+cBFI_A6
+cBFI_C
+cBFI_E
+cBFI_HP
+cBFI_N
+cBFI_O
+dBFI_A
+dBFI_A6
+dBFI_C
+dBFI_E
+dBFI_HP
+dBFI_N
+dBFI_O
+aBFA_AC
+aBFA_AP
+aBFA_CI
+aBFA_CO
+aBFA_EA
+aBFA_EE
+aBFA_N9
+aBFA_NV
+aBFA_NW
+aBFA_OI
+aBFA_OO
+aBFA_PS
+aBFA_MT
+bBFA_AC
+bBFA_AP
+bBFA_CI
+bBFA_CO
+bBFA_EA
+bBFA_EE
+bBFA_N9
+bBFA_NV
+bBFA_NW
+bBFA_OI
+bBFA_OO
+bBFA_MT
+bBFA_PS
+cBFA_AC
+cBFA_AP
+cBFA_CI
+cBFA_CO
+cBFA_EA
+cBFA_EE
+cBFA_N9
+cBFA_NV
+cBFA_NW
+cBFA_OI
+cBFA_OO
+cBFA_MT
+cBFA_PS
+dBFA_AC
+dBFA_AP
+dBFA_CI
+dBFA_CO
+dBFA_EA
+dBFA_EE
+dBFA_N9
+dBFA_NV
+dBFA_NW
+dBFA_OI
+dBFA_OO
+dBFA_MT
+dBFA_PS
+aUSI
+bUSI
+cUSI
+dUSI
+aHRZ_IND
+bHRZ_IND
+cHRZ_IND
+dHRZ_IND
+aVRT_IND
+bVRT_IND
+cVRT_IND
+dVRT_IND
+aHRZ_COL
+bHRZ_COL
+cHRZ_COL
+dHRZ_COL
+aVRT_COL
+bVRT_COL
+cVRT_COL
+dVRT_COL
+aCOLLCTV
+bCOLLCTV
+cCOLLCTV
+dCOLLCTV
+aMVS
+bMVS
+cMVS
+dMVS
+aST
+bST
+cST
+dST
+aSD
+bSD
+cSD
+dSD
+aMVS_mc
+bMVS_mc
+cMVS_mc
+dMVS_mc
+aST_mc
+bST_mc
+cST_mc
+dST_mc
+aSD_mc
+bSD_mc
+cSD_mc
+dSD_mc
+bMEANING
+cMEANING
+dMEANING
+bMEAN_L
+cMEAN_L
+dMEAN_L
+bMEANNGc
+cMEANNGc
+dMEANNGc
+bMEANGlc
+cMEANGlc
+dMEANGlc
+bCLASSIC
+cCLASSIC
+dCLASSIC
+bCLASSCc
+cCLASSCc
+dCLASSCc
+bAGR_VAL
+cAGR_VAL
+dAGR_VAL
+bOPN_VAL
+cOPN_VAL
+dOPN_VAL
+bAGR_VLc
+cAGR_VLc
+dAGR_VLc
+bOPNVALc
+cOPNVALc
+dOPNVALc
+aMV_pomp
+bMV_pomp
+cMV_pomp
+dMV_pomp
+aST_pomp
+bST_pomp
+cST_pomp
+dST_pomp
+aSD_pomp
+bSD_pomp
+cSD_pomp
+dSD_pomp
+agoal_ec
+bgoal_ec
+cgoal_ec
+dgoal_ec
+aAspfinc
+bAspfinc
+cAspfinc
+dAspfinc
+abfi_hp8
+bbfi_hp8
+cbfi_hp8
+dbfi_hp8
+aP_S_BFI
+aP_D_BFI
+aECgoalc
+bECgoalC
+cECgoalC
+dECgoalC
+aaspfin
+baspfin
+caspfin
+daspfin
+aMVI_POMP
+bMVI_POMP
+cMVI_POMP
+dMVI_POMP;
+
+
+USEVARIABLES =
+aBFA_NW
+bBFA_NW
+cBFA_NW
+dBFA_NW
+aVRT_COL
+bVRT_COL
+cVRT_COL
+dVRT_COL
+a1
+a2
+a3
+a4
+;
+
+missing = all (-9999);
+
+USEOBSERVATIONS are Sample == 1; ! National Sample
+
+tscores = a1 a2 a3 a4;
+
+DEFINE:
+a1 = aAGE + 0 - 36;
+a2 = aAGE + 1 - 36;
+a3 = aAGE + 2 - 36;
+a4 = aAGE + 3 - 36;
+
+ANALYSIS:
+TYPE=RANDOM;
+PROCESSORS = 4; 
+model=nocovariances; ! supresses default estimation of certain covs in model;
+
+MODEL:
+
+i_BFA_NW s_BFA_NW | aBFA_NW bBFA_NW cBFA_NW dBFA_NW AT a1 a2 a3 a4;
+i_VRT_COL s_VRT_COL | aVRT_COL bVRT_COL cVRT_COL dVRT_COL AT a1 a2 a3 a4;
+
+! freeing factor covs because of "nocovariances"
+s_BFA_NW WITH i_BFA_NW s_VRT_COL i_VRT_COL; 
+i_BFA_NW WITH s_VRT_COL i_VRT_COL;
+s_VRT_COL WITH i_VRT_COL;
+
+p1 BY aBFA_NW@1; ! Residual "factors";
+p2 BY bBFA_NW@1;
+p3 BY cBFA_NW@1;
+p4 BY dBFA_NW@1;
+
+v1 BY aVRT_COL@1; ! Residual "factors";
+v2 BY bVRT_COL@1;
+v3 BY cVRT_COL@1;
+v4 BY dVRT_COL@1;
+
+!residual variances on observed/manifest vars set to 0
+aBFA_NW@0;
+bBFA_NW@0;
+cBFA_NW@0;
+dBFA_NW@0;
+
+!residual variances on observed/manifest vars set to 0
+aVRT_COL@0;
+bVRT_COL@0;
+cVRT_COL@0;
+dVRT_COL@0;
+
+! means of observed/manifest vars set to 0
+[aBFA_NW@0];
+[bBFA_NW@0];
+[cBFA_NW@0];
+[dBFA_NW@0];
+
+! means of observed/manifest vars set to 0
+[aVRT_COL@0];
+[bVRT_COL@0];
+[cVRT_COL@0];
+[dVRT_COL@0];
+
+[p1@0]; ! means of residual "factors" set to 0
+[p2@0];
+[p3@0];
+[p4@0];
+
+[v1@0]; ! means of residual "factors" set to 0
+[v2@0];
+[v3@0];
+[v4@0];
+
+p4 on p3; 
+p3 on p2;
+p2 on p1;
+
+v4 on v3; 
+v3 on v2;
+v2 on v1;
+
+p4 on v3;
+p3 on v2;
+p2 on v1;
+
+v4 on p3;
+v3 on p2;
+v2 on p1;
+
+p1 with v1;
+p2 with v2;
+p3 with v3;
+p4 with v4;
+
+p2 p3 p4; ! estimate variances of residual "factors"
+v2 v3 v4; ! estimate variances of residual "factors"
+
+OUTPUT: SAMPSTAT PATTERNS;
