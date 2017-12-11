@@ -285,13 +285,14 @@ allParams <- paramsummaries %>%
                         str_replace_all(bivPathDir, 
                                         c('Target: Pers'='VtoP',
                                           'Target: Val'='PtoV'))),
-         est.stars=ifelse(pval<.01, 
+         est.stars=ifelse(pval<.05, 
                           ifelse(pval<.005, sprintf('*%.2fª*', est), sprintf('*%.2f*', est)),
                           sprintf('%.2f', est)),
          est.bf=ifelse(pval<.01, 
                        sprintf('\\textbf{%.2f}', est),
                        sprintf('%.2f', est)),
          se.d=sprintf('%.2f', se),
+         pval=sprintf('%.3f', pval),
          ci.u=est+1.96*se,
          ci.l=est-1.96*se) %>%
   select(ScaleName, vVar, sample, modelCombo, colName, 
@@ -336,10 +337,14 @@ nada <- allParams_w_sampleLong %>%
                         Justify(r)*
                         ((`$P\\rightarrow V$`=`PtoV est.stars`)+
                            (`SE`=`PtoV se.d`)+
+                           (`$p_{\\text{PV}}$`=`PtoV pval`)+
                            (`$V\\rightarrow P$`=`VtoP est.stars`)+
                            (`SE`=`VtoP se.d`)+
+                           (`$p_{\\text{VP}}$`=`VtoP pval`)+
                            (`$\\text{cor}(\\text{I}_{V},\\text{I}_{P})$`=`rPiVi est.stars`)+
-                           (`$\\text{cor}(\\text{S}_{V},\\text{S}_{P})$`=`rPsVs est.stars`)), 
+                           (`$p_{\\text{II}}$`=`rPiVi pval`)+
+                           (`$\\text{cor}(\\text{S}_{V},\\text{S}_{P})$`=`rPsVs est.stars`)+
+                           (`$p_{\\text{SS}}$`=`rPsVs pval`)), 
                       data=.) # %>% cat #%>% latex()
     cat(paste0('\n## ', vVarNames[.$vVar[[1]]], '\n'))
     html(atable)
