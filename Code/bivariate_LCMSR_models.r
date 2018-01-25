@@ -17,23 +17,23 @@ library(ggplot2)
 library(broom)
 opts_chunk$set(echo=F, message=F, warning=F, dev='svg')
 pVarNames <- c(S_SCALE="Social Self-Regulation",
-               BFI_C=".Conscientiousness BFI",
-               BFA_CI="..Industriousness BFAS", 
-               BFA_CO="..Orderliness BFAS", 
-               bfi_hp8=".Honesty/Propriety BFI", 
-               BFI_A6=".Agreeableness-Six BFI", 
-               BFA_AC="..Compassion BFAS", 
-               BFA_AP="..Politeness BFAS", 
-               BFI_N=".Neuroticism BFI", 
-               BFA_NV="..Volatility BFAS", 
-               BFA_NW="..Withdrawal BFAS", 
+               BFI_C=".Conscientiousness",
+               BFA_CI="..Industriousness", 
+               BFA_CO="..Orderliness", 
+               bfi_hp8=".Honesty/Propriety", 
+               BFI_A6=".Agreeableness-Six", 
+               BFA_AC="..Compassion", 
+               BFA_AP="..Politeness", 
+               BFI_N=".Neuroticism", 
+               BFA_NV="..Volatility", 
+               BFA_NW="..Withdrawal", 
                D_SCALE="Dynamism", 
-               BFI_E=".Extraversion BFI", 
-               BFA_EA="..Assertiveness BFAS", 
-               BFA_EE="..Enthusiasm BFAS", 
-               BFI_O=".Openness BFI", 
-               BFA_OI="..Intellect BFAS", 
-               BFA_OO="..Openness BFAS")
+               BFI_E=".Extraversion", 
+               BFA_EA="..Assertiveness", 
+               BFA_EE="..Enthusiasm", 
+               BFI_O=".Openness", 
+               BFA_OI="..Intellect", 
+               BFA_OO="..Openness")
 
 vVarNames <- c('aspfin'='Financial Aspirations',
                'BFA_MT'='Materialism',
@@ -364,7 +364,7 @@ nada <- allParams_w_sampleLong %>%
                            (`$p_{\\text{VP}}$`=`VtoP pval`)+
                            (`$\\text{cor}(\\text{I}_{V},\\text{I}_{P})$`=`rPiVi est.stars`)+
                            (`$p_{\\text{II}}$`=`rPiVi pval`)+
-                           (`$\\text{cor}(\\text{V}_{\\text{within}},\\text{P}_{\\text{within}})$`=`rPVwithin est.stars`)+
+                           (`$\\text{cor}(\\text{V}_{\\text{w/i}},\\text{P}_{\\text{w/i}})$`=`rPVwithin est.stars`)+
                            (`$p_{\\text{PV}}$`=`rPVwithin pval`)+
                            (`$\\text{cor}(\\text{S}_{V},\\text{S}_{P})$`=`rPsVs est.stars`)+
                            (`$p_{\\text{SS}}$`=`rPsVs pval`)), 
