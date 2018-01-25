@@ -230,6 +230,7 @@ paramsummaries <-
   do({
     varsS <- .$est[.$paramgroup=='Variances  S']
     varsI <- .$est[.$paramgroup=='Variances  I']
+    varsPVwithin <- .$est[.$paramgroup=='Residual.Variances  2']
     if(!length(varsI) %in% c(0,2)){
       stop(paste0('Too many intercept variances in ', 
                   paste0(unique(.[, c('pVar','vVar','modelCombo','sample')]), 
@@ -261,14 +262,31 @@ paramsummaries <-
       stdSwithSRow$est <- covPSVS/prod(varsS^.5)
       withIandSDF <- rbind(withIDF,stdSwithSRow)
     }
-    withIandSDF
+    if(!length(varsPVwithin) %in% c(0,2)){
+      stop(paste0('Too many within-person variances in ', 
+                  paste0(unique(.[, c('pVar','vVar','modelCombo','sample')]), 
+                         collapse=' '),
+                  ': ',
+                  paste0(varsPVwithin, collapse=', ')))
+    } else if(length(varsPVwithin)==0){
+      message("uh-uh")
+      withIandSandWithinDF <- withIandSDF
+    } else {
+      stdPVwithinRow <- .[.$paramgroup=='2 WITH 2', ]
+      stdPVwithinRow$paramgroup <- '2 WITH 2 STD'
+      covPVwithin <- stdPVwithinRow$est
+      stdPVwithinRow$est <- covPVwithin/prod(varsPVwithin^.5)
+      withIandSandWithinDF <- rbind(withIandSDF,stdPVwithinRow)
+    }
+    withIandSandWithinDF
   }) 
 
 allParams <- paramsummaries %>%
   data.table::as.data.table() %>%
   filter(bivPathType=='Across Var',
          paramgroup %in% c('2 ON 1','I WITH I', 'I WITH I STD',
-                           'S WITH S', 'S WITH S STD')) %>%
+                           'S WITH S', 'S WITH S STD', 
+                           '2 WITH 2', '2 WITH 2 STD')) %>%
   mutate(sample=ifelse(str_detect(pVar, '^I_'),
                        'Inf',
                        sample),
@@ -281,16 +299,18 @@ allParams <- paramsummaries %>%
                                         c('^I WITH I STD$'='rPiVi',
                                           '^I WITH I$'='covPiVi',
                                           '^S WITH S STD$'='rPsVs',
-                                          '^S WITH S$'='covPsVs')), 
+                                          '^S WITH S$'='covPsVs',
+                                          '^2 WITH 2 STD$'='rPVwithin',
+                                          '^2 WITH 2$'='covPVwithin')), 
                         str_replace_all(bivPathDir, 
                                         c('Target: Pers'='VtoP',
                                           'Target: Val'='PtoV'))),
          est.stars=ifelse(pval<.05, 
                           ifelse(pval<.005, sprintf('*%.2fª*', est), sprintf('*%.2f*', est)),
                           sprintf('%.2f', est)),
-         est.bf=ifelse(pval<.01, 
-                       sprintf('\\textbf{%.2f}', est),
-                       sprintf('%.2f', est)),
+         est.bf=ifelse(pval<.05, 
+                          ifelse(pval<.005, sprintf('\\textbf{%.2fª}', est), sprintf('\\textbf{%.2f}', est)),
+                          sprintf('%.2f', est)),
          se.d=sprintf('%.2f', se),
          pval=sprintf('%.3f', pval),
          ci.u=est+1.96*se,
@@ -323,7 +343,8 @@ nada <- allParams_w_sampleLong %>%
          `PtoV est.stars` = gsub('\\*', '**', `PtoV est.stars`),
          `VtoP est.stars` = gsub('\\*', '**', `VtoP est.stars`),
          `rPiVi est.stars` = gsub('\\*', '**', `rPiVi est.stars`),
-         `rPsVs est.stars` = gsub('\\*', '**', `rPsVs est.stars`)) %>%
+         `rPsVs est.stars` = gsub('\\*', '**', `rPsVs est.stars`),
+         `rPVwithin est.stars` = gsub('\\*', '**', `rPVwithin est.stars`)) %>%
   group_by(vVar) %>%
   do({
     atable <- tabular(Heading()*Justify(l)*(scale=Factor(ScaleName, texify=F))~
@@ -343,6 +364,8 @@ nada <- allParams_w_sampleLong %>%
                            (`$p_{\\text{VP}}$`=`VtoP pval`)+
                            (`$\\text{cor}(\\text{I}_{V},\\text{I}_{P})$`=`rPiVi est.stars`)+
                            (`$p_{\\text{II}}$`=`rPiVi pval`)+
+                           (`$\\text{cor}(\\text{V}_{\\text{within}},\\text{P}_{\\text{within}})$`=`rPVwithin est.stars`)+
+                           (`$p_{\\text{PV}}$`=`rPVwithin pval`)+
                            (`$\\text{cor}(\\text{S}_{V},\\text{S}_{P})$`=`rPsVs est.stars`)+
                            (`$p_{\\text{SS}}$`=`rPsVs pval`)), 
                       data=.) # %>% cat #%>% latex()
