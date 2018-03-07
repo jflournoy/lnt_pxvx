@@ -1,0 +1,189 @@
+
+```{r}
+library(tidyverse)
+
+lntItemDF <- haven::read_sav('/data/jflournoy/lnt_pxvx/LT_wideAGT1234.sav')
+
+lntItemDF_nat <- dplyr::filter(lntItemDF, aSubsample == 1)
+
+create_scoring_frame <- function(items, rev_pattern = '.*x$', 
+                                 sub_pattern = '^[abcd](.*?)x*$', 
+                                 sub_replacement = '\\1',
+                                 subscale_name = NULL)
+{
+  scoring_vec <- -2*as.numeric(grepl(rev_pattern, items))+1
+  new_items <- gsub(pattern = sub_pattern, replacement = sub_replacement, items)
+  scoring_df <- data.frame(item = new_items, scoring = scoring_vec,
+                           stringsAsFactors = FALSE)
+  if(!is.null(subscale_name)){
+    scoring_df$subscale <- subscale_name
+  }
+  return(scoring_df)
+}
+
+bfi_s_scale <- create_scoring_frame(
+  c('abfi32', 'abfi7', 'abfi42', 'abfi33', 'abfi13', 'abfi51', 'abfi37x',
+    'abfi8x', 'abfi2x', 'abfi12x', 'abfi47x', 'abfi49x'),
+  subscale_name = 'bfi_s_scale')
+
+bfi_d_scale <- create_scoring_frame(
+  c('abfi26', 'abfi36', 'abfi16', 'abfi31x', 'abfi11', 'abfi5', 'abfi25', 'abfi20', 'abfi39x'),
+  subscale_name = 'bfi_d_scale')
+
+bfi_hp8 <- create_scoring_frame(
+  c('abfi45x', 'abfi46x', 'abfi47x', 'abfi48x', 'abfi49x', 'abfi50', 'abfi51', 'abfi52'), 
+  subscale_name = 'bfi_hp8')
+
+bfi_c <- create_scoring_frame(
+  c('abfi3', 'abfi8x', 'abfi13', 'abfi18x', 'abfi23x', 'abfi28', 'abfi33', 'abfi38', 'abfi43x'), 
+  subscale_name = 'bfi_c')
+
+bfi_a <- create_scoring_frame(
+  c('abfi2x', 'abfi7', 'abfi12x', 'abfi17', 'abfi22', 'abfi27x', 'abfi32', 'abfi37x', 'abfi42'), 
+  subscale_name = 'bfi_a')
+
+bfi_a6 <- create_scoring_frame(
+  c('abfi55', 'abfi56', 'abfi57', 'abfi58x', 'abfi59x', 'abfi60x', 'abfi61x', 'abfi62x'), 
+  subscale_name = 'bfi_a6')
+
+bfi_e <- create_scoring_frame(
+  c('abfi1', 'abfi6x', 'abfi11', 'abfi16', 'abfi21x', 'abfi26', 'abfi31x', 'abfi36'), 
+  subscale_name = 'bfi_e')
+
+bfi_n <- create_scoring_frame(
+  c('abfi4', 'abfi9x', 'abfi14', 'abfi19', 'abfi24x', 'abfi29', 'abfi34x', 'abfi39'), 
+  subscale_name = 'bfi_n')
+
+bfi_o <- create_scoring_frame(
+  c('abfi5', 'abfi10', 'abfi15', 'abfi20', 'abfi25', 'abfi30', 'abfi35x', 'abfi40', 'abfi41x', 'abfi44'), 
+  subscale_name = 'bfi_o')
+
+#(\wbfi\d+x*)(?:\W+\+\W*)*
+
+bbfas_ac <- create_scoring_frame(
+  ('bbfas20x', 'bbfas21', 'bbfas22', 'bbfas23x', 'bbfas24', 
+   'bbfas25x', 'bbfas26x', 'bbfas27', 'bbfas28x', 'bbfas29'),
+  subscale_name = 'bbfas_ac')
+bbfas_ap <- create_scoring_frame(
+  c('bbfas30', 'bbfas31x', 'bbfas32', 'bbfas33x', 'bbfas34', 
+    'bbfas35', 'bbfas36x', 'bbfas37x', 'bbfas38x', 'bbfas102x'),
+  subscale_name = 'bbfas_ap')
+bbfas_ci <- create_scoring_frame(
+  c('bbfas40', 'bbfas41x', 'bbfas42x', 'bbfas43x', 'bbfas44', 
+    'bbfas45x', 'bbfas46', 'bbfas47', 'bbfas48x', 'bbfas49x'),
+  subscale_name = 'bbfas_ci')
+bbfas_co <- create_scoring_frame(
+  c('bbfas50x', 'bbfas51', 'bbfas52', 'bbfas53', 'bbfas54x', 
+    'bbfas55', 'bbfas56x', 'bbfas57x', 'bbfas58', 'bbfas59'),
+  subscale_name = 'bbfas_co')
+bbfas_ea <- create_scoring_frame(
+  c('bbfas70', 'bbfas71', 'bbfas72x', 'bbfas73', 'bbfas74x', 
+    'bbfas75', 'bbfas76', 'bbfas77x', 'bbfas78', 'bbfas79x'),
+  subscale_name = 'bbfas_ea')
+bbfas_ee <- create_scoring_frame(
+  c('bbfas60', 'bbfas61x', 'bbfas62x', 'bbfas63x', 'bbfas64', 
+    'bbfas65x', 'bbfas66x', 'bbfas67', 'bbfas68', 'bbfas69'),
+  subscale_name = 'bbfas_ee')
+bbfas_nv9 <- create_scoring_frame(
+  c('bbfas1x', 'bbfas2', 'bbfas3x', 'bbfas4', 'bbfas5x', 
+    'bbfas6', 'bbfas7x', 'bbfas8', 'bbfas9'),
+  subscale_name = 'bbfas_nv9')
+bbfas_nv <- create_scoring_frame(
+  c('bbfi58', 'bbfas1x', 'bbfas2', 'bbfas3x', 'bbfas4', 
+    'bbfas5x', 'bbfas6', 'bbfas7x', 'bbfas8', 'bbfas9'),
+  subscale_name = 'bbfas_nv')
+bbfas_nw <- create_scoring_frame(
+  c('bbfas10x', 'bbfas11', 'bbfas12x', 'bbfas13', 'bbfas14x', 
+    'bbfas15', 'bbfas16', 'bbfas17x', 'bbfas18', 'bbfas19'),
+  subscale_name = 'bbfas_nw')
+bbfas_oi <- create_scoring_frame(
+  c('bbfas80', 'bbfas81x', 'bbfas82', 'bbfas83', 'bbfas84x', 
+    'bbfas85x', 'bbfas86', 'bbfas87', 'bbfas88x', 'bbfas89'),
+  subscale_name = 'bbfas_oi')
+bbfas_oo <- create_scoring_frame(
+  c('bbfas90', 'bbfas91', 'bbfas92', 'bbfas93', 'bbfas94x', 
+    'bbfas95', 'bbfas96', 'bbfas97x', 'bbfas98x', 'bbfas99x'),
+  subscale_name = 'bbfas_oo')
+```
+
+
+```{r}
+scale_midfixes <- c('bfi', 'bfas', 'usi', 'ind',
+                    'asp')
+
+item_regexs <- paste0('[abcd](',
+                      paste(scale_midfixes, 
+                            collapse = '|'),
+                      ')\\d+')
+
+lnt_items_nat <- dplyr::select(lntItemDF_nat, matches(item_regexs))
+
+psych::reverse.code()
+
+pers_cols <- c('S_SCALE',
+               'BFI_C',
+               'BFA_CI',
+               'BFA_CO',
+               'bfi_hp8',
+               'BFI_A6',
+               'BFA_AC',
+               'BFA_AP',
+               'BFI_N',
+               'BFA_NV',
+               'BFA_NW',
+               'D_SCALE',
+               'BFI_E',
+               'BFA_EA',
+               'BFA_EE',
+               'BFI_O',
+               'BFA_OI',
+               'BFA_OO')
+
+val_cols <- c('aspfin',
+              'BFA_MT',
+              'HRZ_COL',
+              'HRZ_IND',
+              'MVI_POMP',
+              'USI',
+              'VRT_COL',
+              'VRT_IND')
+
+
+
+```
+
+Create a function that will generate lavaan syntax for a scale
+
+```{r}
+library(lavaan)
+library(semTools)
+
+data(HolzingerSwineford1939)
+
+HW.model <- 'visual =~ x1 + x2 + x3
+              textual =~ x4 + x5 + x6
+              speed =~ x7 + x8 + x9 '
+
+models2 <- measurementInvariance(HW.model, data=HolzingerSwineford1939, group="school", std.lv = TRUE, strict = T)
+
+print(models2)
+
+check_manifests_exist <- function(manifest_vec, aDF){
+  df_names <- names(aDF)
+  wave_manifest_names <- unlist(lapply(c('a', 'b', 'c', 'd'), paste0, manifest_vec))
+  all_in_df_names <- all(wave_manifest_names %in% df_names)
+  return(all_in_df_names)
+}
+
+create_lnt_unifactor_model <- function(factor_name, manifest_vec){
+  wave_factors <- paste0(factor_name, '_W', 1:4)
+  wave_manifests_rhs <- lapply(c('a', 'b', 'c', 'd'),
+                           function(letter){
+                             paste(paste0(letter, manifest_vec),
+                                   collapse = ' + ')
+                           })
+  wave_eqs <- paste0(wave_factors, ' =~ ', wave_manifests_rhs)
+  all_wave_model <- paste(wave_eqs, collapse = '\n')
+}
+
+```
