@@ -1,10 +1,10 @@
 
+
+
 ```{r}
 library(tidyverse)
-
-lntItemDF <- haven::read_sav('/data/jflournoy/lnt_pxvx/LT_wideAGT1234.sav')
-
-lntItemDF_nat <- dplyr::filter(lntItemDF, aSubsample == 1)
+lnt_df <- haven::read_sav('/data/jflournoy/lnt_pxvx/LT_wideAGT1234.sav')
+lnt_df_nat <- dplyr::filter(lnt_df, aSubsample == 1)
 
 create_scoring_frame <- function(items, rev_pattern = '.*x$', 
                                  sub_pattern = '^[abcd](.*?)x*$', 
@@ -21,135 +21,155 @@ create_scoring_frame <- function(items, rev_pattern = '.*x$',
   return(scoring_df)
 }
 
-bfi_s_scale <- create_scoring_frame(
-  c('abfi32', 'abfi7', 'abfi42', 'abfi33', 'abfi13', 'abfi51', 'abfi37x',
-    'abfi8x', 'abfi2x', 'abfi12x', 'abfi47x', 'abfi49x'),
-  subscale_name = 'bfi_s_scale')
+#Some regex help munging the code from SPSS
+# (\wbfi\d+x*)(?:\W+\+\W*)*
+# '\1'
+#
+# compute (\w+) = 100\*\(mean(\(.*?\)) - 1\) */ *\d\. 
+# \1 <- create_scoring_frame(\n  c\2\n  subscale_name = '\1')
+#
+# val_cols <- c('aspfin',
+#               'BFA_MT',
+#               'HRZ_COL',
+#               'HRZ_IND',
+#               'MVI_POMP',
+#               'USI',
+#               'VRT_COL',
+#               'VRT_IND')
 
-bfi_d_scale <- create_scoring_frame(
-  c('abfi26', 'abfi36', 'abfi16', 'abfi31x', 'abfi11', 'abfi5', 'abfi25', 'abfi20', 'abfi39x'),
-  subscale_name = 'bfi_d_scale')
+lnt_scales_list <- list(
+  bfi_s_scale = create_scoring_frame(
+    c('abfi32', 'abfi7', 'abfi42', 'abfi33', 'abfi13', 'abfi51', 'abfi37x',
+      'abfi8x', 'abfi2x', 'abfi12x', 'abfi47x', 'abfi49x'),
+    subscale_name = 'bfi_s_scale'),
+  bfi_d_scale = create_scoring_frame(
+    c('abfi26', 'abfi36', 'abfi16', 'abfi31x', 'abfi11', 'abfi5', 'abfi25', 'abfi20', 'abfi39x'),
+    subscale_name = 'bfi_d_scale'),
+  bfi_hp8 = create_scoring_frame(
+    c('abfi45x', 'abfi46x', 'abfi47x', 'abfi48x', 'abfi49x', 'abfi50', 'abfi51', 'abfi52'), 
+    subscale_name = 'bfi_hp8'),
+  bfi_c = create_scoring_frame(
+    c('abfi3', 'abfi8x', 'abfi13', 'abfi18x', 'abfi23x', 'abfi28', 'abfi33', 'abfi38', 'abfi43x'), 
+    subscale_name = 'bfi_c'),
+  bfi_a = create_scoring_frame(
+    c('abfi2x', 'abfi7', 'abfi12x', 'abfi17', 'abfi22', 'abfi27x', 'abfi32', 'abfi37x', 'abfi42'), 
+    subscale_name = 'bfi_a'),
+  bfi_a6 = create_scoring_frame(
+    c('abfi55', 'abfi56', 'abfi57', 'abfi58x', 'abfi59x', 'abfi60x', 'abfi61x', 'abfi62x'), 
+    subscale_name = 'bfi_a6'),
+  bfi_e = create_scoring_frame(
+    c('abfi1', 'abfi6x', 'abfi11', 'abfi16', 'abfi21x', 'abfi26', 'abfi31x', 'abfi36'), 
+    subscale_name = 'bfi_e'),
+  bfi_n = create_scoring_frame(
+    c('abfi4', 'abfi9x', 'abfi14', 'abfi19', 'abfi24x', 'abfi29', 'abfi34x', 'abfi39'), 
+    subscale_name = 'bfi_n'),
+  bfi_o = create_scoring_frame(
+    c('abfi5', 'abfi10', 'abfi15', 'abfi20', 'abfi25', 'abfi30', 'abfi35x', 'abfi40', 'abfi41x', 'abfi44'), 
+    subscale_name = 'bfi_o'),
+  bfas_ac = create_scoring_frame(
+    c('bbfas20x', 'bbfas21', 'bbfas22', 'bbfas23x', 'bbfas24', 
+      'bbfas25x', 'bbfas26x', 'bbfas27', 'bbfas28x', 'bbfas29'),
+    subscale_name = 'bfas_ac'),
+  bfas_ap = create_scoring_frame(
+    c('bbfas30', 'bbfas31x', 'bbfas32', 'bbfas33x', 'bbfas34', 
+      'bbfas35', 'bbfas36x', 'bbfas37x', 'bbfas38x', 'bbfas102x'),
+    subscale_name = 'bfas_ap'),
+  bfas_ci = create_scoring_frame(
+    c('bbfas40', 'bbfas41x', 'bbfas42x', 'bbfas43x', 'bbfas44', 
+      'bbfas45x', 'bbfas46', 'bbfas47', 'bbfas48x', 'bbfas49x'),
+    subscale_name = 'bfas_ci'),
+  bfas_co = create_scoring_frame(
+    c('bbfas50x', 'bbfas51', 'bbfas52', 'bbfas53', 'bbfas54x', 
+      'bbfas55', 'bbfas56x', 'bbfas57x', 'bbfas58', 'bbfas59'),
+    subscale_name = 'bfas_co'),
+  bfas_ea = create_scoring_frame(
+    c('bbfas70', 'bbfas71', 'bbfas72x', 'bbfas73', 'bbfas74x', 
+      'bbfas75', 'bbfas76', 'bbfas77x', 'bbfas78', 'bbfas79x'),
+    subscale_name = 'bfas_ea'),
+  bfas_ee = create_scoring_frame(
+    c('bbfas60', 'bbfas61x', 'bbfas62x', 'bbfas63x', 'bbfas64', 
+      'bbfas65x', 'bbfas66x', 'bbfas67', 'bbfas68', 'bbfas69'),
+    subscale_name = 'bfas_ee'),
+  bfas_nv9 = create_scoring_frame(
+    c('bbfas1x', 'bbfas2', 'bbfas3x', 'bbfas4', 'bbfas5x', 
+      'bbfas6', 'bbfas7x', 'bbfas8', 'bbfas9'),
+    subscale_name = 'bfas_nv9'),
+  bfas_nv = create_scoring_frame(
+    c('bbfi58', 'bbfas1x', 'bbfas2', 'bbfas3x', 'bbfas4', 
+      'bbfas5x', 'bbfas6', 'bbfas7x', 'bbfas8', 'bbfas9'),
+    subscale_name = 'bfas_nv'),
+  bfas_nw = create_scoring_frame(
+    c('bbfas10x', 'bbfas11', 'bbfas12x', 'bbfas13', 'bbfas14x', 
+      'bbfas15', 'bbfas16', 'bbfas17x', 'bbfas18', 'bbfas19'),
+    subscale_name = 'bfas_nw'),
+  bfas_oi = create_scoring_frame(
+    c('bbfas80', 'bbfas81x', 'bbfas82', 'bbfas83', 'bbfas84x', 
+      'bbfas85x', 'bbfas86', 'bbfas87', 'bbfas88x', 'bbfas89'),
+    subscale_name = 'bfas_oi'),
+  bfas_oo = create_scoring_frame(
+    c('bbfas90', 'bbfas91', 'bbfas92', 'bbfas93', 'bbfas94x', 
+      'bbfas95', 'bbfas96', 'bbfas97x', 'bbfas98x', 'bbfas99x'),
+    subscale_name = 'bfas_oo'),
+  aspfin = create_scoring_frame(
+    c('basp12', 'basp13', 'basp14', 'basp15', 'basp16'),
+    subscale_name = 'aspfin'),
+  bfa_mt = create_scoring_frame(
+    c('abfas105', 'abfas106', 'abfas107x', 'abfas108x', 'abfas109', 'abfas110', 'abfas111x', 
+      'abfas112x', 'abfas113', 'abfas114', 'abfas115', 'abfas116x', 'abfas117x', 'abfas118x'),
+    subscale_name = 'bfa_mt'),
+  hrz_ind = create_scoring_frame(
+    c('aind1', 'aind2', 'aind3', 'aind4'),
+    subscale_name = 'hrz_ind'),
+  hrz_col = create_scoring_frame(
+    c('aind9', 'aind10', 'aind11', 'aind12'),
+    subscale_name = 'hrz_col'),
+  mvi = create_scoring_frame(
+    c('aval7', 'aval9', 'aval11', 'aval13', 'aval15', 'aval17', 'aval18', 'aval20', 'aval21', 
+      'aval23', 'aval8x', 'aval10x', 'aval12x', 'aval14x', 'aval16x', 'aval19x', 'aval22x'),
+    subscale_name = 'mvi'),
+  usi = create_scoring_frame(
+    c('ausi1', 'ausi2x', 'ausi3x', 'ausi5', 'ausi6x', 'ausi7'),
+    subscale_name = 'usi'),
+  vrt_ind = create_scoring_frame(
+    c('aind5', 'aind6', 'aind7', 'aind8'),
+    subscale_name = 'vrt_ind'),
+  vrt_col = create_scoring_frame(
+    c('aind13', 'aind14', 'aind15', 'aind16'),
+    subscale_name = 'vrt_col'))
 
-bfi_hp8 <- create_scoring_frame(
-  c('abfi45x', 'abfi46x', 'abfi47x', 'abfi48x', 'abfi49x', 'abfi50', 'abfi51', 'abfi52'), 
-  subscale_name = 'bfi_hp8')
-
-bfi_c <- create_scoring_frame(
-  c('abfi3', 'abfi8x', 'abfi13', 'abfi18x', 'abfi23x', 'abfi28', 'abfi33', 'abfi38', 'abfi43x'), 
-  subscale_name = 'bfi_c')
-
-bfi_a <- create_scoring_frame(
-  c('abfi2x', 'abfi7', 'abfi12x', 'abfi17', 'abfi22', 'abfi27x', 'abfi32', 'abfi37x', 'abfi42'), 
-  subscale_name = 'bfi_a')
-
-bfi_a6 <- create_scoring_frame(
-  c('abfi55', 'abfi56', 'abfi57', 'abfi58x', 'abfi59x', 'abfi60x', 'abfi61x', 'abfi62x'), 
-  subscale_name = 'bfi_a6')
-
-bfi_e <- create_scoring_frame(
-  c('abfi1', 'abfi6x', 'abfi11', 'abfi16', 'abfi21x', 'abfi26', 'abfi31x', 'abfi36'), 
-  subscale_name = 'bfi_e')
-
-bfi_n <- create_scoring_frame(
-  c('abfi4', 'abfi9x', 'abfi14', 'abfi19', 'abfi24x', 'abfi29', 'abfi34x', 'abfi39'), 
-  subscale_name = 'bfi_n')
-
-bfi_o <- create_scoring_frame(
-  c('abfi5', 'abfi10', 'abfi15', 'abfi20', 'abfi25', 'abfi30', 'abfi35x', 'abfi40', 'abfi41x', 'abfi44'), 
-  subscale_name = 'bfi_o')
-
-#(\wbfi\d+x*)(?:\W+\+\W*)*
-
-bbfas_ac <- create_scoring_frame(
-  ('bbfas20x', 'bbfas21', 'bbfas22', 'bbfas23x', 'bbfas24', 
-   'bbfas25x', 'bbfas26x', 'bbfas27', 'bbfas28x', 'bbfas29'),
-  subscale_name = 'bbfas_ac')
-bbfas_ap <- create_scoring_frame(
-  c('bbfas30', 'bbfas31x', 'bbfas32', 'bbfas33x', 'bbfas34', 
-    'bbfas35', 'bbfas36x', 'bbfas37x', 'bbfas38x', 'bbfas102x'),
-  subscale_name = 'bbfas_ap')
-bbfas_ci <- create_scoring_frame(
-  c('bbfas40', 'bbfas41x', 'bbfas42x', 'bbfas43x', 'bbfas44', 
-    'bbfas45x', 'bbfas46', 'bbfas47', 'bbfas48x', 'bbfas49x'),
-  subscale_name = 'bbfas_ci')
-bbfas_co <- create_scoring_frame(
-  c('bbfas50x', 'bbfas51', 'bbfas52', 'bbfas53', 'bbfas54x', 
-    'bbfas55', 'bbfas56x', 'bbfas57x', 'bbfas58', 'bbfas59'),
-  subscale_name = 'bbfas_co')
-bbfas_ea <- create_scoring_frame(
-  c('bbfas70', 'bbfas71', 'bbfas72x', 'bbfas73', 'bbfas74x', 
-    'bbfas75', 'bbfas76', 'bbfas77x', 'bbfas78', 'bbfas79x'),
-  subscale_name = 'bbfas_ea')
-bbfas_ee <- create_scoring_frame(
-  c('bbfas60', 'bbfas61x', 'bbfas62x', 'bbfas63x', 'bbfas64', 
-    'bbfas65x', 'bbfas66x', 'bbfas67', 'bbfas68', 'bbfas69'),
-  subscale_name = 'bbfas_ee')
-bbfas_nv9 <- create_scoring_frame(
-  c('bbfas1x', 'bbfas2', 'bbfas3x', 'bbfas4', 'bbfas5x', 
-    'bbfas6', 'bbfas7x', 'bbfas8', 'bbfas9'),
-  subscale_name = 'bbfas_nv9')
-bbfas_nv <- create_scoring_frame(
-  c('bbfi58', 'bbfas1x', 'bbfas2', 'bbfas3x', 'bbfas4', 
-    'bbfas5x', 'bbfas6', 'bbfas7x', 'bbfas8', 'bbfas9'),
-  subscale_name = 'bbfas_nv')
-bbfas_nw <- create_scoring_frame(
-  c('bbfas10x', 'bbfas11', 'bbfas12x', 'bbfas13', 'bbfas14x', 
-    'bbfas15', 'bbfas16', 'bbfas17x', 'bbfas18', 'bbfas19'),
-  subscale_name = 'bbfas_nw')
-bbfas_oi <- create_scoring_frame(
-  c('bbfas80', 'bbfas81x', 'bbfas82', 'bbfas83', 'bbfas84x', 
-    'bbfas85x', 'bbfas86', 'bbfas87', 'bbfas88x', 'bbfas89'),
-  subscale_name = 'bbfas_oi')
-bbfas_oo <- create_scoring_frame(
-  c('bbfas90', 'bbfas91', 'bbfas92', 'bbfas93', 'bbfas94x', 
-    'bbfas95', 'bbfas96', 'bbfas97x', 'bbfas98x', 'bbfas99x'),
-  subscale_name = 'bbfas_oo')
+lnt_scales_df <- do.call(dplyr::bind_rows, lnt_scales_list)
 ```
 
 
 ```{r}
-scale_midfixes <- c('bfi', 'bfas', 'usi', 'ind',
-                    'asp')
-
-item_regexs <- paste0('[abcd](',
-                      paste(scale_midfixes, 
+item_regexs <- paste0('^[abcd](',
+                      paste(unique(lnt_scales_df$item), 
                             collapse = '|'),
-                      ')\\d+')
+                      ')$')
 
-lnt_items_nat <- dplyr::select(lntItemDF_nat, matches(item_regexs))
+lnt_items_nat <- dplyr::select(lnt_df_nat, matches(item_regexs))
 
-psych::reverse.code()
+create_wave_keys <- function(scoring_df, wave_prefix = 'a'){
+  scoring_df_w <- tidyr::spread(scoring_df, subscale, scoring, fill = 0)
+  rownames(scoring_df_w) <- paste0(wave_prefix, scoring_df_w$item)
+  scoring_df_w <- scoring_df_w[,-1]
+  wave_keys <- psych::keys2list(scoring_df_w)
+  return(wave_keys)
+}
 
-pers_cols <- c('S_SCALE',
-               'BFI_C',
-               'BFA_CI',
-               'BFA_CO',
-               'bfi_hp8',
-               'BFI_A6',
-               'BFA_AC',
-               'BFA_AP',
-               'BFI_N',
-               'BFA_NV',
-               'BFA_NW',
-               'D_SCALE',
-               'BFI_E',
-               'BFA_EA',
-               'BFA_EE',
-               'BFI_O',
-               'BFA_OI',
-               'BFA_OO')
+wave1_keys <- create_wave_keys(lnt_scales_df, 'a')
+wave1_scored <- psych::scoreItems(keys = wave1_keys, lnt_items_nat)
+wave2_keys <- create_wave_keys(lnt_scales_df, 'b')
+wave2_scored <- psych::scoreItems(keys = wave2_keys, lnt_items_nat)
+wave3_keys <- create_wave_keys(lnt_scales_df, 'c')
+wave3_scored <- psych::scoreItems(keys = wave3_keys, lnt_items_nat)
+wave4_keys <- create_wave_keys(lnt_scales_df, 'd')
+wave4_scored <- psych::scoreItems(keys = wave4_keys, lnt_items_nat)
 
-val_cols <- c('aspfin',
-              'BFA_MT',
-              'HRZ_COL',
-              'HRZ_IND',
-              'MVI_POMP',
-              'USI',
-              'VRT_COL',
-              'VRT_IND')
-
-
-
+wave1_scored
+wave2_scored
+wave3_scored
+wave4_scored
 ```
 
 Create a function that will generate lavaan syntax for a scale
@@ -157,16 +177,8 @@ Create a function that will generate lavaan syntax for a scale
 ```{r}
 library(lavaan)
 library(semTools)
-
-data(HolzingerSwineford1939)
-
-HW.model <- 'visual =~ x1 + x2 + x3
-              textual =~ x4 + x5 + x6
-              speed =~ x7 + x8 + x9 '
-
-models2 <- measurementInvariance(HW.model, data=HolzingerSwineford1939, group="school", std.lv = TRUE, strict = T)
-
-print(models2)
+lnt_df_nat_decades <- dplyr::filter(lnt_df_nat, aage < 60, aage >= 20) 
+lnt_df_nat_decades$decade_group <- factor(lnt_df_nat_decades$aage %/% 10, levels = c(2, 3, 4, 5), labels = c('20s', '30s', '40s', '50s'))
 
 check_manifests_exist <- function(manifest_vec, aDF){
   df_names <- names(aDF)
@@ -184,6 +196,17 @@ create_lnt_unifactor_model <- function(factor_name, manifest_vec){
                            })
   wave_eqs <- paste0(wave_factors, ' =~ ', wave_manifests_rhs)
   all_wave_model <- paste(wave_eqs, collapse = '\n')
+  return(all_wave_model)
+}
+get_subscale_items <- function(scoring_df, subscale){
+  scoring_df$item[scoring_df$subscale == subscale]
 }
 
+check_manifests_exist(get_subscale_items(lnt_scales_df, 'bfi_e'), lnt_items_nat)
+bfi_e_model <- create_lnt_unifactor_model('bfi_e', get_subscale_items(lnt_scales_df, 'bfi_e'))
+semTools::measurementInvariance(bfi_e_model, 
+                                data = lnt_df_nat_decades, 
+                                missing = 'fiml',
+                                group = 'decade_group',
+                                strict = T)
 ```
