@@ -1,3 +1,12 @@
+---
+title: "L&T PxV Measurement invariance"
+author: John Flournoy
+date: `Sys.Date()`
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
 
 
 
@@ -177,9 +186,6 @@ Create a function that will generate lavaan syntax for a scale
 ```{r}
 library(lavaan)
 library(semTools)
-lnt_df_nat_decades <- dplyr::filter(lnt_df_nat, aage < 60, aage >= 20) 
-lnt_df_nat_decades$decade_group <- factor(lnt_df_nat_decades$aage %/% 10, levels = c(2, 3, 4, 5), labels = c('20s', '30s', '40s', '50s'))
-
 check_manifests_exist <- function(manifest_vec, aDF){
   df_names <- names(aDF)
   wave_manifest_names <- unlist(lapply(c('a', 'b', 'c', 'd'), paste0, manifest_vec))
@@ -187,26 +193,43 @@ check_manifests_exist <- function(manifest_vec, aDF){
   return(all_in_df_names)
 }
 
-create_lnt_unifactor_model <- function(factor_name, manifest_vec){
+create_factor_loadings <- function(factor_name, manifest_vec, group_equal = F){
   wave_factors <- paste0(factor_name, '_W', 1:4)
+  num_indicators <- length(manifest_vec)
+  load_labels <- lapply(paste0('L', 2:num_indicators),
+                        function(label){
+                          rep_labs <- rep(label, 4)
+                          if(!group_equal){
+                            rep_labs <- paste0(rep_labs, letters[1:4])
+                          }
+                          paste0('c(', paste(rep_labs, collapse = ', '), ')')
+                        })
+  loadings <- c('c(1, 1, 1, 1)*', paste0(load_labels, '*'))
   wave_manifests_rhs <- lapply(c('a', 'b', 'c', 'd'),
                            function(letter){
-                             paste(paste0(letter, manifest_vec),
+                             paste(paste0(loadings,
+                                          letter, 
+                                          manifest_vec),
                                    collapse = ' + ')
                            })
   wave_eqs <- paste0(wave_factors, ' =~ ', wave_manifests_rhs)
   all_wave_model <- paste(wave_eqs, collapse = '\n')
   return(all_wave_model)
 }
+
 get_subscale_items <- function(scoring_df, subscale){
   scoring_df$item[scoring_df$subscale == subscale]
 }
 
-check_manifests_exist(get_subscale_items(lnt_scales_df, 'bfi_e'), lnt_items_nat)
+lnt_df_nat_decades <- dplyr::filter(lnt_df_nat, aage < 60, aage >= 20) 
+lnt_df_nat_decades$decade_group <- factor(lnt_df_nat_decades$aage %/% 10, levels = c(2, 3, 4, 5), labels = c('20s', '30s', '40s', '50s'))
+lnt_df_nat_decades$agender <- as_factor(lnt_df_nat_decades$agender)
+lnt_nat_decades_items <- dplyr::select(lnt_df_nat_decades, matches(item_regexs), decade_group, agender)
+
+
+check_manifests_exist(get_subscale_items(lnt_scales_df, 'bfi_e'), lnt_nat_decades_items)
 bfi_e_model <- create_lnt_unifactor_model('bfi_e', get_subscale_items(lnt_scales_df, 'bfi_e'))
-semTools::measurementInvariance(bfi_e_model, 
-                                data = lnt_df_nat_decades, 
-                                missing = 'fiml',
-                                group = 'decade_group',
-                                strict = T)
+bfi_e_varlist <- create_longitudinal_var_list(get_subscale_items(lnt_scales_df, 'bfi_e'))
+m1 <- sem(bfi_e_model, data = lnt_nat_decades_items, missing = 'fiml', group = 'decade_group')
+summary(m1)
 ```
