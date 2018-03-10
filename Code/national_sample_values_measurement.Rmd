@@ -193,7 +193,7 @@ check_manifests_exist <- function(manifest_vec, aDF){
   return(all_in_df_names)
 }
 
-create_factor_loadings <- function(factor_name, manifest_vec, group_equal = F){
+create_lav_factor_loadings <- function(factor_name, manifest_vec, group_equal = F){
   wave_factors <- paste0(factor_name, '_W', 1:4)
   num_indicators <- length(manifest_vec)
   load_labels <- lapply(paste0('L', 2:num_indicators),
@@ -217,9 +217,58 @@ create_factor_loadings <- function(factor_name, manifest_vec, group_equal = F){
   return(all_wave_model)
 }
 
+#temp
+manifest_vec <- get_subscale_items(lnt_scales_df, 'bfi_e')
+group_equal <- F
+cat(create_lav_ints(get_subscale_items(lnt_scales_df, 'bfi_a'), group_equal = F))
+item <- manifest_vec[1]
+#temp
+
+create_lav_ints <- function(manifest_vec, group_equal = F){
+  int_grp_eqs <- lapply(manifest_vec, function(man_var){
+    int_label <- paste0('int_', which(manifest_vec == man_var))
+    grp_labels <- rep(int_label, 4)
+    if(!group_equal){
+      grp_labels <- paste0(grp_labels, 'g', 1:4)
+    }
+    grp_labels_collapsed <- paste(grp_labels, collapse = ', ')
+    eq_rhs <- paste0('c(', grp_labels_collapsed, ')*1')
+    eq_lhs <- paste0(letters[1:4], man_var)
+    eq <- paste0(eq_lhs, ' ~ ', eq_rhs)
+    paste(eq, collapse = '\n')
+  })
+  int_all_eqs <- paste(int_grp_eqs, collapse = '\n\n')
+  return(int_all_eqs)
+}
+
+create_lav_resid_var <- function(manifest_vec, group_equal = F){
+  var_grp_eqs <- lapply(manifest_vec, function(man_var){
+    var_label <- paste0('v_', which(manifest_vec == man_var))
+    grp_labels <- rep(var_label, 4)
+    if(!group_equal){
+      grp_labels <- paste0(grp_labels, 'g', 1:4)
+    }
+    grp_labels_collapsed <- paste(grp_labels, collapse = ', ')
+    eq_rhs <- paste0('c(', grp_labels_collapsed, ')')
+    eq_lhs <- paste0(letters[1:4], man_var)
+    eq <- paste0(eq_lhs, ' ~ ', eq_rhs, '*', eq_lhs)
+    paste(eq, collapse = '\n')
+  })
+  var_all_eqs <- paste(var_grp_eqs, collapse = '\n\n')
+  return(var_all_eqs)
+}
+
+create_lav_resid_covar <- function(item, waves = 4){
+  wave_items <- paste0(letters[1:waves], item)
+  
+}
+
 get_subscale_items <- function(scoring_df, subscale){
   scoring_df$item[scoring_df$subscale == subscale]
 }
+
+cat(create_lav_factor_loadings('bfi_e', get_subscale_items(lnt_scales_df, 'bfi_e')))
+
 
 lnt_df_nat_decades <- dplyr::filter(lnt_df_nat, aage < 60, aage >= 20) 
 lnt_df_nat_decades$decade_group <- factor(lnt_df_nat_decades$aage %/% 10, levels = c(2, 3, 4, 5), labels = c('20s', '30s', '40s', '50s'))
