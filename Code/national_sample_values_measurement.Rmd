@@ -217,13 +217,6 @@ create_lav_factor_loadings <- function(factor_name, manifest_vec, group_equal = 
   return(all_wave_model)
 }
 
-#temp
-manifest_vec <- get_subscale_items(lnt_scales_df, 'bfi_e')
-group_equal <- F
-cat(create_lav_ints(get_subscale_items(lnt_scales_df, 'bfi_a'), group_equal = F))
-item <- manifest_vec[1]
-#temp
-
 create_lav_ints <- function(manifest_vec, group_equal = F){
   int_grp_eqs <- lapply(manifest_vec, function(man_var){
     int_label <- paste0('int_', which(manifest_vec == man_var))
@@ -251,34 +244,77 @@ create_lav_resid_var <- function(manifest_vec, group_equal = F){
     grp_labels_collapsed <- paste(grp_labels, collapse = ', ')
     eq_rhs <- paste0('c(', grp_labels_collapsed, ')')
     eq_lhs <- paste0(letters[1:4], man_var)
-    eq <- paste0(eq_lhs, ' ~ ', eq_rhs, '*', eq_lhs)
+    eq <- paste0(eq_lhs, ' ~~ ', eq_rhs, '*', eq_lhs)
     paste(eq, collapse = '\n')
   })
   var_all_eqs <- paste(var_grp_eqs, collapse = '\n\n')
   return(var_all_eqs)
 }
 
-create_lav_resid_covar <- function(item, waves = 4){
-  wave_items <- paste0(letters[1:waves], item)
-  
+create_lav_resid_covar <- function(manifest_vec, group_equal = F){
+  covar_grp_eqs <- lapply(manifest_vec, function(man_var){
+    var_label <- paste0('cv_', which(manifest_vec == man_var))
+    grp_labels <- rep(var_label, 4)
+    if(!group_equal){
+      grp_labels <- paste0(grp_labels, 'g', 1:4)
+    }
+    grp_labels_collapsed <- paste(grp_labels, collapse = ', ')
+    connector <- paste0(' ~~ c(', grp_labels_collapsed, ')*')
+    wave_vars <- paste0(letters[1:4], man_var)
+    covar_label_matrix <- combn(wave_vars, 2)
+    eqs <- apply(covar_label_matrix, 2, paste, collapse = connector)
+    eqs_collapsed <- paste(eqs, collapse = '\n')
+    return(eqs_collapsed)
+  })
+  covar_grp_eqs_all <- paste(covar_grp_eqs, collapse = '\n\n')
+  return(covar_grp_eqs_all)
 }
 
 get_subscale_items <- function(scoring_df, subscale){
   scoring_df$item[scoring_df$subscale == subscale]
 }
 
-cat(create_lav_factor_loadings('bfi_e', get_subscale_items(lnt_scales_df, 'bfi_e')))
-
-
 lnt_df_nat_decades <- dplyr::filter(lnt_df_nat, aage < 60, aage >= 20) 
 lnt_df_nat_decades$decade_group <- factor(lnt_df_nat_decades$aage %/% 10, levels = c(2, 3, 4, 5), labels = c('20s', '30s', '40s', '50s'))
 lnt_df_nat_decades$agender <- as_factor(lnt_df_nat_decades$agender)
 lnt_nat_decades_items <- dplyr::select(lnt_df_nat_decades, matches(item_regexs), decade_group, agender)
+length(unique(lnt_df_nat_decades$subjid))
 
+these_items <- get_subscale_items(lnt_scales_df, 'bfi_e')
+check_manifests_exist(these_items, lnt_nat_decades_items)
 
-check_manifests_exist(get_subscale_items(lnt_scales_df, 'bfi_e'), lnt_nat_decades_items)
-bfi_e_model <- create_lnt_unifactor_model('bfi_e', get_subscale_items(lnt_scales_df, 'bfi_e'))
-bfi_e_varlist <- create_longitudinal_var_list(get_subscale_items(lnt_scales_df, 'bfi_e'))
+bfi_e_model <- paste(c(create_lav_factor_loadings('bfi_e', these_items),
+                       create_lav_ints(these_items),
+                       create_lav_resid_covar(these_items),
+                       create_lav_resid_var(these_items)), 
+                     collapse = '\n\n#---\n\n')
+
 m1 <- sem(bfi_e_model, data = lnt_nat_decades_items, missing = 'fiml', group = 'decade_group')
-summary(m1)
+summary(m1, standardized = T)
+
+bfi_e_model.metric <- paste(c(create_lav_factor_loadings('bfi_e', these_items, group_equal = T),
+                              create_lav_ints(these_items),
+                              create_lav_resid_covar(these_items),
+                              create_lav_resid_var(these_items)), 
+                            collapse = '\n\n#---\n\n')
+
+m2 <- sem(bfi_e_model.metric, data = lnt_nat_decades_items, missing = 'fiml', group = 'decade_group')
+summary(m2, standardized = T)
+
+lavaan::anova(m1, m2)
+
+bfi_e_model.strong <- paste(c(create_lav_factor_loadings('bfi_e', these_items, group_equal = T),
+                              create_lav_ints(these_items, group_equal = T),
+                              create_lav_resid_covar(these_items),
+                              create_lav_resid_var(these_items)), 
+                            collapse = '\n\n#---\n\n')
+
+m3 <- sem(bfi_e_model.strong, data = lnt_nat_decades_items, missing = 'fiml', group = 'decade_group')
+summary(m3, standardized = T)
+
+(anova_thing <- anova(m1, m2, m3))
+(fit_list <- rbind(m1=fitmeasures(m1, fit.measures = c('cfi', 'rmsea')), 
+                  m2=fitmeasures(m2, fit.measures = c('cfi', 'rmsea')), 
+                  m3=fitmeasures(m3, fit.measures = c('cfi', 'rmsea'))))
+
 ```
