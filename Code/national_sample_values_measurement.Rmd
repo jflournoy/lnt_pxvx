@@ -193,10 +193,17 @@ check_manifests_exist <- function(manifest_vec, aDF){
   return(all_in_df_names)
 }
 
+create_lav_id_strat_widaman <- function(factor_name){
+  factor_name_w1 <- paste0(factor_name, '_W1')
+  factor_intercept <- paste0(factor_name_w1, ' ~ 0*1')
+  factor_var <- paste0(factor_name_w1, ' ~~ 1*', factor_name_w1)
+  paste0(factor_intercept, '\n', factor_var)
+}
+
 create_lav_factor_loadings <- function(factor_name, manifest_vec, group_equal = F){
   wave_factors <- paste0(factor_name, '_W', 1:4)
   num_indicators <- length(manifest_vec)
-  load_labels <- lapply(paste0('L', 2:num_indicators),
+  load_labels <- lapply(paste0('L', 1:num_indicators),
                         function(label){
                           rep_labs <- rep(label, 4)
                           if(!group_equal){
@@ -204,7 +211,7 @@ create_lav_factor_loadings <- function(factor_name, manifest_vec, group_equal = 
                           }
                           paste0('c(', paste(rep_labs, collapse = ', '), ')')
                         })
-  loadings <- c('c(1, 1, 1, 1)*', paste0(load_labels, '*'))
+  loadings <- c(paste0(load_labels, '*'))
   wave_manifests_rhs <- lapply(c('a', 'b', 'c', 'd'),
                            function(letter){
                              paste(paste0(loadings,
@@ -253,16 +260,20 @@ create_lav_resid_var <- function(manifest_vec, group_equal = F){
 
 create_lav_resid_covar <- function(manifest_vec, group_equal = F){
   covar_grp_eqs <- lapply(manifest_vec, function(man_var){
-    var_label <- paste0('cv_', which(manifest_vec == man_var))
-    grp_labels <- rep(var_label, 4)
-    if(!group_equal){
-      grp_labels <- paste0(grp_labels, 'g', 1:4)
-    }
-    grp_labels_collapsed <- paste(grp_labels, collapse = ', ')
-    connector <- paste0(' ~~ c(', grp_labels_collapsed, ')*')
+    lag_distances <- unlist(lapply(3:1, function(x) seq(from = 1, to = x, by = 1)))
+    var_label <- paste0('cv_', which(manifest_vec == man_var), lag_distances)
+    grp_labels_collapsed <- lapply(var_label, function(alab){
+      thelabs <- rep(alab, 4)
+      if(!group_equal){
+        thelabs <- paste0(thelabs, 'g', 1:4)
+      }
+      thelabs_collapsed <- paste(thelabs, collapse = ', ')
+      return(thelabs_collapsed)
+    })
+    connectors <- paste0(' ~~ c(', grp_labels_collapsed, ')*')
     wave_vars <- paste0(letters[1:4], man_var)
     covar_label_matrix <- combn(wave_vars, 2)
-    eqs <- apply(covar_label_matrix, 2, paste, collapse = connector)
+    eqs <- paste0(covar_label_matrix[1,], connectors, covar_label_matrix[2,])
     eqs_collapsed <- paste(eqs, collapse = '\n')
     return(eqs_collapsed)
   })
@@ -270,8 +281,79 @@ create_lav_resid_covar <- function(manifest_vec, group_equal = F){
   return(covar_grp_eqs_all)
 }
 
+create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('baseline','metric','strong', 'strict')){
+  #Baseline: strict longitudinal invariance with added constraint that
+  #covariance of residuals across the same lag distnace should be the same.
+  #Metric: factor loadings equal across groups.
+  #Strong: intercepts equal across groups.
+  #Strict: residual variances are equal across groups.
+  
+  amod <- switch(type,
+                 baseline = paste(c(create_lav_id_strat_widaman(factor_name),
+                                   create_lav_factor_loadings(factor_name, manifest_vec, group_equal = F),
+                                   create_lav_ints(manifest_vec, group_equal = F),
+                                   create_lav_resid_var(manifest_vec, group_equal = F),
+                                   create_lav_resid_covar(manifest_vec, group_equal = F)), 
+                                 collapse = '\n\n#---\n\n'),
+                 metric = paste(c(create_lav_id_strat_widaman(factor_name),
+                                   create_lav_factor_loadings(factor_name, manifest_vec, group_equal = T),
+                                   create_lav_ints(manifest_vec, group_equal = F),
+                                   create_lav_resid_var(manifest_vec, group_equal = F),
+                                   create_lav_resid_covar(manifest_vec, group_equal = F)), 
+                                 collapse = '\n\n#---\n\n'),
+                 strong = paste(c(create_lav_id_strat_widaman(factor_name),
+                                   create_lav_factor_loadings(factor_name, manifest_vec, group_equal = T),
+                                   create_lav_ints(manifest_vec, group_equal = T),
+                                   create_lav_resid_var(manifest_vec, group_equal = F),
+                                   create_lav_resid_covar(manifest_vec, group_equal = F)), 
+                                 collapse = '\n\n#---\n\n'),
+                 strict = paste(c(create_lav_id_strat_widaman(factor_name),
+                                   create_lav_factor_loadings(factor_name, manifest_vec, group_equal = T),
+                                   create_lav_ints(manifest_vec, group_equal = T),
+                                   create_lav_resid_var(manifest_vec, group_equal = T),
+                                   create_lav_resid_covar(manifest_vec, group_equal = F)), 
+                                 collapse = '\n\n#---\n\n'))
+  return(amod)
+}
+
 get_subscale_items <- function(scoring_df, subscale){
   scoring_df$item[scoring_df$subscale == subscale]
+}
+
+sem_invar <- function(model, data, ...){
+  fit <- lavaan(model = model, data = data,
+                int.lv.free = T,
+                auto.fix.first = F,
+                int.ov.free = TRUE, 
+                auto.var = TRUE, 
+                auto.cov.lv.x = TRUE,
+                auto.cov.y = TRUE,
+                ...)
+  return(fit)
+} 
+
+run_invariance_model <- function(factor_name, manifest_vec, item_data, type = 'baseline', group, ...){
+  an_invar_model <- create_lav_invariance_model(factor_name, manifest_vec, type = type)
+  a_fit <- sem_invar(model = an_invar_model, 
+                     data = item_data,
+                     group = group, 
+                     ...)
+  return(a_fit)
+}
+
+run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measures, group, ...){
+  require(future)
+  require(future.apply)
+  all_invar_types <- c('baseline','metric','strong', 'strict')
+  invar_models <- future_lapply(all_invar_types,
+                                function(type){
+                                  run_invariance_model(factor_name, 
+                                                       manifest_vec, 
+                                                       item_data, 
+                                                       type = type, 
+                                                       group = group, 
+                                                       ...)
+                                })
 }
 
 lnt_df_nat_decades <- dplyr::filter(lnt_df_nat, aage < 60, aage >= 20) 
@@ -283,38 +365,54 @@ length(unique(lnt_df_nat_decades$subjid))
 these_items <- get_subscale_items(lnt_scales_df, 'bfi_e')
 check_manifests_exist(these_items, lnt_nat_decades_items)
 
-bfi_e_model <- paste(c(create_lav_factor_loadings('bfi_e', these_items),
-                       create_lav_ints(these_items),
-                       create_lav_resid_covar(these_items),
-                       create_lav_resid_var(these_items)), 
-                     collapse = '\n\n#---\n\n')
+bfi_e_model.bl <- create_lav_invariance_model('bfi_e', these_items, type = 'baseline')
+bfi_e.bl <- sem_invar(model = bfi_e_model.bl, 
+                data = lnt_nat_decades_items,  
+                missing = 'fiml', 
+                group = 'decade_group')
+summary(bfi_e.bl, standardized = T)
 
-m1 <- sem(bfi_e_model, data = lnt_nat_decades_items, missing = 'fiml', group = 'decade_group')
-summary(m1, standardized = T)
+bfi_e_model.metric <- create_lav_invariance_model('bfi_e', these_items, type = 'metric')
+bfi_e.metric <- sem_invar(model = bfi_e_model.metric, 
+                data = lnt_nat_decades_items,  
+                missing = 'fiml', 
+                group = 'decade_group')
+summary(bfi_e.metric, standardized = T)
 
-bfi_e_model.metric <- paste(c(create_lav_factor_loadings('bfi_e', these_items, group_equal = T),
-                              create_lav_ints(these_items),
-                              create_lav_resid_covar(these_items),
-                              create_lav_resid_var(these_items)), 
-                            collapse = '\n\n#---\n\n')
+bfi_e_model.strong <- create_lav_invariance_model('bfi_e', these_items, type = 'strong')
+bfi_e.strong <- sem_invar(model = bfi_e_model.strong, 
+                data = lnt_nat_decades_items,  
+                missing = 'fiml', 
+                group = 'decade_group')
+summary(bfi_e.strong, standardized = T)
 
-m2 <- sem(bfi_e_model.metric, data = lnt_nat_decades_items, missing = 'fiml', group = 'decade_group')
-summary(m2, standardized = T)
+bfi_e_model.strict <- create_lav_invariance_model('bfi_e', these_items, type = 'strict')
+bfi_e.strict <- sem_invar(model = bfi_e_model.strict, 
+                data = lnt_nat_decades_items,  
+                missing = 'fiml', 
+                group = 'decade_group')
+summary(bfi_e.strict, standardized = T)
 
-lavaan::anova(m1, m2)
+these_fit_measures <- c('cfi', 
+                        'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper')
 
-bfi_e_model.strong <- paste(c(create_lav_factor_loadings('bfi_e', these_items, group_equal = T),
-                              create_lav_ints(these_items, group_equal = T),
-                              create_lav_resid_covar(these_items),
-                              create_lav_resid_var(these_items)), 
-                            collapse = '\n\n#---\n\n')
-
-m3 <- sem(bfi_e_model.strong, data = lnt_nat_decades_items, missing = 'fiml', group = 'decade_group')
-summary(m3, standardized = T)
-
-(anova_thing <- anova(m1, m2, m3))
-(fit_list <- rbind(m1=fitmeasures(m1, fit.measures = c('cfi', 'rmsea')), 
-                  m2=fitmeasures(m2, fit.measures = c('cfi', 'rmsea')), 
-                  m3=fitmeasures(m3, fit.measures = c('cfi', 'rmsea'))))
+(lrt_thing <- lavTestLRT(bfi_e.bl, bfi_e.metric, bfi_e.strong, bfi_e.strict))
+(fit_list <- rbind(bfi_e.bl = fitmeasures(bfi_e.bl, fit.measures = these_fit_measures), 
+                   bfi_e.metric = fitmeasures(bfi_e.metric, fit.measures = these_fit_measures), 
+                   bfi_e.strong = fitmeasures(bfi_e.strong, fit.measures = these_fit_measures),
+                   bfi_e.strict = fitmeasures(bfi_e.strict, fit.measures = these_fit_measures)))
+dplyr::select(
+  dplyr::mutate(
+    as_data_frame(fit_list),
+    cfi = round(cfi, 3),
+    rmsea = paste0(round(rmsea, 3), ' [',
+                   round(rmsea.ci.lower, 3), ', ',
+                   round(rmsea.ci.upper, 3), ']')),
+  cfi, rmsea)
 
 ```
+
+```{r}
+
+# process in parallel, 2 cores for the trait level, and 4 cores inside each for the models to fit
+#plan(list(tweak(multiprocess, workers = 2), tweak(multiprocess, workers = 4)))
