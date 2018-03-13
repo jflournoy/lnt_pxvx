@@ -344,16 +344,37 @@ run_invariance_model <- function(factor_name, manifest_vec, item_data, type = 'b
 run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measures, group, ...){
   require(future)
   require(future.apply)
+  require(lavaan)
   all_invar_types <- c('baseline','metric','strong', 'strict')
-  invar_models <- future_lapply(all_invar_types,
-                                function(type){
-                                  run_invariance_model(factor_name, 
-                                                       manifest_vec, 
-                                                       item_data, 
-                                                       type = type, 
-                                                       group = group, 
-                                                       ...)
-                                })
+  invar_models <- future.apply::future_lapply(
+    all_invar_types,
+    function(type){
+      run_invariance_model(factor_name, 
+                           manifest_vec, 
+                           item_data, 
+                           type = type, 
+                           group = group, 
+                           ...)
+    })
+  fit_statistics <- future.apply::future_lapply(
+    invar_models,
+    fitmeasures,
+    fit_measures
+  )
+  fit_statistics_len <- lapply(fit_statistics, length)
+  
+  lrt_test <- do.call(function(...){ lavTestLRT(..., model.names = all_invar_types)}, 
+                      invar_models)
+  
+  as_data_frame(lrt_test)
+  
+  result_df <- data.frame(
+    factor_name = factor_name,
+    invar_type = rep(all_invar_types, fit_statistics_len),
+    fit_stat = names(unlist(fit_statistics)),
+    value = unlist(fit_statistics))
+  
+  return(invar_models)
 }
 
 lnt_df_nat_decades <- dplyr::filter(lnt_df_nat, aage < 60, aage >= 20) 
@@ -365,6 +386,13 @@ length(unique(lnt_df_nat_decades$subjid))
 these_items <- get_subscale_items(lnt_scales_df, 'bfi_e')
 check_manifests_exist(these_items, lnt_nat_decades_items)
 
+these_fit_measures <- c('cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper')
+
+future::plan(future::multiprocess)
+
+some_mods <- run_invariance_tests(factor_name = 'bfi_e', manifest_vec = these_items, item_data = lnt_nat_decades_items, fit_measures = these_fit_measures, group = 'decade_group', missing = 'fiml')
+
+
 bfi_e_model.bl <- create_lav_invariance_model('bfi_e', these_items, type = 'baseline')
 bfi_e.bl <- sem_invar(model = bfi_e_model.bl, 
                 data = lnt_nat_decades_items,  
@@ -372,29 +400,7 @@ bfi_e.bl <- sem_invar(model = bfi_e_model.bl,
                 group = 'decade_group')
 summary(bfi_e.bl, standardized = T)
 
-bfi_e_model.metric <- create_lav_invariance_model('bfi_e', these_items, type = 'metric')
-bfi_e.metric <- sem_invar(model = bfi_e_model.metric, 
-                data = lnt_nat_decades_items,  
-                missing = 'fiml', 
-                group = 'decade_group')
-summary(bfi_e.metric, standardized = T)
 
-bfi_e_model.strong <- create_lav_invariance_model('bfi_e', these_items, type = 'strong')
-bfi_e.strong <- sem_invar(model = bfi_e_model.strong, 
-                data = lnt_nat_decades_items,  
-                missing = 'fiml', 
-                group = 'decade_group')
-summary(bfi_e.strong, standardized = T)
-
-bfi_e_model.strict <- create_lav_invariance_model('bfi_e', these_items, type = 'strict')
-bfi_e.strict <- sem_invar(model = bfi_e_model.strict, 
-                data = lnt_nat_decades_items,  
-                missing = 'fiml', 
-                group = 'decade_group')
-summary(bfi_e.strict, standardized = T)
-
-these_fit_measures <- c('cfi', 
-                        'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper')
 
 (lrt_thing <- lavTestLRT(bfi_e.bl, bfi_e.metric, bfi_e.strong, bfi_e.strict))
 (fit_list <- rbind(bfi_e.bl = fitmeasures(bfi_e.bl, fit.measures = these_fit_measures), 
@@ -416,3 +422,6 @@ dplyr::select(
 
 # process in parallel, 2 cores for the trait level, and 4 cores inside each for the models to fit
 #plan(list(tweak(multiprocess, workers = 2), tweak(multiprocess, workers = 4)))
+
+```
+
