@@ -1,31 +1,29 @@
 ---
 title: "L&T PxV Measurement invariance"
-author: John Flournoy
-date: `Sys.Date()`
+author: "John Flournoy"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
-  html_document:
+  pdf_document:
     toc: true
-    toc_float: true
 ---
 
 
-
-```{r}
-library(tidyverse)
+```{r echo=F, results='hide', warning=F, message=F}
+suppressMessages(library('tidyverse'))
 lnt_df <- haven::read_sav('/data/jflournoy/lnt_pxvx/LT_wideAGT1234.sav')
 lnt_df_nat <- dplyr::filter(lnt_df, aSubsample == 1)
 
 create_scoring_frame <- function(items, rev_pattern = '.*x$', 
                                  sub_pattern = '^[abcd](.*?)x*$', 
                                  sub_replacement = '\\1',
-                                 subscale_name = NULL)
+                                 factor_name = NULL)
 {
   scoring_vec <- -2*as.numeric(grepl(rev_pattern, items))+1
   new_items <- gsub(pattern = sub_pattern, replacement = sub_replacement, items)
   scoring_df <- data.frame(item = new_items, scoring = scoring_vec,
                            stringsAsFactors = FALSE)
-  if(!is.null(subscale_name)){
-    scoring_df$subscale <- subscale_name
+  if(!is.null(factor_name)){
+    scoring_df$factor_name <- factor_name
   }
   return(scoring_df)
 }
@@ -35,7 +33,7 @@ create_scoring_frame <- function(items, rev_pattern = '.*x$',
 # '\1'
 #
 # compute (\w+) = 100\*\(mean(\(.*?\)) - 1\) */ *\d\. 
-# \1 <- create_scoring_frame(\n  c\2\n  subscale_name = '\1')
+# \1 <- create_scoring_frame(\n  c\2\n  factor_name = '\1')
 #
 # val_cols <- c('aspfin',
 #               'BFA_MT',
@@ -50,107 +48,110 @@ lnt_scales_list <- list(
   bfi_s_scale = create_scoring_frame(
     c('abfi32', 'abfi7', 'abfi42', 'abfi33', 'abfi13', 'abfi51', 'abfi37x',
       'abfi8x', 'abfi2x', 'abfi12x', 'abfi47x', 'abfi49x'),
-    subscale_name = 'bfi_s_scale'),
+    factor_name = 'bfi_s_scale'),
   bfi_d_scale = create_scoring_frame(
     c('abfi26', 'abfi36', 'abfi16', 'abfi31x', 'abfi11', 'abfi5', 'abfi25', 'abfi20', 'abfi39x'),
-    subscale_name = 'bfi_d_scale'),
+    factor_name = 'bfi_d_scale'),
   bfi_hp8 = create_scoring_frame(
     c('abfi45x', 'abfi46x', 'abfi47x', 'abfi48x', 'abfi49x', 'abfi50', 'abfi51', 'abfi52'), 
-    subscale_name = 'bfi_hp8'),
+    factor_name = 'bfi_hp8'),
   bfi_c = create_scoring_frame(
     c('abfi3', 'abfi8x', 'abfi13', 'abfi18x', 'abfi23x', 'abfi28', 'abfi33', 'abfi38', 'abfi43x'), 
-    subscale_name = 'bfi_c'),
+    factor_name = 'bfi_c'),
   bfi_a = create_scoring_frame(
     c('abfi2x', 'abfi7', 'abfi12x', 'abfi17', 'abfi22', 'abfi27x', 'abfi32', 'abfi37x', 'abfi42'), 
-    subscale_name = 'bfi_a'),
+    factor_name = 'bfi_a'),
   bfi_a6 = create_scoring_frame(
     c('abfi55', 'abfi56', 'abfi57', 'abfi58x', 'abfi59x', 'abfi60x', 'abfi61x', 'abfi62x'), 
-    subscale_name = 'bfi_a6'),
+    factor_name = 'bfi_a6'),
   bfi_e = create_scoring_frame(
     c('abfi1', 'abfi6x', 'abfi11', 'abfi16', 'abfi21x', 'abfi26', 'abfi31x', 'abfi36'), 
-    subscale_name = 'bfi_e'),
+    factor_name = 'bfi_e'),
   bfi_n = create_scoring_frame(
     c('abfi4', 'abfi9x', 'abfi14', 'abfi19', 'abfi24x', 'abfi29', 'abfi34x', 'abfi39'), 
-    subscale_name = 'bfi_n'),
+    factor_name = 'bfi_n'),
   bfi_o = create_scoring_frame(
     c('abfi5', 'abfi10', 'abfi15', 'abfi20', 'abfi25', 'abfi30', 'abfi35x', 'abfi40', 'abfi41x', 'abfi44'), 
-    subscale_name = 'bfi_o'),
+    factor_name = 'bfi_o'),
   bfas_ac = create_scoring_frame(
     c('bbfas20x', 'bbfas21', 'bbfas22', 'bbfas23x', 'bbfas24', 
       'bbfas25x', 'bbfas26x', 'bbfas27', 'bbfas28x', 'bbfas29'),
-    subscale_name = 'bfas_ac'),
+    factor_name = 'bfas_ac'),
   bfas_ap = create_scoring_frame(
     c('bbfas30', 'bbfas31x', 'bbfas32', 'bbfas33x', 'bbfas34', 
       'bbfas35', 'bbfas36x', 'bbfas37x', 'bbfas38x', 'bbfas102x'),
-    subscale_name = 'bfas_ap'),
+    factor_name = 'bfas_ap'),
   bfas_ci = create_scoring_frame(
     c('bbfas40', 'bbfas41x', 'bbfas42x', 'bbfas43x', 'bbfas44', 
       'bbfas45x', 'bbfas46', 'bbfas47', 'bbfas48x', 'bbfas49x'),
-    subscale_name = 'bfas_ci'),
+    factor_name = 'bfas_ci'),
   bfas_co = create_scoring_frame(
     c('bbfas50x', 'bbfas51', 'bbfas52', 'bbfas53', 'bbfas54x', 
       'bbfas55', 'bbfas56x', 'bbfas57x', 'bbfas58', 'bbfas59'),
-    subscale_name = 'bfas_co'),
+    factor_name = 'bfas_co'),
   bfas_ea = create_scoring_frame(
     c('bbfas70', 'bbfas71', 'bbfas72x', 'bbfas73', 'bbfas74x', 
       'bbfas75', 'bbfas76', 'bbfas77x', 'bbfas78', 'bbfas79x'),
-    subscale_name = 'bfas_ea'),
+    factor_name = 'bfas_ea'),
   bfas_ee = create_scoring_frame(
     c('bbfas60', 'bbfas61x', 'bbfas62x', 'bbfas63x', 'bbfas64', 
       'bbfas65x', 'bbfas66x', 'bbfas67', 'bbfas68', 'bbfas69'),
-    subscale_name = 'bfas_ee'),
+    factor_name = 'bfas_ee'),
   bfas_nv9 = create_scoring_frame(
     c('bbfas1x', 'bbfas2', 'bbfas3x', 'bbfas4', 'bbfas5x', 
       'bbfas6', 'bbfas7x', 'bbfas8', 'bbfas9'),
-    subscale_name = 'bfas_nv9'),
+    factor_name = 'bfas_nv9'),
   bfas_nv = create_scoring_frame(
     c('bbfi58', 'bbfas1x', 'bbfas2', 'bbfas3x', 'bbfas4', 
       'bbfas5x', 'bbfas6', 'bbfas7x', 'bbfas8', 'bbfas9'),
-    subscale_name = 'bfas_nv'),
+    factor_name = 'bfas_nv'),
   bfas_nw = create_scoring_frame(
     c('bbfas10x', 'bbfas11', 'bbfas12x', 'bbfas13', 'bbfas14x', 
       'bbfas15', 'bbfas16', 'bbfas17x', 'bbfas18', 'bbfas19'),
-    subscale_name = 'bfas_nw'),
+    factor_name = 'bfas_nw'),
   bfas_oi = create_scoring_frame(
     c('bbfas80', 'bbfas81x', 'bbfas82', 'bbfas83', 'bbfas84x', 
       'bbfas85x', 'bbfas86', 'bbfas87', 'bbfas88x', 'bbfas89'),
-    subscale_name = 'bfas_oi'),
+    factor_name = 'bfas_oi'),
   bfas_oo = create_scoring_frame(
     c('bbfas90', 'bbfas91', 'bbfas92', 'bbfas93', 'bbfas94x', 
       'bbfas95', 'bbfas96', 'bbfas97x', 'bbfas98x', 'bbfas99x'),
-    subscale_name = 'bfas_oo'),
+    factor_name = 'bfas_oo'),
   aspfin = create_scoring_frame(
     c('basp12', 'basp13', 'basp14', 'basp15', 'basp16'),
-    subscale_name = 'aspfin'),
+    factor_name = 'aspfin'),
   bfa_mt = create_scoring_frame(
     c('abfas105', 'abfas106', 'abfas107x', 'abfas108x', 'abfas109', 'abfas110', 'abfas111x', 
       'abfas112x', 'abfas113', 'abfas114', 'abfas115', 'abfas116x', 'abfas117x', 'abfas118x'),
-    subscale_name = 'bfa_mt'),
+    factor_name = 'bfa_mt'),
   hrz_ind = create_scoring_frame(
     c('aind1', 'aind2', 'aind3', 'aind4'),
-    subscale_name = 'hrz_ind'),
+    factor_name = 'hrz_ind'),
   hrz_col = create_scoring_frame(
     c('aind9', 'aind10', 'aind11', 'aind12'),
-    subscale_name = 'hrz_col'),
+    factor_name = 'hrz_col'),
   mvi = create_scoring_frame(
     c('aval7', 'aval9', 'aval11', 'aval13', 'aval15', 'aval17', 'aval18', 'aval20', 'aval21', 
       'aval23', 'aval8x', 'aval10x', 'aval12x', 'aval14x', 'aval16x', 'aval19x', 'aval22x'),
-    subscale_name = 'mvi'),
+    factor_name = 'mvi'),
   usi = create_scoring_frame(
     c('ausi1', 'ausi2x', 'ausi3x', 'ausi5', 'ausi6x', 'ausi7'),
-    subscale_name = 'usi'),
+    factor_name = 'usi'),
   vrt_ind = create_scoring_frame(
     c('aind5', 'aind6', 'aind7', 'aind8'),
-    subscale_name = 'vrt_ind'),
+    factor_name = 'vrt_ind'),
   vrt_col = create_scoring_frame(
     c('aind13', 'aind14', 'aind15', 'aind16'),
-    subscale_name = 'vrt_col'))
+    factor_name = 'vrt_col'))
 
 lnt_scales_df <- do.call(dplyr::bind_rows, lnt_scales_list)
 ```
 
+# Creating factor-item mapping
 
-```{r}
+As part of this process, outputting the alpha coefficients.
+
+```{r echo=F, warning=F, message=F}
 item_regexs <- paste0('^[abcd](',
                       paste(unique(lnt_scales_df$item), 
                             collapse = '|'),
@@ -159,7 +160,7 @@ item_regexs <- paste0('^[abcd](',
 lnt_items_nat <- dplyr::select(lnt_df_nat, matches(item_regexs))
 
 create_wave_keys <- function(scoring_df, wave_prefix = 'a'){
-  scoring_df_w <- tidyr::spread(scoring_df, subscale, scoring, fill = 0)
+  scoring_df_w <- tidyr::spread(scoring_df, factor_name, scoring, fill = 0)
   rownames(scoring_df_w) <- paste0(wave_prefix, scoring_df_w$item)
   scoring_df_w <- scoring_df_w[,-1]
   wave_keys <- psych::keys2list(scoring_df_w)
@@ -175,15 +176,19 @@ wave3_scored <- psych::scoreItems(keys = wave3_keys, lnt_items_nat)
 wave4_keys <- create_wave_keys(lnt_scales_df, 'd')
 wave4_scored <- psych::scoreItems(keys = wave4_keys, lnt_items_nat)
 
-wave1_scored
-wave2_scored
-wave3_scored
-wave4_scored
+cat('**Wave 1**\n\n')
+wave1_scored$alpha
+cat('**Wave 2**\n\n')
+wave2_scored$alpha
+cat('**Wave 3**\n\n')
+wave3_scored$alpha
+cat('**Wave 4**\n\n')
+wave4_scored$alpha
 ```
 
-Create a function that will generate lavaan syntax for a scale
+# Generate lavaan syntax
 
-```{r}
+```{r echo=F, results='hide', warning=F, message=F}
 library(lavaan)
 library(semTools)
 check_manifests_exist <- function(manifest_vec, aDF){
@@ -316,8 +321,12 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('bas
   return(amod)
 }
 
-get_subscale_items <- function(scoring_df, subscale){
-  scoring_df$item[scoring_df$subscale == subscale]
+get_factor_items <- function(scoring_df, factor_name){
+  scoring_df$item[scoring_df$factor_name == factor_name]
+}
+
+get_item_colnames <- function(manifest_vec){
+  item_colnames <- unlist(lapply(letters[1:4], paste0, manifest_vec))
 }
 
 sem_invar <- function(model, data, ...){
@@ -341,87 +350,318 @@ run_invariance_model <- function(factor_name, manifest_vec, item_data, type = 'b
   return(a_fit)
 }
 
-run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measures, group, ...){
+run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measures, group, return_models = F, ...){
   require(future)
-  require(future.apply)
   require(lavaan)
+  require(tibble)
+  require(tidyr)
+  require(dplyr)
+  require(listenv)
   all_invar_types <- c('baseline','metric','strong', 'strict')
-  invar_models <- future.apply::future_lapply(
-    all_invar_types,
-    function(type){
+  
+  invar_models_future_listenv <- listenv::listenv()
+  for(it in seq_along(all_invar_types)){
+    invar_models_future_listenv[[it]] <- future::future({
       run_invariance_model(factor_name, 
                            manifest_vec, 
                            item_data, 
-                           type = type, 
+                           type = all_invar_types[[it]], 
                            group = group, 
                            ...)
     })
+  }
+  
+  invar_models_list <- lapply(as.list(invar_models_future_listenv), future::value) 
+  
   fit_statistics <- future.apply::future_lapply(
-    invar_models,
+    invar_models_list,
     fitmeasures,
     fit_measures
   )
   fit_statistics_len <- lapply(fit_statistics, length)
-  
-  lrt_test <- do.call(function(...){ lavTestLRT(..., model.names = all_invar_types)}, 
-                      invar_models)
-  
-  as_data_frame(lrt_test)
-  
-  result_df <- data.frame(
+  fit_stat_df <- data_frame(
     factor_name = factor_name,
     invar_type = rep(all_invar_types, fit_statistics_len),
     fit_stat = names(unlist(fit_statistics)),
     value = unlist(fit_statistics))
   
-  return(invar_models)
+  lrt_test <- do.call(
+    function(...){ 
+      lavTestLRT(..., model.names = all_invar_types)
+    }, 
+    invar_models_list)
+  lrt_test_df <- tibble::as_data_frame(lrt_test)
+  lrt_test_df$invar_type <- rownames(lrt_test)
+  lrt_test_df <- tidyr::gather(lrt_test_df, fit_stat, value,
+                               -invar_type)
+  lrt_test_df$factor_name <- factor_name
+  
+  summary_df <- dplyr::bind_rows(fit_stat_df, lrt_test_df)
+  
+  names(invar_models_list) <- all_invar_types
+  if(return_models){
+    return(list(fit_tests = summary_df, models = invar_models_list))
+  } else {
+    return(summary_df)
+  }
 }
 
+test_factors_for_invariance <- function(factor_names, indicators_df, item_data, fit_measures = c('cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper'), group, ...){
+  require(future)
+  invar_mod_listenv <- listenv::listenv()
+  for(fn in seq_along(factor_names)){
+    factor_name <- factor_names[[fn]]
+    factor_items <- get_factor_items(indicators_df, factor_name)
+    if(!check_manifests_exist(factor_items, item_data)) {
+      stop(factor_name, ' does not have item columns in item_data')
+    }
+    this_factor_data <- item_data[, c(get_item_colnames(factor_items), group)]
+    invar_mod_listenv[[fn]] <- future::future(
+      run_invariance_tests(factor_name = factor_name, 
+                           manifest_vec = factor_items, 
+                           item_data = this_factor_data, 
+                           fit_measures = fit_measures, 
+                           group = group,
+                           ...))
+  }
+  return(as.list(invar_mod_listenv))
+}
+```
+
+This is an example of the measurement model diagram, using Horizontal Collectivism, for one group demonstrating constraints for the strict measurement invariance model. Paths with the same label are constrained to have the same path weight, and in the strict invariance model, all labeled path weights must be the same for each decade group. The residual covariances are an exception: the constraint imposed is that residual covariance is the same across the same time-lag, for the same indicator (so e.g., `cov(aind9, bind9) = cov(bind9, cind9)`, and `cov(aind9, cind9) = cov(bind9, dind9)`), but these are not constrained to be the same across group. Since this constraint is imposed in every factorial invariance model tested, it does not affect the fit comparisons.
+
+```{r fig.width = 7.5, fig.height = 10, echo = F, warning = F, error = F}
+library(semPlot)
 lnt_df_nat_decades <- dplyr::filter(lnt_df_nat, aage < 60, aage >= 20) 
 lnt_df_nat_decades$decade_group <- factor(lnt_df_nat_decades$aage %/% 10, levels = c(2, 3, 4, 5), labels = c('20s', '30s', '40s', '50s'))
 lnt_df_nat_decades$agender <- as_factor(lnt_df_nat_decades$agender)
 lnt_nat_decades_items <- dplyr::select(lnt_df_nat_decades, matches(item_regexs), decade_group, agender)
-length(unique(lnt_df_nat_decades$subjid))
 
-these_items <- get_subscale_items(lnt_scales_df, 'bfi_e')
-check_manifests_exist(these_items, lnt_nat_decades_items)
+demo_model <- create_lav_invariance_model('hrz_col', 
+                                          get_factor_items('hrz_col', scoring_df = lnt_scales_df), 
+                                          type = 'strict')
 
-these_fit_measures <- c('cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper')
-
-future::plan(future::multiprocess)
-
-some_mods <- run_invariance_tests(factor_name = 'bfi_e', manifest_vec = these_items, item_data = lnt_nat_decades_items, fit_measures = these_fit_measures, group = 'decade_group', missing = 'fiml')
-
-
-bfi_e_model.bl <- create_lav_invariance_model('bfi_e', these_items, type = 'baseline')
-bfi_e.bl <- sem_invar(model = bfi_e_model.bl, 
-                data = lnt_nat_decades_items,  
-                missing = 'fiml', 
-                group = 'decade_group')
-summary(bfi_e.bl, standardized = T)
+demo_model_fit <- sem_invar(demo_model, data = lnt_nat_decades_items, group = 'decade_group', do.fit = F)
+cat(demo_model)
+semPaths(demo_model_fit, ask = F, include = 1, node.width = .75, layout = 'tree2', rotation = 2, curvature = 9,
+         intStyle = 'multi', levels = c(1,5,6,7), edge.color = '#bbbbbb', edge.label.color = '#444444',
+         nCharEdges = 5, edge.label.cex = .5, nCharNodes = 8)
+```
 
 
+```{r echo=F, results='hide', warning=F, message=F}
+library(future)
+plan(multiprocess)
 
-(lrt_thing <- lavTestLRT(bfi_e.bl, bfi_e.metric, bfi_e.strong, bfi_e.strict))
-(fit_list <- rbind(bfi_e.bl = fitmeasures(bfi_e.bl, fit.measures = these_fit_measures), 
-                   bfi_e.metric = fitmeasures(bfi_e.metric, fit.measures = these_fit_measures), 
-                   bfi_e.strong = fitmeasures(bfi_e.strong, fit.measures = these_fit_measures),
-                   bfi_e.strict = fitmeasures(bfi_e.strict, fit.measures = these_fit_measures)))
-dplyr::select(
-  dplyr::mutate(
-    as_data_frame(fit_list),
-    cfi = round(cfi, 3),
-    rmsea = paste0(round(rmsea, 3), ' [',
-                   round(rmsea.ci.lower, 3), ', ',
-                   round(rmsea.ci.upper, 3), ']')),
-  cfi, rmsea)
+factor_names <- unique(lnt_scales_df$factor_name)
+fit_measures <- c('cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper')
+
+invar_test_rez_fn <- '../Rez/invariance_measures.Rds'
+if(!file.exists(invar_test_rez_fn)){
+  invar_tests_and_models <- test_factors_for_invariance(
+    factor_names = factor_names, 
+    indicators_df = lnt_scales_df, 
+    item_data = lnt_nat_decades_items, 
+    fit_measures = fit_measures, 
+    group = 'decade_group',  
+    missing = 'fiml')
+  invar_tests_and_models_df <- dplyr::bind_rows(lapply(invar_tests_and_models, future::value))
+  saveRDS(invar_tests_and_models_df, invar_test_rez_fn)
+} else {
+  invar_tests_and_models_df <- readRDS(invar_test_rez_fn)
+}
+```
+
+# Results
+
+## CFI & *IC
+
+To determine the invariance of measurement over groups, we can examine the $\chi^2$ test. But this is often an overly strict test with a large sample size. Relative change in AIC and BIC (with lower values, and negative changes, being better) help guide interpretation by incorporating information about the number of parameters (AIC, BIC) and sample size (BIC). Cheung & Rensvold (2002) recomend using $\Delta\text{CFI}$ because it is not influenced by complexity or sample size, and does not correlate with overall fit measures. In this paper, they write, "A value of $\Delta\text{CFI}$ smaller than or equal to –0.01 indicates that the null hypothesis of invariance should not be rejected" (p 251). Below, I generally ignore the $\chi^2$ tests in interpretation but present them for completeness.
+
+```{r results='asis', echo=F, warning=F, message=F}
+library(stargazer)
+
+#  [1] "bfi_s_scale" "bfi_d_scale" "bfi_hp8"     "bfi_c"       "bfi_a"       "bfi_a6"     
+#  [7] "bfi_e"       "bfi_n"       "bfi_o"       "bfas_ac"     "bfas_ap"     "bfas_ci"    
+# [13] "bfas_co"     "bfas_ea"     "bfas_ee"     "bfas_nv9"    "bfas_nv"     "bfas_nw"    
+# [19] "bfas_oi"     "bfas_oo"     "aspfin"      "bfa_mt"      "hrz_ind"     "hrz_col"    
+# [25] "mvi"         "usi"         "vrt_ind"     "vrt_col"  
+
+pVarNames <- c(bfi_s_scale="Social Self-Regulation",
+               bfi_c=".Conscientiousness",
+               bfas_ci="..Industriousness",
+               bfas_co="..Orderliness",
+               bfi_hp8=".Honesty/Propriety",
+               bfi_a=".Agreeableness",
+               bfi_a6=".Agreeableness-Six",
+               bfas_ac="..Compassion",
+               bfas_ap="..Politeness",
+               bfi_n=".Neuroticism",
+               bfas_nv9 = ".Neuroticism-Nine",
+               bfas_nv="..Volatility",
+               bfas_nw="..Withdrawal",
+               bfi_d_scale="Dynamism",
+               bfi_e=".Extraversion",
+               bfas_ea="..Assertiveness",
+               bfas_ee="..Enthusiasm",
+               bfi_o=".Openness",
+               bfas_oi="..Intellect",
+               bfas_oo="..Openness")
+
+vVarNames <- c('aspfin'='Financial Aspirations',
+               'bfa_mt'='Materialism',
+               'hrz_col'='Horizontal Collectivism',
+               'hrz_ind'='Horizontal Individualism',
+               'mvi'='Mature Values Index',
+               'usi'='Unmitigated Self-Interest',
+               'vrt_col'='Vertical Collectivism',
+               'vrt_ind'='Vertical Individualism')
+
+invar_tests_and_models_df <- dplyr::mutate(
+  invar_tests_and_models_df, 
+  invar_type = factor(invar_type,
+                      levels = c('baseline','metric','strong', 'strict'),
+                      labels = c('baseline','metric','strong', 'strict')))
+
+invar_tests_and_models_df_w <- mutate_at(
+  tidyr::spread(
+    invar_tests_and_models_df,
+    fit_stat,
+    value),
+  vars(AIC:rmsea.ci.upper),
+  as.numeric)
+invar_tests_and_models_df_w <- arrange(
+  invar_tests_and_models_df_w,
+  factor_name, invar_type)
+invar_tests_and_models_df_w <- mutate_at(
+  group_by(invar_tests_and_models_df_w, factor_name),
+  vars(dAIC = AIC, dBIC = BIC, dCFI = cfi),
+  function(x) x - lag(x))
+invar_tests_and_models_df_w <- mutate_at(
+  group_by(invar_tests_and_models_df_w, factor_name),
+  vars(d2AIC = AIC, d2BIC = BIC, d2CFI = cfi),
+  function(x) x - lag(x, n = 3))
+invar_tests_and_models_df_w <- dplyr::mutate(
+  ungroup(invar_tests_and_models_df_w),
+  dAIC = sprintf('%.1f', dAIC),
+  dBIC = sprintf('%.1f', dBIC),
+  d2AIC = sprintf('%.1f', d2AIC),
+  d2BIC = sprintf('%.1f', d2BIC),
+  `P dChisq` = ifelse(`Pr(>Chisq)` < 1e-3, 
+                        '<.001',
+                        sprintf('%.3f', `Pr(>Chisq)`)),
+  dChisq = sprintf('%.1f',`Chisq diff`),
+  dDf = `Df diff`,
+  cfi = sprintf('%.3f', cfi),
+  dCFI = sprintf('%.3f', dCFI),
+  d2CFI = sprintf('%.3f', d2CFI),
+  rmsea = sprintf('%.3f', rmsea),
+  rmsea.ci.lower = sprintf('%.3f', rmsea.ci.lower),
+  rmsea.ci.upper = sprintf('%.3f', rmsea.ci.upper),
+  rmsea = paste0(rmsea, ' [', rmsea.ci.lower, ', ', rmsea.ci.upper,']'),
+  factor_name = factor(factor_name, 
+                       levels = names(c(vVarNames, pVarNames)),
+                       labels = c(vVarNames, pVarNames)))
+invar_tests_and_models_df_w <- mutate(
+  arrange(invar_tests_and_models_df_w,
+          factor_name, invar_type),
+  factor_name_c = as.character(factor_name),
+  invar_type_c = as.character(invar_type)
+)
+invar_tests_and_models_df_w <- mutate_all(
+  invar_tests_and_models_df_w,
+  function(x) ifelse(is.na(x) | x == 'NA', '', x)
+)
+invar_tests_and_models_df_w <- dplyr::select(
+  invar_tests_and_models_df_w,
+  factor_name, invar_type, factor_name_c, invar_type_c, 
+  dAIC, d2AIC, dBIC, d2BIC, dChisq, Df, dDf, `P dChisq`,
+  cfi, dCFI, d2CFI, rmsea)
+
+column_labels <- c(
+  invar_type_c = 'Type', 
+  dAIC = '$\\Delta\\text{AIC}$', 
+  d2AIC = '$\\Delta_{1,4}\\text{AIC}$', 
+  dBIC = '$\\Delta\\text{BIC}$', 
+  d2BIC = '$\\Delta_{1,4}\\text{BIC}$', 
+  dChisq = '$\\Delta\\chi^2$', #6
+  Df = '$\\text{Df}$', #7
+  dDf = '$\\Delta\\text{Df}$', #8
+  `P dChisq` = '$P(>\\Delta\\chi^2)$', #9
+  cfi = '$\\text{CFI}$', 
+  dCFI = '$\\Delta\\text{CFI}$', 
+  d2CFI = '$\\Delta_{1,4}\\text{CFI}$', 
+  rmsea = '$\\text{RMSEA}$')
+
+conclusions_list <- as.list(rep('', length(c(vVarNames, pVarNames))))
+names(conclusions_list) <- c(vVarNames, pVarNames)
+
+conclusions_list[['Financial Aspirations']] <- 'Invariant.'
+conclusions_list[['Materialism']] <- 'Invariant.'
+conclusions_list[['Horizontal Collectivism']] <- 'Problematic: Neither CFI nor AIC support strict invariance. Constraints from metric to strong invariance (intercepts) may be an issue.'
+conclusions_list[['Horizontal Individualism']] <- 'Invariant.'
+conclusions_list[['Mature Values Index']] <- 'Likely invariant: Change in CFI and BIC suggest invariance, though AIC does not favor constraints beyond metric invariance.'
+conclusions_list[['Unmitigated Self-Interest']] <- 'Possibly invariant: At each step, change in CFI suggests invariance, but baseline to strict change is greater than the recommended cutoff. Change in BIC suggests invariance, though AIC does not favor constraints beyond metric invariance.'
+conclusions_list[['Vertical Collectivism']] <- 'Possibly invariant: At each step, change in CFI suggests invariance, but baseline to strict change is greater than the recommended cutoff. Change in BIC suggests invariance, though AIC does not favor constraints except from strong to strict.'
+conclusions_list[['Vertical Individualism']] <- 'Possibly problematic: change in CFI rejects invariance between metric and strong, and between baseline and strict, which agrees with change in AIC. Change in BIC suggests invariance.'
+conclusions_list[['Social Self-Regulation']] <- 'Invariant.'
+conclusions_list[['.Conscientiousness']] <- 'Invariant, with the caveat that AIC favors only the metric constraints.'
+conclusions_list[['..Industriousness']] <- 'Invariant.'
+conclusions_list[['..Orderliness']] <- 'Invariant.'
+conclusions_list[['.Honesty/Propriety']] <- 'Invariant.'
+conclusions_list[['.Agreeableness']] <- 'Invariant.'
+conclusions_list[['.Agreeableness-Six']] <- 'Invariant'
+conclusions_list[['..Compassion']] <- 'Possibly invariant: At each step, change in CFI suggests invariance, but baseline to strict change is greater than the recommended cutoff. Change in BIC suggests invariance. AIC suggests constrained models fit worse, or at least no better, at each step.'
+conclusions_list[['..Politeness']] <- 'Possibly invariant: At each step, change in CFI suggests invariance, but baseline to strict change is greater than the recommended cutoff. Change in BIC suggests invariance. AIC suggests constrained models fit worse, at each step except when adding metric constraints.'
+conclusions_list[['.Neuroticism']] <- 'Invariant'
+conclusions_list[['.Neuroticism-Nine']] <- 'Lilely Invariant.'
+conclusions_list[['..Volatility']] <- 'Likely invariant: Change in CFI and BIC suggest invariance, though AIC does not favor constraints from metric to strong, or baseline to strict invariance.'
+conclusions_list[['..Withdrawal']] <- 'Likely invariant (AIC rejects metric to strong, and baseline to strict).'
+conclusions_list[['Dynamism']] <- 'Invariant (but see AIC).'
+conclusions_list[['.Extraversion']] <- 'Invariant.'
+conclusions_list[['..Assertiveness']] <- 'Invariant.'
+conclusions_list[['..Enthusiasm']] <- 'Likely invariant: Change in CFI and BIC suggest invariance, though AIC does not favor constraints except from baseline to metric.'
+conclusions_list[['.Openness']] <- 'Invariant (but see AIC).'
+conclusions_list[['..Intellect']] <- 'Likely invariant: Change in CFI and BIC suggest invariance, though AIC does not favor constraints except from strong to strict, or baseline to strict.'
+conclusions_list[['..Openness']] <- 'Invariant (but see AIC).'
+
+
+
+nothingburger <- do(group_by(invar_tests_and_models_df_w, factor_name),{
+  table_df <- select(., -factor_name, -invar_type, -factor_name_c)
+  title <- unique(.$factor_name_c)
+  names(table_df) <- column_labels
+  comm <- paste0('\\hline \n ',
+                 paste(paste0('\\multicolumn{12}{l}{', 
+                       strwrap(conclusions_list[[title]], width = 90), '} \\\\'), 
+                       collapse = '\n'), '\n')
+  print(xtable::xtable(table_df[, -c(6,9)], caption = title, align = c('r','l',rep('r', 10))), 
+        include.rownames = T, sanitize.colnames.function = identity, comment = FALSE,
+        caption.placement = 'top', table.placement="!htp",
+        hline.after=c(-1, 0),
+        add.to.row = list(pos = list(4),
+                          command = comm))
+  data.frame()
+})
 
 ```
 
-```{r}
+\clearpage
 
-# process in parallel, 2 cores for the trait level, and 4 cores inside each for the models to fit
-#plan(list(tweak(multiprocess, workers = 2), tweak(multiprocess, workers = 4)))
+## $\Delta\chi^2$ Tests
+
+Below, just the $\Delta\chi^2$ tests.
+
+
+```{r  results='asis', echo=F, warning=F, message=F}
+nothingburger <- do(group_by(invar_tests_and_models_df_w, factor_name),{
+  table_df <- select(., -factor_name, -invar_type, -factor_name_c)
+  title <- unique(.$factor_name_c)
+  names(table_df) <- column_labels
+  print(xtable::xtable(table_df[, c(1,6:9)], caption = title, align = c('r','l',rep('r', length(6:9)))), 
+        include.rownames = T, sanitize.colnames.function = identity, comment = FALSE,
+        caption.placement = 'top', table.placement="!htp")
+  data.frame()
+})
 
 ```
-
