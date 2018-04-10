@@ -528,7 +528,7 @@ This is an example of the measurement model diagram, using Horizontal Collectivi
 ```{r fig.width = 7.5, fig.height = 10, echo = F, warning = F, error = F}
 lnt_df_nat_decades <- dplyr::filter(lnt_df_nat, aage < 60, aage >= 20) 
 lnt_df_nat_decades$decade_group <- factor(lnt_df_nat_decades$aage %/% 10, levels = c(2, 3, 4, 5), labels = c('20s', '30s', '40s', '50s'))
-lnt_df_nat_decades$agender <- as_factor(lnt_df_nat_decades$agender)
+lnt_df_nat_decades$agender <- haven::as_factor(lnt_df_nat_decades$agender)
 lnt_nat_decades_items <- dplyr::select(lnt_df_nat_decades, matches(item_regexs), decade_group, agender)
 
 demo_model <- create_lav_invariance_model('hrz_col', 
