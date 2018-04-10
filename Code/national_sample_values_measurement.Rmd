@@ -12,6 +12,7 @@ output:
 library(future)
 nworkers1 <- 28/4
 nworkers2 <- 4
+nworkers <- 28
 # nworkers <- availableCores() - 1
 data_dir <- '/home/flournoy/otherhome/data/lnt_pxvx'
 # data_dir <- '/data/jflournoy/lnt_pxvx/'
@@ -657,8 +658,7 @@ semPaths(demo_model_fit, ask = F, include = 1, node.width = .75, layout = 'tree2
 
 
 ```{r echo=F, results='hide', warning=F, message=F}
-plan(list(tweak(multiprocess, gc = T, workers = nworkers1), 
-          tweak(multiprocess, gc = T, workers = nworkers2)))
+plan(tweak(multiprocess, gc = T, workers = nworkers))
 
 factor_names <- unique(lnt_scales_df$factor_name)
 fit_measures <- c('mfi', 'cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper')
