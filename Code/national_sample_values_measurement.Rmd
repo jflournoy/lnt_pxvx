@@ -526,7 +526,6 @@ test_factors_for_invariance <- function(factor_names, indicators_df, item_data, 
 This is an example of the measurement model diagram, using Horizontal Collectivism, for one group demonstrating constraints for the strict measurement invariance model. Paths with the same label are constrained to have the same path weight, and in the strict invariance model, all labeled path weights must be the same for each decade group. The residual covariances are an exception: the constraint imposed is that residual covariance is the same across the same time-lag, for the same indicator (so e.g., `cov(aind9, bind9) = cov(bind9, cind9)`, and `cov(aind9, cind9) = cov(bind9, dind9)`), but these are not constrained to be the same across group. Since this constraint is imposed in every factorial invariance model tested, it does not affect the fit comparisons.
 
 ```{r fig.width = 7.5, fig.height = 10, echo = F, warning = F, error = F}
-library(semPlot)
 lnt_df_nat_decades <- dplyr::filter(lnt_df_nat, aage < 60, aage >= 20) 
 lnt_df_nat_decades$decade_group <- factor(lnt_df_nat_decades$aage %/% 10, levels = c(2, 3, 4, 5), labels = c('20s', '30s', '40s', '50s'))
 lnt_df_nat_decades$agender <- as_factor(lnt_df_nat_decades$agender)
@@ -538,6 +537,10 @@ demo_model <- create_lav_invariance_model('hrz_col',
 
 demo_model_fit <- sem_invar(demo_model, data = lnt_nat_decades_items, group = 'decade_group', do.fit = F)
 cat(demo_model)
+```
+
+```{r eval = F}
+library(semPlot)
 semPaths(demo_model_fit, ask = F, include = 1, node.width = .75, layout = 'tree2', rotation = 2, curvature = 9,
          intStyle = 'multi', levels = c(1,5,6,7), edge.color = '#bbbbbb', edge.label.color = '#444444',
          nCharEdges = 5, edge.label.cex = .5, nCharNodes = 8)
