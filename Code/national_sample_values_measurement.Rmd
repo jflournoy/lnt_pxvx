@@ -10,8 +10,8 @@ output:
 
 ```{r echo=F, results='hide', warning=F, message=F}
 library(future)
-nworkers1 <- 28/4
-nworkers2 <- 4
+# nworkers1 <- 28/4
+# nworkers2 <- 4
 nworkers <- 28
 # nworkers <- availableCores() - 1
 data_dir <- '/home/flournoy/otherhome/data/lnt_pxvx'
@@ -206,13 +206,38 @@ create_wave_keys <- function(scoring_df, wave_prefix = 'a'){
 }
 
 wave1_keys <- create_wave_keys(lnt_scales_df, 'a')
-wave1_scored <- psych::scoreItems(keys = wave1_keys, lnt_items_nat)
+wave1_scored <- psych::scoreItems(keys = wave1_keys[-25], lnt_items_nat, impute = 'none',
+                                  min = 1, max = 5)
+wave1_scored_mvi <- psych::scoreItems(keys = wave1_keys[25], lnt_items_nat, impute = 'none',
+                                      min = 1, max = 9)
 wave2_keys <- create_wave_keys(lnt_scales_df, 'b')
-wave2_scored <- psych::scoreItems(keys = wave2_keys, lnt_items_nat)
+wave2_scored <- psych::scoreItems(keys = wave2_keys[-25], lnt_items_nat, impute = 'none',
+                                  min = 1, max = 5)
+wave2_scored_mvi <- psych::scoreItems(keys = wave2_keys[25], lnt_items_nat, impute = 'none',
+                                      min = 1, max = 9)
 wave3_keys <- create_wave_keys(lnt_scales_df, 'c')
-wave3_scored <- psych::scoreItems(keys = wave3_keys, lnt_items_nat)
+wave3_scored <- psych::scoreItems(keys = wave3_keys[-25], lnt_items_nat, impute = 'none',
+                                  min = 1, max = 5)
+wave3_scored_mvi <- psych::scoreItems(keys = wave3_keys[25], lnt_items_nat, impute = 'none',
+                                      min = 1, max = 9)
 wave4_keys <- create_wave_keys(lnt_scales_df, 'd')
-wave4_scored <- psych::scoreItems(keys = wave4_keys, lnt_items_nat)
+wave4_scored <- psych::scoreItems(keys = wave4_keys[-25], lnt_items_nat,  impute = 'none',
+                                  min = 1, max = 5)
+wave4_scored_mvi <- psych::scoreItems(keys = wave4_keys[25], lnt_items_nat, impute = 'none',
+                                      min = 1, max = 9)
+
+all_waves_scored <- bind_rows(
+  list(`1` = bind_cols(as_data_frame(wave1_scored$scores), as_data_frame(wave1_scored_mvi$scores)),
+       `2` = bind_cols(as_data_frame(wave2_scored$scores), as_data_frame(wave2_scored_mvi$scores)),
+       `3` = bind_cols(as_data_frame(wave3_scored$scores), as_data_frame(wave3_scored_mvi$scores)),
+       `4` = bind_cols(as_data_frame(wave4_scored$scores), as_data_frame(wave4_scored_mvi$scores))),
+  .id = 'wave')
+
+all_waves_scored$aage <- lnt_df_nat$aage
+all_waves_scored$id <- 1:dim(lnt_df_nat)[1]
+all_waves_scored$age <- as.numeric(all_waves_scored$aage) + 
+  as.numeric(all_waves_scored$wave) - 1
+all_waves_scored$decade_group <- factor(all_waves_scored$aage %/% 10)
 
 cat('**Wave 1**\n\n')
 wave1_scored$alpha
@@ -596,7 +621,7 @@ run_invariance_model <- function(factor_name, manifest_vec, item_data, type = 'b
   return(a_fit)
 }
 
-run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measures, group, return_models = F, ...){
+run_invariance_tests <- function(factor_name, manifest_vec, item_data, group, ...){
   require(future)
   require(lavaan)
   require(tibble)
@@ -613,12 +638,15 @@ run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measu
                            manifest_vec, 
                            item_data, 
                            type = all_invar_types[[it]], 
-                           group = group, 
+                           group = group,
                            ...))
     })
   }
-  
-  invar_models_list <- lapply(as.list(invar_models_future_listenv), future::value) 
+  return(invar_models_future_listenv)
+}
+
+process_invariance_tests <- function(invar_models_list, factor_name, fit_measures){
+  all_invar_types <- c('unconstrained', 'long_metric', 'long_strong', 'long_strict', 'baseline','metric','strong', 'strict')
   
   fit_statistics <- future.apply::future_lapply(
     invar_models_list,
@@ -658,16 +686,12 @@ run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measu
   summary_df <- dplyr::bind_rows(fit_stat_df, lrt_test_df)
   
   names(invar_models_list) <- all_invar_types
-  if(return_models){
-    return(list(fit_tests = summary_df, models = invar_models_list))
-  } else {
-    return(summary_df)
-  }
+  return(summary_df)
 }
 
-test_factors_for_invariance <- function(factor_names, indicators_df, item_data, fit_measures = c('mfi', 'cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper'), group, ...){
+test_factors_for_invariance <- function(factor_names, indicators_df, item_data, fit_measures = c('mfi', 'cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper'), group, save_fits = F, ...){
   require(future)
-  invar_mod_listenv <- listenv::listenv()
+  invar_mods_future_listenv <- listenv::listenv()
   for(fn in seq_along(factor_names)){
     factor_name <- factor_names[[fn]]
     factor_items <- get_factor_items(indicators_df, factor_name)
@@ -675,18 +699,27 @@ test_factors_for_invariance <- function(factor_names, indicators_df, item_data, 
       stop(factor_name, ' does not have item columns in item_data')
     }
     this_factor_data <- item_data[, c(get_item_colnames(factor_items), group)]
-    invar_mod_listenv[[fn]] <- future::future(
-      {
-        message(paste0("Running: ", factor_name))
-        run_invariance_tests(factor_name = factor_name, 
-                             manifest_vec = factor_items, 
-                             item_data = this_factor_data, 
-                             fit_measures = fit_measures, 
-                             group = group,
-                             ...)
-      })
+    invar_mods_future_listenv[[fn]] <- run_invariance_tests(
+      factor_name = factor_name, 
+      manifest_vec = factor_items, 
+      item_data = this_factor_data,
+      group = group,
+      ...)
   }
-  return(as.list(invar_mod_listenv))
+  procd_invar_stats_listenv <- listenv::listenv()
+  for(fn in seq_along(factor_names)){
+    factor_name <- factor_names[[fn]]
+    a_factor_invariance_suite <- lapply(as.list(invar_mods_future_listenv[[fn]]), future::value)
+    if(save_fits){
+      saveRDS(a_factor_invariance_suite, 
+              file.path(data_dir, paste0(factor_name, '_invariance_mods.RDS')))
+    }
+    procd_invar_stats_listenv[[fn]] <- process_invariance_tests(
+      invar_models_list = a_factor_invariance_suite, 
+      factor_name = factor_name, 
+      fit_measures = fit_measures)
+  }
+  return(as.list(procd_invar_stats_listenv))
 }
 ```
 
@@ -729,7 +762,7 @@ if(!file.exists(invar_test_rez_fn)){
     fit_measures = fit_measures, 
     group = 'decade_group',  
     missing = 'fiml')
-  invar_tests_and_models_df <- dplyr::bind_rows(lapply(invar_tests_and_models, future::value))
+  invar_tests_and_models_df <- dplyr::bind_rows(invar_tests_and_models)
   saveRDS(invar_tests_and_models_df, invar_test_rez_fn)
 } else {
   invar_tests_and_models_df <- readRDS(invar_test_rez_fn)
@@ -900,4 +933,24 @@ nothingburger <- do(group_by(invar_tests_and_models_df_w, factor_name),{
   data.frame()
 })
 
+```
+
+```{r loessplots}
+nullius <- lapply(names(vVarNames), function(var){
+  print(ggplot2::ggplot(
+    dplyr::filter(all_waves_scored, aage > 19, aage < 57), 
+    ggplot2::aes_string(x = 'age', y = var)) + 
+    ggplot2::geom_line(
+      stat = 'smooth', method = 'lm', formula = y ~ x,
+      ggplot2::aes(group = factor(id)), alpha = .1) +
+    ggplot2::geom_smooth(method = 'loess', span = .4, linetype = 2) +
+    # ggplot2::geom_line(
+    #   ggplot2::aes(group = decade_group),
+    #   stat = 'smooth', method = 'lm', color = 'black', alpha = .8, size = 1, linetype = 1) +
+    ggplot2::geom_line(
+      stat = 'smooth', method = 'lm', color = 'black', alpha = .5, size = 1) +
+    ggplot2::coord_cartesian(ylim = c(1, ifelse(var == 'mvi', 9, 5))) + 
+    ggplot2::theme_minimal() + 
+    labs(title = vVarNames[var]))
+})
 ```
