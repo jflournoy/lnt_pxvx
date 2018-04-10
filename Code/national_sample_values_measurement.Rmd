@@ -224,7 +224,12 @@ create_lav_growth_model <- function(factor_name, manifest_vec, int.i.group_equal
                         paste0(1:4 - center_wave, '*', wave_factors),
                         collapse = ' + '))
   factor_intercepts <- paste(paste0(wave_factors, ' ~ 0*1'), collapse = '\n')
-  growth_code <- paste(intercept, slope, factor_intercepts, sep = '\n')
+  factor_variances <- paste(
+    paste0(wave_factors, 
+           paste0('~~ c(', rep('fctrvar', num_groups), ')*'), 
+                  wave_factors),
+    collapse = '\n')
+  growth_code <- paste(intercept, slope, factor_intercepts, factor_variances, sep = '\n')
   if(int.i.group_equal){
     int.i <- paste0(iname, ' ~ c(', paste(rep('inti', num_groups), collapse = ', '), ')*1')
     growth_code <- paste(growth_code, int.i, sep = '\n')
@@ -652,7 +657,7 @@ semPaths(demo_model_fit, ask = F, include = 1, node.width = .75, layout = 'tree2
 
 
 ```{r echo=F, results='hide', warning=F, message=F}
-plan(list(tweak(multiprocess, gc = T, workers = nworkers2), 
+plan(list(tweak(multiprocess, gc = T, workers = nworkers1), 
           tweak(multiprocess, gc = T, workers = nworkers2)))
 
 factor_names <- unique(lnt_scales_df$factor_name)
