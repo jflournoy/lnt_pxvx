@@ -210,17 +210,33 @@ create_lav_id_strat_widaman <- function(factor_name){
   paste0(factor_intercept, '\n', factor_var)
 }
 
-create_lav_growth_model <- function(factor_name, manifest_vec, int.group_equal = F, var.group_equal = F, cov.group_equal = F, num_groups = 4, center_wave = 1){
+create_lav_growth_model <- function(factor_name, manifest_vec, int.i.group_equal = F, var.i.group_equal = F, int.s.group_equal = F, var.s.group_equal = F, cov.group_equal = F, num_groups = 4, center_wave = 1){
   wave_factors <- paste0(factor_name, '_W', 1:4)
-  intercept <- paste0(factor_name, '_i =~ ', 
+  iname <- paste0(factor_name, '_i')
+  intercept <- paste0(iname, ' =~ ', 
                       paste(
                         paste0('1*', wave_factors),
                         collapse = ' + '))
-  slope <- paste0(factor_name, '_s =~ ', 
+  sname <- paste0(factor_name, '_s')
+  slope <- paste0(sname, ' =~ ', 
                       paste(
                         paste0(1:4 - center_wave, '*', wave_factors),
                         collapse = ' + '))
-  if(int.group_equal){
+  growth_code <- paste(intercept, slope, sep = '\n')
+  if(int.i.group_equal){
+    int.i <- paste0(iname, ' ~ c(', paste(rep('inti', 4), collapse = ', '), ')*1')
+    growth_code <- paste(growth_code, int.i, sep = '\n')
+  }
+  if(int.s.group_equal){
+    
+  }
+  if(var.i.group_equal){
+    
+  }
+  if(var.s.group_equal){
+    
+  }
+  if(cov.group_equal){
     
   }
   return(all_wave_model)
@@ -539,8 +555,7 @@ run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measu
   
   fit_statistics <- future.apply::future_lapply(
     invar_models_list,
-    function(x){try(fitmeasures(x))},
-    fit_measures
+    function(x){try(fitmeasures(x, fit.measures = fit_measures))}
   )
   fit_statistics_len <- lapply(fit_statistics, length)
   fit_stat_df <- data_frame(
@@ -617,7 +632,7 @@ semPaths(demo_model_fit, ask = F, include = 1, node.width = .75, layout = 'tree2
 
 
 ```{r echo=F, results='hide', warning=F, message=F}
-plan(tweak(multiprocess, gc = T, workers = nworkers))
+plan(list(sequential, tweak(multiprocess, gc = T, workers = nworkers)))
 
 factor_names <- unique(lnt_scales_df$factor_name)
 fit_measures <- c('mfi', 'cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper')
