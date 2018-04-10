@@ -10,7 +10,8 @@ output:
 
 ```{r echo=F, results='hide', warning=F, message=F}
 library(future)
-nworkers <- 28
+nworkers1 <- 28/4
+nworkers2 <- 4
 # nworkers <- availableCores() - 1
 data_dir <- '/home/flournoy/otherhome/data/lnt_pxvx'
 # data_dir <- '/data/jflournoy/lnt_pxvx/'
@@ -228,7 +229,8 @@ create_lav_growth_model <- function(factor_name, manifest_vec, int.i.group_equal
     growth_code <- paste(growth_code, int.i, sep = '\n')
   }
   if(int.s.group_equal){
-    
+    int.s <- paste0(sname, ' ~ c(', paste(rep('ints', 4), collapse = ', '), ')*1')
+    growth_code <- paste(growth_code, int.s, sep = '\n')
   }
   if(var.i.group_equal){
     
@@ -542,6 +544,7 @@ run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measu
   invar_models_future_listenv <- listenv::listenv()
   for(it in seq_along(all_invar_types)){
     invar_models_future_listenv[[it]] <- future::future({
+      print(paste0("Running: ", factor_name, ", ", all_invar_types[[it]]))
       run_invariance_model(factor_name, 
                            manifest_vec, 
                            item_data, 
@@ -555,7 +558,9 @@ run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measu
   
   fit_statistics <- future.apply::future_lapply(
     invar_models_list,
-    function(x){try(fitmeasures(x, fit.measures = fit_measures))}
+    function(x){
+      try(fitmeasures(x, fit.measures = fit_measures))
+    }
   )
   fit_statistics_len <- lapply(fit_statistics, length)
   fit_stat_df <- data_frame(
@@ -596,12 +601,15 @@ test_factors_for_invariance <- function(factor_names, indicators_df, item_data, 
     }
     this_factor_data <- item_data[, c(get_item_colnames(factor_items), group)]
     invar_mod_listenv[[fn]] <- future::future(
-      run_invariance_tests(factor_name = factor_name, 
-                           manifest_vec = factor_items, 
-                           item_data = this_factor_data, 
-                           fit_measures = fit_measures, 
-                           group = group,
-                           ...))
+      {
+        print(paste0("Running: ", factor_name))
+        run_invariance_tests(factor_name = factor_name, 
+                             manifest_vec = factor_items, 
+                             item_data = this_factor_data, 
+                             fit_measures = fit_measures, 
+                             group = group,
+                             ...)
+      })
   }
   return(as.list(invar_mod_listenv))
 }
@@ -632,7 +640,8 @@ semPaths(demo_model_fit, ask = F, include = 1, node.width = .75, layout = 'tree2
 
 
 ```{r echo=F, results='hide', warning=F, message=F}
-plan(list(sequential, tweak(multiprocess, gc = T, workers = nworkers)))
+plan(list(tweak(multiprocess, gc = T, workers = nworkers2), 
+          tweak(multiprocess, gc = T, workers = nworkers2)))
 
 factor_names <- unique(lnt_scales_df$factor_name)
 fit_measures <- c('mfi', 'cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper')
