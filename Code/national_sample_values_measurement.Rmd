@@ -152,6 +152,37 @@ lnt_scales_list <- list(
     factor_name = 'vrt_col'))
 
 lnt_scales_df <- do.call(dplyr::bind_rows, lnt_scales_list)
+
+
+pVarNames <- c(bfi_s_scale="Social Self-Regulation",
+               bfi_c=".Conscientiousness",
+               bfas_ci="..Industriousness",
+               bfas_co="..Orderliness",
+               bfi_hp8=".Honesty/Propriety",
+               bfi_a=".Agreeableness",
+               bfi_a6=".Agreeableness-Six",
+               bfas_ac="..Compassion",
+               bfas_ap="..Politeness",
+               bfi_n=".Neuroticism",
+               bfas_nv9 = ".Neuroticism-Nine",
+               bfas_nv="..Volatility",
+               bfas_nw="..Withdrawal",
+               bfi_d_scale="Dynamism",
+               bfi_e=".Extraversion",
+               bfas_ea="..Assertiveness",
+               bfas_ee="..Enthusiasm",
+               bfi_o=".Openness",
+               bfas_oi="..Intellect",
+               bfas_oo="..Openness")
+
+vVarNames <- c('aspfin'='Financial Aspirations',
+               'bfa_mt'='Materialism',
+               'hrz_col'='Horizontal Collectivism',
+               'hrz_ind'='Horizontal Individualism',
+               'mvi'='Mature Values Index',
+               'usi'='Unmitigated Self-Interest',
+               'vrt_col'='Vertical Collectivism',
+               'vrt_ind'='Vertical Individualism')
 ```
 
 # Creating factor-item mapping
@@ -288,7 +319,8 @@ create_lav_factor_loadings <- function(factor_name, manifest_vec, group_equal = 
   return(all_wave_model)
 }
 
-create_lav_ints <- function(manifest_vec, group_equal = F, long_free = F, num_groups = 4){
+create_lav_ints <- function(manifest_vec, group_equal = F, long_free = F, num_groups = 4, 
+                            fix_first_intercept = F){
   if(long_free && group_equal){
     stop("Can't set groups equal and free longitudinal constraints.")
   }
@@ -303,6 +335,8 @@ create_lav_ints <- function(manifest_vec, group_equal = F, long_free = F, num_gr
     eq_lhs <- paste0(letters[1:4], man_var)
     if(long_free && which(manifest_vec == man_var) > 1){
       eq <- paste0(eq_lhs, ' ~ ', '1')  
+    } else if(fix_first_intercept && which(manifest_vec == man_var) == 1){
+      eq <- paste0(eq_lhs, ' ~ ', '0*1')  
     } else {
       eq <- paste0(eq_lhs, ' ~ ', eq_rhs)
     }
@@ -366,7 +400,7 @@ create_lav_resid_covar <- function(manifest_vec, group_equal = F, long_free = F,
   return(covar_grp_eqs_all)
 }
 
-create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unconstrained', 'long_metric', 'long_strong', 'long_strict', 'baseline','metric','strong', 'strict'), num_groups = 4, no_widman = F){
+create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unconstrained', 'long_metric', 'long_strong', 'long_strict', 'baseline','metric','strong', 'strict'), num_groups = 4, no_widman = F, fix_first_intercept = F){
   #unconstrained: estimate first loading, constrain across waves, but freely
   #estimate remaining loadings. Estimate first intercept but constrain to be
   #invariant across time. Freely estimate remaining parameters. Allow covariance
@@ -397,7 +431,8 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                        group_equal = F, long_free = T, num_groups = num_groups),
                      create_lav_ints(
                        manifest_vec, 
-                       group_equal = F, long_free = T, num_groups = num_groups),
+                       group_equal = F, long_free = T, num_groups = num_groups,
+                       fix_first_intercept = fix_first_intercept),
                      create_lav_resid_var(
                        manifest_vec, 
                        group_equal = F, long_free = T, num_groups = num_groups),
@@ -411,7 +446,8 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                        group_equal = F, long_free = F, num_groups = num_groups),
                      create_lav_ints(
                        manifest_vec, 
-                       group_equal = F, long_free = T, num_groups = num_groups),
+                       group_equal = F, long_free = T, num_groups = num_groups,
+                       fix_first_intercept = fix_first_intercept),
                      create_lav_resid_var(
                        manifest_vec, 
                        group_equal = F, long_free = T, num_groups = num_groups),
@@ -425,7 +461,8 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                        group_equal = F, long_free = F, num_groups = num_groups),
                      create_lav_ints(
                        manifest_vec, 
-                       group_equal = F, long_free = F, num_groups = num_groups),
+                       group_equal = F, long_free = F, num_groups = num_groups,
+                       fix_first_intercept = fix_first_intercept),
                      create_lav_resid_var(
                        manifest_vec, 
                        group_equal = F, long_free = T, num_groups = num_groups),
@@ -439,7 +476,8 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                        group_equal = F, long_free = F, num_groups = num_groups),
                      create_lav_ints(
                        manifest_vec, 
-                       group_equal = F, long_free = F, num_groups = num_groups),
+                       group_equal = F, long_free = F, num_groups = num_groups,
+                       fix_first_intercept = fix_first_intercept),
                      create_lav_resid_var(
                        manifest_vec, 
                        group_equal = F, long_free = F, num_groups = num_groups),
@@ -453,7 +491,8 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                        group_equal = F, long_free = F, num_groups = num_groups),
                      create_lav_ints(
                        manifest_vec, 
-                       group_equal = F, long_free = F, num_groups = num_groups),
+                       group_equal = F, long_free = F, num_groups = num_groups,
+                       fix_first_intercept = fix_first_intercept),
                      create_lav_resid_var(
                        manifest_vec, 
                        group_equal = F, long_free = F, num_groups = num_groups),
@@ -465,7 +504,8 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                    c(create_lav_factor_loadings(
                        factor_name, manifest_vec, group_equal = T, num_groups = num_groups),
                      create_lav_ints(
-                       manifest_vec, group_equal = F, num_groups = num_groups),
+                       manifest_vec, group_equal = F, num_groups = num_groups,
+                       fix_first_intercept = fix_first_intercept),
                      create_lav_resid_var(
                        manifest_vec, group_equal = F, num_groups = num_groups),
                      create_lav_resid_covar(
@@ -475,7 +515,8 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                    c(create_lav_factor_loadings(
                        factor_name, manifest_vec, group_equal = T, num_groups = num_groups),
                      create_lav_ints(
-                       manifest_vec, group_equal = T, num_groups = num_groups),
+                       manifest_vec, group_equal = T, num_groups = num_groups,
+                       fix_first_intercept = fix_first_intercept),
                      create_lav_resid_var(
                        manifest_vec, group_equal = F, num_groups = num_groups),
                      create_lav_resid_covar(
@@ -485,7 +526,8 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                    c(create_lav_factor_loadings(
                        factor_name, manifest_vec, group_equal = T, num_groups = num_groups),
                      create_lav_ints(
-                       manifest_vec, group_equal = T, num_groups = num_groups),
+                       manifest_vec, group_equal = T, num_groups = num_groups,
+                       fix_first_intercept = fix_first_intercept),
                      create_lav_resid_var(
                        manifest_vec, group_equal = T, num_groups = num_groups),
                      create_lav_resid_covar(
@@ -518,6 +560,21 @@ sem_invar <- function(model, data, ...){
                 ...)
   return(fit)
 } 
+
+growth_cofs <- function(model, data, ...){
+  fit <- lavaan::lavaan(model = model, data = data,
+                        meanstructure = TRUE, 
+                        int.ov.free = TRUE, 
+                        int.lv.free = TRUE, 
+                        auto.fix.first = TRUE, 
+                        auto.fix.single = TRUE, 
+                        auto.var = TRUE, 
+                        auto.cov.lv.x = TRUE, 
+                        auto.th = TRUE, 
+                        auto.delta = TRUE, 
+                        auto.cov.y = TRUE, ...)
+  return(fit)
+}
 
 run_invariance_model <- function(factor_name, manifest_vec, item_data, type = 'baseline', group = NULL, num_groups = 4, ...){
   an_invar_model <- create_lav_invariance_model(
@@ -552,12 +609,12 @@ run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measu
   for(it in seq_along(all_invar_types)){
     invar_models_future_listenv[[it]] <- future::future({
       message(paste0("Running: ", factor_name, ", ", all_invar_types[[it]]))
-      run_invariance_model(factor_name, 
+      try(run_invariance_model(factor_name, 
                            manifest_vec, 
                            item_data, 
                            type = all_invar_types[[it]], 
                            group = group, 
-                           ...)
+                           ...))
     })
   }
   
@@ -660,7 +717,7 @@ semPaths(demo_model_fit, ask = F, include = 1, node.width = .75, layout = 'tree2
 ```{r echo=F, results='hide', warning=F, message=F}
 plan(tweak(multiprocess, gc = T, workers = nworkers))
 
-factor_names <- unique(lnt_scales_df$factor_name)
+factor_names <- names(vVarNames)
 fit_measures <- c('mfi', 'cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper')
 
 invar_test_rez_fn <- '../Rez/invariance_measures_long.Rds'
@@ -691,36 +748,6 @@ To determine the invariance of measurement over groups, we can examine the $\chi
 # [13] "bfas_co"     "bfas_ea"     "bfas_ee"     "bfas_nv9"    "bfas_nv"     "bfas_nw"    
 # [19] "bfas_oi"     "bfas_oo"     "aspfin"      "bfa_mt"      "hrz_ind"     "hrz_col"    
 # [25] "mvi"         "usi"         "vrt_ind"     "vrt_col"  
-
-pVarNames <- c(bfi_s_scale="Social Self-Regulation",
-               bfi_c=".Conscientiousness",
-               bfas_ci="..Industriousness",
-               bfas_co="..Orderliness",
-               bfi_hp8=".Honesty/Propriety",
-               bfi_a=".Agreeableness",
-               bfi_a6=".Agreeableness-Six",
-               bfas_ac="..Compassion",
-               bfas_ap="..Politeness",
-               bfi_n=".Neuroticism",
-               bfas_nv9 = ".Neuroticism-Nine",
-               bfas_nv="..Volatility",
-               bfas_nw="..Withdrawal",
-               bfi_d_scale="Dynamism",
-               bfi_e=".Extraversion",
-               bfas_ea="..Assertiveness",
-               bfas_ee="..Enthusiasm",
-               bfi_o=".Openness",
-               bfas_oi="..Intellect",
-               bfas_oo="..Openness")
-
-vVarNames <- c('aspfin'='Financial Aspirations',
-               'bfa_mt'='Materialism',
-               'hrz_col'='Horizontal Collectivism',
-               'hrz_ind'='Horizontal Individualism',
-               'mvi'='Mature Values Index',
-               'usi'='Unmitigated Self-Interest',
-               'vrt_col'='Vertical Collectivism',
-               'vrt_ind'='Vertical Individualism')
 
 invar_tests_and_models_df <- dplyr::mutate(
   invar_tests_and_models_df, 
