@@ -223,25 +223,29 @@ create_lav_growth_model <- function(factor_name, manifest_vec, int.i.group_equal
                       paste(
                         paste0(1:4 - center_wave, '*', wave_factors),
                         collapse = ' + '))
-  growth_code <- paste(intercept, slope, sep = '\n')
+  factor_intercepts <- paste(paste0(wave_factors, ' ~ 0*1'), collapse = '\n')
+  growth_code <- paste(intercept, slope, factor_intercepts, sep = '\n')
   if(int.i.group_equal){
-    int.i <- paste0(iname, ' ~ c(', paste(rep('inti', 4), collapse = ', '), ')*1')
+    int.i <- paste0(iname, ' ~ c(', paste(rep('inti', num_groups), collapse = ', '), ')*1')
     growth_code <- paste(growth_code, int.i, sep = '\n')
   }
   if(int.s.group_equal){
-    int.s <- paste0(sname, ' ~ c(', paste(rep('ints', 4), collapse = ', '), ')*1')
+    int.s <- paste0(sname, ' ~ c(', paste(rep('ints', num_groups), collapse = ', '), ')*1')
     growth_code <- paste(growth_code, int.s, sep = '\n')
   }
   if(var.i.group_equal){
-    
+    var.i <- paste0(iname, ' ~~ c(', paste(rep('vari', num_groups), collapse = ', '), ')*', iname)
+    growth_code <- paste(growth_code, var.i, sep = '\n')
   }
   if(var.s.group_equal){
-    
+    var.s <- paste0(sname, ' ~~ c(', paste(rep('vars', num_groups), collapse = ', '), ')*', sname)
+    growth_code <- paste(growth_code, var.s, sep = '\n')
   }
   if(cov.group_equal){
-    
+    covar.is <- paste0(sname, ' ~~ c(', paste(rep('covar_is', num_groups), collapse = ', '), ')*', iname)
+    growth_code <- paste(growth_code, covar.is, sep = '\n')
   }
-  return(all_wave_model)
+  return(growth_code)
 }
 
 create_lav_factor_loadings <- function(factor_name, manifest_vec, group_equal = F, long_free = F, num_groups = 4){
@@ -356,7 +360,7 @@ create_lav_resid_covar <- function(manifest_vec, group_equal = F, long_free = F,
   return(covar_grp_eqs_all)
 }
 
-create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unconstrained', 'long_metric', 'long_strong', 'long_strict', 'baseline','metric','strong', 'strict'), num_groups = 4){
+create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unconstrained', 'long_metric', 'long_strong', 'long_strict', 'baseline','metric','strong', 'strict'), num_groups = 4, no_widman = F){
   #unconstrained: estimate first loading, constrain across waves, but freely
   #estimate remaining loadings. Estimate first intercept but constrain to be
   #invariant across time. Freely estimate remaining parameters. Allow covariance
@@ -382,8 +386,7 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
   
   amod <- switch(type,
                  unconstrained = paste(
-                   c(create_lav_id_strat_widaman(factor_name),
-                     create_lav_factor_loadings(
+                   c(create_lav_factor_loadings(
                        factor_name, manifest_vec, 
                        group_equal = F, long_free = T, num_groups = num_groups),
                      create_lav_ints(
@@ -397,8 +400,7 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                        group_equal = F, long_free = T, num_groups = num_groups)), 
                    collapse = '\n\n#---\n\n'),
                  long_metric = paste(
-                   c(create_lav_id_strat_widaman(factor_name),
-                     create_lav_factor_loadings(
+                   c(create_lav_factor_loadings(
                        factor_name, manifest_vec, 
                        group_equal = F, long_free = F, num_groups = num_groups),
                      create_lav_ints(
@@ -412,8 +414,7 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                        group_equal = F, long_free = T, num_groups = num_groups)), 
                    collapse = '\n\n#---\n\n'), 
                  long_strong = paste(
-                   c(create_lav_id_strat_widaman(factor_name),
-                     create_lav_factor_loadings(
+                   c(create_lav_factor_loadings(
                        factor_name, manifest_vec, 
                        group_equal = F, long_free = F, num_groups = num_groups),
                      create_lav_ints(
@@ -427,8 +428,7 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                        group_equal = F, long_free = T, num_groups = num_groups)), 
                    collapse = '\n\n#---\n\n'),
                  long_strict = paste(
-                   c(create_lav_id_strat_widaman(factor_name),
-                     create_lav_factor_loadings(
+                   c(create_lav_factor_loadings(
                        factor_name, manifest_vec, 
                        group_equal = F, long_free = F, num_groups = num_groups),
                      create_lav_ints(
@@ -442,8 +442,7 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                        group_equal = F, long_free = T, num_groups = num_groups)), 
                    collapse = '\n\n#---\n\n'),
                  baseline = paste(
-                   c(create_lav_id_strat_widaman(factor_name),
-                     create_lav_factor_loadings(
+                   c(create_lav_factor_loadings(
                        factor_name, manifest_vec, 
                        group_equal = F, long_free = F, num_groups = num_groups),
                      create_lav_ints(
@@ -457,8 +456,7 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                        group_equal = F, long_free = F, num_groups = num_groups)), 
                    collapse = '\n\n#---\n\n'),
                  metric = paste(
-                   c(create_lav_id_strat_widaman(factor_name),
-                     create_lav_factor_loadings(
+                   c(create_lav_factor_loadings(
                        factor_name, manifest_vec, group_equal = T, num_groups = num_groups),
                      create_lav_ints(
                        manifest_vec, group_equal = F, num_groups = num_groups),
@@ -468,8 +466,7 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                        manifest_vec, group_equal = F, num_groups = num_groups)), 
                    collapse = '\n\n#---\n\n'),
                  strong = paste(
-                   c(create_lav_id_strat_widaman(factor_name),
-                     create_lav_factor_loadings(
+                   c(create_lav_factor_loadings(
                        factor_name, manifest_vec, group_equal = T, num_groups = num_groups),
                      create_lav_ints(
                        manifest_vec, group_equal = T, num_groups = num_groups),
@@ -479,8 +476,7 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                        manifest_vec, group_equal = F, num_groups = num_groups)), 
                    collapse = '\n\n#---\n\n'),
                  strict = paste(
-                   c(create_lav_id_strat_widaman(factor_name),
-                     create_lav_factor_loadings(
+                   c(create_lav_factor_loadings(
                        factor_name, manifest_vec, group_equal = T, num_groups = num_groups),
                      create_lav_ints(
                        manifest_vec, group_equal = T, num_groups = num_groups),
@@ -489,7 +485,12 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                      create_lav_resid_covar(
                        manifest_vec, group_equal = F, num_groups = num_groups)), 
                    collapse = '\n\n#---\n\n'))
-  return(amod)
+  if(no_widman){
+    return(amod)
+  } else {
+    amod <- paste(create_lav_id_strat_widaman(factor_name = factor_name), amod, sep = '\n')
+    return(amod) 
+  }
 }
 
 get_factor_items <- function(scoring_df, factor_name){
@@ -544,7 +545,7 @@ run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measu
   invar_models_future_listenv <- listenv::listenv()
   for(it in seq_along(all_invar_types)){
     invar_models_future_listenv[[it]] <- future::future({
-      print(paste0("Running: ", factor_name, ", ", all_invar_types[[it]]))
+      message(paste0("Running: ", factor_name, ", ", all_invar_types[[it]]))
       run_invariance_model(factor_name, 
                            manifest_vec, 
                            item_data, 
@@ -559,7 +560,14 @@ run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measu
   fit_statistics <- future.apply::future_lapply(
     invar_models_list,
     function(x){
-      try(fitmeasures(x, fit.measures = fit_measures))
+      tryfitmeasure <- try(fitmeasures(x, fit.measures = fit_measures))
+      if(class(tryfitmeasure) == 'try-error'){
+        rez <- rep(NA, length(fit_measures))
+        names(rez) <- fit_measures
+        return(rez)
+      } else {
+        return(tryfitmeasure)
+      }
     }
   )
   fit_statistics_len <- lapply(fit_statistics, length)
@@ -574,11 +582,15 @@ run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measu
       try(lavTestLRT(..., model.names = all_invar_types))
     }, 
     invar_models_list)
-  lrt_test_df <- tibble::as_data_frame(lrt_test)
-  lrt_test_df$invar_type <- rownames(lrt_test)
-  lrt_test_df <- tidyr::gather(lrt_test_df, fit_stat, value,
-                               -invar_type)
-  lrt_test_df$factor_name <- factor_name
+  if(class(lrt_test) == 'try-error' || class(lrt_test) != 'anova'){
+    lrt_test_df <- data.frame()
+  } else {
+    lrt_test_df <- tibble::as_data_frame(lrt_test)
+    lrt_test_df$invar_type <- rownames(lrt_test)
+    lrt_test_df <- tidyr::gather(lrt_test_df, fit_stat, value,
+                                 -invar_type)
+    lrt_test_df$factor_name <- factor_name 
+  }
   
   summary_df <- dplyr::bind_rows(fit_stat_df, lrt_test_df)
   
@@ -602,7 +614,7 @@ test_factors_for_invariance <- function(factor_names, indicators_df, item_data, 
     this_factor_data <- item_data[, c(get_item_colnames(factor_items), group)]
     invar_mod_listenv[[fn]] <- future::future(
       {
-        print(paste0("Running: ", factor_name))
+        message(paste0("Running: ", factor_name))
         run_invariance_tests(factor_name = factor_name, 
                              manifest_vec = factor_items, 
                              item_data = this_factor_data, 
