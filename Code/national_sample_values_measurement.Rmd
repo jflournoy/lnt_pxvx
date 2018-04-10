@@ -3,8 +3,9 @@ title: "L&T PxV Measurement invariance"
 author: "John Flournoy"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
-  pdf_document:
+  html_document:
     toc: true
+    toc_float: true
 ---
 
 
@@ -785,8 +786,8 @@ To determine the invariance of measurement over groups, we can examine the $\chi
 invar_tests_and_models_df <- dplyr::mutate(
   invar_tests_and_models_df, 
   invar_type = factor(invar_type,
-                      levels = c('baseline','metric','strong', 'strict'),
-                      labels = c('baseline','metric','strong', 'strict')))
+                      levels = c('unconstrained', 'long_metric', 'long_strong', 'long_strict', 'baseline','metric','strong', 'strict'),
+                      labels = c('unconstrained', 'long_metric', 'long_strong', 'long_strict', 'baseline','metric','strong', 'strict')))
 
 invar_tests_and_models_df_w <- mutate_at(
   tidyr::spread(
@@ -820,6 +821,7 @@ invar_tests_and_models_df_w <- dplyr::mutate(
   cfi = sprintf('%.3f', cfi),
   dCFI = sprintf('%.3f', dCFI),
   d2CFI = sprintf('%.3f', d2CFI),
+  mfi = sprintf('%.3f', mfi),
   dMFI = sprintf('%.3f', dMFI),
   d2MFI = sprintf('%.3f', d2MFI),
   rmsea = sprintf('%.3f', rmsea),
@@ -843,23 +845,24 @@ invar_tests_and_models_df_w <- dplyr::select(
   invar_tests_and_models_df_w,
   factor_name, invar_type, factor_name_c, invar_type_c, 
   dAIC, d2AIC, dBIC, d2BIC, dChisq, Df, dDf, `P dChisq`,
-  cfi, dCFI, d2CFI, dMFI, d2MFI, rmsea)
+  cfi, dCFI, d2CFI, mfi, dMFI, d2MFI, rmsea)
 
 column_labels <- c(
   invar_type_c = 'Type', 
   dAIC = '$\\Delta\\text{AIC}$', 
-  d2AIC = '$\\Delta_{1,4}\\text{AIC}$', 
+  d2AIC = '$\\Delta_{1,4}\\text{AIC}$', #3
   dBIC = '$\\Delta\\text{BIC}$', 
-  d2BIC = '$\\Delta_{1,4}\\text{BIC}$', 
+  d2BIC = '$\\Delta_{1,4}\\text{BIC}$', #5
   dChisq = '$\\Delta\\chi^2$', #6
   Df = '$\\text{Df}$', #7
   dDf = '$\\Delta\\text{Df}$', #8
   `P dChisq` = '$P(>\\Delta\\chi^2)$', #9
   cfi = '$\\text{CFI}$', 
   dCFI = '$\\Delta\\text{CFI}$', 
-  d2CFI = '$\\Delta_{1,4}\\text{CFI}$', 
+  d2CFI = '$\\Delta_{1,4}\\text{CFI}$', #12
+  mfi = '$\\text{MFI}$', 
   dMFI = '$\\Delta\\text{MFI}$', 
-  d2MFI = '$\\Delta_{1,4}\\text{MFI}$', 
+  d2MFI = '$\\Delta_{1,4}\\text{MFI}$', #15
   rmsea = '$\\text{RMSEA}$')
 
 conclusions_list <- as.list(rep('', length(c(vVarNames, pVarNames))))
@@ -895,47 +898,45 @@ conclusions_list[['..Intellect']] <- 'Likely invariant: Change in CFI and BIC su
 conclusions_list[['..Openness']] <- 'Invariant (but see AIC).'
 ```
 
-```{r buildtables}
+```{r buildtables, results = 'asis', echo = F}
+exclude_cols <- c(3,5,6:9,12,15)
 nothingburger <- do(group_by(invar_tests_and_models_df_w, factor_name),{
   table_df <- select(., -factor_name, -invar_type, -factor_name_c)
   title <- unique(.$factor_name_c)
-  names(table_df) <- column_labels
-  comm <- paste0('\\hline \n ',
-                 paste(paste0('\\multicolumn{12}{l}{', 
-                       strwrap(conclusions_list[[title]], width = 90), '} \\\\'), 
-                       collapse = '\n'), '\n')
-  print(xtable::xtable(table_df[, -c(6,9)], caption = title, align = c('r','l',rep('r', 12))), 
-        include.rownames = T, sanitize.colnames.function = identity, comment = FALSE,
-        caption.placement = 'top', table.placement="!htp",
-        hline.after=c(-1, 0),
-        add.to.row = list(pos = list(4),
-                          command = comm))
+  
+  print(knitr::kable(
+    table_df[,-exclude_cols],
+    col.names = column_labels[-exclude_cols],
+    caption = title, 
+    row.names = T))
+  cat(paste0('\n\n<p>', conclusions_list[[title]], '</p>'))
   data.frame()
 })
-
 ```
 
 \clearpage
 
-## $\Delta\chi^2$ Tests
+<!-- ## $\Delta\chi^2$ Tests -->
 
-Below, just the $\Delta\chi^2$ tests.
+<!-- Below, just the $\Delta\chi^2$ tests. -->
 
 
-```{r  results='asis', echo=F, warning=F, message=F}
-nothingburger <- do(group_by(invar_tests_and_models_df_w, factor_name),{
-  table_df <- select(., -factor_name, -invar_type, -factor_name_c)
-  title <- unique(.$factor_name_c)
-  names(table_df) <- column_labels
-  print(xtable::xtable(table_df[, c(1,6:9)], caption = title, align = c('r','l',rep('r', length(6:9)))), 
-        include.rownames = T, sanitize.colnames.function = identity, comment = FALSE,
-        caption.placement = 'top', table.placement="!htp")
-  data.frame()
-})
+<!-- ```{r  results='asis', echo=F, warning=F, message=F} -->
+<!-- nothingburger <- do(group_by(invar_tests_and_models_df_w, factor_name),{ -->
+<!--   table_df <- select(., -factor_name, -invar_type, -factor_name_c) -->
+<!--   title <- unique(.$factor_name_c) -->
+<!--   names(table_df) <- column_labels -->
+<!--   print(xtable::xtable(table_df[, c(1,6:9)], caption = title, align = c('r','l',rep('r', length(6:9)))),  -->
+<!--         include.rownames = T, sanitize.colnames.function = identity, comment = FALSE, -->
+<!--         caption.placement = 'top', table.placement="!htp") -->
+<!--   data.frame() -->
+<!-- }) -->
 
-```
+<!-- ``` -->
 
-```{r loessplots}
+# LOESS Plots
+
+```{r loessplots, warning=F, message=F, echo=F}
 nullius <- lapply(names(vVarNames), function(var){
   print(ggplot2::ggplot(
     dplyr::filter(all_waves_scored, aage > 19, aage < 57), 
