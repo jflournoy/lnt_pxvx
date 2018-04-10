@@ -751,7 +751,7 @@ semPaths(demo_model_fit, ask = F, include = 1, node.width = .75, layout = 'tree2
 ```{r echo=F, results='hide', warning=F, message=F}
 plan(tweak(multiprocess, gc = T, workers = nworkers))
 
-factor_names <- names(vVarNames)
+factor_names <- unique(lnt_scales_df$factor_name) 
 fit_measures <- c('mfi', 'cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper')
 
 invar_test_rez_fn <- '../Rez/invariance_measures_long.Rds'
@@ -938,7 +938,7 @@ nothingburger <- do(group_by(invar_tests_and_models_df_w, factor_name),{
 # LOESS Plots
 
 ```{r loessplots, warning=F, message=F, echo=F}
-nullius <- lapply(names(vVarNames), function(var){
+nullius <- lapply(unique(lnt_scales_df$factor_name), function(var){
   print(ggplot2::ggplot(
     dplyr::filter(all_waves_scored, aage > 19, aage < 57), 
     ggplot2::aes_string(x = 'age', y = var)) + 
