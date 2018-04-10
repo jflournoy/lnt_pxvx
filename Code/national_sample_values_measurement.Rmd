@@ -9,15 +9,18 @@ output:
 
 
 ```{r echo=F, results='hide', warning=F, message=F}
+library(future)
+nworkers <- 28
+data_dir <- '/home/flournoy/otherhome/data/lnt_pxvx' 
+
 suppressMessages(library('tidyverse'))
-lnt_df <- haven::read_sav('/data/jflournoy/lnt_pxvx/LT_wideAGT1234.sav')
+lnt_df <- haven::read_sav(file.path(data_dir, 'LT_wideAGT1234.sav'))
 lnt_df_nat <- dplyr::filter(lnt_df, aSubsample == 1)
 
 create_scoring_frame <- function(items, rev_pattern = '.*x$', 
                                  sub_pattern = '^[abcd](.*?)x*$', 
                                  sub_replacement = '\\1',
-                                 factor_name = NULL)
-{
+                                 factor_name = NULL){
   scoring_vec <- -2*as.numeric(grepl(rev_pattern, items))+1
   new_items <- gsub(pattern = sub_pattern, replacement = sub_replacement, items)
   scoring_df <- data.frame(item = new_items, scoring = scoring_vec,
@@ -205,77 +208,108 @@ create_lav_id_strat_widaman <- function(factor_name){
   paste0(factor_intercept, '\n', factor_var)
 }
 
-create_lav_factor_loadings <- function(factor_name, manifest_vec, group_equal = F){
+create_lav_factor_loadings <- function(factor_name, manifest_vec, group_equal = F, long_free = F, num_groups = 4){
+  if(long_free && group_equal){
+    stop("Can't set groups equal and free longitudinal constraints.")
+  }
   wave_factors <- paste0(factor_name, '_W', 1:4)
   num_indicators <- length(manifest_vec)
   load_labels <- lapply(paste0('L', 1:num_indicators),
                         function(label){
-                          rep_labs <- rep(label, 4)
+                          rep_labs <- rep(label, num_groups)
                           if(!group_equal){
-                            rep_labs <- paste0(rep_labs, letters[1:4])
+                            rep_labs <- paste0(rep_labs, letters[1:num_groups])
                           }
                           paste0('c(', paste(rep_labs, collapse = ', '), ')')
                         })
   loadings <- c(paste0(load_labels, '*'))
-  wave_manifests_rhs <- lapply(c('a', 'b', 'c', 'd'),
+  wave_manifests_rhs <- lapply(letters[1:4],
                            function(letter){
-                             paste(paste0(loadings,
-                                          letter, 
-                                          manifest_vec),
-                                   collapse = ' + ')
+                             if(long_free) {
+                               paste(paste0(c(loadings[[1]], rep('', length(loadings)-1)),
+                                            letter, 
+                                            manifest_vec),
+                                     collapse = ' + ')  
+                             } else {
+                               paste(paste0(loadings,
+                                            letter, 
+                                            manifest_vec),
+                                     collapse = ' + ')  
+                             }
                            })
   wave_eqs <- paste0(wave_factors, ' =~ ', wave_manifests_rhs)
   all_wave_model <- paste(wave_eqs, collapse = '\n')
   return(all_wave_model)
 }
 
-create_lav_ints <- function(manifest_vec, group_equal = F){
+create_lav_ints <- function(manifest_vec, group_equal = F, long_free = F, num_groups = 4){
+  if(long_free && group_equal){
+    stop("Can't set groups equal and free longitudinal constraints.")
+  }
   int_grp_eqs <- lapply(manifest_vec, function(man_var){
     int_label <- paste0('int_', which(manifest_vec == man_var))
-    grp_labels <- rep(int_label, 4)
+    grp_labels <- rep(int_label, num_groups)
     if(!group_equal){
-      grp_labels <- paste0(grp_labels, 'g', 1:4)
+      grp_labels <- paste0(grp_labels, 'g', 1:num_groups)
     }
     grp_labels_collapsed <- paste(grp_labels, collapse = ', ')
     eq_rhs <- paste0('c(', grp_labels_collapsed, ')*1')
     eq_lhs <- paste0(letters[1:4], man_var)
-    eq <- paste0(eq_lhs, ' ~ ', eq_rhs)
+    if(long_free && which(manifest_vec == man_var) > 1){
+      eq <- paste0(eq_lhs, ' ~ ', '1')  
+    } else {
+      eq <- paste0(eq_lhs, ' ~ ', eq_rhs)
+    }
     paste(eq, collapse = '\n')
   })
   int_all_eqs <- paste(int_grp_eqs, collapse = '\n\n')
   return(int_all_eqs)
 }
 
-create_lav_resid_var <- function(manifest_vec, group_equal = F){
+create_lav_resid_var <- function(manifest_vec, group_equal = F, long_free = F, num_groups = 4){
+  if(long_free && group_equal){
+    stop("Can't set groups equal and free longitudinal constraints.")
+  }
   var_grp_eqs <- lapply(manifest_vec, function(man_var){
     var_label <- paste0('v_', which(manifest_vec == man_var))
-    grp_labels <- rep(var_label, 4)
+    grp_labels <- rep(var_label, num_groups)
     if(!group_equal){
-      grp_labels <- paste0(grp_labels, 'g', 1:4)
+      grp_labels <- paste0(grp_labels, 'g', 1:num_groups)
     }
     grp_labels_collapsed <- paste(grp_labels, collapse = ', ')
     eq_rhs <- paste0('c(', grp_labels_collapsed, ')')
     eq_lhs <- paste0(letters[1:4], man_var)
-    eq <- paste0(eq_lhs, ' ~~ ', eq_rhs, '*', eq_lhs)
+    if(long_free){
+      eq <- paste0(eq_lhs, ' ~~ ', eq_lhs)
+    } else {
+      eq <- paste0(eq_lhs, ' ~~ ', eq_rhs, '*', eq_lhs)
+    }
     paste(eq, collapse = '\n')
   })
   var_all_eqs <- paste(var_grp_eqs, collapse = '\n\n')
   return(var_all_eqs)
 }
 
-create_lav_resid_covar <- function(manifest_vec, group_equal = F){
+create_lav_resid_covar <- function(manifest_vec, group_equal = F, long_free = F, num_groups = 4){
+  if(long_free && group_equal){
+    stop("Can't set groups equal and free longitudinal constraints.")
+  }
   covar_grp_eqs <- lapply(manifest_vec, function(man_var){
     lag_distances <- unlist(lapply(3:1, function(x) seq(from = 1, to = x, by = 1)))
     var_label <- paste0('cv_', which(manifest_vec == man_var), lag_distances)
     grp_labels_collapsed <- lapply(var_label, function(alab){
-      thelabs <- rep(alab, 4)
+      thelabs <- rep(alab, num_groups)
       if(!group_equal){
-        thelabs <- paste0(thelabs, 'g', 1:4)
+        thelabs <- paste0(thelabs, 'g', 1:num_groups)
       }
       thelabs_collapsed <- paste(thelabs, collapse = ', ')
       return(thelabs_collapsed)
     })
-    connectors <- paste0(' ~~ c(', grp_labels_collapsed, ')*')
+    if(long_free){
+      connectors <- ' ~~ '
+    } else {
+      connectors <- paste0(' ~~ c(', grp_labels_collapsed, ')*')
+    }
     wave_vars <- paste0(letters[1:4], man_var)
     covar_label_matrix <- combn(wave_vars, 2)
     eqs <- paste0(covar_label_matrix[1,], connectors, covar_label_matrix[2,])
@@ -286,19 +320,80 @@ create_lav_resid_covar <- function(manifest_vec, group_equal = F){
   return(covar_grp_eqs_all)
 }
 
-create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('baseline','metric','strong', 'strict')){
-  #Baseline: strict longitudinal invariance with added constraint that
-  #covariance of residuals across the same lag distnace should be the same.
-  #Metric: factor loadings equal across groups.
-  #Strong: intercepts equal across groups.
-  #Strict: residual variances are equal across groups.
+create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unconstrained', 'long_metric', 'long_strong', 'long_strict', 'baseline','metric','strong', 'strict')){
+  #unconstrained: estimate first loading, constrain across waves, but freely
+  #estimate remaining loadings. Estimate first intercept but constrain to be
+  #invariant across time. Freely estimate remaining parameters. Allow covariance
+  #among residuals of same item across waves.
+  #
+  #long_metric: constrain loadings to be the same across time (but vary across
+  #group).
+  #
+  #long_strong: constain intercepts to be the same across time (but vary across
+  #group).
+  #
+  #long_scrict: constain residuals to be the same across time within item (but
+  #vary across group).
+  #
+  #baseline: strict longitudinal invariance with added constraint that 
+  #covariance of residuals across the same lag distance should be the same.
+  #
+  #metric: factor loadings equal across groups.
+  #
+  #strong: intercepts equal across groups.
+  #
+  #strict: residual variances are equal across groups.
   
   amod <- switch(type,
+                 unconstrained = paste(c(create_lav_id_strat_widaman(factor_name),
+                                   create_lav_factor_loadings(factor_name, manifest_vec, 
+                                                              group_equal = F, long_free = T),
+                                   create_lav_ints(manifest_vec, 
+                                                   group_equal = F, long_free = T),
+                                   create_lav_resid_var(manifest_vec, 
+                                                        group_equal = F, long_free = T),
+                                   create_lav_resid_covar(manifest_vec, 
+                                                          group_equal = F, long_free = T)), 
+                                 collapse = '\n\n#---\n\n'),
+                 long_metric = paste(c(create_lav_id_strat_widaman(factor_name),
+                                   create_lav_factor_loadings(factor_name, manifest_vec, 
+                                                              group_equal = F, long_free = F),
+                                   create_lav_ints(manifest_vec, 
+                                                   group_equal = F, long_free = T),
+                                   create_lav_resid_var(manifest_vec, 
+                                                        group_equal = F, long_free = T),
+                                   create_lav_resid_covar(manifest_vec, 
+                                                          group_equal = F, long_free = T)), 
+                                 collapse = '\n\n#---\n\n'), 
+                 long_strong = paste(c(create_lav_id_strat_widaman(factor_name),
+                                   create_lav_factor_loadings(factor_name, manifest_vec, 
+                                                              group_equal = F, long_free = F),
+                                   create_lav_ints(manifest_vec, 
+                                                   group_equal = F, long_free = F),
+                                   create_lav_resid_var(manifest_vec, 
+                                                        group_equal = F, long_free = T),
+                                   create_lav_resid_covar(manifest_vec, 
+                                                          group_equal = F, long_free = T)), 
+                                 collapse = '\n\n#---\n\n'),
+                 long_strict = paste(c(create_lav_id_strat_widaman(factor_name),
+                                   create_lav_factor_loadings(factor_name, manifest_vec, 
+                                                              group_equal = F, long_free = F),
+                                   create_lav_ints(manifest_vec, 
+                                                   group_equal = F, long_free = F),
+                                   create_lav_resid_var(manifest_vec, 
+                                                        group_equal = F, long_free = F),
+                                   create_lav_resid_covar(manifest_vec, 
+                                                          group_equal = F, long_free = T)), 
+                                 collapse = '\n\n#---\n\n'),
                  baseline = paste(c(create_lav_id_strat_widaman(factor_name),
-                                   create_lav_factor_loadings(factor_name, manifest_vec, group_equal = F),
-                                   create_lav_ints(manifest_vec, group_equal = F),
-                                   create_lav_resid_var(manifest_vec, group_equal = F),
-                                   create_lav_resid_covar(manifest_vec, group_equal = F)), 
+                                   create_lav_factor_loadings(factor_name, manifest_vec, 
+                                                              group_equal = F, long_free = F),
+                                   create_lav_ints(manifest_vec, 
+                                                   group_equal = F, long_free = F),
+                                   create_lav_resid_var(manifest_vec, 
+                                                        group_equal = F, long_free = F),
+                                   create_lav_resid_covar(manifest_vec, 
+                                                          group_equal = F, long_free = F)), 
                                  collapse = '\n\n#---\n\n'),
                  metric = paste(c(create_lav_id_strat_widaman(factor_name),
                                    create_lav_factor_loadings(factor_name, manifest_vec, group_equal = T),
@@ -357,7 +452,7 @@ run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measu
   require(tidyr)
   require(dplyr)
   require(listenv)
-  all_invar_types <- c('baseline','metric','strong', 'strict')
+  all_invar_types <- c('unconstrained', 'long_metric', 'long_strong', 'long_strict', 'baseline','metric','strong', 'strict')
   
   invar_models_future_listenv <- listenv::listenv()
   for(it in seq_along(all_invar_types)){
@@ -406,7 +501,7 @@ run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measu
   }
 }
 
-test_factors_for_invariance <- function(factor_names, indicators_df, item_data, fit_measures = c('cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper'), group, ...){
+test_factors_for_invariance <- function(factor_names, indicators_df, item_data, fit_measures = c('mfi', 'cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper'), group, ...){
   require(future)
   invar_mod_listenv <- listenv::listenv()
   for(fn in seq_along(factor_names)){
@@ -450,13 +545,12 @@ semPaths(demo_model_fit, ask = F, include = 1, node.width = .75, layout = 'tree2
 
 
 ```{r echo=F, results='hide', warning=F, message=F}
-library(future)
-plan(multiprocess)
+plan(tweak(multiprocess, gc = T, workers = nworkers))
 
 factor_names <- unique(lnt_scales_df$factor_name)
-fit_measures <- c('cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper')
+fit_measures <- c('mfi', 'cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper')
 
-invar_test_rez_fn <- '../Rez/invariance_measures.Rds'
+invar_test_rez_fn <- '../Rez/invariance_measures_long.Rds'
 if(!file.exists(invar_test_rez_fn)){
   invar_tests_and_models <- test_factors_for_invariance(
     factor_names = factor_names, 
@@ -474,13 +568,11 @@ if(!file.exists(invar_test_rez_fn)){
 
 # Results
 
-## CFI & *IC
+## MFI, CFI & *IC
 
 To determine the invariance of measurement over groups, we can examine the $\chi^2$ test. But this is often an overly strict test with a large sample size. Relative change in AIC and BIC (with lower values, and negative changes, being better) help guide interpretation by incorporating information about the number of parameters (AIC, BIC) and sample size (BIC). Cheung & Rensvold (2002) recomend using $\Delta\text{CFI}$ because it is not influenced by complexity or sample size, and does not correlate with overall fit measures. In this paper, they write, "A value of $\Delta\text{CFI}$ smaller than or equal to –0.01 indicates that the null hypothesis of invariance should not be rejected" (p 251). Below, I generally ignore the $\chi^2$ tests in interpretation but present them for completeness.
 
 ```{r results='asis', echo=F, warning=F, message=F}
-library(stargazer)
-
 #  [1] "bfi_s_scale" "bfi_d_scale" "bfi_hp8"     "bfi_c"       "bfi_a"       "bfi_a6"     
 #  [7] "bfi_e"       "bfi_n"       "bfi_o"       "bfas_ac"     "bfas_ap"     "bfas_ci"    
 # [13] "bfas_co"     "bfas_ea"     "bfas_ee"     "bfas_nv9"    "bfas_nv"     "bfas_nw"    
@@ -535,11 +627,11 @@ invar_tests_and_models_df_w <- arrange(
   factor_name, invar_type)
 invar_tests_and_models_df_w <- mutate_at(
   group_by(invar_tests_and_models_df_w, factor_name),
-  vars(dAIC = AIC, dBIC = BIC, dCFI = cfi),
+  vars(dAIC = AIC, dBIC = BIC, dCFI = cfi, dMFI = mfi),
   function(x) x - lag(x))
 invar_tests_and_models_df_w <- mutate_at(
   group_by(invar_tests_and_models_df_w, factor_name),
-  vars(d2AIC = AIC, d2BIC = BIC, d2CFI = cfi),
+  vars(d2AIC = AIC, d2BIC = BIC, d2CFI = cfi, d2MFI = mfi),
   function(x) x - lag(x, n = 3))
 invar_tests_and_models_df_w <- dplyr::mutate(
   ungroup(invar_tests_and_models_df_w),
@@ -555,6 +647,8 @@ invar_tests_and_models_df_w <- dplyr::mutate(
   cfi = sprintf('%.3f', cfi),
   dCFI = sprintf('%.3f', dCFI),
   d2CFI = sprintf('%.3f', d2CFI),
+  dMFI = sprintf('%.3f', dMFI),
+  d2MFI = sprintf('%.3f', d2MFI),
   rmsea = sprintf('%.3f', rmsea),
   rmsea.ci.lower = sprintf('%.3f', rmsea.ci.lower),
   rmsea.ci.upper = sprintf('%.3f', rmsea.ci.upper),
@@ -576,7 +670,7 @@ invar_tests_and_models_df_w <- dplyr::select(
   invar_tests_and_models_df_w,
   factor_name, invar_type, factor_name_c, invar_type_c, 
   dAIC, d2AIC, dBIC, d2BIC, dChisq, Df, dDf, `P dChisq`,
-  cfi, dCFI, d2CFI, rmsea)
+  cfi, dCFI, d2CFI, dMFI, d2MFI, rmsea)
 
 column_labels <- c(
   invar_type_c = 'Type', 
@@ -591,6 +685,8 @@ column_labels <- c(
   cfi = '$\\text{CFI}$', 
   dCFI = '$\\Delta\\text{CFI}$', 
   d2CFI = '$\\Delta_{1,4}\\text{CFI}$', 
+  dMFI = '$\\Delta\\text{MFI}$', 
+  d2MFI = '$\\Delta_{1,4}\\text{MFI}$', 
   rmsea = '$\\text{RMSEA}$')
 
 conclusions_list <- as.list(rep('', length(c(vVarNames, pVarNames))))
@@ -624,9 +720,9 @@ conclusions_list[['..Enthusiasm']] <- 'Likely invariant: Change in CFI and BIC s
 conclusions_list[['.Openness']] <- 'Invariant (but see AIC).'
 conclusions_list[['..Intellect']] <- 'Likely invariant: Change in CFI and BIC suggest invariance, though AIC does not favor constraints except from strong to strict, or baseline to strict.'
 conclusions_list[['..Openness']] <- 'Invariant (but see AIC).'
+```
 
-
-
+```{r buildtables}
 nothingburger <- do(group_by(invar_tests_and_models_df_w, factor_name),{
   table_df <- select(., -factor_name, -invar_type, -factor_name_c)
   title <- unique(.$factor_name_c)
@@ -635,7 +731,7 @@ nothingburger <- do(group_by(invar_tests_and_models_df_w, factor_name),{
                  paste(paste0('\\multicolumn{12}{l}{', 
                        strwrap(conclusions_list[[title]], width = 90), '} \\\\'), 
                        collapse = '\n'), '\n')
-  print(xtable::xtable(table_df[, -c(6,9)], caption = title, align = c('r','l',rep('r', 10))), 
+  print(xtable::xtable(table_df[, -c(6,9)], caption = title, align = c('r','l',rep('r', 12))), 
         include.rownames = T, sanitize.colnames.function = identity, comment = FALSE,
         caption.placement = 'top', table.placement="!htp",
         hline.after=c(-1, 0),
