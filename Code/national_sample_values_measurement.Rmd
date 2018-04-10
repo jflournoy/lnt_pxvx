@@ -11,7 +11,9 @@ output:
 ```{r echo=F, results='hide', warning=F, message=F}
 library(future)
 nworkers <- 28
-data_dir <- '/home/flournoy/otherhome/data/lnt_pxvx' 
+# nworkers <- availableCores() - 1
+data_dir <- '/home/flournoy/otherhome/data/lnt_pxvx'
+# data_dir <- '/data/jflournoy/lnt_pxvx/'
 
 suppressMessages(library('tidyverse'))
 lnt_df <- haven::read_sav(file.path(data_dir, 'LT_wideAGT1234.sav'))
@@ -208,6 +210,22 @@ create_lav_id_strat_widaman <- function(factor_name){
   paste0(factor_intercept, '\n', factor_var)
 }
 
+create_lav_growth_model <- function(factor_name, manifest_vec, int.group_equal = F, var.group_equal = F, cov.group_equal = F, num_groups = 4, center_wave = 1){
+  wave_factors <- paste0(factor_name, '_W', 1:4)
+  intercept <- paste0(factor_name, '_i =~ ', 
+                      paste(
+                        paste0('1*', wave_factors),
+                        collapse = ' + '))
+  slope <- paste0(factor_name, '_s =~ ', 
+                      paste(
+                        paste0(1:4 - center_wave, '*', wave_factors),
+                        collapse = ' + '))
+  if(int.group_equal){
+    
+  }
+  return(all_wave_model)
+}
+
 create_lav_factor_loadings <- function(factor_name, manifest_vec, group_equal = F, long_free = F, num_groups = 4){
   if(long_free && group_equal){
     stop("Can't set groups equal and free longitudinal constraints.")
@@ -320,7 +338,7 @@ create_lav_resid_covar <- function(manifest_vec, group_equal = F, long_free = F,
   return(covar_grp_eqs_all)
 }
 
-create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unconstrained', 'long_metric', 'long_strong', 'long_strict', 'baseline','metric','strong', 'strict')){
+create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unconstrained', 'long_metric', 'long_strong', 'long_strict', 'baseline','metric','strong', 'strict'), num_groups = 4){
   #unconstrained: estimate first loading, constrain across waves, but freely
   #estimate remaining loadings. Estimate first intercept but constrain to be
   #invariant across time. Freely estimate remaining parameters. Allow covariance
@@ -345,74 +363,114 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
   #strict: residual variances are equal across groups.
   
   amod <- switch(type,
-                 unconstrained = paste(c(create_lav_id_strat_widaman(factor_name),
-                                   create_lav_factor_loadings(factor_name, manifest_vec, 
-                                                              group_equal = F, long_free = T),
-                                   create_lav_ints(manifest_vec, 
-                                                   group_equal = F, long_free = T),
-                                   create_lav_resid_var(manifest_vec, 
-                                                        group_equal = F, long_free = T),
-                                   create_lav_resid_covar(manifest_vec, 
-                                                          group_equal = F, long_free = T)), 
-                                 collapse = '\n\n#---\n\n'),
-                 long_metric = paste(c(create_lav_id_strat_widaman(factor_name),
-                                   create_lav_factor_loadings(factor_name, manifest_vec, 
-                                                              group_equal = F, long_free = F),
-                                   create_lav_ints(manifest_vec, 
-                                                   group_equal = F, long_free = T),
-                                   create_lav_resid_var(manifest_vec, 
-                                                        group_equal = F, long_free = T),
-                                   create_lav_resid_covar(manifest_vec, 
-                                                          group_equal = F, long_free = T)), 
-                                 collapse = '\n\n#---\n\n'), 
-                 long_strong = paste(c(create_lav_id_strat_widaman(factor_name),
-                                   create_lav_factor_loadings(factor_name, manifest_vec, 
-                                                              group_equal = F, long_free = F),
-                                   create_lav_ints(manifest_vec, 
-                                                   group_equal = F, long_free = F),
-                                   create_lav_resid_var(manifest_vec, 
-                                                        group_equal = F, long_free = T),
-                                   create_lav_resid_covar(manifest_vec, 
-                                                          group_equal = F, long_free = T)), 
-                                 collapse = '\n\n#---\n\n'),
-                 long_strict = paste(c(create_lav_id_strat_widaman(factor_name),
-                                   create_lav_factor_loadings(factor_name, manifest_vec, 
-                                                              group_equal = F, long_free = F),
-                                   create_lav_ints(manifest_vec, 
-                                                   group_equal = F, long_free = F),
-                                   create_lav_resid_var(manifest_vec, 
-                                                        group_equal = F, long_free = F),
-                                   create_lav_resid_covar(manifest_vec, 
-                                                          group_equal = F, long_free = T)), 
-                                 collapse = '\n\n#---\n\n'),
-                 baseline = paste(c(create_lav_id_strat_widaman(factor_name),
-                                   create_lav_factor_loadings(factor_name, manifest_vec, 
-                                                              group_equal = F, long_free = F),
-                                   create_lav_ints(manifest_vec, 
-                                                   group_equal = F, long_free = F),
-                                   create_lav_resid_var(manifest_vec, 
-                                                        group_equal = F, long_free = F),
-                                   create_lav_resid_covar(manifest_vec, 
-                                                          group_equal = F, long_free = F)), 
-                                 collapse = '\n\n#---\n\n'),
-                 metric = paste(c(create_lav_id_strat_widaman(factor_name),
-                                   create_lav_factor_loadings(factor_name, manifest_vec, group_equal = T),
-                                   create_lav_ints(manifest_vec, group_equal = F),
-                                   create_lav_resid_var(manifest_vec, group_equal = F),
-                                   create_lav_resid_covar(manifest_vec, group_equal = F)), 
-                                 collapse = '\n\n#---\n\n'),
-                 strong = paste(c(create_lav_id_strat_widaman(factor_name),
-                                   create_lav_factor_loadings(factor_name, manifest_vec, group_equal = T),
-                                   create_lav_ints(manifest_vec, group_equal = T),
-                                   create_lav_resid_var(manifest_vec, group_equal = F),
-                                   create_lav_resid_covar(manifest_vec, group_equal = F)), 
-                                 collapse = '\n\n#---\n\n'),
-                 strict = paste(c(create_lav_id_strat_widaman(factor_name),
-                                   create_lav_factor_loadings(factor_name, manifest_vec, group_equal = T),
-                                   create_lav_ints(manifest_vec, group_equal = T),
-                                   create_lav_resid_var(manifest_vec, group_equal = T),
-                                   create_lav_resid_covar(manifest_vec, group_equal = F)), 
-                                 collapse = '\n\n#---\n\n'))
+                 unconstrained = paste(
+                   c(create_lav_id_strat_widaman(factor_name),
+                     create_lav_factor_loadings(
+                       factor_name, manifest_vec, 
+                       group_equal = F, long_free = T, num_groups = num_groups),
+                     create_lav_ints(
+                       manifest_vec, 
+                       group_equal = F, long_free = T, num_groups = num_groups),
+                     create_lav_resid_var(
+                       manifest_vec, 
+                       group_equal = F, long_free = T, num_groups = num_groups),
+                     create_lav_resid_covar(
+                       manifest_vec, 
+                       group_equal = F, long_free = T, num_groups = num_groups)), 
+                   collapse = '\n\n#---\n\n'),
+                 long_metric = paste(
+                   c(create_lav_id_strat_widaman(factor_name),
+                     create_lav_factor_loadings(
+                       factor_name, manifest_vec, 
+                       group_equal = F, long_free = F, num_groups = num_groups),
+                     create_lav_ints(
+                       manifest_vec, 
+                       group_equal = F, long_free = T, num_groups = num_groups),
+                     create_lav_resid_var(
+                       manifest_vec, 
+                       group_equal = F, long_free = T, num_groups = num_groups),
+                     create_lav_resid_covar(
+                       manifest_vec, 
+                       group_equal = F, long_free = T, num_groups = num_groups)), 
+                   collapse = '\n\n#---\n\n'), 
+                 long_strong = paste(
+                   c(create_lav_id_strat_widaman(factor_name),
+                     create_lav_factor_loadings(
+                       factor_name, manifest_vec, 
+                       group_equal = F, long_free = F, num_groups = num_groups),
+                     create_lav_ints(
+                       manifest_vec, 
+                       group_equal = F, long_free = F, num_groups = num_groups),
+                     create_lav_resid_var(
+                       manifest_vec, 
+                       group_equal = F, long_free = T, num_groups = num_groups),
+                     create_lav_resid_covar(
+                       manifest_vec, 
+                       group_equal = F, long_free = T, num_groups = num_groups)), 
+                   collapse = '\n\n#---\n\n'),
+                 long_strict = paste(
+                   c(create_lav_id_strat_widaman(factor_name),
+                     create_lav_factor_loadings(
+                       factor_name, manifest_vec, 
+                       group_equal = F, long_free = F, num_groups = num_groups),
+                     create_lav_ints(
+                       manifest_vec, 
+                       group_equal = F, long_free = F, num_groups = num_groups),
+                     create_lav_resid_var(
+                       manifest_vec, 
+                       group_equal = F, long_free = F, num_groups = num_groups),
+                     create_lav_resid_covar(
+                       manifest_vec, 
+                       group_equal = F, long_free = T, num_groups = num_groups)), 
+                   collapse = '\n\n#---\n\n'),
+                 baseline = paste(
+                   c(create_lav_id_strat_widaman(factor_name),
+                     create_lav_factor_loadings(
+                       factor_name, manifest_vec, 
+                       group_equal = F, long_free = F, num_groups = num_groups),
+                     create_lav_ints(
+                       manifest_vec, 
+                       group_equal = F, long_free = F, num_groups = num_groups),
+                     create_lav_resid_var(
+                       manifest_vec, 
+                       group_equal = F, long_free = F, num_groups = num_groups),
+                     create_lav_resid_covar(
+                       manifest_vec, 
+                       group_equal = F, long_free = F, num_groups = num_groups)), 
+                   collapse = '\n\n#---\n\n'),
+                 metric = paste(
+                   c(create_lav_id_strat_widaman(factor_name),
+                     create_lav_factor_loadings(
+                       factor_name, manifest_vec, group_equal = T, num_groups = num_groups),
+                     create_lav_ints(
+                       manifest_vec, group_equal = F, num_groups = num_groups),
+                     create_lav_resid_var(
+                       manifest_vec, group_equal = F, num_groups = num_groups),
+                     create_lav_resid_covar(
+                       manifest_vec, group_equal = F, num_groups = num_groups)), 
+                   collapse = '\n\n#---\n\n'),
+                 strong = paste(
+                   c(create_lav_id_strat_widaman(factor_name),
+                     create_lav_factor_loadings(
+                       factor_name, manifest_vec, group_equal = T, num_groups = num_groups),
+                     create_lav_ints(
+                       manifest_vec, group_equal = T, num_groups = num_groups),
+                     create_lav_resid_var(
+                       manifest_vec, group_equal = F, num_groups = num_groups),
+                     create_lav_resid_covar(
+                       manifest_vec, group_equal = F, num_groups = num_groups)), 
+                   collapse = '\n\n#---\n\n'),
+                 strict = paste(
+                   c(create_lav_id_strat_widaman(factor_name),
+                     create_lav_factor_loadings(
+                       factor_name, manifest_vec, group_equal = T, num_groups = num_groups),
+                     create_lav_ints(
+                       manifest_vec, group_equal = T, num_groups = num_groups),
+                     create_lav_resid_var(
+                       manifest_vec, group_equal = T, num_groups = num_groups),
+                     create_lav_resid_covar(
+                       manifest_vec, group_equal = F, num_groups = num_groups)), 
+                   collapse = '\n\n#---\n\n'))
   return(amod)
 }
 
@@ -436,12 +494,23 @@ sem_invar <- function(model, data, ...){
   return(fit)
 } 
 
-run_invariance_model <- function(factor_name, manifest_vec, item_data, type = 'baseline', group, ...){
-  an_invar_model <- create_lav_invariance_model(factor_name, manifest_vec, type = type)
-  a_fit <- sem_invar(model = an_invar_model, 
+run_invariance_model <- function(factor_name, manifest_vec, item_data, type = 'baseline', group = NULL, num_groups = 4, ...){
+  an_invar_model <- create_lav_invariance_model(
+    factor_name, 
+    manifest_vec, 
+    type = type, 
+    num_groups = num_groups)
+  
+  if(is.null(group)){
+    a_fit <- sem_invar(model = an_invar_model, 
+                     data = item_data,
+                     ...)    
+  } else {
+    a_fit <- sem_invar(model = an_invar_model, 
                      data = item_data,
                      group = group, 
                      ...)
+  }
   return(a_fit)
 }
 
@@ -470,7 +539,7 @@ run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measu
   
   fit_statistics <- future.apply::future_lapply(
     invar_models_list,
-    fitmeasures,
+    function(x){try(fitmeasures(x))},
     fit_measures
   )
   fit_statistics_len <- lapply(fit_statistics, length)
@@ -482,7 +551,7 @@ run_invariance_tests <- function(factor_name, manifest_vec, item_data, fit_measu
   
   lrt_test <- do.call(
     function(...){ 
-      lavTestLRT(..., model.names = all_invar_types)
+      try(lavTestLRT(..., model.names = all_invar_types))
     }, 
     invar_models_list)
   lrt_test_df <- tibble::as_data_frame(lrt_test)
