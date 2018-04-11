@@ -524,7 +524,7 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                        group_equal = F, long_free = F, num_groups = num_groups),
                      create_lav_resid_covar(
                        manifest_vec, 
-                       group_equal = F, long_free = F, num_groups = num_groups)), 
+                       group_equal = F, long_free = T, num_groups = num_groups)), 
                    collapse = '\n\n#---\n\n'),
                  metric = paste(
                    c(create_lav_factor_loadings(
@@ -535,7 +535,8 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                      create_lav_resid_var(
                        manifest_vec, group_equal = F, num_groups = num_groups),
                      create_lav_resid_covar(
-                       manifest_vec, group_equal = F, num_groups = num_groups)), 
+                       manifest_vec, 
+                       group_equal = F, long_free = T, num_groups = num_groups)), 
                    collapse = '\n\n#---\n\n'),
                  strong = paste(
                    c(create_lav_factor_loadings(
@@ -546,7 +547,8 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                      create_lav_resid_var(
                        manifest_vec, group_equal = F, num_groups = num_groups),
                      create_lav_resid_covar(
-                       manifest_vec, group_equal = F, num_groups = num_groups)), 
+                       manifest_vec, 
+                       group_equal = F, long_free = T, num_groups = num_groups)), 
                    collapse = '\n\n#---\n\n'),
                  strict = paste(
                    c(create_lav_factor_loadings(
@@ -557,7 +559,8 @@ create_lav_invariance_model <- function(factor_name, manifest_vec, type = c('unc
                      create_lav_resid_var(
                        manifest_vec, group_equal = T, num_groups = num_groups),
                      create_lav_resid_covar(
-                       manifest_vec, group_equal = F, num_groups = num_groups)), 
+                       manifest_vec, 
+                       group_equal = F, long_free = T, num_groups = num_groups)), 
                    collapse = '\n\n#---\n\n'))
   if(no_widman){
     return(amod)
@@ -629,7 +632,15 @@ run_invariance_tests <- function(factor_name, manifest_vec, item_data, group, ..
   require(tidyr)
   require(dplyr)
   require(listenv)
-  all_invar_types <- c('unconstrained', 'long_metric', 'long_strong', 'long_strict', 'baseline','metric','strong', 'strict')
+  all_invar_types <- c(
+    'unconstrained',
+    'long_metric', 
+    'long_strong',
+    'long_strict',
+    # 'baseline',
+    'metric',
+    'strong',
+    'strict')
   
   invar_models_future_listenv <- listenv::listenv()
   for(it in seq_along(all_invar_types)){
@@ -647,7 +658,15 @@ run_invariance_tests <- function(factor_name, manifest_vec, item_data, group, ..
 }
 
 process_invariance_tests <- function(invar_models_list, factor_name, fit_measures){
-  all_invar_types <- c('unconstrained', 'long_metric', 'long_strong', 'long_strict', 'baseline','metric','strong', 'strict')
+  all_invar_types <- c(
+    'unconstrained',
+    'long_metric', 
+    'long_strong',
+    'long_strict',
+    # 'baseline',
+    'metric',
+    'strong',
+    'strict')
   message(paste0('Processing: ', factor_name)) 
   fit_statistics <- future.apply::future_lapply(
     invar_models_list,
@@ -780,9 +799,9 @@ if(!file.exists(invar_test_rez_fn)){
 plan(sequential)
 procd_invar_stats_listenv <- listenv::listenv()
 invar_mods_listenv <- listenv::listenv()
-vVarShortNames <- names(vVarNames)
-for(fn in seq_along(vVarShortNames)){
-  factor_name <- vVarShortNames[[fn]]
+
+for(fn in seq_along(factor_names)){
+  factor_name <- factor_names[[fn]]
   invar_mods_listenv[[fn]] <- readRDS(file.path('/data/jflournoy/lnt_pxvx/mi/',
                                                 paste0(factor_name, '_invariance_mods.RDS')))
   a_factor_invariance_suite <- invar_mods_listenv[[fn]]
