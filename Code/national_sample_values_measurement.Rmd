@@ -13,10 +13,10 @@ output:
 library(future)
 # nworkers1 <- 28/4
 # nworkers2 <- 4
-nworkers <- 28
-# nworkers <- availableCores() - 1
-data_dir <- '/home/flournoy/otherhome/data/lnt_pxvx'
-# data_dir <- '/data/jflournoy/lnt_pxvx/'
+# nworkers <- 28
+nworkers <- availableCores() - 1
+# data_dir <- '/home/flournoy/otherhome/data/lnt_pxvx'
+data_dir <- '/data/jflournoy/lnt_pxvx/'
 
 suppressMessages(library('tidyverse'))
 lnt_df <- haven::read_sav(file.path(data_dir, 'LT_wideAGT1234.sav'))
@@ -653,7 +653,8 @@ process_invariance_tests <- function(invar_models_list, factor_name, fit_measure
     invar_models_list,
     function(x){
       tryfitmeasure <- try(fitmeasures(x, fit.measures = fit_measures))
-      if(class(tryfitmeasure) == 'try-error'){
+      
+      if(any(class(tryfitmeasure) == 'try-error')){
         rez <- rep(NA, length(fit_measures))
         names(rez) <- fit_measures
         return(rez)
@@ -669,12 +670,14 @@ process_invariance_tests <- function(invar_models_list, factor_name, fit_measure
     fit_stat = names(unlist(fit_statistics)),
     value = unlist(fit_statistics))
   
+  converged_index <- unlist(lapply(invar_models_list, lavaan::inspect, what = 'converged'))
   lrt_test <- do.call(
     function(...){ 
-      try(lavTestLRT(..., model.names = all_invar_types))
+      try(lavTestLRT(..., model.names = all_invar_types[converged_index]))
     }, 
-    invar_models_list)
-  if(class(lrt_test) == 'try-error' || class(lrt_test) != 'anova'){
+    invar_models_list[converged_index])
+
+  if(any(class(lrt_test) == 'try-error') || !(any(class(lrt_test) == 'anova'))){
     lrt_test_df <- data.frame()
   } else {
     lrt_test_df <- tibble::as_data_frame(lrt_test)
@@ -771,6 +774,24 @@ if(!file.exists(invar_test_rez_fn)){
 }
 ```
 
+```{r echo=F, warning=F,message=F, eval=F}
+plan(sequential)
+procd_invar_stats_listenv <- listenv::listenv()
+invar_mods_listenv <- listenv::listenv()
+vVarShortNames <- names(vVarNames)
+for(fn in seq_along(vVarShortNames)){
+  factor_name <- vVarShortNames[[fn]]
+  invar_mods_listenv[[fn]] <- readRDS(file.path('/data/jflournoy/lnt_pxvx/mi/',
+                                                paste0(factor_name, '_invariance_mods.RDS')))
+  a_factor_invariance_suite <- invar_mods_listenv[[fn]]
+  procd_invar_stats_listenv[[fn]] <- process_invariance_tests(
+    invar_models_list = a_factor_invariance_suite, 
+    factor_name = factor_name, 
+    fit_measures = fit_measures)
+}
+
+```
+
 # Results
 
 ## MFI, CFI & *IC
@@ -814,6 +835,7 @@ invar_tests_and_models_df_w <- dplyr::mutate(
   dBIC = sprintf('%.1f', dBIC),
   d2AIC = sprintf('%.1f', d2AIC),
   d2BIC = sprintf('%.1f', d2BIC),
+  Chisq = sprintf('%1.f', Chisq),
   `P dChisq` = ifelse(`Pr(>Chisq)` < 1e-3, 
                         '<.001',
                         sprintf('%.3f', `Pr(>Chisq)`)),
@@ -846,68 +868,74 @@ invar_tests_and_models_df_w <- dplyr::select(
   invar_tests_and_models_df_w,
   factor_name, invar_type, factor_name_c, invar_type_c, 
   dAIC, d2AIC, dBIC, d2BIC, dChisq, Df, dDf, `P dChisq`,
-  cfi, dCFI, d2CFI, mfi, dMFI, d2MFI, rmsea)
+  cfi, dCFI, d2CFI, mfi, dMFI, d2MFI, rmsea, Chisq)
 
 column_labels <- c(
-  invar_type_c = 'Type', 
-  dAIC = '$\\Delta\\text{AIC}$', 
+  invar_type_c = 'Type', #1
+  dAIC = '$\\Delta\\text{AIC}$', #2
   d2AIC = '$\\Delta_{1,4}\\text{AIC}$', #3
-  dBIC = '$\\Delta\\text{BIC}$', 
+  dBIC = '$\\Delta\\text{BIC}$', #4
   d2BIC = '$\\Delta_{1,4}\\text{BIC}$', #5
   dChisq = '$\\Delta\\chi^2$', #6
   Df = '$\\text{Df}$', #7
   dDf = '$\\Delta\\text{Df}$', #8
   `P dChisq` = '$P(>\\Delta\\chi^2)$', #9
-  cfi = '$\\text{CFI}$', 
-  dCFI = '$\\Delta\\text{CFI}$', 
+  cfi = '$\\text{CFI}$', #10
+  dCFI = '$\\Delta\\text{CFI}$', #11
   d2CFI = '$\\Delta_{1,4}\\text{CFI}$', #12
-  mfi = '$\\text{MFI}$', 
-  dMFI = '$\\Delta\\text{MFI}$', 
+  mfi = '$\\text{MFI}$', #13
+  dMFI = '$\\Delta\\text{MFI}$', #14
   d2MFI = '$\\Delta_{1,4}\\text{MFI}$', #15
-  rmsea = '$\\text{RMSEA}$')
+  rmsea = '$\\text{RMSEA}$',#16
+  Chisq = '$\\chi^2$')#17
+
+
 
 conclusions_list <- as.list(rep('', length(c(vVarNames, pVarNames))))
 names(conclusions_list) <- c(vVarNames, pVarNames)
 
-conclusions_list[['Financial Aspirations']] <- 'Invariant.'
-conclusions_list[['Materialism']] <- 'Invariant.'
-conclusions_list[['Horizontal Collectivism']] <- 'Problematic: Neither CFI nor AIC support strict invariance. Constraints from metric to strong invariance (intercepts) may be an issue.'
+#-.007 and -.01 
+conclusions_list[['Financial Aspirations']] <- 'Strong longitudnal invariance. Metric invariance between groups is well supported.'
+conclusions_list[['Materialism']] <- 'Possibly problematic. Unconstrained model does not converge. MFI may be too low for accurate model comparison.'
+conclusions_list[['Horizontal Collectivism']] <- 'Longitudinal metric invariance is supported. Group metric invariance is on the recommended cutoff.'
 conclusions_list[['Horizontal Individualism']] <- 'Invariant.'
-conclusions_list[['Mature Values Index']] <- 'Likely invariant: Change in CFI and BIC suggest invariance, though AIC does not favor constraints beyond metric invariance.'
-conclusions_list[['Unmitigated Self-Interest']] <- 'Possibly invariant: At each step, change in CFI suggests invariance, but baseline to strict change is greater than the recommended cutoff. Change in BIC suggests invariance, though AIC does not favor constraints beyond metric invariance.'
-conclusions_list[['Vertical Collectivism']] <- 'Possibly invariant: At each step, change in CFI suggests invariance, but baseline to strict change is greater than the recommended cutoff. Change in BIC suggests invariance, though AIC does not favor constraints except from strong to strict.'
-conclusions_list[['Vertical Individualism']] <- 'Possibly problematic: change in CFI rejects invariance between metric and strong, and between baseline and strict, which agrees with change in AIC. Change in BIC suggests invariance.'
-conclusions_list[['Social Self-Regulation']] <- 'Invariant.'
-conclusions_list[['.Conscientiousness']] <- 'Invariant, with the caveat that AIC favors only the metric constraints.'
-conclusions_list[['..Industriousness']] <- 'Invariant.'
-conclusions_list[['..Orderliness']] <- 'Invariant.'
-conclusions_list[['.Honesty/Propriety']] <- 'Invariant.'
-conclusions_list[['.Agreeableness']] <- 'Invariant.'
-conclusions_list[['.Agreeableness-Six']] <- 'Invariant'
-conclusions_list[['..Compassion']] <- 'Possibly invariant: At each step, change in CFI suggests invariance, but baseline to strict change is greater than the recommended cutoff. Change in BIC suggests invariance. AIC suggests constrained models fit worse, or at least no better, at each step.'
-conclusions_list[['..Politeness']] <- 'Possibly invariant: At each step, change in CFI suggests invariance, but baseline to strict change is greater than the recommended cutoff. Change in BIC suggests invariance. AIC suggests constrained models fit worse, at each step except when adding metric constraints.'
-conclusions_list[['.Neuroticism']] <- 'Invariant'
-conclusions_list[['.Neuroticism-Nine']] <- 'Lilely Invariant.'
-conclusions_list[['..Volatility']] <- 'Likely invariant: Change in CFI and BIC suggest invariance, though AIC does not favor constraints from metric to strong, or baseline to strict invariance.'
-conclusions_list[['..Withdrawal']] <- 'Likely invariant (AIC rejects metric to strong, and baseline to strict).'
-conclusions_list[['Dynamism']] <- 'Invariant (but see AIC).'
-conclusions_list[['.Extraversion']] <- 'Invariant.'
-conclusions_list[['..Assertiveness']] <- 'Invariant.'
-conclusions_list[['..Enthusiasm']] <- 'Likely invariant: Change in CFI and BIC suggest invariance, though AIC does not favor constraints except from baseline to metric.'
-conclusions_list[['.Openness']] <- 'Invariant (but see AIC).'
-conclusions_list[['..Intellect']] <- 'Likely invariant: Change in CFI and BIC suggest invariance, though AIC does not favor constraints except from strong to strict, or baseline to strict.'
-conclusions_list[['..Openness']] <- 'Invariant (but see AIC).'
+conclusions_list[['Mature Values Index']] <- 'Possibly problematic.'
+conclusions_list[['Unmitigated Self-Interest']] <- 'The unconstrained model did not converge. Strict longitudinal invariance may be supported. Group metric invariance is supported, but not strong group invariance.'
+conclusions_list[['Vertical Collectivism']] <- 'Longitudinal strict invariance is well supported. Group metric invariance is not supported.'
+conclusions_list[['Vertical Individualism']] <- 'Longitudinal strict invaraince is well supported. Group metric invariance is well supported.'
+conclusions_list[['Social Self-Regulation']] <- ''
+conclusions_list[['.Conscientiousness']] <- ''
+conclusions_list[['..Industriousness']] <- ''
+conclusions_list[['..Orderliness']] <- ''
+conclusions_list[['.Honesty/Propriety']] <- ''
+conclusions_list[['.Agreeableness']] <- ''
+conclusions_list[['.Agreeableness-Six']] <- ''
+conclusions_list[['..Compassion']] <- ''
+conclusions_list[['..Politeness']] <- ''
+conclusions_list[['.Neuroticism']] <- ''
+conclusions_list[['.Neuroticism-Nine']] <- ''
+conclusions_list[['..Volatility']] <- ''
+conclusions_list[['..Withdrawal']] <- ''
+conclusions_list[['Dynamism']] <- ''
+conclusions_list[['.Extraversion']] <- ''
+conclusions_list[['..Assertiveness']] <- ''
+conclusions_list[['..Enthusiasm']] <- ''
+conclusions_list[['.Openness']] <- ''
+conclusions_list[['..Intellect']] <- ''
+conclusions_list[['..Openness']] <- ''
 ```
 
+**Note:** The baseline model adds to the strict longitudinal invariance model the additional constraint that covariance among residuals for the same item with the same lag distance must be the same.
+
 ```{r buildtables, results = 'asis', echo = F}
-exclude_cols <- c(3,5,6:9,12,15)
+keepcols <- c(1,17,7,2,4,10,11,13,14,16)
 nothingburger <- do(group_by(invar_tests_and_models_df_w, factor_name),{
   table_df <- select(., -factor_name, -invar_type, -factor_name_c)
   title <- unique(.$factor_name_c)
   
   print(knitr::kable(
-    table_df[,-exclude_cols],
-    col.names = column_labels[-exclude_cols],
+    table_df[,keepcols],
+    col.names = column_labels[keepcols],
     caption = title, 
     row.names = T))
   cat(paste0('\n\n<p>', conclusions_list[[title]], '</p>'))
