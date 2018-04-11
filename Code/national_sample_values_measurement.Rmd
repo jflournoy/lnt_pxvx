@@ -10,11 +10,12 @@ output:
 
 
 ```{r echo=F, results='hide', warning=F, message=F}
+knitr::opts_chunk$set(echo = F)
 library(future)
-nworkers <- 28
-data_dir <- '/home/flournoy/otherhome/data/lnt_pxvx'
-# nworkers <- availableCores() - 1
-# data_dir <- '/data/jflournoy/lnt_pxvx/'
+# nworkers <- 28
+# data_dir <- '/home/flournoy/otherhome/data/lnt_pxvx'
+nworkers <- availableCores() - 1
+data_dir <- '/data/jflournoy/lnt_pxvx/'
 
 suppressMessages(library('tidyverse'))
 lnt_df <- haven::read_sav(file.path(data_dir, 'LT_wideAGT1234.sav'))
@@ -249,6 +250,8 @@ wave4_scored$alpha
 ```
 
 # Generate lavaan syntax
+
+*Note:* I use the identification strategy recommended by Widman, Ferrer, and Conger (2010) and set the intercept for the Wave 1 latent variable to 0, and the variance of the Wave 1 latent variable to 1 for each group.
 
 ```{r echo=F, results='hide', warning=F, message=F}
 library(lavaan)
@@ -761,7 +764,7 @@ demo_model_fit <- sem_invar(demo_model, data = lnt_nat_decades_items, group = 'd
 cat(demo_model)
 ```
 
-```{r eval=F}
+```{r eval=T}
 library(semPlot)
 semPaths(demo_model_fit, ask = F, include = 1, node.width = .75, layout = 'tree2', rotation = 2, curvature = 9,
          intStyle = 'multi', levels = c(1,5,6,7), edge.color = '#bbbbbb', edge.label.color = '#444444',
@@ -793,29 +796,11 @@ if(!file.exists(invar_test_rez_fn)){
 }
 ```
 
-```{r echo=F, warning=F,message=F, eval=F}
-plan(sequential)
-procd_invar_stats_listenv <- listenv::listenv()
-invar_mods_listenv <- listenv::listenv()
-
-for(fn in seq_along(factor_names)){
-  factor_name <- factor_names[[fn]]
-  invar_mods_listenv[[fn]] <- readRDS(file.path('/data/jflournoy/lnt_pxvx/mi/',
-                                                paste0(factor_name, '_invariance_mods.RDS')))
-  a_factor_invariance_suite <- invar_mods_listenv[[fn]]
-  procd_invar_stats_listenv[[fn]] <- process_invariance_tests(
-    invar_models_list = a_factor_invariance_suite, 
-    factor_name = factor_name, 
-    fit_measures = fit_measures)
-}
-
-```
-
 # Results
 
 ## MFI, CFI & *IC
 
-To determine the invariance of measurement over groups, we can examine the $\chi^2$ test. But this is often an overly strict test with a large sample size. Relative change in AIC and BIC (with lower values, and negative changes, being better) help guide interpretation by incorporating information about the number of parameters (AIC, BIC) and sample size (BIC). Cheung & Rensvold (2002) recomend using $\Delta\text{CFI}$ because it is not influenced by complexity or sample size, and does not correlate with overall fit measures. In this paper, they write, "A value of $\Delta\text{CFI}$ smaller than or equal to –0.01 indicates that the null hypothesis of invariance should not be rejected" (p 251). Below, I generally ignore the $\chi^2$ tests in interpretation but present them for completeness.
+To determine the invariance of measurement over groups, we can examine the $\chi^2$ test. But this is often an overly strict test with a large sample size. Relative change in AIC and BIC (with lower values, and negative changes, being better) help guide interpretation by incorporating information about the number of parameters (AIC, BIC) and sample size (BIC). Kang, McNeish, & Hancock (2016) recommend using McDonald's non-centrality parameter (McDonald, 1989) because it is not influenced by complexity, sample size, or measurement quality. Their simulation study indicates that under the null of no difference in model fit, a difference in the MFI, $\Delta\text{MFI}$, of < -.007 occurs in fewer than 5% of cases, and < -.01 in less that 1% of cases. They also caution against using cutoffs. 
 
 ```{r results='asis', echo=F, warning=F, message=F}
 #  [1] "bfi_s_scale" "bfi_d_scale" "bfi_hp8"     "bfi_c"       "bfi_a"       "bfi_a6"     
@@ -962,30 +947,199 @@ nothingburger <- do(group_by(invar_tests_and_models_df_w, factor_name),{
 })
 ```
 
-\clearpage
 
-<!-- ## $\Delta\chi^2$ Tests -->
+```{r echo=F, warning=F,message=F, eval=T}
+plan(sequential)
+invar_mods_listenv <- listenv::listenv()
 
-<!-- Below, just the $\Delta\chi^2$ tests. -->
+options(knitr.kable.NA = '')
+zero2NA <- function(x){ifelse(x == 0, NA, x)}
+#read in data files
+for(fn in seq_along(factor_names)){
+  factor_name <- factor_names[[fn]]
+  invar_mods_listenv[[fn]] <- readRDS(file.path('/data/jflournoy/lnt_pxvx/mi/',
+                                                paste0(factor_name, '_invariance_mods.RDS')))
+  
+}
+names(invar_mods_listenv) <- factor_names
+```
+
+## Modification Indices
+
+For some reason `lavaan` orders the groups like this: 
+
+1. 20s
+2. 50s
+3. 30s
+4. 40s
+
+### Financial aspirations
+
+Looking at issues with strict longitudinal invariance.
+
+```{r mifuncs, echo=F, eval=T}
+mi_metric <- function(afit, power = T, ...){
+  subset(
+    lavaan::modificationindices(afit,
+                                sort. = T, 
+                                free.remove = F, 
+                                minimum.value = getOption('minimum.value', 1), 
+                                op = '=~', power = power, ...),
+    letters[as.numeric(gsub('.*W([1234])', '\\1', lhs))]==gsub('^([abcd]).*', '\\1', rhs))
+}
+
+mi_strong <- function(afit, power = T, ...){
+  lavaan::modificationindices(afit,
+                              sort. = T, 
+                              free.remove = F, 
+                              minimum.value = getOption('minimum.value', 1), 
+                              op = '~1', power = power, ...)
+}
+
+mi_strict <- function(afit, power = T, ...){
+  subset(lavaan::modificationindices(afit,
+                                     sort. = T, 
+                                     free.remove = F, 
+                                     minimum.value = getOption('minimum.value', 1), 
+                                     op = '~~', power = power, ...),
+         lhs == rhs)
+}
+```
+
+```{r aspfinmi}
+options(minimum.value=2.5)
+knitr::kable(
+  mi_metric(invar_mods_listenv[['aspfin']][[2]]),
+  digits = 2, row.names = F,
+  caption = 'long_metric')
+
+knitr::kable(
+  mi_strong(invar_mods_listenv[['aspfin']][[3]]),
+  digits = 2, row.names = F,
+  caption = 'long_strong')
+
+knitr::kable(
+  mi_strict(invar_mods_listenv[['aspfin']][[4]]),
+  digits = 2, row.names = F, caption = 'long_strict')
+
+knitr::kable(
+  mi_strong(invar_mods_listenv[['aspfin']][[6]]),
+  digits = 2, row.names = F, caption = 'group_strong')
+```
+
+### Materialism
+
+Not clear if we can trust invariance tests for this scale.
+
+### Horizontal Collectivism
+
+```{r hrzcolmi}
+options(minimum.value=2.5)
+knitr::kable(
+  mi_metric(invar_mods_listenv[['hrz_col']][[2]]),
+  digits = 2, row.names = F,
+  caption = 'long_metric')
+
+knitr::kable(
+  mi_strong(invar_mods_listenv[['hrz_col']][[3]]),
+  digits = 2, row.names = F,
+  caption = 'long_strong')
+
+knitr::kable(
+  mi_metric(invar_mods_listenv[['hrz_col']][[5]]),
+  digits = 2, row.names = F,
+  caption = 'group_metric')
+
+knitr::kable(
+  mi_strong(invar_mods_listenv[['hrz_col']][[6]]),
+  digits = 2, row.names = F,
+  caption = 'group_strong')
+
+knitr::kable(
+  mi_strict(invar_mods_listenv[['hrz_col']][[7]]),
+  digits = 2, row.names = F,
+  caption = 'group_strict')
+```
+
+### Horizontal Individualism
+
+```{r hrzindmi}
+options(minimum.value=2.5)
+knitr::kable(
+  mi_strict(invar_mods_listenv[['hrz_ind']][[4]]),
+  digits = 2, row.names = F,
+  caption = 'long_strict')
+```
+
+### Mature Values Index
+
+It's not clear that we can trust the invariance tests for this scale.
+
+### Unmitigated Self-Interest
+
+```{r usimi}
+options(minimum.value=2.5)
+knitr::kable(
+  mi_strict(invar_mods_listenv[['usi']][[4]]),
+  digits = 2, row.names = F,
+  caption = 'long_strict')
+
+knitr::kable(
+  mi_strong(invar_mods_listenv[['usi']][[6]]),
+  digits = 2, row.names = F,
+  caption = 'group_strong')
+```
+
+### Vertical Collectivism
 
 
-<!-- ```{r  results='asis', echo=F, warning=F, message=F} -->
-<!-- nothingburger <- do(group_by(invar_tests_and_models_df_w, factor_name),{ -->
-<!--   table_df <- select(., -factor_name, -invar_type, -factor_name_c) -->
-<!--   title <- unique(.$factor_name_c) -->
-<!--   names(table_df) <- column_labels -->
-<!--   print(xtable::xtable(table_df[, c(1,6:9)], caption = title, align = c('r','l',rep('r', length(6:9)))),  -->
-<!--         include.rownames = T, sanitize.colnames.function = identity, comment = FALSE, -->
-<!--         caption.placement = 'top', table.placement="!htp") -->
-<!--   data.frame() -->
-<!-- }) -->
+```{r vrtcolmi}
+options(minimum.value=2.5)
+knitr::kable(
+  mi_metric(invar_mods_listenv[['vrt_col']][[5]]),
+  digits = 2, row.names = F,
+  caption = 'group_metric')
 
-<!-- ``` -->
+knitr::kable(
+  mi_strong(invar_mods_listenv[['vrt_col']][[6]]),
+  digits = 2, row.names = F,
+  caption = 'group_strong')
+```
+
+### Vertical Individualism
+
+```{r vrtindmi}
+options(minimum.value=2.5)
+knitr::kable(
+  mi_strong(invar_mods_listenv[['vrt_ind']][[6]]),
+  digits = 2, row.names = F,
+  caption = 'group_strong')
+```
+
+## Loadings
+
+All from the _most_ constrained model (longitudinal and group constraints).
+
+```{r writefactorloadtables, eval=T, results='asis'}
+for(fn in seq_along(names(vVarNames))){
+  a_factor_invariance_suite <- invar_mods_listenv[[fn]]
+  estload <- as.data.frame(inspect(a_factor_invariance_suite[[length(a_factor_invariance_suite)]],
+                          what="est")$`40s`$lambda)
+  stdload <- as.data.frame(inspect(a_factor_invariance_suite[[length(a_factor_invariance_suite)]],
+                          what="std")$`40s`$lambda)
+  names(stdload) <- paste0(names(stdload), '_std')
+  loadings <- bind_cols(item=rownames(estload), estload, stdload)
+  loadings <- dplyr::mutate_at(loadings, vars(-item), funs(as.numeric))
+  loadings <- dplyr::mutate_at(loadings, vars(-item), funs(zero2NA))
+  print(knitr::kable(loadings, digits = 2, caption = vVarNames[[fn]]))
+}
+```
+
 
 # LOESS Plots
 
 ```{r loessplots, warning=F, message=F, echo=F}
-nullius <- lapply(unique(lnt_scales_df$factor_name), function(var){
+nullius <- lapply(names(vVarNames), function(var){
   print(ggplot2::ggplot(
     dplyr::filter(all_waves_scored, aage > 19, aage < 57), 
     ggplot2::aes_string(x = 'age', y = var)) + 
