@@ -610,14 +610,14 @@ run_invariance_model <- function(factor_name, manifest_vec, item_data, type = 'b
     num_groups = num_groups)
   
   if(is.null(group)){
-    a_fit <- sem_invar(model = an_invar_model, 
+    a_fit <- try(sem_invar(model = an_invar_model, 
                      data = item_data,
-                     ...)    
+                     ...))    
   } else {
-    a_fit <- sem_invar(model = an_invar_model, 
+    a_fit <- try(sem_invar(model = an_invar_model, 
                      data = item_data,
                      group = group, 
-                     ...)
+                     ...))
   }
   return(a_fit)
 }
@@ -648,7 +648,7 @@ run_invariance_tests <- function(factor_name, manifest_vec, item_data, group, ..
 
 process_invariance_tests <- function(invar_models_list, factor_name, fit_measures){
   all_invar_types <- c('unconstrained', 'long_metric', 'long_strong', 'long_strict', 'baseline','metric','strong', 'strict')
-  
+  message(paste0('Processing: ', factor_name)) 
   fit_statistics <- future.apply::future_lapply(
     invar_models_list,
     function(x){
@@ -715,6 +715,7 @@ test_factors_for_invariance <- function(factor_names, indicators_df, item_data, 
     factor_name <- factor_names[[fn]]
     a_factor_invariance_suite <- lapply(as.list(invar_mods_future_listenv[[fn]]), future::value)
     if(save_fits){
+      message(paste0('Saving: ', factor_name))
       saveRDS(a_factor_invariance_suite, 
               file.path(data_dir, paste0(factor_name, '_invariance_mods.RDS')))
     }
@@ -754,10 +755,11 @@ semPaths(demo_model_fit, ask = F, include = 1, node.width = .75, layout = 'tree2
 ```{r echo=F, results='hide', warning=F, message=F}
 plan(tweak(multiprocess, gc = T, workers = nworkers))
 
-factor_names <- names(vVarNames)
+factor_names <- c(names(vVarNames), paste0('bfi_', c('a','c','e','n','o')))
+ 
 fit_measures <- c('mfi', 'cfi', 'rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper')
 
-invar_test_rez_fn <- '../Rez/invariance_measures_long.Rds'
+invar_test_rez_fn <- '../Rez/invariance_measures_long_pers.Rds'
 if(!file.exists(invar_test_rez_fn)){
   invar_tests_and_models <- test_factors_for_invariance(
     factor_names = factor_names, 
@@ -966,7 +968,7 @@ nothingburger <- do(group_by(invar_tests_and_models_df_w, factor_name),{
 # LOESS Plots
 
 ```{r loessplots, warning=F, message=F, echo=F}
-nullius <- lapply(names(vVarNames), function(var){
+nullius <- lapply(unique(lnt_scales_df$factor_name), function(var){
   print(ggplot2::ggplot(
     dplyr::filter(all_waves_scored, aage > 19, aage < 57), 
     ggplot2::aes_string(x = 'age', y = var)) + 
