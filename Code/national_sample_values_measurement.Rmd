@@ -11,12 +11,10 @@ output:
 
 ```{r echo=F, results='hide', warning=F, message=F}
 library(future)
-# nworkers1 <- 28/4
-# nworkers2 <- 4
-# nworkers <- 28
-nworkers <- availableCores() - 1
-# data_dir <- '/home/flournoy/otherhome/data/lnt_pxvx'
-data_dir <- '/data/jflournoy/lnt_pxvx/'
+nworkers <- 28
+data_dir <- '/home/flournoy/otherhome/data/lnt_pxvx'
+# nworkers <- availableCores() - 1
+# data_dir <- '/data/jflournoy/lnt_pxvx/'
 
 suppressMessages(library('tidyverse'))
 lnt_df <- haven::read_sav(file.path(data_dir, 'LT_wideAGT1234.sav'))
@@ -763,7 +761,7 @@ demo_model_fit <- sem_invar(demo_model, data = lnt_nat_decades_items, group = 'd
 cat(demo_model)
 ```
 
-```{r eval = F}
+```{r eval=F}
 library(semPlot)
 semPaths(demo_model_fit, ask = F, include = 1, node.width = .75, layout = 'tree2', rotation = 2, curvature = 9,
          intStyle = 'multi', levels = c(1,5,6,7), edge.color = '#bbbbbb', edge.label.color = '#444444',
