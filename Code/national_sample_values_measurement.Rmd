@@ -309,6 +309,7 @@ if(!file.exists(invar_test_rez_fn)){
     fit_measures = fit_measures, 
     group = 'decade_group',
     save_fits = T,
+    data_dir = data_dir,
     missing = 'fiml')
   invar_tests_and_models_df <- dplyr::bind_rows(invar_tests_and_models)
   saveRDS(invar_tests_and_models_df, invar_test_rez_fn)
@@ -676,4 +677,44 @@ nullius <- lapply(names(vVarNames), function(var){
     ggplot2::theme_minimal() + 
     labs(title = vVarNames[var]))
 })
+```
+
+# Invariance dropping items
+
+
+```{r}
+
+drop_items <- list(
+  'aspfin' = c('asp14'),
+  'bfa_mt' = c(''),
+  'hrz_col' = c('ind9'),
+  'hrz_ind' = c(''),
+  'mvi' = c(''),
+  'usi' = c('usi1'),
+  'vrt_col' = c('ind14'),
+  'vrt_ind' = c('ind8'),
+  'bfi_a' = c(''),
+  'bfi_c' = c(''),
+  'bfi_e' = c(''),
+  'bfi_n' = c(''),
+  'bfi_o' = c('') 
+)
+
+invar_test_rez_itmdrp_fn <- '../Rez/invariance_measures_long_pers_itmdrp.RDS'
+if(!file.exists(invar_test_rez_itmdrp_fn)){
+  invar_tests_and_models_itmdrp <- test_factors_for_invariance(
+    factor_names = factor_names, 
+    indicators_df = lnt_scales_df, 
+    item_data = lnt_nat_decades_items, 
+    fit_measures = fit_measures, 
+    group = 'decade_group',
+    save_fits = T,
+    data_dir = file.path(data_dir, 'itm_drp'),
+    drop_items = drop_items,
+    missing = 'fiml')
+  invar_tests_and_models_itmdrp_df <- dplyr::bind_rows(invar_tests_and_models_itmdrp)
+  saveRDS(invar_tests_and_models_itmdrp, invar_test_rez_itmdrp_fn)
+} else {
+  invar_tests_and_models_itmdrp <- readRDS(invar_test_rez_itmdrp_fn)
+}
 ```
