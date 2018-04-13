@@ -703,7 +703,7 @@ drop_items <- list(
 invar_test_rez_itmdrp_fn <- '../Rez/invariance_measures_long_pers_itmdrp.RDS'
 if(!file.exists(invar_test_rez_itmdrp_fn)){
   invar_tests_and_models_itmdrp <- test_factors_for_invariance(
-    factor_names = factor_names, 
+    factor_names = names(drop_items)[drop_items != ''], 
     indicators_df = lnt_scales_df, 
     item_data = lnt_nat_decades_items, 
     fit_measures = fit_measures, 
