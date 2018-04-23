@@ -8,6 +8,7 @@ output:
     toc_float: true
 ---
 
+**NOTE** Need to examine all MIs for strict model and drop items accordingly.
 
 ```{r echo=F, results='hide', warning=F, message=F}
 knitr::opts_chunk$set(echo = F)
@@ -142,8 +143,7 @@ lnt_scales_list <- list(
     c('basp12', 'basp13', 'basp14', 'basp15', 'basp16'),
     factor_name = 'aspfin'),
   bfa_mt = create_scoring_frame(
-    c('abfas105', 'abfas106', 'abfas107x', 'abfas108x', 'abfas109', 'abfas110', 'abfas111x', 
-      'abfas112x', 'abfas113', 'abfas114', 'abfas115', 'abfas116x', 'abfas117x', 'abfas118x'),
+    c('abfas113', 'abfas114', 'abfas115', 'abfas116x', 'abfas117x', 'abfas118x'),
     factor_name = 'bfa_mt'),
   hrz_ind = create_scoring_frame(
     c('aind1', 'aind2', 'aind3', 'aind4'),
@@ -478,7 +478,7 @@ zero2NA <- function(x){ifelse(x == 0, NA, x)}
 #read in data files
 for(fn in seq_along(factor_names)){
   factor_name <- factor_names[[fn]]
-  invar_mods_listenv[[fn]] <- readRDS(file.path(data_dir,
+  invar_mods_listenv[[fn]] <- readRDS(file.path(data_dir,'mi',
                                                 paste0(factor_name, '_invariance_mods.RDS')))
   
 }
@@ -530,56 +530,45 @@ mi_strict <- function(afit, power = T, ...){
 ```{r aspfinmi}
 options(minimum.value=2.5)
 knitr::kable(
-  mi_metric(invar_mods_listenv[['aspfin']][[2]]),
-  digits = 2, row.names = F,
-  caption = 'long_metric')
-
+  mi_metric(invar_mods_listenv[['aspfin']][[7]]),
+  digits = 2, row.names = F, caption = 'long_metric')
 knitr::kable(
-  mi_strong(invar_mods_listenv[['aspfin']][[3]]),
-  digits = 2, row.names = F,
-  caption = 'long_strong')
-
-knitr::kable(
-  mi_strict(invar_mods_listenv[['aspfin']][[4]]),
+  mi_strong(invar_mods_listenv[['aspfin']][[7]]),
   digits = 2, row.names = F, caption = 'long_strict')
-
 knitr::kable(
-  mi_strong(invar_mods_listenv[['aspfin']][[6]]),
-  digits = 2, row.names = F, caption = 'group_strong')
+  mi_strict(invar_mods_listenv[['aspfin']][[7]]),
+  digits = 2, row.names = F, caption = 'group_strict')
 ```
 
 ### Materialism
 
-Not clear if we can trust invariance tests for this scale.
+```{r bfa_mt}
+options(minimum.value=2.5)
+knitr::kable(
+  mi_metric(invar_mods_listenv[['bfa_mt']][[7]]),
+  digits = 2, row.names = F, caption = 'long_metric')
+knitr::kable(
+  mi_strong(invar_mods_listenv[['bfa_mt']][[7]]),
+  digits = 2, row.names = F, caption = 'long_strict')
+knitr::kable(
+  mi_strict(invar_mods_listenv[['bfa_mt']][[7]]),
+  digits = 2, row.names = F, caption = 'group_strict')
+```
+
 
 ### Horizontal Collectivism
 
 ```{r hrzcolmi}
 options(minimum.value=2.5)
 knitr::kable(
-  mi_metric(invar_mods_listenv[['hrz_col']][[2]]),
-  digits = 2, row.names = F,
-  caption = 'long_metric')
-
+  mi_metric(invar_mods_listenv[['hrz_col']][[7]]),
+  digits = 2, row.names = F, caption = 'long_metric')
 knitr::kable(
-  mi_strong(invar_mods_listenv[['hrz_col']][[3]]),
-  digits = 2, row.names = F,
-  caption = 'long_strong')
-
-knitr::kable(
-  mi_metric(invar_mods_listenv[['hrz_col']][[5]]),
-  digits = 2, row.names = F,
-  caption = 'group_metric')
-
-knitr::kable(
-  mi_strong(invar_mods_listenv[['hrz_col']][[6]]),
-  digits = 2, row.names = F,
-  caption = 'group_strong')
-
+  mi_strong(invar_mods_listenv[['hrz_col']][[7]]),
+  digits = 2, row.names = F, caption = 'long_strict')
 knitr::kable(
   mi_strict(invar_mods_listenv[['hrz_col']][[7]]),
-  digits = 2, row.names = F,
-  caption = 'group_strict')
+  digits = 2, row.names = F, caption = 'group_strict')
 ```
 
 ### Horizontal Individualism
@@ -587,9 +576,14 @@ knitr::kable(
 ```{r hrzindmi}
 options(minimum.value=2.5)
 knitr::kable(
-  mi_strict(invar_mods_listenv[['hrz_ind']][[4]]),
-  digits = 2, row.names = F,
-  caption = 'long_strict')
+  mi_metric(invar_mods_listenv[['hrz_ind']][[7]]),
+  digits = 2, row.names = F, caption = 'long_metric')
+knitr::kable(
+  mi_strong(invar_mods_listenv[['hrz_ind']][[7]]),
+  digits = 2, row.names = F, caption = 'long_strict')
+knitr::kable(
+  mi_strict(invar_mods_listenv[['hrz_ind']][[7]]),
+  digits = 2, row.names = F, caption = 'group_strict')
 ```
 
 ### Mature Values Index
@@ -601,14 +595,14 @@ It's not clear that we can trust the invariance tests for this scale.
 ```{r usimi}
 options(minimum.value=2.5)
 knitr::kable(
-  mi_strict(invar_mods_listenv[['usi']][[4]]),
-  digits = 2, row.names = F,
-  caption = 'long_strict')
-
+  mi_metric(invar_mods_listenv[['usi']][[7]]),
+  digits = 2, row.names = F, caption = 'long_metric')
 knitr::kable(
-  mi_strong(invar_mods_listenv[['usi']][[6]]),
-  digits = 2, row.names = F,
-  caption = 'group_strong')
+  mi_strong(invar_mods_listenv[['usi']][[7]]),
+  digits = 2, row.names = F, caption = 'long_strict')
+knitr::kable(
+  mi_strict(invar_mods_listenv[['usi']][[7]]),
+  digits = 2, row.names = F, caption = 'group_strict')
 ```
 
 ### Vertical Collectivism
@@ -617,14 +611,14 @@ knitr::kable(
 ```{r vrtcolmi}
 options(minimum.value=2.5)
 knitr::kable(
-  mi_metric(invar_mods_listenv[['vrt_col']][[5]]),
-  digits = 2, row.names = F,
-  caption = 'group_metric')
-
+  mi_metric(invar_mods_listenv[['vrt_col']][[7]]),
+  digits = 2, row.names = F, caption = 'long_metric')
 knitr::kable(
-  mi_strong(invar_mods_listenv[['vrt_col']][[6]]),
-  digits = 2, row.names = F,
-  caption = 'group_strong')
+  mi_strong(invar_mods_listenv[['vrt_col']][[7]]),
+  digits = 2, row.names = F, caption = 'long_strict')
+knitr::kable(
+  mi_strict(invar_mods_listenv[['vrt_col']][[7]]),
+  digits = 2, row.names = F, caption = 'group_strict')
 ```
 
 ### Vertical Individualism
@@ -632,9 +626,14 @@ knitr::kable(
 ```{r vrtindmi}
 options(minimum.value=2.5)
 knitr::kable(
-  mi_strong(invar_mods_listenv[['vrt_ind']][[6]]),
-  digits = 2, row.names = F,
-  caption = 'group_strong')
+  mi_metric(invar_mods_listenv[['vrt_ind']][[7]]),
+  digits = 2, row.names = F, caption = 'long_metric')
+knitr::kable(
+  mi_strong(invar_mods_listenv[['vrt_ind']][[7]]),
+  digits = 2, row.names = F, caption = 'long_strict')
+knitr::kable(
+  mi_strict(invar_mods_listenv[['vrt_ind']][[7]]),
+  digits = 2, row.names = F, caption = 'group_strict')
 ```
 
 ## Loadings
@@ -682,7 +681,7 @@ nullius <- lapply(names(vVarNames), function(var){
 # Invariance dropping items
 
 
-```{r}
+```{r echo=F, results='hide', warning=F, message=F, eval=F}
 
 drop_items <- list(
   'aspfin' = c('asp14'),
@@ -716,5 +715,6 @@ if(!file.exists(invar_test_rez_itmdrp_fn)){
   saveRDS(invar_tests_and_models_itmdrp, invar_test_rez_itmdrp_fn)
 } else {
   invar_tests_and_models_itmdrp <- readRDS(invar_test_rez_itmdrp_fn)
+  invar_tests_and_models_itmdrp_df <- dplyr::bind_rows(invar_tests_and_models_itmdrp)
 }
 ```
