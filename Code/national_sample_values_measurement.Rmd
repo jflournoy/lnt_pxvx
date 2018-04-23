@@ -719,3 +719,150 @@ if(!file.exists(invar_test_rez_itmdrp_fn)){
   invar_tests_and_models_itmdrp_df <- dplyr::bind_rows(invar_tests_and_models_itmdrp)
 }
 ```
+
+```{r results='asis', echo=F, warning=F, message=F}
+#  [1] "bfi_s_scale" "bfi_d_scale" "bfi_hp8"     "bfi_c"       "bfi_a"       "bfi_a6"     
+#  [7] "bfi_e"       "bfi_n"       "bfi_o"       "bfas_ac"     "bfas_ap"     "bfas_ci"    
+# [13] "bfas_co"     "bfas_ea"     "bfas_ee"     "bfas_nv9"    "bfas_nv"     "bfas_nw"    
+# [19] "bfas_oi"     "bfas_oo"     "aspfin"      "bfa_mt"      "hrz_ind"     "hrz_col"    
+# [25] "mvi"         "usi"         "vrt_ind"     "vrt_col"  
+
+invar_tests_and_models_itmdrp_df <- dplyr::mutate(
+  invar_tests_and_models_itmdrp_df, 
+  invar_type = factor(invar_type,
+                      levels = c('unconstrained', 'long_metric', 'long_strong', 'long_strict', 'baseline','metric','strong', 'strict'),
+                      labels = c('unconstrained', 'long_metric', 'long_strong', 'long_strict', 'baseline','metric','strong', 'strict')))
+
+invar_tests_and_models_itmdrp_df_w <- mutate_at(
+  tidyr::spread(
+    invar_tests_and_models_itmdrp_df,
+    fit_stat,
+    value),
+  vars(AIC:rmsea.ci.upper),
+  as.numeric)
+invar_tests_and_models_itmdrp_df_w <- arrange(
+  invar_tests_and_models_itmdrp_df_w,
+  factor_name, invar_type)
+invar_tests_and_models_itmdrp_df_w <- mutate_at(
+  group_by(invar_tests_and_models_itmdrp_df_w, factor_name),
+  vars(dAIC = AIC, dBIC = BIC, dCFI = cfi, dMFI = mfi),
+  function(x) x - lag(x))
+invar_tests_and_models_itmdrp_df_w <- mutate_at(
+  group_by(invar_tests_and_models_itmdrp_df_w, factor_name),
+  vars(d2AIC = AIC, d2BIC = BIC, d2CFI = cfi, d2MFI = mfi),
+  function(x) x - lag(x, n = 3))
+invar_tests_and_models_itmdrp_df_w <- dplyr::mutate(
+  ungroup(invar_tests_and_models_itmdrp_df_w),
+  dAIC = sprintf('%.1f', dAIC),
+  dBIC = sprintf('%.1f', dBIC),
+  d2AIC = sprintf('%.1f', d2AIC),
+  d2BIC = sprintf('%.1f', d2BIC),
+  Chisq = sprintf('%1.f', Chisq),
+  `P dChisq` = ifelse(`Pr(>Chisq)` < 1e-3, 
+                        '<.001',
+                        sprintf('%.3f', `Pr(>Chisq)`)),
+  dChisq = sprintf('%.1f',`Chisq diff`),
+  dDf = `Df diff`,
+  cfi = sprintf('%.3f', cfi),
+  dCFI = sprintf('%.3f', dCFI),
+  d2CFI = sprintf('%.3f', d2CFI),
+  mfi = sprintf('%.3f', mfi),
+  dMFI = sprintf('%.3f', dMFI),
+  d2MFI = sprintf('%.3f', d2MFI),
+  rmsea = sprintf('%.3f', rmsea),
+  rmsea.ci.lower = sprintf('%.3f', rmsea.ci.lower),
+  rmsea.ci.upper = sprintf('%.3f', rmsea.ci.upper),
+  rmsea = paste0(rmsea, ' [', rmsea.ci.lower, ', ', rmsea.ci.upper,']'),
+  factor_name = factor(factor_name, 
+                       levels = names(c(vVarNames, pVarNames)),
+                       labels = c(vVarNames, pVarNames)))
+invar_tests_and_models_itmdrp_df_w <- mutate(
+  arrange(invar_tests_and_models_itmdrp_df_w,
+          factor_name, invar_type),
+  factor_name_c = as.character(factor_name),
+  invar_type_c = as.character(invar_type)
+)
+invar_tests_and_models_itmdrp_df_w <- mutate_all(
+  invar_tests_and_models_itmdrp_df_w,
+  function(x) ifelse(is.na(x) | x == 'NA', '', x)
+)
+invar_tests_and_models_itmdrp_df_w <- dplyr::select(
+  invar_tests_and_models_itmdrp_df_w,
+  factor_name, invar_type, factor_name_c, invar_type_c, 
+  dAIC, d2AIC, dBIC, d2BIC, dChisq, Df, dDf, `P dChisq`,
+  cfi, dCFI, d2CFI, mfi, dMFI, d2MFI, rmsea, Chisq)
+
+column_labels <- c(
+  invar_type_c = 'Type', #1
+  dAIC = '$\\Delta\\text{AIC}$', #2
+  d2AIC = '$\\Delta_{1,4}\\text{AIC}$', #3
+  dBIC = '$\\Delta\\text{BIC}$', #4
+  d2BIC = '$\\Delta_{1,4}\\text{BIC}$', #5
+  dChisq = '$\\Delta\\chi^2$', #6
+  Df = '$\\text{Df}$', #7
+  dDf = '$\\Delta\\text{Df}$', #8
+  `P dChisq` = '$P(>\\Delta\\chi^2)$', #9
+  cfi = '$\\text{CFI}$', #10
+  dCFI = '$\\Delta\\text{CFI}$', #11
+  d2CFI = '$\\Delta_{1,4}\\text{CFI}$', #12
+  mfi = '$\\text{MFI}$', #13
+  dMFI = '$\\Delta\\text{MFI}$', #14
+  d2MFI = '$\\Delta_{1,4}\\text{MFI}$', #15
+  rmsea = '$\\text{RMSEA}$',#16
+  Chisq = '$\\chi^2$')#17
+
+
+
+conclusions_list <- as.list(rep('', length(c(vVarNames, pVarNames))))
+names(conclusions_list) <- c(vVarNames, pVarNames)
+
+#-.007 and -.01 
+conclusions_list[['Financial Aspirations']] <- ''
+conclusions_list[['Materialism']] <- ''
+conclusions_list[['Horizontal Collectivism']] <- ''
+conclusions_list[['Horizontal Individualism']] <- ''
+conclusions_list[['Mature Values Index']] <- ''
+conclusions_list[['Unmitigated Self-Interest']] <- ''
+conclusions_list[['Vertical Collectivism']] <- ''
+conclusions_list[['Vertical Individualism']] <- ''
+conclusions_list[['Social Self-Regulation']] <- ''
+conclusions_list[['.Conscientiousness']] <- ''
+conclusions_list[['..Industriousness']] <- ''
+conclusions_list[['..Orderliness']] <- ''
+conclusions_list[['.Honesty/Propriety']] <- ''
+conclusions_list[['.Agreeableness']] <- ''
+conclusions_list[['.Agreeableness-Six']] <- ''
+conclusions_list[['..Compassion']] <- ''
+conclusions_list[['..Politeness']] <- ''
+conclusions_list[['.Neuroticism']] <- ''
+conclusions_list[['.Neuroticism-Nine']] <- ''
+conclusions_list[['..Volatility']] <- ''
+conclusions_list[['..Withdrawal']] <- ''
+conclusions_list[['Dynamism']] <- ''
+conclusions_list[['.Extraversion']] <- ''
+conclusions_list[['..Assertiveness']] <- ''
+conclusions_list[['..Enthusiasm']] <- ''
+conclusions_list[['.Openness']] <- ''
+conclusions_list[['..Intellect']] <- ''
+conclusions_list[['..Openness']] <- ''
+```
+
+## Results
+
+### MFI etc
+
+```{r buildtables, results = 'asis', echo = F}
+keepcols <- c(1,17,7,2,4,10,11,13,14,16)
+nothingburger <- do(group_by(invar_tests_and_models_itmdrp_df_w, factor_name),{
+  table_df <- select(., -factor_name, -invar_type, -factor_name_c)
+  title <- unique(.$factor_name_c)
+  
+  print(knitr::kable(
+    table_df[,keepcols],
+    col.names = column_labels[keepcols],
+    caption = title, 
+    row.names = T))
+  cat(paste0('\n\n<p>', conclusions_list[[title]], '</p>'))
+  data.frame()
+})
+```
