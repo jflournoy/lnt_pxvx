@@ -2,7 +2,7 @@ library(future)
 library(future.batchtools)
 
 plan(batchtools_slurm,
-     template = '/home/flournoy/otherhome/code/lnt_pxvx/batchtools.slurm.tmpl',
+     template = '/home/flournoy/otherhome/code/lnt_pxvx/batchtools/batchtools.slurm.tmpl',
      resources = list(ncpus = 1, walltime = 60*24-1, memory = '500M',
                       partitions = 'short,fat,long,longfat,preempt'))
 
