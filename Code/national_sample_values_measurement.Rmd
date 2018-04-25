@@ -691,12 +691,12 @@ item_labels_to_text <- function(item_col_names, adf){
 }
 drop_items <- list(
   'aspfin' = c('asp14','asp16'), 
-  'bfa_mt' = c('bfas113'), #118 breaks it
-  'hrz_col' = c('ind11'),
-  'hrz_ind' = c('ind1'),
+  'bfa_mt' = c('bfas113', 'bfas114'), #118 breaks it
+  'hrz_col' = c('ind9'),
+  'hrz_ind' = c('ind4'),
   'mvi' = c(''),
   'usi' = c('usi1','usi2','usi5'), #most evidence from MI, but usi5 and usi2 are very skewed, might be worth checking.
-  'vrt_col' = c('ind16'), #should probably be 14, but lets see.
+  'vrt_col' = c('ind14'), 
   'vrt_ind' = c('ind8'), #some mi, lowest loading, "tense and aroused"
   'bfi_a' = c(''),
   'bfi_c' = c(''),
@@ -821,29 +821,19 @@ column_labels <- c(
 conclusions_list <- as.list(rep('', length(c(vVarNames, pVarNames))))
 names(conclusions_list) <- c(vVarNames, pVarNames)
 
-# drop_items <- list(
-#   'aspfin' = c('asp14'), #most big MI, and lowest loading
-#   'bfa_mt' = c('bfas113'), #most MI, lowest loading
-#   'hrz_col' = c('ind9'), #biggest MIs, but high loading
-#   'hrz_ind' = c('ind4'), #not much problematic here, but this has lowest loading
-#   'usi' = c('usi1'), #most evidence from MI, but usi5 and usi2 are very skewed, might be worth checking.
-#   'vrt_col' = c('ind14'), #mi evidence, esp. loadings and variance. very skewed too.
-#   'vrt_ind' = c('ind8'), #some mi, lowest loading, "tense and aroused"
-# )
-
 lnt_item_labels_to_text <- function(item_labels){
   item_labels_to_text(item_labels, lnt_nat_decades_items)
 }
 
 #-.007 and -.01 
-conclusions_list[['Financial Aspirations']] <- paste0('Some improvement. Better overall fit, improved invariance, but still has $\\Delta\\text{MFI}$ = .016 (versus .023 previously). Dropped ', lnt_item_labels_to_text(drop_items[['aspfin']]))
-conclusions_list[['Materialism']] <- paste0('Some improvement. Better overall fit, improved invariance, but still has $\\Delta\\text{MFI}$ = .016 (versus >.024 previously). Also solved convergence problems. Dropped  ', lnt_item_labels_to_text(drop_items[['bfa_mt']]))
-conclusions_list[['Horizontal Collectivism']] <- paste0('Some improvement. Better overall fit, improved invariance, but still has $\\Delta\\text{MFI}$ = .032 (versus .056 previously). Dropped ', lnt_item_labels_to_text(drop_items[['hrz_col']]))
+conclusions_list[['Financial Aspirations']] <- paste0('Invariant. Total $\\Delta\\text{MFI}$ = -.005 (versus -.023 previously). Dropped ', lnt_item_labels_to_text(drop_items[['aspfin']]))
+conclusions_list[['Materialism']] <- paste0('Some improvement. Better overall fit, improved invariance, but still has $\\Delta\\text{MFI}$ = -.016 (versus <-.024 previously). Also solved convergence problems. Dropped  ', lnt_item_labels_to_text(drop_items[['bfa_mt']]))
+conclusions_list[['Horizontal Collectivism']] <- paste0('Some improvement. Better overall fit, improved invariance, but still has $\\Delta\\text{MFI}$ = .032 (versus .056 previously). Dropping a different item that had lower MIs lead to no improvement in MFI. Dropped ', lnt_item_labels_to_text(drop_items[['hrz_col']]))
 conclusions_list[['Horizontal Individualism']] <- paste0('About the same. Better overall fit. May not be necessary to drop items (but $\\Delta\\text{MFI}$ is .12 from long strict to strict in both cases). Dropped ', lnt_item_labels_to_text(drop_items[['hrz_ind']]))
 conclusions_list[['Mature Values Index']] <- ''
-conclusions_list[['Unmitigated Self-Interest']] <- paste0('Worse invariance, but better overall fit indices. Dropped  ', lnt_item_labels_to_text(drop_items[['usi']]))
+conclusions_list[['Unmitigated Self-Interest']] <- paste0('Invariant. Total $\\Delta\\text{MFI}$ = -.010 (versus -.038 previously). Item 2 and 5 were very skewed. Dropped ', lnt_item_labels_to_text(drop_items[['usi']]))
 conclusions_list[['Vertical Collectivism']] <- paste0('Some improvement. Still not perfect. Only three items. Very good fit indices. Dropped ', lnt_item_labels_to_text(drop_items[['vrt_col']]))
-conclusions_list[['Vertical Individualism']] <- paste0('Better. Difference between strict and long_strict is ~< .01. Dropped ', lnt_item_labels_to_text(drop_items[['vrt_ind']]))
+conclusions_list[['Vertical Individualism']] <- paste0('Invariant. Total $\\Delta\\text{MFI}$ = -.009 (versus -.032 previously) Dropped ', lnt_item_labels_to_text(drop_items[['vrt_ind']]))
 conclusions_list[['Social Self-Regulation']] <- ''
 conclusions_list[['.Conscientiousness']] <- ''
 conclusions_list[['..Industriousness']] <- ''
