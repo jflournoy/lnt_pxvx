@@ -19,7 +19,7 @@ library(lavaan)
 if(grepl('(^n\\d|talapas-ln1)', system('hostname', intern = T))){
   nworkers <- 28
   data_dir <- '/home/flournoy/otherhome/data/lnt_pxvx'
-  # plan(tweak(multiprocess, gc = T, workers = nworkers))
+  plan(tweak(multiprocess, gc = T, workers = nworkers))
 } else {
   nworkers <- future::availableCores() - 1
   data_dir <- '/data/jflournoy/lnt_pxvx/'
