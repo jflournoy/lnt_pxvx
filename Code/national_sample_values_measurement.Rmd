@@ -32,9 +32,21 @@ if(!dir.exists(data_dir)){
   dir.create(data_dir)
 }
 
+remove_sids <- c(2440,
+                 2509,
+                 2515,
+                 2519,
+                 3161,
+                 3441,
+                 3659,
+                 3764,
+                 3819,
+                 3883)
+
 suppressMessages(library('tidyverse'))
 lnt_df <- haven::read_sav(file.path(data_dir, 'LT_wideAGT1234.sav'))
-lnt_df_nat <- dplyr::filter(lnt_df, aSubsample == 1)
+lnt_df_nat <- dplyr::filter(lnt_df, aSubsample == 1)  %>%
+  filter(!subjid %in% remove_sids)
 
 create_scoring_frame <- function(items, rev_pattern = '.*x$', 
                                  sub_pattern = '^[abcd](.*?)x*$', 
@@ -65,6 +77,8 @@ create_scoring_frame <- function(items, rev_pattern = '.*x$',
 #               'USI',
 #               'VRT_COL',
 #               'VRT_IND')
+
+
 
 lnt_scales_list <- list(
   bfi_s_scale = create_scoring_frame(
@@ -142,15 +156,27 @@ lnt_scales_list <- list(
   aspfin = create_scoring_frame(
     c('basp12', 'basp13', 'basp14', 'basp15', 'basp16'),
     factor_name = 'aspfin'),
+  aspfin_d = create_scoring_frame(
+    c('basp12', 'basp13', 'basp15'),
+    factor_name = 'aspfin_d'),
   bfa_mt = create_scoring_frame(
     c('abfas113', 'abfas114', 'abfas115', 'abfas116x', 'abfas117x', 'abfas118x'),
     factor_name = 'bfa_mt'),
+  bfa_mt_d = create_scoring_frame(
+    c('abfas115', 'abfas116x', 'abfas117x', 'abfas118x'),
+    factor_name = 'bfa_mt_d'),
   hrz_ind = create_scoring_frame(
     c('aind1', 'aind2', 'aind3', 'aind4'),
     factor_name = 'hrz_ind'),
+  hrz_ind_d = create_scoring_frame(
+    c('aind1', 'aind2', 'aind3'),
+    factor_name = 'hrz_ind_d'),
   hrz_col = create_scoring_frame(
     c('aind9', 'aind10', 'aind11', 'aind12'),
     factor_name = 'hrz_col'),
+  hrz_col_d = create_scoring_frame(
+    c('aind10', 'aind11', 'aind12'),
+    factor_name = 'hrz_col_d'),
   mvi = create_scoring_frame(
     c('aval7', 'aval9', 'aval11', 'aval13', 'aval15', 'aval17', 'aval18', 'aval20', 'aval21', 
       'aval23', 'aval8x', 'aval10x', 'aval12x', 'aval14x', 'aval16x', 'aval19x', 'aval22x'),
@@ -158,12 +184,31 @@ lnt_scales_list <- list(
   usi = create_scoring_frame(
     c('ausi1', 'ausi2x', 'ausi3x', 'ausi5', 'ausi6x', 'ausi7'),
     factor_name = 'usi'),
+  usi_d = create_scoring_frame(
+    c('ausi3x', 'ausi6x', 'ausi7'),
+    factor_name = 'usi_d'),
   vrt_ind = create_scoring_frame(
     c('aind5', 'aind6', 'aind7', 'aind8'),
     factor_name = 'vrt_ind'),
+  vrt_ind_d = create_scoring_frame(
+    c('aind5', 'aind6', 'aind7'),
+    factor_name = 'vrt_ind_d'),
   vrt_col = create_scoring_frame(
     c('aind13', 'aind14', 'aind15', 'aind16'),
-    factor_name = 'vrt_col'))
+    factor_name = 'vrt_col'),
+  vrt_col_d = create_scoring_frame(
+    c('aind13', 'aind15', 'aind16'),
+    factor_name = 'vrt_col_d'))
+
+#scales with dropped items: drop_items <- list(
+#   'aspfin' = c('asp14','asp16'), 
+#   'bfa_mt' = c('bfas113', 'bfas114'), #118 breaks it
+#   'hrz_col' = c('ind9'),
+#   'hrz_ind' = c('ind4'),
+#   'usi' = c('usi1','usi2','usi5'), #most evidence from MI, but usi5 and usi2 are very skewed, might be worth checking.
+#   'vrt_col' = c('ind14'), 
+#   'vrt_ind' = c('ind8'), #some mi, lowest loading, "tense and aroused"
+# )
 
 lnt_scales_df <- do.call(dplyr::bind_rows, lnt_scales_list)
 
@@ -219,39 +264,63 @@ create_wave_keys <- function(scoring_df, wave_prefix = 'a'){
   return(wave_keys)
 }
 
+
+
 wave1_keys <- create_wave_keys(lnt_scales_df, 'a')
-wave1_scored <- psych::scoreItems(keys = wave1_keys[-25], lnt_items_nat, impute = 'none',
+mvi_col <- which(names(wave1_keys) == 'mvi')
+wave1_scored <- psych::scoreItems(keys = wave1_keys[-mvi_col], lnt_items_nat, impute = 'none',
                                   min = 1, max = 5)
-wave1_scored_mvi <- psych::scoreItems(keys = wave1_keys[25], lnt_items_nat, impute = 'none',
+wave1_scored_mvi <- psych::scoreItems(keys = wave1_keys[mvi_col], lnt_items_nat, impute = 'none',
                                       min = 1, max = 9)
 wave2_keys <- create_wave_keys(lnt_scales_df, 'b')
-wave2_scored <- psych::scoreItems(keys = wave2_keys[-25], lnt_items_nat, impute = 'none',
+wave2_scored <- psych::scoreItems(keys = wave2_keys[-mvi_col], lnt_items_nat, impute = 'none',
                                   min = 1, max = 5)
-wave2_scored_mvi <- psych::scoreItems(keys = wave2_keys[25], lnt_items_nat, impute = 'none',
+wave2_scored_mvi <- psych::scoreItems(keys = wave2_keys[mvi_col], lnt_items_nat, impute = 'none',
                                       min = 1, max = 9)
 wave3_keys <- create_wave_keys(lnt_scales_df, 'c')
-wave3_scored <- psych::scoreItems(keys = wave3_keys[-25], lnt_items_nat, impute = 'none',
+wave3_scored <- psych::scoreItems(keys = wave3_keys[-mvi_col], lnt_items_nat, impute = 'none',
                                   min = 1, max = 5)
-wave3_scored_mvi <- psych::scoreItems(keys = wave3_keys[25], lnt_items_nat, impute = 'none',
+wave3_scored_mvi <- psych::scoreItems(keys = wave3_keys[mvi_col], lnt_items_nat, impute = 'none',
                                       min = 1, max = 9)
 wave4_keys <- create_wave_keys(lnt_scales_df, 'd')
-wave4_scored <- psych::scoreItems(keys = wave4_keys[-25], lnt_items_nat,  impute = 'none',
+wave4_scored <- psych::scoreItems(keys = wave4_keys[-mvi_col], lnt_items_nat,  impute = 'none',
                                   min = 1, max = 5)
-wave4_scored_mvi <- psych::scoreItems(keys = wave4_keys[25], lnt_items_nat, impute = 'none',
+wave4_scored_mvi <- psych::scoreItems(keys = wave4_keys[mvi_col], lnt_items_nat, impute = 'none',
                                       min = 1, max = 9)
 
+pompit <- function(datas,min,max){
+  (datas-min)/(max-min)*100
+}
+
 all_waves_scored <- bind_rows(
-  list(`1` = bind_cols(as_data_frame(wave1_scored$scores), as_data_frame(wave1_scored_mvi$scores)),
-       `2` = bind_cols(as_data_frame(wave2_scored$scores), as_data_frame(wave2_scored_mvi$scores)),
-       `3` = bind_cols(as_data_frame(wave3_scored$scores), as_data_frame(wave3_scored_mvi$scores)),
-       `4` = bind_cols(as_data_frame(wave4_scored$scores), as_data_frame(wave4_scored_mvi$scores))),
+  list(`1` = bind_cols(pompit(as_data_frame(wave1_scored$scores), 1, 5), 
+                       pompit(as_data_frame(wave1_scored_mvi$scores), 1, 9)),
+       `2` = bind_cols(pompit(as_data_frame(wave2_scored$scores), 1, 5), 
+                       pompit(as_data_frame(wave2_scored_mvi$scores), 1, 9)),
+       `3` = bind_cols(pompit(as_data_frame(wave3_scored$scores), 1, 5), 
+                       pompit(as_data_frame(wave3_scored_mvi$scores), 1, 9)),
+       `4` = bind_cols(pompit(as_data_frame(wave4_scored$scores), 1, 5), 
+                       pompit(as_data_frame(wave4_scored_mvi$scores), 1, 9))),
   .id = 'wave')
 
 all_waves_scored$aage <- lnt_df_nat$aage
 all_waves_scored$id <- 1:dim(lnt_df_nat)[1]
+all_waves_scored$subjid <- lnt_df_nat$subjid
 all_waves_scored$age <- as.numeric(all_waves_scored$aage) + 
   as.numeric(all_waves_scored$wave) - 1
 all_waves_scored$decade_group <- factor(all_waves_scored$aage %/% 10)
+
+all_waves_scored_w <- all_waves_scored %>%
+  mutate(wave_letter = letters[as.numeric(wave)]) %>%
+  select(-aage, -id, -wave, -decade_group) %>%
+  gather(var, val, -subjid, -wave_letter) %>%
+  unite(var, wave_letter, var, sep = '') %>%
+  spread(var,val)
+
+all_waves_scored_w[is.na(all_waves_scored_w)] <- NA
+
+readr::write_tsv(all_waves_scored_w, path = '../Data/lnt_nat_recalc.tsv', col_names = F, na = '-9999')
+readr::write_lines(names(all_waves_scored_w), path = '../Data/lnt_nat_recalc_names.txt')
 
 cat('**Wave 1**\n\n')
 wave1_scored$alpha
@@ -1012,3 +1081,4 @@ knitr::kable(
   mi_strict(invar_drpitm_mods_listenv[['vrt_ind']][[7]]),
   digits = 2, row.names = F, caption = 'group_strict_variances')
 ```
+
