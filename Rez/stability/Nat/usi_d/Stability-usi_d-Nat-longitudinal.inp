@@ -1,5 +1,5 @@
 
-title: Stability of values - Nat aspfin group;
+title: Stability of values - Nat usi_d longitudinal;
 data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
 
 variable:
@@ -151,10 +151,10 @@ dvrt_ind
 dvrt_ind_d;
 
 USEVARIABLES =
-aaspfin
-baspfin
-caspfin
-daspfin
+ausi_d
+busi_d
+cusi_d
+dusi_d
 aage
 ;
 
@@ -175,19 +175,63 @@ type = general;
 estimator = ml;
 processors = 8; 
 
-
 MODEL:
+ausi_d WITH busi_d;
+busi_d WITH cusi_d;
+cusi_d WITH dusi_d;
 
-aaspfin WITH baspfin (a);
-baspfin WITH caspfin (a);
-caspfin WITH daspfin (a);
+ausi_d WITH cusi_d;
+busi_d WITH dusi_d;
 
-aaspfin WITH caspfin (b);
-baspfin WITH daspfin (b);
+ausi_d WITH dusi_d;
 
-aaspfin WITH daspfin (c);
+MODEL d2:
+ausi_d WITH busi_d (a2);
+busi_d WITH cusi_d (a2);
+cusi_d WITH dusi_d (a2);
 
-aaspfin baspfin caspfin daspfin (e);
+ausi_d WITH cusi_d (b2);
+busi_d WITH dusi_d (b2);
+
+ausi_d WITH dusi_d (c2);
+
+ausi_d busi_d cusi_d dusi_d (e2);
+
+MODEL d3:
+ausi_d WITH busi_d (a3);
+busi_d WITH cusi_d (a3);
+cusi_d WITH dusi_d (a3);
+
+ausi_d WITH cusi_d (b3);
+busi_d WITH dusi_d (b3);
+
+ausi_d WITH dusi_d (c3);
+
+ausi_d busi_d cusi_d dusi_d (e3);
+
+MODEL d4:
+ausi_d WITH busi_d (a4);
+busi_d WITH cusi_d (a4);
+cusi_d WITH dusi_d (a4);
+
+ausi_d WITH cusi_d (b4);
+busi_d WITH dusi_d (b4);
+
+ausi_d WITH dusi_d (c4);
+
+ausi_d busi_d cusi_d dusi_d (e4);
+
+MODEL d5:
+ausi_d WITH busi_d (a5);
+busi_d WITH cusi_d (a5);
+cusi_d WITH dusi_d (a5);
+
+ausi_d WITH cusi_d (b5);
+busi_d WITH dusi_d (b5);
+
+ausi_d WITH dusi_d (c5);
+
+ausi_d busi_d cusi_d dusi_d (e5);
 
 
 

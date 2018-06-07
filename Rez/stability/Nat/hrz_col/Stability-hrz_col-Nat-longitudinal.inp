@@ -1,5 +1,5 @@
 
-title: Stability of values - Nat aspfin group;
+title: Stability of values - Nat hrz_col longitudinal;
 data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
 
 variable:
@@ -151,10 +151,10 @@ dvrt_ind
 dvrt_ind_d;
 
 USEVARIABLES =
-aaspfin
-baspfin
-caspfin
-daspfin
+ahrz_col
+bhrz_col
+chrz_col
+dhrz_col
 aage
 ;
 
@@ -175,19 +175,63 @@ type = general;
 estimator = ml;
 processors = 8; 
 
-
 MODEL:
+ahrz_col WITH bhrz_col;
+bhrz_col WITH chrz_col;
+chrz_col WITH dhrz_col;
 
-aaspfin WITH baspfin (a);
-baspfin WITH caspfin (a);
-caspfin WITH daspfin (a);
+ahrz_col WITH chrz_col;
+bhrz_col WITH dhrz_col;
 
-aaspfin WITH caspfin (b);
-baspfin WITH daspfin (b);
+ahrz_col WITH dhrz_col;
 
-aaspfin WITH daspfin (c);
+MODEL d2:
+ahrz_col WITH bhrz_col (a2);
+bhrz_col WITH chrz_col (a2);
+chrz_col WITH dhrz_col (a2);
 
-aaspfin baspfin caspfin daspfin (e);
+ahrz_col WITH chrz_col (b2);
+bhrz_col WITH dhrz_col (b2);
+
+ahrz_col WITH dhrz_col (c2);
+
+ahrz_col bhrz_col chrz_col dhrz_col (e2);
+
+MODEL d3:
+ahrz_col WITH bhrz_col (a3);
+bhrz_col WITH chrz_col (a3);
+chrz_col WITH dhrz_col (a3);
+
+ahrz_col WITH chrz_col (b3);
+bhrz_col WITH dhrz_col (b3);
+
+ahrz_col WITH dhrz_col (c3);
+
+ahrz_col bhrz_col chrz_col dhrz_col (e3);
+
+MODEL d4:
+ahrz_col WITH bhrz_col (a4);
+bhrz_col WITH chrz_col (a4);
+chrz_col WITH dhrz_col (a4);
+
+ahrz_col WITH chrz_col (b4);
+bhrz_col WITH dhrz_col (b4);
+
+ahrz_col WITH dhrz_col (c4);
+
+ahrz_col bhrz_col chrz_col dhrz_col (e4);
+
+MODEL d5:
+ahrz_col WITH bhrz_col (a5);
+bhrz_col WITH chrz_col (a5);
+chrz_col WITH dhrz_col (a5);
+
+ahrz_col WITH chrz_col (b5);
+bhrz_col WITH dhrz_col (b5);
+
+ahrz_col WITH dhrz_col (c5);
+
+ahrz_col bhrz_col chrz_col dhrz_col (e5);
 
 
 

@@ -1,5 +1,5 @@
 
-title: Stability of values - Nat aspfin group;
+title: Stability of values - Nat vrt_col group;
 data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
 
 variable:
@@ -151,10 +151,10 @@ dvrt_ind
 dvrt_ind_d;
 
 USEVARIABLES =
-aaspfin
-baspfin
-caspfin
-daspfin
+avrt_col
+bvrt_col
+cvrt_col
+dvrt_col
 aage
 ;
 
@@ -178,16 +178,16 @@ processors = 8;
 
 MODEL:
 
-aaspfin WITH baspfin (a);
-baspfin WITH caspfin (a);
-caspfin WITH daspfin (a);
+avrt_col WITH bvrt_col (a);
+bvrt_col WITH cvrt_col (a);
+cvrt_col WITH dvrt_col (a);
 
-aaspfin WITH caspfin (b);
-baspfin WITH daspfin (b);
+avrt_col WITH cvrt_col (b);
+bvrt_col WITH dvrt_col (b);
 
-aaspfin WITH daspfin (c);
+avrt_col WITH dvrt_col (c);
 
-aaspfin baspfin caspfin daspfin (e);
+avrt_col bvrt_col cvrt_col dvrt_col (e);
 
 
 

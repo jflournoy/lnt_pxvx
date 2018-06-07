@@ -1,5 +1,5 @@
 
-title: Stability of values - Nat aspfin group;
+title: Stability of values - Nat usi longitudinal;
 data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
 
 variable:
@@ -151,10 +151,10 @@ dvrt_ind
 dvrt_ind_d;
 
 USEVARIABLES =
-aaspfin
-baspfin
-caspfin
-daspfin
+ausi
+busi
+cusi
+dusi
 aage
 ;
 
@@ -175,19 +175,63 @@ type = general;
 estimator = ml;
 processors = 8; 
 
-
 MODEL:
+ausi WITH busi;
+busi WITH cusi;
+cusi WITH dusi;
 
-aaspfin WITH baspfin (a);
-baspfin WITH caspfin (a);
-caspfin WITH daspfin (a);
+ausi WITH cusi;
+busi WITH dusi;
 
-aaspfin WITH caspfin (b);
-baspfin WITH daspfin (b);
+ausi WITH dusi;
 
-aaspfin WITH daspfin (c);
+MODEL d2:
+ausi WITH busi (a2);
+busi WITH cusi (a2);
+cusi WITH dusi (a2);
 
-aaspfin baspfin caspfin daspfin (e);
+ausi WITH cusi (b2);
+busi WITH dusi (b2);
+
+ausi WITH dusi (c2);
+
+ausi busi cusi dusi (e2);
+
+MODEL d3:
+ausi WITH busi (a3);
+busi WITH cusi (a3);
+cusi WITH dusi (a3);
+
+ausi WITH cusi (b3);
+busi WITH dusi (b3);
+
+ausi WITH dusi (c3);
+
+ausi busi cusi dusi (e3);
+
+MODEL d4:
+ausi WITH busi (a4);
+busi WITH cusi (a4);
+cusi WITH dusi (a4);
+
+ausi WITH cusi (b4);
+busi WITH dusi (b4);
+
+ausi WITH dusi (c4);
+
+ausi busi cusi dusi (e4);
+
+MODEL d5:
+ausi WITH busi (a5);
+busi WITH cusi (a5);
+cusi WITH dusi (a5);
+
+ausi WITH cusi (b5);
+busi WITH dusi (b5);
+
+ausi WITH dusi (c5);
+
+ausi busi cusi dusi (e5);
 
 
 

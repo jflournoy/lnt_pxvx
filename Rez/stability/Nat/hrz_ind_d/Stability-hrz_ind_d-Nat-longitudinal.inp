@@ -1,5 +1,5 @@
 
-title: Stability of values - Nat aspfin group;
+title: Stability of values - Nat hrz_ind_d longitudinal;
 data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
 
 variable:
@@ -151,10 +151,10 @@ dvrt_ind
 dvrt_ind_d;
 
 USEVARIABLES =
-aaspfin
-baspfin
-caspfin
-daspfin
+ahrz_ind_d
+bhrz_ind_d
+chrz_ind_d
+dhrz_ind_d
 aage
 ;
 
@@ -175,19 +175,63 @@ type = general;
 estimator = ml;
 processors = 8; 
 
-
 MODEL:
+ahrz_ind_d WITH bhrz_ind_d;
+bhrz_ind_d WITH chrz_ind_d;
+chrz_ind_d WITH dhrz_ind_d;
 
-aaspfin WITH baspfin (a);
-baspfin WITH caspfin (a);
-caspfin WITH daspfin (a);
+ahrz_ind_d WITH chrz_ind_d;
+bhrz_ind_d WITH dhrz_ind_d;
 
-aaspfin WITH caspfin (b);
-baspfin WITH daspfin (b);
+ahrz_ind_d WITH dhrz_ind_d;
 
-aaspfin WITH daspfin (c);
+MODEL d2:
+ahrz_ind_d WITH bhrz_ind_d (a2);
+bhrz_ind_d WITH chrz_ind_d (a2);
+chrz_ind_d WITH dhrz_ind_d (a2);
 
-aaspfin baspfin caspfin daspfin (e);
+ahrz_ind_d WITH chrz_ind_d (b2);
+bhrz_ind_d WITH dhrz_ind_d (b2);
+
+ahrz_ind_d WITH dhrz_ind_d (c2);
+
+ahrz_ind_d bhrz_ind_d chrz_ind_d dhrz_ind_d (e2);
+
+MODEL d3:
+ahrz_ind_d WITH bhrz_ind_d (a3);
+bhrz_ind_d WITH chrz_ind_d (a3);
+chrz_ind_d WITH dhrz_ind_d (a3);
+
+ahrz_ind_d WITH chrz_ind_d (b3);
+bhrz_ind_d WITH dhrz_ind_d (b3);
+
+ahrz_ind_d WITH dhrz_ind_d (c3);
+
+ahrz_ind_d bhrz_ind_d chrz_ind_d dhrz_ind_d (e3);
+
+MODEL d4:
+ahrz_ind_d WITH bhrz_ind_d (a4);
+bhrz_ind_d WITH chrz_ind_d (a4);
+chrz_ind_d WITH dhrz_ind_d (a4);
+
+ahrz_ind_d WITH chrz_ind_d (b4);
+bhrz_ind_d WITH dhrz_ind_d (b4);
+
+ahrz_ind_d WITH dhrz_ind_d (c4);
+
+ahrz_ind_d bhrz_ind_d chrz_ind_d dhrz_ind_d (e4);
+
+MODEL d5:
+ahrz_ind_d WITH bhrz_ind_d (a5);
+bhrz_ind_d WITH chrz_ind_d (a5);
+chrz_ind_d WITH dhrz_ind_d (a5);
+
+ahrz_ind_d WITH chrz_ind_d (b5);
+bhrz_ind_d WITH dhrz_ind_d (b5);
+
+ahrz_ind_d WITH dhrz_ind_d (c5);
+
+ahrz_ind_d bhrz_ind_d chrz_ind_d dhrz_ind_d (e5);
 
 
 

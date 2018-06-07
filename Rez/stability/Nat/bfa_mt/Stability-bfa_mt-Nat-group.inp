@@ -1,5 +1,5 @@
 
-title: Stability of values - Nat aspfin group;
+title: Stability of values - Nat bfa_mt group;
 data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
 
 variable:
@@ -151,10 +151,10 @@ dvrt_ind
 dvrt_ind_d;
 
 USEVARIABLES =
-aaspfin
-baspfin
-caspfin
-daspfin
+abfa_mt
+bbfa_mt
+cbfa_mt
+dbfa_mt
 aage
 ;
 
@@ -178,16 +178,16 @@ processors = 8;
 
 MODEL:
 
-aaspfin WITH baspfin (a);
-baspfin WITH caspfin (a);
-caspfin WITH daspfin (a);
+abfa_mt WITH bbfa_mt (a);
+bbfa_mt WITH cbfa_mt (a);
+cbfa_mt WITH dbfa_mt (a);
 
-aaspfin WITH caspfin (b);
-baspfin WITH daspfin (b);
+abfa_mt WITH cbfa_mt (b);
+bbfa_mt WITH dbfa_mt (b);
 
-aaspfin WITH daspfin (c);
+abfa_mt WITH dbfa_mt (c);
 
-aaspfin baspfin caspfin daspfin (e);
+abfa_mt bbfa_mt cbfa_mt dbfa_mt (e);
 
 
 

@@ -1,5 +1,5 @@
 
-title: Stability of values - Nat aspfin group;
+title: Stability of values - Nat bfa_mt longitudinal;
 data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
 
 variable:
@@ -151,10 +151,10 @@ dvrt_ind
 dvrt_ind_d;
 
 USEVARIABLES =
-aaspfin
-baspfin
-caspfin
-daspfin
+abfa_mt
+bbfa_mt
+cbfa_mt
+dbfa_mt
 aage
 ;
 
@@ -175,19 +175,63 @@ type = general;
 estimator = ml;
 processors = 8; 
 
-
 MODEL:
+abfa_mt WITH bbfa_mt;
+bbfa_mt WITH cbfa_mt;
+cbfa_mt WITH dbfa_mt;
 
-aaspfin WITH baspfin (a);
-baspfin WITH caspfin (a);
-caspfin WITH daspfin (a);
+abfa_mt WITH cbfa_mt;
+bbfa_mt WITH dbfa_mt;
 
-aaspfin WITH caspfin (b);
-baspfin WITH daspfin (b);
+abfa_mt WITH dbfa_mt;
 
-aaspfin WITH daspfin (c);
+MODEL d2:
+abfa_mt WITH bbfa_mt (a2);
+bbfa_mt WITH cbfa_mt (a2);
+cbfa_mt WITH dbfa_mt (a2);
 
-aaspfin baspfin caspfin daspfin (e);
+abfa_mt WITH cbfa_mt (b2);
+bbfa_mt WITH dbfa_mt (b2);
+
+abfa_mt WITH dbfa_mt (c2);
+
+abfa_mt bbfa_mt cbfa_mt dbfa_mt (e2);
+
+MODEL d3:
+abfa_mt WITH bbfa_mt (a3);
+bbfa_mt WITH cbfa_mt (a3);
+cbfa_mt WITH dbfa_mt (a3);
+
+abfa_mt WITH cbfa_mt (b3);
+bbfa_mt WITH dbfa_mt (b3);
+
+abfa_mt WITH dbfa_mt (c3);
+
+abfa_mt bbfa_mt cbfa_mt dbfa_mt (e3);
+
+MODEL d4:
+abfa_mt WITH bbfa_mt (a4);
+bbfa_mt WITH cbfa_mt (a4);
+cbfa_mt WITH dbfa_mt (a4);
+
+abfa_mt WITH cbfa_mt (b4);
+bbfa_mt WITH dbfa_mt (b4);
+
+abfa_mt WITH dbfa_mt (c4);
+
+abfa_mt bbfa_mt cbfa_mt dbfa_mt (e4);
+
+MODEL d5:
+abfa_mt WITH bbfa_mt (a5);
+bbfa_mt WITH cbfa_mt (a5);
+cbfa_mt WITH dbfa_mt (a5);
+
+abfa_mt WITH cbfa_mt (b5);
+bbfa_mt WITH dbfa_mt (b5);
+
+abfa_mt WITH dbfa_mt (c5);
+
+abfa_mt bbfa_mt cbfa_mt dbfa_mt (e5);
 
 
 

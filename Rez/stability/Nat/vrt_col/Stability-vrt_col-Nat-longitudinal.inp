@@ -1,5 +1,5 @@
 
-title: Stability of values - Nat aspfin group;
+title: Stability of values - Nat vrt_col longitudinal;
 data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
 
 variable:
@@ -151,10 +151,10 @@ dvrt_ind
 dvrt_ind_d;
 
 USEVARIABLES =
-aaspfin
-baspfin
-caspfin
-daspfin
+avrt_col
+bvrt_col
+cvrt_col
+dvrt_col
 aage
 ;
 
@@ -175,19 +175,63 @@ type = general;
 estimator = ml;
 processors = 8; 
 
-
 MODEL:
+avrt_col WITH bvrt_col;
+bvrt_col WITH cvrt_col;
+cvrt_col WITH dvrt_col;
 
-aaspfin WITH baspfin (a);
-baspfin WITH caspfin (a);
-caspfin WITH daspfin (a);
+avrt_col WITH cvrt_col;
+bvrt_col WITH dvrt_col;
 
-aaspfin WITH caspfin (b);
-baspfin WITH daspfin (b);
+avrt_col WITH dvrt_col;
 
-aaspfin WITH daspfin (c);
+MODEL d2:
+avrt_col WITH bvrt_col (a2);
+bvrt_col WITH cvrt_col (a2);
+cvrt_col WITH dvrt_col (a2);
 
-aaspfin baspfin caspfin daspfin (e);
+avrt_col WITH cvrt_col (b2);
+bvrt_col WITH dvrt_col (b2);
+
+avrt_col WITH dvrt_col (c2);
+
+avrt_col bvrt_col cvrt_col dvrt_col (e2);
+
+MODEL d3:
+avrt_col WITH bvrt_col (a3);
+bvrt_col WITH cvrt_col (a3);
+cvrt_col WITH dvrt_col (a3);
+
+avrt_col WITH cvrt_col (b3);
+bvrt_col WITH dvrt_col (b3);
+
+avrt_col WITH dvrt_col (c3);
+
+avrt_col bvrt_col cvrt_col dvrt_col (e3);
+
+MODEL d4:
+avrt_col WITH bvrt_col (a4);
+bvrt_col WITH cvrt_col (a4);
+cvrt_col WITH dvrt_col (a4);
+
+avrt_col WITH cvrt_col (b4);
+bvrt_col WITH dvrt_col (b4);
+
+avrt_col WITH dvrt_col (c4);
+
+avrt_col bvrt_col cvrt_col dvrt_col (e4);
+
+MODEL d5:
+avrt_col WITH bvrt_col (a5);
+bvrt_col WITH cvrt_col (a5);
+cvrt_col WITH dvrt_col (a5);
+
+avrt_col WITH cvrt_col (b5);
+bvrt_col WITH dvrt_col (b5);
+
+avrt_col WITH dvrt_col (c5);
+
+avrt_col bvrt_col cvrt_col dvrt_col (e5);
 
 
 
