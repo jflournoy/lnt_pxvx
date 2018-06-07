@@ -1,0 +1,925 @@
+Mplus VERSION 8 (Linux)
+MUTHEN & MUTHEN
+06/07/2018   5:15 PM
+
+INPUT INSTRUCTIONS
+
+
+  title: Stability of values - Nat hrz_ind_d longitudinal;
+  data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
+
+  variable:
+  names =
+  subjid
+  aage
+  aaspfin
+  aaspfin_d
+  abfa_mt
+  abfa_mt_d
+  abfas_ac
+  abfas_ap
+  abfas_ci
+  abfas_co
+  abfas_ea
+  abfas_ee
+  abfas_nv
+  abfas_nv9
+  abfas_nw
+  abfas_oi
+  abfas_oo
+  abfi_a
+  abfi_a6
+  abfi_c
+  abfi_d_scale
+  abfi_e
+  abfi_hp8
+  abfi_n
+  abfi_o
+  abfi_s_scale
+  ahrz_col
+  ahrz_col_d
+  ahrz_ind
+  ahrz_ind_d
+  amvi
+  ausi
+  ausi_d
+  avrt_col
+  avrt_col_d
+  avrt_ind
+  avrt_ind_d
+  bage
+  baspfin
+  baspfin_d
+  bbfa_mt
+  bbfa_mt_d
+  bbfas_ac
+  bbfas_ap
+  bbfas_ci
+  bbfas_co
+  bbfas_ea
+  bbfas_ee
+  bbfas_nv
+  bbfas_nv9
+  bbfas_nw
+  bbfas_oi
+  bbfas_oo
+  bbfi_a
+  bbfi_a6
+  bbfi_c
+  bbfi_d_scale
+  bbfi_e
+  bbfi_hp8
+  bbfi_n
+  bbfi_o
+  bbfi_s_scale
+  bhrz_col
+  bhrz_col_d
+  bhrz_ind
+  bhrz_ind_d
+  bmvi
+  busi
+  busi_d
+  bvrt_col
+  bvrt_col_d
+  bvrt_ind
+  bvrt_ind_d
+  cage
+  caspfin
+  caspfin_d
+  cbfa_mt
+  cbfa_mt_d
+  cbfas_ac
+  cbfas_ap
+  cbfas_ci
+  cbfas_co
+  cbfas_ea
+  cbfas_ee
+  cbfas_nv
+  cbfas_nv9
+  cbfas_nw
+  cbfas_oi
+  cbfas_oo
+  cbfi_a
+  cbfi_a6
+  cbfi_c
+  cbfi_d_scale
+  cbfi_e
+  cbfi_hp8
+  cbfi_n
+  cbfi_o
+  cbfi_s_scale
+  chrz_col
+  chrz_col_d
+  chrz_ind
+  chrz_ind_d
+  cmvi
+  cusi
+  cusi_d
+  cvrt_col
+  cvrt_col_d
+  cvrt_ind
+  cvrt_ind_d
+  dage
+  daspfin
+  daspfin_d
+  dbfa_mt
+  dbfa_mt_d
+  dbfas_ac
+  dbfas_ap
+  dbfas_ci
+  dbfas_co
+  dbfas_ea
+  dbfas_ee
+  dbfas_nv
+  dbfas_nv9
+  dbfas_nw
+  dbfas_oi
+  dbfas_oo
+  dbfi_a
+  dbfi_a6
+  dbfi_c
+  dbfi_d_scale
+  dbfi_e
+  dbfi_hp8
+  dbfi_n
+  dbfi_o
+  dbfi_s_scale
+  dhrz_col
+  dhrz_col_d
+  dhrz_ind
+  dhrz_ind_d
+  dmvi
+  dusi
+  dusi_d
+  dvrt_col
+  dvrt_col_d
+  dvrt_ind
+  dvrt_ind_d;
+
+  USEVARIABLES =
+  ahrz_ind_d
+  bhrz_ind_d
+  chrz_ind_d
+  dhrz_ind_d
+  aage
+  ;
+
+  missing = all (-9999);
+
+  grouping = aage (0=d2, 1=d3, 2=d4, 3=d5);
+
+  DEFINE:
+
+  cut aage (29 39 49);
+
+  ANALYSIS:
+  type = general;
+  estimator = ml;
+  processors = 8;
+
+  MODEL:
+  ahrz_ind_d WITH bhrz_ind_d;
+  bhrz_ind_d WITH chrz_ind_d;
+  chrz_ind_d WITH dhrz_ind_d;
+
+  ahrz_ind_d WITH chrz_ind_d;
+  bhrz_ind_d WITH dhrz_ind_d;
+
+  ahrz_ind_d WITH dhrz_ind_d;
+
+  MODEL d2:
+  ahrz_ind_d WITH bhrz_ind_d (a2);
+  bhrz_ind_d WITH chrz_ind_d (a2);
+  chrz_ind_d WITH dhrz_ind_d (a2);
+
+  ahrz_ind_d WITH chrz_ind_d (b2);
+  bhrz_ind_d WITH dhrz_ind_d (b2);
+
+  ahrz_ind_d WITH dhrz_ind_d (c2);
+
+  ahrz_ind_d bhrz_ind_d chrz_ind_d dhrz_ind_d (e2);
+
+  MODEL d3:
+  ahrz_ind_d WITH bhrz_ind_d (a3);
+  bhrz_ind_d WITH chrz_ind_d (a3);
+  chrz_ind_d WITH dhrz_ind_d (a3);
+
+  ahrz_ind_d WITH chrz_ind_d (b3);
+  bhrz_ind_d WITH dhrz_ind_d (b3);
+
+  ahrz_ind_d WITH dhrz_ind_d (c3);
+
+  ahrz_ind_d bhrz_ind_d chrz_ind_d dhrz_ind_d (e3);
+
+  MODEL d4:
+  ahrz_ind_d WITH bhrz_ind_d (a4);
+  bhrz_ind_d WITH chrz_ind_d (a4);
+  chrz_ind_d WITH dhrz_ind_d (a4);
+
+  ahrz_ind_d WITH chrz_ind_d (b4);
+  bhrz_ind_d WITH dhrz_ind_d (b4);
+
+  ahrz_ind_d WITH dhrz_ind_d (c4);
+
+  ahrz_ind_d bhrz_ind_d chrz_ind_d dhrz_ind_d (e4);
+
+  MODEL d5:
+  ahrz_ind_d WITH bhrz_ind_d (a5);
+  bhrz_ind_d WITH chrz_ind_d (a5);
+  chrz_ind_d WITH dhrz_ind_d (a5);
+
+  ahrz_ind_d WITH chrz_ind_d (b5);
+  bhrz_ind_d WITH dhrz_ind_d (b5);
+
+  ahrz_ind_d WITH dhrz_ind_d (c5);
+
+  ahrz_ind_d bhrz_ind_d chrz_ind_d dhrz_ind_d (e5);
+
+
+
+  OUTPUT: SAMPSTAT PATTERNS STDYX;
+
+
+
+*** WARNING in VARIABLE command
+  Note that only the first 8 characters of variable names are used in the output.
+  Shorten variable names to avoid any confusion.
+*** WARNING
+  Data set contains unknown or missing values for GROUPING,
+  PATTERN, COHORT, CLUSTER and/or STRATIFICATION variables.
+  Number of cases with unknown or missing values:  5
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  1
+   3 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+Stability of values - Nat hrz_ind_d longitudinal;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 4
+Number of observations
+   Group D2                                                    301
+   Group D3                                                    233
+   Group D4                                                    197
+   Group D5                                                    132
+   Total sample size                                           863
+
+Number of dependent variables                                    4
+Number of independent variables                                  0
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   AHRZ_IND_D  BHRZ_IND_D  CHRZ_IND_D  DHRZ_IND_D
+
+Variables with special functions
+
+  Grouping variable     AAGE
+
+Estimator                                                       ML
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group D2
+     Number of missing data patterns             8
+
+   Group D3
+     Number of missing data patterns             8
+
+   Group D4
+     Number of missing data patterns             8
+
+   Group D5
+     Number of missing data patterns             8
+
+
+SUMMARY OF MISSING DATA PATTERNS
+
+
+     MISSING DATA PATTERNS FOR D2 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AHRZ_IND  x  x  x  x  x  x  x  x
+ BHRZ_IND  x  x  x  x
+ CHRZ_IND  x  x        x  x
+ DHRZ_IND  x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D2
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         188           4          12           7          11
+          2          13           5           7           8          58
+          3           7           6           5
+
+
+     MISSING DATA PATTERNS FOR D3 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AHRZ_IND  x  x  x  x  x  x  x  x
+ BHRZ_IND  x  x  x  x
+ CHRZ_IND  x  x        x  x
+ DHRZ_IND  x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D3
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         140           4          15           7           3
+          2           7           5           7           8          46
+          3           8           6           7
+
+
+     MISSING DATA PATTERNS FOR D4 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AHRZ_IND  x  x  x  x  x  x  x  x
+ BHRZ_IND  x  x  x  x
+ CHRZ_IND  x  x        x  x
+ DHRZ_IND  x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D4
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         104           4          12           7           5
+          2          15           5           6           8          42
+          3           8           6           5
+
+
+     MISSING DATA PATTERNS FOR D5 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AHRZ_IND  x  x  x  x  x  x  x  x
+ BHRZ_IND  x  x  x  x
+ CHRZ_IND  x  x        x  x
+ DHRZ_IND  x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D5
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1          61           4          10           7           6
+          2          11           5           4           8          29
+          3           5           6           6
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR D2
+
+
+           Covariance Coverage
+              AHRZ_IND      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________
+ AHRZ_IND       1.000
+ BHRZ_IND       0.731         0.731
+ CHRZ_IND       0.708         0.668         0.708
+ DHRZ_IND       0.708         0.648         0.648         0.708
+
+
+     PROPORTION OF DATA PRESENT FOR D3
+
+
+           Covariance Coverage
+              AHRZ_IND      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________
+ AHRZ_IND       1.000
+ BHRZ_IND       0.730         0.730
+ CHRZ_IND       0.691         0.631         0.691
+ DHRZ_IND       0.678         0.635         0.631         0.678
+
+
+     PROPORTION OF DATA PRESENT FOR D4
+
+
+           Covariance Coverage
+              AHRZ_IND      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________
+ AHRZ_IND       1.000
+ BHRZ_IND       0.706         0.706
+ CHRZ_IND       0.660         0.604         0.660
+ DHRZ_IND       0.624         0.569         0.558         0.624
+
+
+     PROPORTION OF DATA PRESENT FOR D5
+
+
+           Covariance Coverage
+              AHRZ_IND      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________
+ AHRZ_IND       1.000
+ BHRZ_IND       0.659         0.659
+ CHRZ_IND       0.621         0.545         0.621
+ DHRZ_IND       0.576         0.500         0.492         0.576
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D2
+
+
+           Means
+              AHRZ_IND      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________
+               73.505        73.420        72.922        73.162
+
+
+           Covariances
+              AHRZ_IND      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________
+ AHRZ_IND     306.112
+ BHRZ_IND     176.756       314.913
+ CHRZ_IND     147.696       149.040       324.277
+ DHRZ_IND     120.795       171.257       172.727       285.642
+
+
+           Correlations
+              AHRZ_IND      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________
+ AHRZ_IND       1.000
+ BHRZ_IND       0.569         1.000
+ CHRZ_IND       0.469         0.466         1.000
+ DHRZ_IND       0.409         0.571         0.568         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D3
+
+
+           Means
+              AHRZ_IND      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________
+               73.391        72.678        74.924        72.783
+
+
+           Covariances
+              AHRZ_IND      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________
+ AHRZ_IND     338.671
+ BHRZ_IND     206.315       351.294
+ CHRZ_IND     212.352       191.711       319.140
+ DHRZ_IND     188.199       223.335       215.856       327.669
+
+
+           Correlations
+              AHRZ_IND      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________
+ AHRZ_IND       1.000
+ BHRZ_IND       0.598         1.000
+ CHRZ_IND       0.646         0.573         1.000
+ DHRZ_IND       0.565         0.658         0.668         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D4
+
+
+           Means
+              AHRZ_IND      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________
+               71.151        73.457        72.541        72.236
+
+
+           Covariances
+              AHRZ_IND      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________
+ AHRZ_IND     343.508
+ BHRZ_IND     163.883       273.308
+ CHRZ_IND     159.671       173.487       285.512
+ DHRZ_IND     168.185       155.065       156.157       267.550
+
+
+           Correlations
+              AHRZ_IND      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________
+ AHRZ_IND       1.000
+ BHRZ_IND       0.535         1.000
+ CHRZ_IND       0.510         0.621         1.000
+ DHRZ_IND       0.555         0.573         0.565         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D5
+
+
+           Means
+              AHRZ_IND      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________
+               72.601        70.974        72.910        70.608
+
+
+           Covariances
+              AHRZ_IND      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________
+ AHRZ_IND     301.484
+ BHRZ_IND     181.504       347.965
+ CHRZ_IND     150.927       197.475       277.855
+ DHRZ_IND     164.544       189.900       189.746       269.176
+
+
+           Correlations
+              AHRZ_IND      BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________      ________
+ AHRZ_IND       1.000
+ BHRZ_IND       0.560         1.000
+ CHRZ_IND       0.521         0.635         1.000
+ DHRZ_IND       0.578         0.620         0.694         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -10849.320
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D2
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AHRZ_IND_D           73.505      -0.495      25.000    1.00%      58.333     75.000     75.000
+             301.000     306.112      -0.324     100.000    8.97%      83.333     91.667
+     BHRZ_IND_D           73.258      -0.401      16.667    0.45%      58.333     66.667     75.000
+             220.000     319.091      -0.324     100.000   11.82%      75.000     91.667
+     CHRZ_IND_D           73.396      -0.644       8.333    0.94%      58.333     75.000     75.000
+             213.000     323.783       0.663     100.000   12.21%      75.000     91.667
+     DHRZ_IND_D           73.865      -0.356      25.000    0.47%      58.333     66.667     75.000
+             213.000     281.381      -0.374     100.000   10.80%      75.000     91.667
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D3
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AHRZ_IND_D           73.391      -0.601       8.333    0.43%      58.333     66.667     75.000
+             233.000     338.671       0.328     100.000   12.88%      75.000     91.667
+     BHRZ_IND_D           72.255      -0.334      16.667    0.59%      58.333     66.667     75.000
+             170.000     353.576      -0.321     100.000   14.12%      75.000     91.667
+     CHRZ_IND_D           74.948      -0.387      33.333    3.11%      58.333     75.000     75.000
+             161.000     320.477      -0.544     100.000   15.53%      83.333     91.667
+     DHRZ_IND_D           72.468      -0.513      25.000    0.63%      58.333     75.000     75.000
+             158.000     330.264      -0.418     100.000    8.86%      75.000     91.667
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D4
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AHRZ_IND_D           71.151      -0.590      25.000    3.05%      58.333     66.667     75.000
+             197.000     343.508      -0.141     100.000    7.11%      75.000     87.500
+     BHRZ_IND_D           74.311      -0.499      25.000    2.16%      58.333     66.667     75.000
+             139.000     270.933       0.283     100.000   10.07%      75.000     91.667
+     CHRZ_IND_D           72.500      -0.292      25.000    0.77%      58.333     66.667     75.000
+             130.000     278.472      -0.489     100.000    6.92%      75.000     91.667
+     DHRZ_IND_D           71.545      -0.726      16.667    0.81%      58.333     66.667     75.000
+             123.000     277.695       0.560     100.000    4.07%      75.000     83.333
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D5
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AHRZ_IND_D           72.601      -0.474      25.000    1.52%      58.333     66.667     75.000
+             132.000     301.484       0.046     100.000   10.61%      75.000     91.667
+     BHRZ_IND_D           71.169      -0.468      25.000    3.45%      58.333     66.667     75.000
+              87.000     346.112      -0.312     100.000    9.20%      75.000     83.333
+     CHRZ_IND_D           72.764      -0.276      16.667    1.22%      58.333     66.667     75.000
+              82.000     284.635       0.367     100.000   13.41%      75.000     91.667
+     DHRZ_IND_D           70.833      -0.346      25.000    1.32%      58.333     66.667     75.000
+              76.000     264.072      -0.110     100.000    6.58%      75.000     83.333
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       32
+
+Loglikelihood
+
+          H0 Value                      -10864.555
+          H1 Value                      -10849.320
+
+Information Criteria
+
+          Akaike (AIC)                   21793.110
+          Bayesian (BIC)                 21945.444
+          Sample-Size Adjusted BIC       21843.820
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                             30.470
+          Degrees of Freedom                    24
+          P-Value                           0.1697
+
+Chi-Square Contribution From Each Group
+
+          D2                                 9.829
+          D3                                 4.717
+          D4                                 8.584
+          D5                                 7.339
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.035
+          90 Percent C.I.                    0.000  0.069
+          Probability RMSEA <= .05           0.726
+
+CFI/TLI
+
+          CFI                                0.993
+          TLI                                0.993
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                            905.294
+          Degrees of Freedom                    24
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.092
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ AHRZ_IND WITH
+    BHRZ_IND_D       165.623     18.065      9.168      0.000
+    CHRZ_IND_D       162.106     18.359      8.830      0.000
+    DHRZ_IND_D       117.182     21.934      5.342      0.000
+
+ BHRZ_IND WITH
+    CHRZ_IND_D       165.623     18.065      9.168      0.000
+    DHRZ_IND_D       162.106     18.359      8.830      0.000
+
+ CHRZ_IND WITH
+    DHRZ_IND_D       165.623     18.065      9.168      0.000
+
+ Means
+    AHRZ_IND_D        73.505      1.011     72.671      0.000
+    BHRZ_IND_D        73.389      1.129     65.005      0.000
+    CHRZ_IND_D        72.900      1.143     63.774      0.000
+    DHRZ_IND_D        73.180      1.163     62.913      0.000
+
+ Variances
+    AHRZ_IND_D       307.951     18.078     17.035      0.000
+    BHRZ_IND_D       307.951     18.078     17.035      0.000
+    CHRZ_IND_D       307.951     18.078     17.035      0.000
+    DHRZ_IND_D       307.951     18.078     17.035      0.000
+
+Group D3
+
+ AHRZ_IND WITH
+    BHRZ_IND_D       207.407     24.479      8.473      0.000
+    CHRZ_IND_D       219.650     24.868      8.833      0.000
+    DHRZ_IND_D       182.733     27.602      6.620      0.000
+
+ BHRZ_IND WITH
+    CHRZ_IND_D       207.407     24.479      8.473      0.000
+    DHRZ_IND_D       219.650     24.868      8.833      0.000
+
+ CHRZ_IND WITH
+    DHRZ_IND_D       207.407     24.479      8.473      0.000
+
+ Means
+    AHRZ_IND_D        73.391      1.200     61.141      0.000
+    BHRZ_IND_D        72.704      1.323     54.963      0.000
+    CHRZ_IND_D        74.993      1.335     56.163      0.000
+    DHRZ_IND_D        72.760      1.366     53.254      0.000
+
+ Variances
+    AHRZ_IND_D       335.713     24.357     13.783      0.000
+    BHRZ_IND_D       335.713     24.357     13.783      0.000
+    CHRZ_IND_D       335.713     24.357     13.783      0.000
+    DHRZ_IND_D       335.713     24.357     13.783      0.000
+
+Group D4
+
+ AHRZ_IND WITH
+    BHRZ_IND_D       172.072     23.204      7.415      0.000
+    CHRZ_IND_D       162.073     23.714      6.834      0.000
+    DHRZ_IND_D       167.088     25.151      6.643      0.000
+
+ BHRZ_IND WITH
+    CHRZ_IND_D       172.072     23.204      7.415      0.000
+    DHRZ_IND_D       162.073     23.714      6.834      0.000
+
+ CHRZ_IND WITH
+    DHRZ_IND_D       172.072     23.204      7.415      0.000
+
+ Means
+    AHRZ_IND_D        71.150      1.235     57.626      0.000
+    BHRZ_IND_D        73.341      1.391     52.711      0.000
+    CHRZ_IND_D        72.525      1.426     50.844      0.000
+    DHRZ_IND_D        72.226      1.451     49.776      0.000
+
+ Variances
+    AHRZ_IND_D       300.315     22.972     13.073      0.000
+    BHRZ_IND_D       300.315     22.972     13.073      0.000
+    CHRZ_IND_D       300.315     22.972     13.073      0.000
+    DHRZ_IND_D       300.315     22.972     13.073      0.000
+
+Group D5
+
+ AHRZ_IND WITH
+    BHRZ_IND_D       185.346     29.214      6.344      0.000
+    CHRZ_IND_D       168.878     30.137      5.604      0.000
+    DHRZ_IND_D       182.212     36.195      5.034      0.000
+
+ BHRZ_IND WITH
+    CHRZ_IND_D       185.346     29.214      6.344      0.000
+    DHRZ_IND_D       168.878     30.137      5.604      0.000
+
+ CHRZ_IND WITH
+    DHRZ_IND_D       185.346     29.214      6.344      0.000
+
+ Means
+    AHRZ_IND_D        72.601      1.512     48.005      0.000
+    BHRZ_IND_D        70.963      1.725     41.137      0.000
+    CHRZ_IND_D        72.840      1.773     41.092      0.000
+    DHRZ_IND_D        70.559      1.809     38.995      0.000
+
+ Variances
+    AHRZ_IND_D       301.919     29.255     10.320      0.000
+    BHRZ_IND_D       301.919     29.255     10.320      0.000
+    CHRZ_IND_D       301.919     29.255     10.320      0.000
+    DHRZ_IND_D       301.919     29.255     10.320      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ AHRZ_IND WITH
+    BHRZ_IND_D         0.538      0.035     15.571      0.000
+    CHRZ_IND_D         0.526      0.037     14.175      0.000
+    DHRZ_IND_D         0.381      0.060      6.334      0.000
+
+ BHRZ_IND WITH
+    CHRZ_IND_D         0.538      0.035     15.571      0.000
+    DHRZ_IND_D         0.526      0.037     14.175      0.000
+
+ CHRZ_IND WITH
+    DHRZ_IND_D         0.538      0.035     15.571      0.000
+
+ Means
+    AHRZ_IND_D         4.189      0.136     30.848      0.000
+    BHRZ_IND_D         4.182      0.139     30.182      0.000
+    CHRZ_IND_D         4.154      0.139     29.903      0.000
+    DHRZ_IND_D         4.170      0.140     29.720      0.000
+
+ Variances
+    AHRZ_IND_D         1.000      0.000    999.000    999.000
+    BHRZ_IND_D         1.000      0.000    999.000    999.000
+    CHRZ_IND_D         1.000      0.000    999.000    999.000
+    DHRZ_IND_D         1.000      0.000    999.000    999.000
+
+Group D3
+
+ AHRZ_IND WITH
+    BHRZ_IND_D         0.618      0.036     17.087      0.000
+    CHRZ_IND_D         0.654      0.035     18.621      0.000
+    DHRZ_IND_D         0.544      0.057      9.622      0.000
+
+ BHRZ_IND WITH
+    CHRZ_IND_D         0.618      0.036     17.087      0.000
+    DHRZ_IND_D         0.654      0.035     18.621      0.000
+
+ CHRZ_IND WITH
+    DHRZ_IND_D         0.618      0.036     17.087      0.000
+
+ Means
+    AHRZ_IND_D         4.005      0.159     25.130      0.000
+    BHRZ_IND_D         3.968      0.161     24.715      0.000
+    CHRZ_IND_D         4.093      0.165     24.752      0.000
+    DHRZ_IND_D         3.971      0.162     24.542      0.000
+
+ Variances
+    AHRZ_IND_D         1.000      0.000    999.000    999.000
+    BHRZ_IND_D         1.000      0.000    999.000    999.000
+    CHRZ_IND_D         1.000      0.000    999.000    999.000
+    DHRZ_IND_D         1.000      0.000    999.000    999.000
+
+Group D4
+
+ AHRZ_IND WITH
+    BHRZ_IND_D         0.573      0.043     13.454      0.000
+    CHRZ_IND_D         0.540      0.048     11.192      0.000
+    DHRZ_IND_D         0.556      0.055     10.026      0.000
+
+ BHRZ_IND WITH
+    CHRZ_IND_D         0.573      0.043     13.454      0.000
+    DHRZ_IND_D         0.540      0.048     11.192      0.000
+
+ CHRZ_IND WITH
+    DHRZ_IND_D         0.573      0.043     13.454      0.000
+
+ Means
+    AHRZ_IND_D         4.106      0.172     23.810      0.000
+    BHRZ_IND_D         4.232      0.182     23.201      0.000
+    CHRZ_IND_D         4.185      0.180     23.218      0.000
+    DHRZ_IND_D         4.168      0.179     23.229      0.000
+
+ Variances
+    AHRZ_IND_D         1.000      0.000    999.000    999.000
+    BHRZ_IND_D         1.000      0.000    999.000    999.000
+    CHRZ_IND_D         1.000      0.000    999.000    999.000
+    DHRZ_IND_D         1.000      0.000    999.000    999.000
+
+Group D5
+
+ AHRZ_IND WITH
+    BHRZ_IND_D         0.614      0.049     12.651      0.000
+    CHRZ_IND_D         0.559      0.059      9.470      0.000
+    DHRZ_IND_D         0.604      0.083      7.256      0.000
+
+ BHRZ_IND WITH
+    CHRZ_IND_D         0.614      0.049     12.651      0.000
+    DHRZ_IND_D         0.559      0.059      9.470      0.000
+
+ CHRZ_IND WITH
+    DHRZ_IND_D         0.614      0.049     12.651      0.000
+
+ Means
+    AHRZ_IND_D         4.178      0.220     18.962      0.000
+    BHRZ_IND_D         4.084      0.222     18.410      0.000
+    CHRZ_IND_D         4.192      0.227     18.451      0.000
+    DHRZ_IND_D         4.061      0.223     18.175      0.000
+
+ Variances
+    AHRZ_IND_D         1.000      0.000    999.000    999.000
+    BHRZ_IND_D         1.000      0.000    999.000    999.000
+    CHRZ_IND_D         1.000      0.000    999.000    999.000
+    DHRZ_IND_D         1.000      0.000    999.000    999.000
+
+
+R-SQUARE
+
+Group D2
+
+Group D3
+
+Group D4
+
+Group D5
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.110E-02
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  17:15:26
+        Ending Time:  17:15:26
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

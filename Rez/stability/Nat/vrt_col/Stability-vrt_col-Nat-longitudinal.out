@@ -1,0 +1,922 @@
+Mplus VERSION 8 (Linux)
+MUTHEN & MUTHEN
+06/07/2018   5:15 PM
+
+INPUT INSTRUCTIONS
+
+
+  title: Stability of values - Nat vrt_col longitudinal;
+  data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
+
+  variable:
+  names =
+  subjid
+  aage
+  aaspfin
+  aaspfin_d
+  abfa_mt
+  abfa_mt_d
+  abfas_ac
+  abfas_ap
+  abfas_ci
+  abfas_co
+  abfas_ea
+  abfas_ee
+  abfas_nv
+  abfas_nv9
+  abfas_nw
+  abfas_oi
+  abfas_oo
+  abfi_a
+  abfi_a6
+  abfi_c
+  abfi_d_scale
+  abfi_e
+  abfi_hp8
+  abfi_n
+  abfi_o
+  abfi_s_scale
+  ahrz_col
+  ahrz_col_d
+  ahrz_ind
+  ahrz_ind_d
+  amvi
+  ausi
+  ausi_d
+  avrt_col
+  avrt_col_d
+  avrt_ind
+  avrt_ind_d
+  bage
+  baspfin
+  baspfin_d
+  bbfa_mt
+  bbfa_mt_d
+  bbfas_ac
+  bbfas_ap
+  bbfas_ci
+  bbfas_co
+  bbfas_ea
+  bbfas_ee
+  bbfas_nv
+  bbfas_nv9
+  bbfas_nw
+  bbfas_oi
+  bbfas_oo
+  bbfi_a
+  bbfi_a6
+  bbfi_c
+  bbfi_d_scale
+  bbfi_e
+  bbfi_hp8
+  bbfi_n
+  bbfi_o
+  bbfi_s_scale
+  bhrz_col
+  bhrz_col_d
+  bhrz_ind
+  bhrz_ind_d
+  bmvi
+  busi
+  busi_d
+  bvrt_col
+  bvrt_col_d
+  bvrt_ind
+  bvrt_ind_d
+  cage
+  caspfin
+  caspfin_d
+  cbfa_mt
+  cbfa_mt_d
+  cbfas_ac
+  cbfas_ap
+  cbfas_ci
+  cbfas_co
+  cbfas_ea
+  cbfas_ee
+  cbfas_nv
+  cbfas_nv9
+  cbfas_nw
+  cbfas_oi
+  cbfas_oo
+  cbfi_a
+  cbfi_a6
+  cbfi_c
+  cbfi_d_scale
+  cbfi_e
+  cbfi_hp8
+  cbfi_n
+  cbfi_o
+  cbfi_s_scale
+  chrz_col
+  chrz_col_d
+  chrz_ind
+  chrz_ind_d
+  cmvi
+  cusi
+  cusi_d
+  cvrt_col
+  cvrt_col_d
+  cvrt_ind
+  cvrt_ind_d
+  dage
+  daspfin
+  daspfin_d
+  dbfa_mt
+  dbfa_mt_d
+  dbfas_ac
+  dbfas_ap
+  dbfas_ci
+  dbfas_co
+  dbfas_ea
+  dbfas_ee
+  dbfas_nv
+  dbfas_nv9
+  dbfas_nw
+  dbfas_oi
+  dbfas_oo
+  dbfi_a
+  dbfi_a6
+  dbfi_c
+  dbfi_d_scale
+  dbfi_e
+  dbfi_hp8
+  dbfi_n
+  dbfi_o
+  dbfi_s_scale
+  dhrz_col
+  dhrz_col_d
+  dhrz_ind
+  dhrz_ind_d
+  dmvi
+  dusi
+  dusi_d
+  dvrt_col
+  dvrt_col_d
+  dvrt_ind
+  dvrt_ind_d;
+
+  USEVARIABLES =
+  avrt_col
+  bvrt_col
+  cvrt_col
+  dvrt_col
+  aage
+  ;
+
+  missing = all (-9999);
+
+  grouping = aage (0=d2, 1=d3, 2=d4, 3=d5);
+
+  DEFINE:
+
+  cut aage (29 39 49);
+
+  ANALYSIS:
+  type = general;
+  estimator = ml;
+  processors = 8;
+
+  MODEL:
+  avrt_col WITH bvrt_col;
+  bvrt_col WITH cvrt_col;
+  cvrt_col WITH dvrt_col;
+
+  avrt_col WITH cvrt_col;
+  bvrt_col WITH dvrt_col;
+
+  avrt_col WITH dvrt_col;
+
+  MODEL d2:
+  avrt_col WITH bvrt_col (a2);
+  bvrt_col WITH cvrt_col (a2);
+  cvrt_col WITH dvrt_col (a2);
+
+  avrt_col WITH cvrt_col (b2);
+  bvrt_col WITH dvrt_col (b2);
+
+  avrt_col WITH dvrt_col (c2);
+
+  avrt_col bvrt_col cvrt_col dvrt_col (e2);
+
+  MODEL d3:
+  avrt_col WITH bvrt_col (a3);
+  bvrt_col WITH cvrt_col (a3);
+  cvrt_col WITH dvrt_col (a3);
+
+  avrt_col WITH cvrt_col (b3);
+  bvrt_col WITH dvrt_col (b3);
+
+  avrt_col WITH dvrt_col (c3);
+
+  avrt_col bvrt_col cvrt_col dvrt_col (e3);
+
+  MODEL d4:
+  avrt_col WITH bvrt_col (a4);
+  bvrt_col WITH cvrt_col (a4);
+  cvrt_col WITH dvrt_col (a4);
+
+  avrt_col WITH cvrt_col (b4);
+  bvrt_col WITH dvrt_col (b4);
+
+  avrt_col WITH dvrt_col (c4);
+
+  avrt_col bvrt_col cvrt_col dvrt_col (e4);
+
+  MODEL d5:
+  avrt_col WITH bvrt_col (a5);
+  bvrt_col WITH cvrt_col (a5);
+  cvrt_col WITH dvrt_col (a5);
+
+  avrt_col WITH cvrt_col (b5);
+  bvrt_col WITH dvrt_col (b5);
+
+  avrt_col WITH dvrt_col (c5);
+
+  avrt_col bvrt_col cvrt_col dvrt_col (e5);
+
+
+
+  OUTPUT: SAMPSTAT PATTERNS STDYX;
+
+
+
+*** WARNING
+  Data set contains unknown or missing values for GROUPING,
+  PATTERN, COHORT, CLUSTER and/or STRATIFICATION variables.
+  Number of cases with unknown or missing values:  5
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  1
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+Stability of values - Nat vrt_col longitudinal;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 4
+Number of observations
+   Group D2                                                    301
+   Group D3                                                    233
+   Group D4                                                    197
+   Group D5                                                    132
+   Total sample size                                           863
+
+Number of dependent variables                                    4
+Number of independent variables                                  0
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   AVRT_COL    BVRT_COL    CVRT_COL    DVRT_COL
+
+Variables with special functions
+
+  Grouping variable     AAGE
+
+Estimator                                                       ML
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group D2
+     Number of missing data patterns             8
+
+   Group D3
+     Number of missing data patterns             8
+
+   Group D4
+     Number of missing data patterns             8
+
+   Group D5
+     Number of missing data patterns             8
+
+
+SUMMARY OF MISSING DATA PATTERNS
+
+
+     MISSING DATA PATTERNS FOR D2 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AVRT_COL  x  x  x  x  x  x  x  x
+ BVRT_COL  x  x  x  x
+ CVRT_COL  x  x        x  x
+ DVRT_COL  x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D2
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         188           4          12           7          11
+          2          13           5           7           8          58
+          3           7           6           5
+
+
+     MISSING DATA PATTERNS FOR D3 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AVRT_COL  x  x  x  x  x  x  x  x
+ BVRT_COL  x  x  x  x
+ CVRT_COL  x  x        x  x
+ DVRT_COL  x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D3
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         140           4          15           7           3
+          2           7           5           7           8          46
+          3           8           6           7
+
+
+     MISSING DATA PATTERNS FOR D4 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AVRT_COL  x  x  x  x  x  x  x  x
+ BVRT_COL  x  x  x  x
+ CVRT_COL  x  x        x  x
+ DVRT_COL  x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D4
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         104           4          12           7           5
+          2          15           5           6           8          42
+          3           8           6           5
+
+
+     MISSING DATA PATTERNS FOR D5 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AVRT_COL  x  x  x  x  x  x  x  x
+ BVRT_COL  x  x  x  x
+ CVRT_COL  x  x        x  x
+ DVRT_COL  x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D5
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1          61           4          10           7           6
+          2          11           5           4           8          29
+          3           5           6           6
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR D2
+
+
+           Covariance Coverage
+              AVRT_COL      BVRT_COL      CVRT_COL      DVRT_COL
+              ________      ________      ________      ________
+ AVRT_COL       1.000
+ BVRT_COL       0.731         0.731
+ CVRT_COL       0.708         0.668         0.708
+ DVRT_COL       0.708         0.648         0.648         0.708
+
+
+     PROPORTION OF DATA PRESENT FOR D3
+
+
+           Covariance Coverage
+              AVRT_COL      BVRT_COL      CVRT_COL      DVRT_COL
+              ________      ________      ________      ________
+ AVRT_COL       1.000
+ BVRT_COL       0.730         0.730
+ CVRT_COL       0.691         0.631         0.691
+ DVRT_COL       0.678         0.635         0.631         0.678
+
+
+     PROPORTION OF DATA PRESENT FOR D4
+
+
+           Covariance Coverage
+              AVRT_COL      BVRT_COL      CVRT_COL      DVRT_COL
+              ________      ________      ________      ________
+ AVRT_COL       1.000
+ BVRT_COL       0.706         0.706
+ CVRT_COL       0.660         0.604         0.660
+ DVRT_COL       0.624         0.569         0.558         0.624
+
+
+     PROPORTION OF DATA PRESENT FOR D5
+
+
+           Covariance Coverage
+              AVRT_COL      BVRT_COL      CVRT_COL      DVRT_COL
+              ________      ________      ________      ________
+ AVRT_COL       1.000
+ BVRT_COL       0.659         0.659
+ CVRT_COL       0.621         0.545         0.621
+ DVRT_COL       0.576         0.500         0.492         0.576
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D2
+
+
+           Means
+              AVRT_COL      BVRT_COL      CVRT_COL      DVRT_COL
+              ________      ________      ________      ________
+               68.556        65.863        65.599        64.917
+
+
+           Covariances
+              AVRT_COL      BVRT_COL      CVRT_COL      DVRT_COL
+              ________      ________      ________      ________
+ AVRT_COL     336.543
+ BVRT_COL     252.533       380.490
+ CVRT_COL     218.770       263.135       399.991
+ DVRT_COL     239.208       277.649       277.155       406.958
+
+
+           Correlations
+              AVRT_COL      BVRT_COL      CVRT_COL      DVRT_COL
+              ________      ________      ________      ________
+ AVRT_COL       1.000
+ BVRT_COL       0.706         1.000
+ CVRT_COL       0.596         0.675         1.000
+ DVRT_COL       0.646         0.706         0.687         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D3
+
+
+           Means
+              AVRT_COL      BVRT_COL      CVRT_COL      DVRT_COL
+              ________      ________      ________      ________
+               72.702        71.313        69.466        70.422
+
+
+           Covariances
+              AVRT_COL      BVRT_COL      CVRT_COL      DVRT_COL
+              ________      ________      ________      ________
+ AVRT_COL     324.972
+ BVRT_COL     223.573       328.899
+ CVRT_COL     237.209       256.876       392.061
+ DVRT_COL     239.975       220.432       283.694       341.254
+
+
+           Correlations
+              AVRT_COL      BVRT_COL      CVRT_COL      DVRT_COL
+              ________      ________      ________      ________
+ AVRT_COL       1.000
+ BVRT_COL       0.684         1.000
+ CVRT_COL       0.665         0.715         1.000
+ DVRT_COL       0.721         0.658         0.776         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D4
+
+
+           Means
+              AVRT_COL      BVRT_COL      CVRT_COL      DVRT_COL
+              ________      ________      ________      ________
+               72.843        73.339        70.355        71.116
+
+
+           Covariances
+              AVRT_COL      BVRT_COL      CVRT_COL      DVRT_COL
+              ________      ________      ________      ________
+ AVRT_COL     271.537
+ BVRT_COL     209.980       291.417
+ CVRT_COL     185.080       224.075       300.166
+ DVRT_COL     195.831       234.117       238.359       306.698
+
+
+           Correlations
+              AVRT_COL      BVRT_COL      CVRT_COL      DVRT_COL
+              ________      ________      ________      ________
+ AVRT_COL       1.000
+ BVRT_COL       0.746         1.000
+ CVRT_COL       0.648         0.758         1.000
+ DVRT_COL       0.679         0.783         0.786         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D5
+
+
+           Means
+              AVRT_COL      BVRT_COL      CVRT_COL      DVRT_COL
+              ________      ________      ________      ________
+               74.369        74.358        71.358        71.913
+
+
+           Covariances
+              AVRT_COL      BVRT_COL      CVRT_COL      DVRT_COL
+              ________      ________      ________      ________
+ AVRT_COL     368.196
+ BVRT_COL     241.531       349.506
+ CVRT_COL     259.767       262.484       342.912
+ DVRT_COL     267.893       280.355       279.165       334.624
+
+
+           Correlations
+              AVRT_COL      BVRT_COL      CVRT_COL      DVRT_COL
+              ________      ________      ________      ________
+ AVRT_COL       1.000
+ BVRT_COL       0.673         1.000
+ CVRT_COL       0.731         0.758         1.000
+ DVRT_COL       0.763         0.820         0.824         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -10669.176
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D2
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AVRT_COL             68.556      -0.614       6.250    0.33%      50.000     62.500     68.750
+             301.000     336.543       0.442     100.000    4.65%      75.000     81.250
+     BVRT_COL             65.379      -0.399      12.500    0.91%      50.000     62.500     68.750
+             220.000     373.815      -0.462     100.000    3.18%      75.000     81.250
+     CVRT_COL             65.112      -0.474       6.250    0.47%      43.750     62.500     68.750
+             213.000     398.660      -0.285     100.000    3.29%      75.000     81.250
+     DVRT_COL             64.789      -0.357      12.500    0.47%      50.000     62.500     68.750
+             213.000     406.660      -0.608     100.000    2.82%      68.750     81.250
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D3
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AVRT_COL             72.702      -0.626      18.750    0.86%      56.250     68.750     75.000
+             233.000     324.972       0.019     100.000    6.01%      81.250     87.500
+     BVRT_COL             70.833      -0.464      18.750    1.18%      56.250     68.750     68.750
+             170.000     336.908      -0.120     100.000    7.06%      75.000     87.500
+     CVRT_COL             69.138      -0.797       6.250    1.24%      56.250     68.750     75.000
+             161.000     393.871       0.529     100.000    4.97%      75.000     87.500
+     DVRT_COL             70.016      -0.894       0.000    0.63%      56.250     68.750     75.000
+             158.000     360.344       1.111     100.000    5.70%      75.000     81.250
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D4
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AVRT_COL             72.843      -0.400      25.000    1.02%      56.250     68.750     75.000
+             197.000     271.537      -0.393     100.000    5.08%      81.250     87.500
+     BVRT_COL             72.077      -0.319      18.750    0.72%      56.250     68.750     75.000
+             139.000     303.365      -0.620     100.000    5.04%      81.250     87.500
+     CVRT_COL             69.808      -0.281      18.750    0.77%      56.250     62.500     68.750
+             130.000     314.386      -0.393     100.000    6.15%      75.000     87.500
+     DVRT_COL             69.868      -0.506       6.250    0.81%      56.250     62.500     75.000
+             123.000     330.940       0.295     100.000    5.69%      75.000     87.500
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D5
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AVRT_COL             74.369      -0.779      12.500    0.76%      56.250     68.750     75.000
+             132.000     368.196       0.238     100.000   10.61%      81.250     93.750
+     BVRT_COL             76.006      -0.949       6.250    1.15%      62.500     75.000     81.250
+              87.000     304.305       1.435     100.000    9.20%      81.250     93.750
+     CVRT_COL             72.256      -0.844       6.250    1.22%      56.250     68.750     75.000
+              82.000     321.168       1.140     100.000    6.10%      81.250     87.500
+     DVRT_COL             73.766      -0.693      25.000    2.63%      56.250     75.000     75.000
+              76.000     275.514       0.417     100.000    6.58%      81.250     87.500
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       32
+
+Loglikelihood
+
+          H0 Value                      -10689.020
+          H1 Value                      -10669.176
+
+Information Criteria
+
+          Akaike (AIC)                   21442.040
+          Bayesian (BIC)                 21594.374
+          Sample-Size Adjusted BIC       21492.750
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                             39.689
+          Degrees of Freedom                    24
+          P-Value                           0.0231
+
+Chi-Square Contribution From Each Group
+
+          D2                                11.191
+          D3                                 7.420
+          D4                                 8.733
+          D5                                12.345
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.055
+          90 Percent C.I.                    0.021  0.085
+          Probability RMSEA <= .05           0.362
+
+CFI/TLI
+
+          CFI                                0.989
+          TLI                                0.989
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           1515.884
+          Degrees of Freedom                    24
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.077
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ AVRT_COL WITH
+    BVRT_COL         254.754     24.368     10.454      0.000
+    CVRT_COL         240.055     24.583      9.765      0.000
+    DVRT_COL         237.093     25.957      9.134      0.000
+
+ BVRT_COL WITH
+    CVRT_COL         254.754     24.368     10.454      0.000
+    DVRT_COL         240.055     24.583      9.765      0.000
+
+ CVRT_COL WITH
+    DVRT_COL         254.754     24.368     10.454      0.000
+
+ Means
+    AVRT_COL          68.556      1.113     61.589      0.000
+    BVRT_COL          65.809      1.211     54.325      0.000
+    CVRT_COL          65.611      1.229     53.389      0.000
+    DVRT_COL          64.919      1.232     52.677      0.000
+
+ Variances
+    AVRT_COL         372.950     24.375     15.301      0.000
+    BVRT_COL         372.950     24.375     15.301      0.000
+    CVRT_COL         372.950     24.375     15.301      0.000
+    DVRT_COL         372.950     24.375     15.301      0.000
+
+Group D3
+
+ AVRT_COL WITH
+    BVRT_COL         245.967     26.020      9.453      0.000
+    CVRT_COL         225.084     26.330      8.548      0.000
+    DVRT_COL         247.858     27.487      9.017      0.000
+
+ BVRT_COL WITH
+    CVRT_COL         245.967     26.020      9.453      0.000
+    DVRT_COL         225.084     26.330      8.548      0.000
+
+ CVRT_COL WITH
+    DVRT_COL         245.967     26.020      9.453      0.000
+
+ Means
+    AVRT_COL          72.702      1.213     59.960      0.000
+    BVRT_COL          71.344      1.310     54.449      0.000
+    CVRT_COL          69.455      1.342     51.768      0.000
+    DVRT_COL          70.389      1.334     52.766      0.000
+
+ Variances
+    AVRT_COL         342.556     26.134     13.108      0.000
+    BVRT_COL         342.556     26.134     13.108      0.000
+    CVRT_COL         342.556     26.134     13.108      0.000
+    DVRT_COL         342.556     26.134     13.108      0.000
+
+Group D4
+
+ AVRT_COL WITH
+    BVRT_COL         219.534     24.413      8.993      0.000
+    CVRT_COL         205.034     24.663      8.314      0.000
+    DVRT_COL         192.395     26.023      7.393      0.000
+
+ BVRT_COL WITH
+    CVRT_COL         219.534     24.413      8.993      0.000
+    DVRT_COL         205.034     24.663      8.314      0.000
+
+ CVRT_COL WITH
+    DVRT_COL         219.534     24.413      8.993      0.000
+
+ Means
+    AVRT_COL          72.843      1.211     60.169      0.000
+    BVRT_COL          73.310      1.305     56.161      0.000
+    CVRT_COL          70.428      1.337     52.663      0.000
+    DVRT_COL          71.009      1.373     51.734      0.000
+
+ Variances
+    AVRT_COL         288.729     24.484     11.793      0.000
+    BVRT_COL         288.729     24.484     11.793      0.000
+    CVRT_COL         288.729     24.484     11.793      0.000
+    DVRT_COL         288.729     24.484     11.793      0.000
+
+Group D5
+
+ AVRT_COL WITH
+    BVRT_COL         262.194     38.832      6.752      0.000
+    CVRT_COL         271.893     38.972      6.977      0.000
+    DVRT_COL         270.318     39.878      6.779      0.000
+
+ BVRT_COL WITH
+    CVRT_COL         262.194     38.832      6.752      0.000
+    DVRT_COL         271.893     38.972      6.977      0.000
+
+ CVRT_COL WITH
+    DVRT_COL         262.194     38.832      6.752      0.000
+
+ Means
+    AVRT_COL          74.369      1.636     45.452      0.000
+    BVRT_COL          74.273      1.801     41.244      0.000
+    CVRT_COL          71.382      1.813     39.382      0.000
+    DVRT_COL          71.950      1.841     39.080      0.000
+
+ Variances
+    AVRT_COL         353.392     38.366      9.211      0.000
+    BVRT_COL         353.392     38.366      9.211      0.000
+    CVRT_COL         353.392     38.366      9.211      0.000
+    DVRT_COL         353.392     38.366      9.211      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ AVRT_COL WITH
+    BVRT_COL           0.683      0.026     25.925      0.000
+    CVRT_COL           0.644      0.031     20.904      0.000
+    DVRT_COL           0.636      0.039     16.393      0.000
+
+ BVRT_COL WITH
+    CVRT_COL           0.683      0.026     25.925      0.000
+    DVRT_COL           0.644      0.031     20.904      0.000
+
+ CVRT_COL WITH
+    DVRT_COL           0.683      0.026     25.925      0.000
+
+ Means
+    AVRT_COL           3.550      0.130     27.405      0.000
+    BVRT_COL           3.408      0.127     26.771      0.000
+    CVRT_COL           3.397      0.127     26.671      0.000
+    DVRT_COL           3.362      0.127     26.531      0.000
+
+ Variances
+    AVRT_COL           1.000      0.000    999.000    999.000
+    BVRT_COL           1.000      0.000    999.000    999.000
+    CVRT_COL           1.000      0.000    999.000    999.000
+    DVRT_COL           1.000      0.000    999.000    999.000
+
+Group D3
+
+ AVRT_COL WITH
+    BVRT_COL           0.718      0.027     26.432      0.000
+    CVRT_COL           0.657      0.035     18.970      0.000
+    DVRT_COL           0.724      0.036     19.847      0.000
+
+ BVRT_COL WITH
+    CVRT_COL           0.718      0.027     26.432      0.000
+    DVRT_COL           0.657      0.035     18.970      0.000
+
+ CVRT_COL WITH
+    DVRT_COL           0.718      0.027     26.432      0.000
+
+ Means
+    AVRT_COL           3.928      0.164     24.020      0.000
+    BVRT_COL           3.855      0.163     23.669      0.000
+    CVRT_COL           3.753      0.160     23.415      0.000
+    DVRT_COL           3.803      0.162     23.511      0.000
+
+ Variances
+    AVRT_COL           1.000      0.000    999.000    999.000
+    BVRT_COL           1.000      0.000    999.000    999.000
+    CVRT_COL           1.000      0.000    999.000    999.000
+    DVRT_COL           1.000      0.000    999.000    999.000
+
+Group D4
+
+ AVRT_COL WITH
+    BVRT_COL           0.760      0.026     29.330      0.000
+    CVRT_COL           0.710      0.033     21.337      0.000
+    DVRT_COL           0.666      0.047     14.119      0.000
+
+ BVRT_COL WITH
+    CVRT_COL           0.760      0.026     29.330      0.000
+    DVRT_COL           0.710      0.033     21.337      0.000
+
+ CVRT_COL WITH
+    DVRT_COL           0.760      0.026     29.330      0.000
+
+ Means
+    AVRT_COL           4.287      0.195     21.959      0.000
+    BVRT_COL           4.314      0.197     21.880      0.000
+    CVRT_COL           4.145      0.192     21.644      0.000
+    DVRT_COL           4.179      0.193     21.638      0.000
+
+ Variances
+    AVRT_COL           1.000      0.000    999.000    999.000
+    BVRT_COL           1.000      0.000    999.000    999.000
+    CVRT_COL           1.000      0.000    999.000    999.000
+    DVRT_COL           1.000      0.000    999.000    999.000
+
+Group D5
+
+ AVRT_COL WITH
+    BVRT_COL           0.742      0.038     19.514      0.000
+    CVRT_COL           0.769      0.036     21.487      0.000
+    DVRT_COL           0.765      0.044     17.443      0.000
+
+ BVRT_COL WITH
+    CVRT_COL           0.742      0.038     19.514      0.000
+    DVRT_COL           0.769      0.036     21.487      0.000
+
+ CVRT_COL WITH
+    DVRT_COL           0.742      0.038     19.514      0.000
+
+ Means
+    AVRT_COL           3.956      0.232     17.073      0.000
+    BVRT_COL           3.951      0.237     16.664      0.000
+    CVRT_COL           3.797      0.229     16.581      0.000
+    DVRT_COL           3.827      0.232     16.527      0.000
+
+ Variances
+    AVRT_COL           1.000      0.000    999.000    999.000
+    BVRT_COL           1.000      0.000    999.000    999.000
+    CVRT_COL           1.000      0.000    999.000    999.000
+    DVRT_COL           1.000      0.000    999.000    999.000
+
+
+R-SQUARE
+
+Group D2
+
+Group D3
+
+Group D4
+
+Group D5
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.117E-02
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  17:15:27
+        Ending Time:  17:15:27
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

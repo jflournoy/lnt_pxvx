@@ -1,0 +1,878 @@
+Mplus VERSION 8 (Linux)
+MUTHEN & MUTHEN
+06/07/2018   5:15 PM
+
+INPUT INSTRUCTIONS
+
+
+  title: Stability of values - Nat usi_d group;
+  data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
+
+  variable:
+  names =
+  subjid
+  aage
+  aaspfin
+  aaspfin_d
+  abfa_mt
+  abfa_mt_d
+  abfas_ac
+  abfas_ap
+  abfas_ci
+  abfas_co
+  abfas_ea
+  abfas_ee
+  abfas_nv
+  abfas_nv9
+  abfas_nw
+  abfas_oi
+  abfas_oo
+  abfi_a
+  abfi_a6
+  abfi_c
+  abfi_d_scale
+  abfi_e
+  abfi_hp8
+  abfi_n
+  abfi_o
+  abfi_s_scale
+  ahrz_col
+  ahrz_col_d
+  ahrz_ind
+  ahrz_ind_d
+  amvi
+  ausi
+  ausi_d
+  avrt_col
+  avrt_col_d
+  avrt_ind
+  avrt_ind_d
+  bage
+  baspfin
+  baspfin_d
+  bbfa_mt
+  bbfa_mt_d
+  bbfas_ac
+  bbfas_ap
+  bbfas_ci
+  bbfas_co
+  bbfas_ea
+  bbfas_ee
+  bbfas_nv
+  bbfas_nv9
+  bbfas_nw
+  bbfas_oi
+  bbfas_oo
+  bbfi_a
+  bbfi_a6
+  bbfi_c
+  bbfi_d_scale
+  bbfi_e
+  bbfi_hp8
+  bbfi_n
+  bbfi_o
+  bbfi_s_scale
+  bhrz_col
+  bhrz_col_d
+  bhrz_ind
+  bhrz_ind_d
+  bmvi
+  busi
+  busi_d
+  bvrt_col
+  bvrt_col_d
+  bvrt_ind
+  bvrt_ind_d
+  cage
+  caspfin
+  caspfin_d
+  cbfa_mt
+  cbfa_mt_d
+  cbfas_ac
+  cbfas_ap
+  cbfas_ci
+  cbfas_co
+  cbfas_ea
+  cbfas_ee
+  cbfas_nv
+  cbfas_nv9
+  cbfas_nw
+  cbfas_oi
+  cbfas_oo
+  cbfi_a
+  cbfi_a6
+  cbfi_c
+  cbfi_d_scale
+  cbfi_e
+  cbfi_hp8
+  cbfi_n
+  cbfi_o
+  cbfi_s_scale
+  chrz_col
+  chrz_col_d
+  chrz_ind
+  chrz_ind_d
+  cmvi
+  cusi
+  cusi_d
+  cvrt_col
+  cvrt_col_d
+  cvrt_ind
+  cvrt_ind_d
+  dage
+  daspfin
+  daspfin_d
+  dbfa_mt
+  dbfa_mt_d
+  dbfas_ac
+  dbfas_ap
+  dbfas_ci
+  dbfas_co
+  dbfas_ea
+  dbfas_ee
+  dbfas_nv
+  dbfas_nv9
+  dbfas_nw
+  dbfas_oi
+  dbfas_oo
+  dbfi_a
+  dbfi_a6
+  dbfi_c
+  dbfi_d_scale
+  dbfi_e
+  dbfi_hp8
+  dbfi_n
+  dbfi_o
+  dbfi_s_scale
+  dhrz_col
+  dhrz_col_d
+  dhrz_ind
+  dhrz_ind_d
+  dmvi
+  dusi
+  dusi_d
+  dvrt_col
+  dvrt_col_d
+  dvrt_ind
+  dvrt_ind_d;
+
+  USEVARIABLES =
+  ausi_d
+  busi_d
+  cusi_d
+  dusi_d
+  aage
+  ;
+
+  missing = all (-9999);
+
+  grouping = aage (0=d2, 1=d3, 2=d4, 3=d5);
+
+  DEFINE:
+
+  cut aage (29 39 49);
+
+  ANALYSIS:
+  type = general;
+  estimator = ml;
+  processors = 8;
+
+
+  MODEL:
+
+  ausi_d WITH busi_d (a);
+  busi_d WITH cusi_d (a);
+  cusi_d WITH dusi_d (a);
+
+  ausi_d WITH cusi_d (b);
+  busi_d WITH dusi_d (b);
+
+  ausi_d WITH dusi_d (c);
+
+  ausi_d busi_d cusi_d dusi_d (e);
+
+
+
+  OUTPUT: SAMPSTAT PATTERNS STDYX;
+
+
+
+*** WARNING
+  Data set contains unknown or missing values for GROUPING,
+  PATTERN, COHORT, CLUSTER and/or STRATIFICATION variables.
+  Number of cases with unknown or missing values:  5
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  1
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+Stability of values - Nat usi_d group;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 4
+Number of observations
+   Group D2                                                    301
+   Group D3                                                    233
+   Group D4                                                    197
+   Group D5                                                    132
+   Total sample size                                           863
+
+Number of dependent variables                                    4
+Number of independent variables                                  0
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   AUSI_D      BUSI_D      CUSI_D      DUSI_D
+
+Variables with special functions
+
+  Grouping variable     AAGE
+
+Estimator                                                       ML
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group D2
+     Number of missing data patterns             8
+
+   Group D3
+     Number of missing data patterns             8
+
+   Group D4
+     Number of missing data patterns             8
+
+   Group D5
+     Number of missing data patterns             8
+
+
+SUMMARY OF MISSING DATA PATTERNS
+
+
+     MISSING DATA PATTERNS FOR D2 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AUSI_D    x  x  x  x  x  x  x  x
+ BUSI_D    x  x  x  x
+ CUSI_D    x  x        x  x
+ DUSI_D    x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D2
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         188           4          12           7          11
+          2          13           5           7           8          58
+          3           7           6           5
+
+
+     MISSING DATA PATTERNS FOR D3 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AUSI_D    x  x  x  x  x  x  x  x
+ BUSI_D    x  x  x  x
+ CUSI_D    x  x        x  x
+ DUSI_D    x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D3
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         140           4          15           7           3
+          2           7           5           7           8          46
+          3           8           6           7
+
+
+     MISSING DATA PATTERNS FOR D4 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AUSI_D    x  x  x  x  x  x  x  x
+ BUSI_D    x  x  x  x
+ CUSI_D    x  x        x  x
+ DUSI_D    x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D4
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         104           4          11           7           5
+          2          15           5           6           8          43
+          3           8           6           5
+
+
+     MISSING DATA PATTERNS FOR D5 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AUSI_D    x  x  x  x  x  x  x  x
+ BUSI_D    x  x  x  x
+ CUSI_D    x  x        x  x
+ DUSI_D    x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D5
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1          61           4          10           7           6
+          2          11           5           4           8          29
+          3           5           6           6
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR D2
+
+
+           Covariance Coverage
+              AUSI_D        BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________      ________
+ AUSI_D         1.000
+ BUSI_D         0.731         0.731
+ CUSI_D         0.708         0.668         0.708
+ DUSI_D         0.708         0.648         0.648         0.708
+
+
+     PROPORTION OF DATA PRESENT FOR D3
+
+
+           Covariance Coverage
+              AUSI_D        BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________      ________
+ AUSI_D         1.000
+ BUSI_D         0.730         0.730
+ CUSI_D         0.691         0.631         0.691
+ DUSI_D         0.678         0.635         0.631         0.678
+
+
+     PROPORTION OF DATA PRESENT FOR D4
+
+
+           Covariance Coverage
+              AUSI_D        BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________      ________
+ AUSI_D         1.000
+ BUSI_D         0.701         0.701
+ CUSI_D         0.660         0.604         0.660
+ DUSI_D         0.624         0.569         0.558         0.624
+
+
+     PROPORTION OF DATA PRESENT FOR D5
+
+
+           Covariance Coverage
+              AUSI_D        BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________      ________
+ AUSI_D         1.000
+ BUSI_D         0.659         0.659
+ CUSI_D         0.621         0.545         0.621
+ DUSI_D         0.576         0.500         0.492         0.576
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D2
+
+
+           Means
+              AUSI_D        BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________      ________
+               34.095        33.221        33.051        33.956
+
+
+           Covariances
+              AUSI_D        BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________      ________
+ AUSI_D       351.891
+ BUSI_D       239.647       352.792
+ CUSI_D       183.531       213.961       312.856
+ DUSI_D       194.636       211.130       226.597       327.473
+
+
+           Correlations
+              AUSI_D        BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________      ________
+ AUSI_D         1.000
+ BUSI_D         0.680         1.000
+ CUSI_D         0.553         0.644         1.000
+ DUSI_D         0.573         0.621         0.708         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D3
+
+
+           Means
+              AUSI_D        BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________      ________
+               29.614        31.291        30.396        28.982
+
+
+           Covariances
+              AUSI_D        BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________      ________
+ AUSI_D       326.979
+ BUSI_D       201.388       306.882
+ CUSI_D       184.389       192.443       348.910
+ DUSI_D       156.440       152.384       195.082       296.938
+
+
+           Correlations
+              AUSI_D        BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________      ________
+ AUSI_D         1.000
+ BUSI_D         0.636         1.000
+ CUSI_D         0.546         0.588         1.000
+ DUSI_D         0.502         0.505         0.606         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D4
+
+
+           Means
+              AUSI_D        BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________      ________
+               28.342        27.225        27.283        27.949
+
+
+           Covariances
+              AUSI_D        BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________      ________
+ AUSI_D       377.651
+ BUSI_D       284.325       400.049
+ CUSI_D       272.074       275.585       385.926
+ DUSI_D       215.827       205.659       250.807       330.490
+
+
+           Correlations
+              AUSI_D        BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________      ________
+ AUSI_D         1.000
+ BUSI_D         0.731         1.000
+ CUSI_D         0.713         0.701         1.000
+ DUSI_D         0.611         0.566         0.702         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D5
+
+
+           Means
+              AUSI_D        BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________      ________
+               25.694        23.349        25.365        27.193
+
+
+           Covariances
+              AUSI_D        BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________      ________
+ AUSI_D       342.005
+ BUSI_D       172.655       301.312
+ CUSI_D       252.343       253.076       464.404
+ DUSI_D       228.820       250.634       340.383       431.163
+
+
+           Correlations
+              AUSI_D        BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________      ________
+ AUSI_D         1.000
+ BUSI_D         0.538         1.000
+ CUSI_D         0.633         0.677         1.000
+ DUSI_D         0.596         0.695         0.761         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -10859.262
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D2
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AUSI_D               34.095       0.151       0.000    6.98%      16.667     33.333     33.333
+             301.000     351.891      -0.339      91.667    0.33%      41.667     50.000
+     BUSI_D               32.689      -0.008       0.000    7.27%      16.667     25.000     33.333
+             220.000     338.916      -0.600      91.667    0.45%      41.667     50.000
+     CUSI_D               33.099       0.089       0.000    6.57%      16.667     25.000     33.333
+             213.000     305.761      -0.296      83.333    0.47%      33.333     50.000
+     DUSI_D               33.549       0.033       0.000    6.10%      16.667     25.000     33.333
+             213.000     315.959      -0.347      83.333    0.94%      41.667     50.000
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D3
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AUSI_D               29.614       0.002       0.000   12.88%       8.333     25.000     33.333
+             233.000     326.979      -0.435      91.667    0.43%      33.333     41.667
+     BUSI_D               30.515       0.091       0.000   10.00%      16.667     25.000     33.333
+             170.000     305.066      -0.063      91.667    0.59%      33.333     41.667
+     CUSI_D               30.072       0.264       0.000    9.32%       8.333     25.000     33.333
+             161.000     352.980      -0.551      75.000    1.86%      33.333     41.667
+     DUSI_D               28.191       0.144       0.000   10.76%       8.333     25.000     29.167
+             158.000     299.351      -0.487      75.000    1.27%      33.333     41.667
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D4
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AUSI_D               28.342       0.258       0.000   11.17%       8.333     16.667     25.000
+             197.000     377.651      -0.783      83.333    0.51%      33.333     50.000
+     BUSI_D               27.597       0.569       0.000   15.22%       8.333     25.000     25.000
+             138.000     395.582       0.559     100.000    0.72%      33.333     41.667
+     CUSI_D               28.141       0.148       0.000   17.69%       8.333     25.000     29.167
+             130.000     391.309      -0.767      83.333    0.77%      33.333     41.667
+     DUSI_D               28.659       0.031       0.000   14.63%       8.333     25.000     33.333
+             123.000     335.531      -0.719      75.000    0.81%      33.333     41.667
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D5
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AUSI_D               25.694       0.348       0.000   15.91%       8.333     16.667     25.000
+             132.000     342.005      -0.680      75.000    0.76%      33.333     41.667
+     BUSI_D               22.797       0.355       0.000   20.69%       0.000     16.667     25.000
+              87.000     297.669      -0.593      66.667    2.30%      25.000     41.667
+     CUSI_D               24.797       0.742       0.000   18.29%       8.333     16.667     16.667
+              82.000     438.644       0.000      91.667    1.22%      25.000     41.667
+     DUSI_D               25.768       0.437       0.000   19.74%       0.000     16.667     25.000
+              76.000     427.956      -0.736      83.333    1.32%      33.333     50.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       20
+
+Loglikelihood
+
+          H0 Value                      -10879.903
+          H1 Value                      -10859.262
+
+Information Criteria
+
+          Akaike (AIC)                   21799.806
+          Bayesian (BIC)                 21895.014
+          Sample-Size Adjusted BIC       21831.499
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                             41.281
+          Degrees of Freedom                    36
+          P-Value                           0.2508
+
+Chi-Square Contribution From Each Group
+
+          D2                                 7.305
+          D3                                 6.180
+          D4                                10.336
+          D5                                17.462
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.026
+          90 Percent C.I.                    0.000  0.057
+          Probability RMSEA <= .05           0.883
+
+CFI/TLI
+
+          CFI                                0.995
+          TLI                                0.997
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           1125.500
+          Degrees of Freedom                    24
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.081
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ AUSI_D   WITH
+    BUSI_D           230.544     13.207     17.456      0.000
+    CUSI_D           206.200     13.444     15.338      0.000
+    DUSI_D           195.667     14.703     13.308      0.000
+
+ BUSI_D   WITH
+    CUSI_D           230.544     13.207     17.456      0.000
+    DUSI_D           206.200     13.444     15.338      0.000
+
+ CUSI_D   WITH
+    DUSI_D           230.544     13.207     17.456      0.000
+
+ Means
+    AUSI_D            34.095      1.073     31.770      0.000
+    BUSI_D            33.208      1.172     28.333      0.000
+    CUSI_D            33.088      1.194     27.707      0.000
+    DUSI_D            33.937      1.203     28.211      0.000
+
+ Variances
+    AUSI_D           346.655     13.195     26.272      0.000
+    BUSI_D           346.655     13.195     26.272      0.000
+    CUSI_D           346.655     13.195     26.272      0.000
+    DUSI_D           346.655     13.195     26.272      0.000
+
+Group D3
+
+ AUSI_D   WITH
+    BUSI_D           230.544     13.207     17.456      0.000
+    CUSI_D           206.200     13.444     15.338      0.000
+    DUSI_D           195.667     14.703     13.308      0.000
+
+ BUSI_D   WITH
+    CUSI_D           230.544     13.207     17.456      0.000
+    DUSI_D           206.200     13.444     15.338      0.000
+
+ CUSI_D   WITH
+    DUSI_D           230.544     13.207     17.456      0.000
+
+ Means
+    AUSI_D            29.614      1.220     24.278      0.000
+    BUSI_D            31.333      1.332     23.517      0.000
+    CUSI_D            30.402      1.367     22.236      0.000
+    DUSI_D            29.107      1.387     20.978      0.000
+
+ Variances
+    AUSI_D           346.655     13.195     26.272      0.000
+    BUSI_D           346.655     13.195     26.272      0.000
+    CUSI_D           346.655     13.195     26.272      0.000
+    DUSI_D           346.655     13.195     26.272      0.000
+
+Group D4
+
+ AUSI_D   WITH
+    BUSI_D           230.544     13.207     17.456      0.000
+    CUSI_D           206.200     13.444     15.338      0.000
+    DUSI_D           195.667     14.703     13.308      0.000
+
+ BUSI_D   WITH
+    CUSI_D           230.544     13.207     17.456      0.000
+    DUSI_D           206.200     13.444     15.338      0.000
+
+ CUSI_D   WITH
+    DUSI_D           230.544     13.207     17.456      0.000
+
+ Means
+    AUSI_D            28.342      1.327     21.365      0.000
+    BUSI_D            27.234      1.467     18.564      0.000
+    CUSI_D            27.353      1.509     18.130      0.000
+    DUSI_D            27.834      1.548     17.978      0.000
+
+ Variances
+    AUSI_D           346.655     13.195     26.272      0.000
+    BUSI_D           346.655     13.195     26.272      0.000
+    CUSI_D           346.655     13.195     26.272      0.000
+    DUSI_D           346.655     13.195     26.272      0.000
+
+Group D5
+
+ AUSI_D   WITH
+    BUSI_D           230.544     13.207     17.456      0.000
+    CUSI_D           206.200     13.444     15.338      0.000
+    DUSI_D           195.667     14.703     13.308      0.000
+
+ BUSI_D   WITH
+    CUSI_D           230.544     13.207     17.456      0.000
+    DUSI_D           206.200     13.444     15.338      0.000
+
+ CUSI_D   WITH
+    DUSI_D           230.544     13.207     17.456      0.000
+
+ Means
+    AUSI_D            25.694      1.621     15.855      0.000
+    BUSI_D            23.459      1.822     12.872      0.000
+    CUSI_D            25.246      1.876     13.456      0.000
+    DUSI_D            26.852      1.941     13.832      0.000
+
+ Variances
+    AUSI_D           346.655     13.195     26.272      0.000
+    BUSI_D           346.655     13.195     26.272      0.000
+    CUSI_D           346.655     13.195     26.272      0.000
+    DUSI_D           346.655     13.195     26.272      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ AUSI_D   WITH
+    BUSI_D             0.665      0.016     40.740      0.000
+    CUSI_D             0.595      0.021     28.643      0.000
+    DUSI_D             0.564      0.028     20.127      0.000
+
+ BUSI_D   WITH
+    CUSI_D             0.665      0.016     40.740      0.000
+    DUSI_D             0.595      0.021     28.643      0.000
+
+ CUSI_D   WITH
+    DUSI_D             0.665      0.016     40.740      0.000
+
+ Means
+    AUSI_D             1.831      0.067     27.187      0.000
+    BUSI_D             1.784      0.071     24.986      0.000
+    CUSI_D             1.777      0.072     24.521      0.000
+    DUSI_D             1.823      0.073     24.898      0.000
+
+ Variances
+    AUSI_D             1.000      0.000    999.000    999.000
+    BUSI_D             1.000      0.000    999.000    999.000
+    CUSI_D             1.000      0.000    999.000    999.000
+    DUSI_D             1.000      0.000    999.000    999.000
+
+Group D3
+
+ AUSI_D   WITH
+    BUSI_D             0.665      0.016     40.740      0.000
+    CUSI_D             0.595      0.021     28.643      0.000
+    DUSI_D             0.564      0.028     20.127      0.000
+
+ BUSI_D   WITH
+    CUSI_D             0.665      0.016     40.740      0.000
+    DUSI_D             0.595      0.021     28.643      0.000
+
+ CUSI_D   WITH
+    DUSI_D             0.665      0.016     40.740      0.000
+
+ Means
+    AUSI_D             1.591      0.072     22.040      0.000
+    BUSI_D             1.683      0.078     21.527      0.000
+    CUSI_D             1.633      0.080     20.516      0.000
+    DUSI_D             1.563      0.080     19.553      0.000
+
+ Variances
+    AUSI_D             1.000      0.000    999.000    999.000
+    BUSI_D             1.000      0.000    999.000    999.000
+    CUSI_D             1.000      0.000    999.000    999.000
+    DUSI_D             1.000      0.000    999.000    999.000
+
+Group D4
+
+ AUSI_D   WITH
+    BUSI_D             0.665      0.016     40.740      0.000
+    CUSI_D             0.595      0.021     28.643      0.000
+    DUSI_D             0.564      0.028     20.127      0.000
+
+ BUSI_D   WITH
+    CUSI_D             0.665      0.016     40.740      0.000
+    DUSI_D             0.595      0.021     28.643      0.000
+
+ CUSI_D   WITH
+    DUSI_D             0.665      0.016     40.740      0.000
+
+ Means
+    AUSI_D             1.522      0.077     19.792      0.000
+    BUSI_D             1.463      0.084     17.470      0.000
+    CUSI_D             1.469      0.086     17.091      0.000
+    DUSI_D             1.495      0.088     16.959      0.000
+
+ Variances
+    AUSI_D             1.000      0.000    999.000    999.000
+    BUSI_D             1.000      0.000    999.000    999.000
+    CUSI_D             1.000      0.000    999.000    999.000
+    DUSI_D             1.000      0.000    999.000    999.000
+
+Group D5
+
+ AUSI_D   WITH
+    BUSI_D             0.665      0.016     40.740      0.000
+    CUSI_D             0.595      0.021     28.643      0.000
+    DUSI_D             0.564      0.028     20.127      0.000
+
+ BUSI_D   WITH
+    CUSI_D             0.665      0.016     40.740      0.000
+    DUSI_D             0.595      0.021     28.643      0.000
+
+ CUSI_D   WITH
+    DUSI_D             0.665      0.016     40.740      0.000
+
+ Means
+    AUSI_D             1.380      0.091     15.179      0.000
+    BUSI_D             1.260      0.101     12.513      0.000
+    CUSI_D             1.356      0.104     13.045      0.000
+    DUSI_D             1.442      0.108     13.400      0.000
+
+ Variances
+    AUSI_D             1.000      0.000    999.000    999.000
+    BUSI_D             1.000      0.000    999.000    999.000
+    CUSI_D             1.000      0.000    999.000    999.000
+    DUSI_D             1.000      0.000    999.000    999.000
+
+
+R-SQUARE
+
+Group D2
+
+Group D3
+
+Group D4
+
+Group D5
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.771E-02
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  17:15:26
+        Ending Time:  17:15:26
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

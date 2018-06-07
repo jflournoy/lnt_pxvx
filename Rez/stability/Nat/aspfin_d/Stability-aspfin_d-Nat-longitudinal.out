@@ -1,0 +1,925 @@
+Mplus VERSION 8 (Linux)
+MUTHEN & MUTHEN
+06/07/2018   5:15 PM
+
+INPUT INSTRUCTIONS
+
+
+  title: Stability of values - Nat aspfin_d longitudinal;
+  data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
+
+  variable:
+  names =
+  subjid
+  aage
+  aaspfin
+  aaspfin_d
+  abfa_mt
+  abfa_mt_d
+  abfas_ac
+  abfas_ap
+  abfas_ci
+  abfas_co
+  abfas_ea
+  abfas_ee
+  abfas_nv
+  abfas_nv9
+  abfas_nw
+  abfas_oi
+  abfas_oo
+  abfi_a
+  abfi_a6
+  abfi_c
+  abfi_d_scale
+  abfi_e
+  abfi_hp8
+  abfi_n
+  abfi_o
+  abfi_s_scale
+  ahrz_col
+  ahrz_col_d
+  ahrz_ind
+  ahrz_ind_d
+  amvi
+  ausi
+  ausi_d
+  avrt_col
+  avrt_col_d
+  avrt_ind
+  avrt_ind_d
+  bage
+  baspfin
+  baspfin_d
+  bbfa_mt
+  bbfa_mt_d
+  bbfas_ac
+  bbfas_ap
+  bbfas_ci
+  bbfas_co
+  bbfas_ea
+  bbfas_ee
+  bbfas_nv
+  bbfas_nv9
+  bbfas_nw
+  bbfas_oi
+  bbfas_oo
+  bbfi_a
+  bbfi_a6
+  bbfi_c
+  bbfi_d_scale
+  bbfi_e
+  bbfi_hp8
+  bbfi_n
+  bbfi_o
+  bbfi_s_scale
+  bhrz_col
+  bhrz_col_d
+  bhrz_ind
+  bhrz_ind_d
+  bmvi
+  busi
+  busi_d
+  bvrt_col
+  bvrt_col_d
+  bvrt_ind
+  bvrt_ind_d
+  cage
+  caspfin
+  caspfin_d
+  cbfa_mt
+  cbfa_mt_d
+  cbfas_ac
+  cbfas_ap
+  cbfas_ci
+  cbfas_co
+  cbfas_ea
+  cbfas_ee
+  cbfas_nv
+  cbfas_nv9
+  cbfas_nw
+  cbfas_oi
+  cbfas_oo
+  cbfi_a
+  cbfi_a6
+  cbfi_c
+  cbfi_d_scale
+  cbfi_e
+  cbfi_hp8
+  cbfi_n
+  cbfi_o
+  cbfi_s_scale
+  chrz_col
+  chrz_col_d
+  chrz_ind
+  chrz_ind_d
+  cmvi
+  cusi
+  cusi_d
+  cvrt_col
+  cvrt_col_d
+  cvrt_ind
+  cvrt_ind_d
+  dage
+  daspfin
+  daspfin_d
+  dbfa_mt
+  dbfa_mt_d
+  dbfas_ac
+  dbfas_ap
+  dbfas_ci
+  dbfas_co
+  dbfas_ea
+  dbfas_ee
+  dbfas_nv
+  dbfas_nv9
+  dbfas_nw
+  dbfas_oi
+  dbfas_oo
+  dbfi_a
+  dbfi_a6
+  dbfi_c
+  dbfi_d_scale
+  dbfi_e
+  dbfi_hp8
+  dbfi_n
+  dbfi_o
+  dbfi_s_scale
+  dhrz_col
+  dhrz_col_d
+  dhrz_ind
+  dhrz_ind_d
+  dmvi
+  dusi
+  dusi_d
+  dvrt_col
+  dvrt_col_d
+  dvrt_ind
+  dvrt_ind_d;
+
+  USEVARIABLES =
+  aaspfin_d
+  baspfin_d
+  caspfin_d
+  daspfin_d
+  aage
+  ;
+
+  missing = all (-9999);
+
+  grouping = aage (0=d2, 1=d3, 2=d4, 3=d5);
+
+  DEFINE:
+
+  cut aage (29 39 49);
+
+  ANALYSIS:
+  type = general;
+  estimator = ml;
+  processors = 8;
+
+  MODEL:
+  aaspfin_d WITH baspfin_d;
+  baspfin_d WITH caspfin_d;
+  caspfin_d WITH daspfin_d;
+
+  aaspfin_d WITH caspfin_d;
+  baspfin_d WITH daspfin_d;
+
+  aaspfin_d WITH daspfin_d;
+
+  MODEL d2:
+  aaspfin_d WITH baspfin_d (a2);
+  baspfin_d WITH caspfin_d (a2);
+  caspfin_d WITH daspfin_d (a2);
+
+  aaspfin_d WITH caspfin_d (b2);
+  baspfin_d WITH daspfin_d (b2);
+
+  aaspfin_d WITH daspfin_d (c2);
+
+  aaspfin_d baspfin_d caspfin_d daspfin_d (e2);
+
+  MODEL d3:
+  aaspfin_d WITH baspfin_d (a3);
+  baspfin_d WITH caspfin_d (a3);
+  caspfin_d WITH daspfin_d (a3);
+
+  aaspfin_d WITH caspfin_d (b3);
+  baspfin_d WITH daspfin_d (b3);
+
+  aaspfin_d WITH daspfin_d (c3);
+
+  aaspfin_d baspfin_d caspfin_d daspfin_d (e3);
+
+  MODEL d4:
+  aaspfin_d WITH baspfin_d (a4);
+  baspfin_d WITH caspfin_d (a4);
+  caspfin_d WITH daspfin_d (a4);
+
+  aaspfin_d WITH caspfin_d (b4);
+  baspfin_d WITH daspfin_d (b4);
+
+  aaspfin_d WITH daspfin_d (c4);
+
+  aaspfin_d baspfin_d caspfin_d daspfin_d (e4);
+
+  MODEL d5:
+  aaspfin_d WITH baspfin_d (a5);
+  baspfin_d WITH caspfin_d (a5);
+  caspfin_d WITH daspfin_d (a5);
+
+  aaspfin_d WITH caspfin_d (b5);
+  baspfin_d WITH daspfin_d (b5);
+
+  aaspfin_d WITH daspfin_d (c5);
+
+  aaspfin_d baspfin_d caspfin_d daspfin_d (e5);
+
+
+
+  OUTPUT: SAMPSTAT PATTERNS STDYX;
+
+
+
+*** WARNING in VARIABLE command
+  Note that only the first 8 characters of variable names are used in the output.
+  Shorten variable names to avoid any confusion.
+*** WARNING
+  Data set contains unknown or missing values for GROUPING,
+  PATTERN, COHORT, CLUSTER and/or STRATIFICATION variables.
+  Number of cases with unknown or missing values:  5
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  1
+   3 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+Stability of values - Nat aspfin_d longitudinal;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 4
+Number of observations
+   Group D2                                                    301
+   Group D3                                                    233
+   Group D4                                                    197
+   Group D5                                                    132
+   Total sample size                                           863
+
+Number of dependent variables                                    4
+Number of independent variables                                  0
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   AASPFIN_D   BASPFIN_D   CASPFIN_D   DASPFIN_D
+
+Variables with special functions
+
+  Grouping variable     AAGE
+
+Estimator                                                       ML
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group D2
+     Number of missing data patterns             9
+
+   Group D3
+     Number of missing data patterns             8
+
+   Group D4
+     Number of missing data patterns             8
+
+   Group D5
+     Number of missing data patterns             8
+
+
+SUMMARY OF MISSING DATA PATTERNS
+
+
+     MISSING DATA PATTERNS FOR D2 (x = not missing)
+
+           1  2  3  4  5  6  7  8  9
+ AASPFIN_  x  x  x  x  x  x  x  x
+ BASPFIN_  x  x  x  x              x
+ CASPFIN_  x  x        x  x
+ DASPFIN_  x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D2
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         190           4          11           7          11
+          2          14           5           6           8          57
+          3           6           6           5           9           1
+
+
+     MISSING DATA PATTERNS FOR D3 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AASPFIN_  x  x  x  x  x  x  x  x
+ BASPFIN_  x  x  x  x
+ CASPFIN_  x  x        x  x
+ DASPFIN_  x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D3
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         140           4          15           7           3
+          2           7           5           7           8          46
+          3           8           6           7
+
+
+     MISSING DATA PATTERNS FOR D4 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AASPFIN_  x  x  x  x  x  x  x  x
+ BASPFIN_  x  x  x  x
+ CASPFIN_  x  x        x  x
+ DASPFIN_  x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D4
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         104           4          12           7           5
+          2          15           5           6           8          41
+          3           8           6           6
+
+
+     MISSING DATA PATTERNS FOR D5 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AASPFIN_  x  x  x  x  x  x  x  x
+ BASPFIN_  x  x  x  x
+ CASPFIN_  x  x        x  x
+ DASPFIN_  x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D5
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1          61           4          10           7           6
+          2          11           5           4           8          29
+          3           5           6           6
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR D2
+
+
+           Covariance Coverage
+              AASPFIN_      BASPFIN_      CASPFIN_      DASPFIN_
+              ________      ________      ________      ________
+ AASPFIN_       0.997
+ BASPFIN_       0.734         0.738
+ CASPFIN_       0.714         0.678         0.714
+ DASPFIN_       0.708         0.651         0.651         0.708
+
+
+     PROPORTION OF DATA PRESENT FOR D3
+
+
+           Covariance Coverage
+              AASPFIN_      BASPFIN_      CASPFIN_      DASPFIN_
+              ________      ________      ________      ________
+ AASPFIN_       1.000
+ BASPFIN_       0.730         0.730
+ CASPFIN_       0.691         0.631         0.691
+ DASPFIN_       0.678         0.635         0.631         0.678
+
+
+     PROPORTION OF DATA PRESENT FOR D4
+
+
+           Covariance Coverage
+              AASPFIN_      BASPFIN_      CASPFIN_      DASPFIN_
+              ________      ________      ________      ________
+ AASPFIN_       1.000
+ BASPFIN_       0.706         0.706
+ CASPFIN_       0.665         0.604         0.665
+ DASPFIN_       0.624         0.569         0.558         0.624
+
+
+     PROPORTION OF DATA PRESENT FOR D5
+
+
+           Covariance Coverage
+              AASPFIN_      BASPFIN_      CASPFIN_      DASPFIN_
+              ________      ________      ________      ________
+ AASPFIN_       1.000
+ BASPFIN_       0.659         0.659
+ CASPFIN_       0.621         0.545         0.621
+ DASPFIN_       0.576         0.500         0.492         0.576
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D2
+
+
+           Means
+              AASPFIN_      BASPFIN_      CASPFIN_      DASPFIN_
+              ________      ________      ________      ________
+               45.244        46.629        45.485        45.354
+
+
+           Covariances
+              AASPFIN_      BASPFIN_      CASPFIN_      DASPFIN_
+              ________      ________      ________      ________
+ AASPFIN_     622.461
+ BASPFIN_     457.091       605.570
+ CASPFIN_     475.946       490.771       661.956
+ DASPFIN_     434.801       462.469       509.662       677.458
+
+
+           Correlations
+              AASPFIN_      BASPFIN_      CASPFIN_      DASPFIN_
+              ________      ________      ________      ________
+ AASPFIN_       1.000
+ BASPFIN_       0.744         1.000
+ CASPFIN_       0.741         0.775         1.000
+ DASPFIN_       0.670         0.722         0.761         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D3
+
+
+           Means
+              AASPFIN_      BASPFIN_      CASPFIN_      DASPFIN_
+              ________      ________      ________      ________
+               42.793        43.726        43.791        44.039
+
+
+           Covariances
+              AASPFIN_      BASPFIN_      CASPFIN_      DASPFIN_
+              ________      ________      ________      ________
+ AASPFIN_     558.235
+ BASPFIN_     487.217       675.817
+ CASPFIN_     479.952       524.794       660.972
+ DASPFIN_     463.920       512.754       508.351       623.938
+
+
+           Correlations
+              AASPFIN_      BASPFIN_      CASPFIN_      DASPFIN_
+              ________      ________      ________      ________
+ AASPFIN_       1.000
+ BASPFIN_       0.793         1.000
+ CASPFIN_       0.790         0.785         1.000
+ DASPFIN_       0.786         0.790         0.792         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D4
+
+
+           Means
+              AASPFIN_      BASPFIN_      CASPFIN_      DASPFIN_
+              ________      ________      ________      ________
+               39.784        40.523        41.423        43.008
+
+
+           Covariances
+              AASPFIN_      BASPFIN_      CASPFIN_      DASPFIN_
+              ________      ________      ________      ________
+ AASPFIN_     549.809
+ BASPFIN_     407.413       537.706
+ CASPFIN_     354.797       357.844       428.342
+ DASPFIN_     379.978       353.521       348.235       496.900
+
+
+           Correlations
+              AASPFIN_      BASPFIN_      CASPFIN_      DASPFIN_
+              ________      ________      ________      ________
+ AASPFIN_       1.000
+ BASPFIN_       0.749         1.000
+ CASPFIN_       0.731         0.746         1.000
+ DASPFIN_       0.727         0.684         0.755         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D5
+
+
+           Means
+              AASPFIN_      BASPFIN_      CASPFIN_      DASPFIN_
+              ________      ________      ________      ________
+               39.615        40.407        40.251        41.445
+
+
+           Covariances
+              AASPFIN_      BASPFIN_      CASPFIN_      DASPFIN_
+              ________      ________      ________      ________
+ AASPFIN_     527.803
+ BASPFIN_     376.795       481.525
+ CASPFIN_     387.455       375.391       524.551
+ DASPFIN_     365.912       331.643       383.903       505.784
+
+
+           Correlations
+              AASPFIN_      BASPFIN_      CASPFIN_      DASPFIN_
+              ________      ________      ________      ________
+ AASPFIN_       1.000
+ BASPFIN_       0.747         1.000
+ CASPFIN_       0.736         0.747         1.000
+ DASPFIN_       0.708         0.672         0.745         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -11270.637
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D2
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AASPFIN_D            45.319       0.184       0.000    3.67%      25.000     33.333     41.667
+             300.000     621.900      -0.696     100.000    3.00%      50.000     66.667
+     BASPFIN_D            46.115       0.245       0.000    2.25%      25.000     41.667     50.000
+             222.000     599.348      -0.680     100.000    3.15%      50.000     66.667
+     CASPFIN_D            45.659       0.288       0.000    3.72%      25.000     33.333     41.667
+             215.000     653.636      -0.696     100.000    3.72%      50.000     66.667
+     DASPFIN_D            45.207       0.196       0.000    3.29%      16.667     33.333     41.667
+             213.000     677.099      -0.914     100.000    2.82%      50.000     66.667
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D3
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AASPFIN_D            42.793       0.515       0.000    2.58%      25.000     33.333     41.667
+             233.000     558.235      -0.375     100.000    2.58%      50.000     58.333
+     BASPFIN_D            44.412       0.484       0.000    3.53%      25.000     33.333     41.667
+             170.000     699.777      -0.578     100.000    5.88%      50.000     66.667
+     CASPFIN_D            43.996       0.471       0.000    1.86%      16.667     33.333     41.667
+             161.000     680.824      -0.728     100.000    4.35%      50.000     66.667
+     DASPFIN_D            44.594       0.350       0.000    0.63%      16.667     33.333     41.667
+             158.000     646.429      -0.745     100.000    3.80%      50.000     66.667
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D4
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AASPFIN_D            39.784       0.424       0.000    6.60%      16.667     33.333     33.333
+             197.000     549.809      -0.288     100.000    1.52%      41.667     58.333
+     BASPFIN_D            39.778       0.518       0.000    4.32%      16.667     33.333     41.667
+             139.000     529.632       0.110     100.000    2.88%      41.667     50.000
+     CASPFIN_D            42.335       0.391       0.000    1.53%      25.000     33.333     41.667
+             131.000     424.835      -0.251     100.000    0.76%      41.667     58.333
+     DASPFIN_D            43.022       0.413       0.000    1.63%      25.000     33.333     41.667
+             123.000     502.906      -0.423     100.000    0.81%      50.000     58.333
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D5
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AASPFIN_D            39.615       0.468       0.000    4.55%      16.667     33.333     41.667
+             132.000     527.803      -0.196     100.000    1.52%      41.667     58.333
+     BASPFIN_D            40.661       0.598       0.000    1.15%      25.000     33.333     33.333
+              87.000     494.079      -0.161     100.000    2.30%      41.667     58.333
+     CASPFIN_D            39.228       0.532       0.000    4.88%      16.667     33.333     37.500
+              82.000     547.913      -0.111     100.000    2.44%      41.667     58.333
+     DASPFIN_D            41.996       0.594       0.000    1.32%      16.667     33.333     33.333
+              76.000     543.569      -0.314     100.000    2.63%      41.667     58.333
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       32
+
+Loglikelihood
+
+          H0 Value                      -11279.218
+          H1 Value                      -11270.637
+
+Information Criteria
+
+          Akaike (AIC)                   22622.436
+          Bayesian (BIC)                 22774.769
+          Sample-Size Adjusted BIC       22673.145
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                             17.161
+          Degrees of Freedom                    24
+          P-Value                           0.8417
+
+Chi-Square Contribution From Each Group
+
+          D2                                 3.186
+          D3                                 5.818
+          D4                                 6.684
+          D5                                 1.473
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.000
+          90 Percent C.I.                    0.000  0.033
+          Probability RMSEA <= .05           0.991
+
+CFI/TLI
+
+          CFI                                1.000
+          TLI                                1.004
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           1775.252
+          Degrees of Freedom                    24
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.052
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ AASPFIN_ WITH
+    BASPFIN_D        484.148     44.096     10.979      0.000
+    CASPFIN_D        465.418     44.187     10.533      0.000
+    DASPFIN_D        429.761     45.716      9.401      0.000
+
+ BASPFIN_ WITH
+    CASPFIN_D        484.148     44.096     10.979      0.000
+    DASPFIN_D        465.418     44.187     10.533      0.000
+
+ CASPFIN_ WITH
+    DASPFIN_D        484.148     44.096     10.979      0.000
+
+ Means
+    AASPFIN_D         45.244      1.458     31.040      0.000
+    BASPFIN_D         46.623      1.555     29.982      0.000
+    CASPFIN_D         45.494      1.573     28.918      0.000
+    DASPFIN_D         45.357      1.595     28.432      0.000
+
+ Variances
+    AASPFIN_D        638.591     43.981     14.520      0.000
+    BASPFIN_D        638.591     43.981     14.520      0.000
+    CASPFIN_D        638.591     43.981     14.520      0.000
+    DASPFIN_D        638.591     43.981     14.520      0.000
+
+Group D3
+
+ AASPFIN_ WITH
+    BASPFIN_D        485.385     49.773      9.752      0.000
+    CASPFIN_D        485.649     50.000      9.713      0.000
+    DASPFIN_D        486.018     51.445      9.447      0.000
+
+ BASPFIN_ WITH
+    CASPFIN_D        485.385     49.773      9.752      0.000
+    DASPFIN_D        485.649     50.000      9.713      0.000
+
+ CASPFIN_ WITH
+    DASPFIN_D        485.385     49.773      9.752      0.000
+
+ Means
+    AASPFIN_D         42.793      1.629     26.267      0.000
+    BASPFIN_D         43.768      1.733     25.254      0.000
+    CASPFIN_D         43.835      1.751     25.035      0.000
+    DASPFIN_D         44.076      1.757     25.083      0.000
+
+ Variances
+    AASPFIN_D        618.400     49.883     12.397      0.000
+    BASPFIN_D        618.400     49.883     12.397      0.000
+    CASPFIN_D        618.400     49.883     12.397      0.000
+    DASPFIN_D        618.400     49.883     12.397      0.000
+
+Group D4
+
+ AASPFIN_ WITH
+    BASPFIN_D        387.875     44.385      8.739      0.000
+    CASPFIN_D        364.929     44.825      8.141      0.000
+    DASPFIN_D        373.445     45.710      8.170      0.000
+
+ BASPFIN_ WITH
+    CASPFIN_D        387.875     44.385      8.739      0.000
+    DASPFIN_D        364.929     44.825      8.141      0.000
+
+ CASPFIN_ WITH
+    DASPFIN_D        387.875     44.385      8.739      0.000
+
+ Means
+    AASPFIN_D         39.784      1.616     24.622      0.000
+    BASPFIN_D         40.509      1.745     23.214      0.000
+    CASPFIN_D         41.330      1.783     23.179      0.000
+    DASPFIN_D         42.949      1.807     23.772      0.000
+
+ Variances
+    AASPFIN_D        514.331     44.249     11.623      0.000
+    BASPFIN_D        514.331     44.249     11.623      0.000
+    CASPFIN_D        514.331     44.249     11.623      0.000
+    DASPFIN_D        514.331     44.249     11.623      0.000
+
+Group D5
+
+ AASPFIN_ WITH
+    BASPFIN_D        384.892     54.036      7.123      0.000
+    CASPFIN_D        364.965     54.445      6.703      0.000
+    DASPFIN_D        365.366     56.248      6.496      0.000
+
+ BASPFIN_ WITH
+    CASPFIN_D        384.892     54.036      7.123      0.000
+    DASPFIN_D        364.965     54.445      6.703      0.000
+
+ CASPFIN_ WITH
+    DASPFIN_D        384.892     54.036      7.123      0.000
+
+ Means
+    AASPFIN_D         39.615      1.973     20.074      0.000
+    BASPFIN_D         40.410      2.168     18.639      0.000
+    CASPFIN_D         40.220      2.216     18.152      0.000
+    DASPFIN_D         41.441      2.266     18.287      0.000
+
+ Variances
+    AASPFIN_D        514.095     53.915      9.535      0.000
+    BASPFIN_D        514.095     53.915      9.535      0.000
+    CASPFIN_D        514.095     53.915      9.535      0.000
+    DASPFIN_D        514.095     53.915      9.535      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ AASPFIN_ WITH
+    BASPFIN_D          0.758      0.021     35.387      0.000
+    CASPFIN_D          0.729      0.025     29.327      0.000
+    DASPFIN_D          0.673      0.035     19.292      0.000
+
+ BASPFIN_ WITH
+    CASPFIN_D          0.758      0.021     35.387      0.000
+    DASPFIN_D          0.729      0.025     29.327      0.000
+
+ CASPFIN_ WITH
+    DASPFIN_D          0.758      0.021     35.387      0.000
+
+ Means
+    AASPFIN_D          1.790      0.084     21.195      0.000
+    BASPFIN_D          1.845      0.088     20.930      0.000
+    CASPFIN_D          1.800      0.088     20.514      0.000
+    DASPFIN_D          1.795      0.088     20.362      0.000
+
+ Variances
+    AASPFIN_D          1.000      0.000    999.000    999.000
+    BASPFIN_D          1.000      0.000    999.000    999.000
+    CASPFIN_D          1.000      0.000    999.000    999.000
+    DASPFIN_D          1.000      0.000    999.000    999.000
+
+Group D3
+
+ AASPFIN_ WITH
+    BASPFIN_D          0.785      0.022     35.527      0.000
+    CASPFIN_D          0.785      0.023     34.030      0.000
+    DASPFIN_D          0.786      0.029     27.077      0.000
+
+ BASPFIN_ WITH
+    CASPFIN_D          0.785      0.022     35.527      0.000
+    DASPFIN_D          0.785      0.023     34.030      0.000
+
+ CASPFIN_ WITH
+    DASPFIN_D          0.785      0.022     35.527      0.000
+
+ Means
+    AASPFIN_D          1.721      0.095     18.030      0.000
+    BASPFIN_D          1.760      0.100     17.635      0.000
+    CASPFIN_D          1.763      0.100     17.577      0.000
+    DASPFIN_D          1.772      0.101     17.566      0.000
+
+ Variances
+    AASPFIN_D          1.000      0.000    999.000    999.000
+    BASPFIN_D          1.000      0.000    999.000    999.000
+    CASPFIN_D          1.000      0.000    999.000    999.000
+    DASPFIN_D          1.000      0.000    999.000    999.000
+
+Group D4
+
+ AASPFIN_ WITH
+    BASPFIN_D          0.754      0.027     27.564      0.000
+    CASPFIN_D          0.710      0.034     20.872      0.000
+    DASPFIN_D          0.726      0.038     18.988      0.000
+
+ BASPFIN_ WITH
+    CASPFIN_D          0.754      0.027     27.564      0.000
+    DASPFIN_D          0.710      0.034     20.872      0.000
+
+ CASPFIN_ WITH
+    DASPFIN_D          0.754      0.027     27.564      0.000
+
+ Means
+    AASPFIN_D          1.754      0.104     16.903      0.000
+    BASPFIN_D          1.786      0.108     16.472      0.000
+    CASPFIN_D          1.822      0.111     16.354      0.000
+    DASPFIN_D          1.894      0.114     16.607      0.000
+
+ Variances
+    AASPFIN_D          1.000      0.000    999.000    999.000
+    BASPFIN_D          1.000      0.000    999.000    999.000
+    CASPFIN_D          1.000      0.000    999.000    999.000
+    DASPFIN_D          1.000      0.000    999.000    999.000
+
+Group D5
+
+ AASPFIN_ WITH
+    BASPFIN_D          0.749      0.035     21.690      0.000
+    CASPFIN_D          0.710      0.042     17.084      0.000
+    DASPFIN_D          0.711      0.050     14.096      0.000
+
+ BASPFIN_ WITH
+    CASPFIN_D          0.749      0.035     21.690      0.000
+    DASPFIN_D          0.710      0.042     17.084      0.000
+
+ CASPFIN_ WITH
+    DASPFIN_D          0.749      0.035     21.690      0.000
+
+ Means
+    AASPFIN_D          1.747      0.126     13.826      0.000
+    BASPFIN_D          1.782      0.134     13.322      0.000
+    CASPFIN_D          1.774      0.134     13.199      0.000
+    DASPFIN_D          1.828      0.139     13.165      0.000
+
+ Variances
+    AASPFIN_D          1.000      0.000    999.000    999.000
+    BASPFIN_D          1.000      0.000    999.000    999.000
+    CASPFIN_D          1.000      0.000    999.000    999.000
+    DASPFIN_D          1.000      0.000    999.000    999.000
+
+
+R-SQUARE
+
+Group D2
+
+Group D3
+
+Group D4
+
+Group D5
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.199E-02
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  17:15:25
+        Ending Time:  17:15:25
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

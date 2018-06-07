@@ -1,0 +1,878 @@
+Mplus VERSION 8 (Linux)
+MUTHEN & MUTHEN
+06/07/2018   5:15 PM
+
+INPUT INSTRUCTIONS
+
+
+  title: Stability of values - Nat vrt_ind group;
+  data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
+
+  variable:
+  names =
+  subjid
+  aage
+  aaspfin
+  aaspfin_d
+  abfa_mt
+  abfa_mt_d
+  abfas_ac
+  abfas_ap
+  abfas_ci
+  abfas_co
+  abfas_ea
+  abfas_ee
+  abfas_nv
+  abfas_nv9
+  abfas_nw
+  abfas_oi
+  abfas_oo
+  abfi_a
+  abfi_a6
+  abfi_c
+  abfi_d_scale
+  abfi_e
+  abfi_hp8
+  abfi_n
+  abfi_o
+  abfi_s_scale
+  ahrz_col
+  ahrz_col_d
+  ahrz_ind
+  ahrz_ind_d
+  amvi
+  ausi
+  ausi_d
+  avrt_col
+  avrt_col_d
+  avrt_ind
+  avrt_ind_d
+  bage
+  baspfin
+  baspfin_d
+  bbfa_mt
+  bbfa_mt_d
+  bbfas_ac
+  bbfas_ap
+  bbfas_ci
+  bbfas_co
+  bbfas_ea
+  bbfas_ee
+  bbfas_nv
+  bbfas_nv9
+  bbfas_nw
+  bbfas_oi
+  bbfas_oo
+  bbfi_a
+  bbfi_a6
+  bbfi_c
+  bbfi_d_scale
+  bbfi_e
+  bbfi_hp8
+  bbfi_n
+  bbfi_o
+  bbfi_s_scale
+  bhrz_col
+  bhrz_col_d
+  bhrz_ind
+  bhrz_ind_d
+  bmvi
+  busi
+  busi_d
+  bvrt_col
+  bvrt_col_d
+  bvrt_ind
+  bvrt_ind_d
+  cage
+  caspfin
+  caspfin_d
+  cbfa_mt
+  cbfa_mt_d
+  cbfas_ac
+  cbfas_ap
+  cbfas_ci
+  cbfas_co
+  cbfas_ea
+  cbfas_ee
+  cbfas_nv
+  cbfas_nv9
+  cbfas_nw
+  cbfas_oi
+  cbfas_oo
+  cbfi_a
+  cbfi_a6
+  cbfi_c
+  cbfi_d_scale
+  cbfi_e
+  cbfi_hp8
+  cbfi_n
+  cbfi_o
+  cbfi_s_scale
+  chrz_col
+  chrz_col_d
+  chrz_ind
+  chrz_ind_d
+  cmvi
+  cusi
+  cusi_d
+  cvrt_col
+  cvrt_col_d
+  cvrt_ind
+  cvrt_ind_d
+  dage
+  daspfin
+  daspfin_d
+  dbfa_mt
+  dbfa_mt_d
+  dbfas_ac
+  dbfas_ap
+  dbfas_ci
+  dbfas_co
+  dbfas_ea
+  dbfas_ee
+  dbfas_nv
+  dbfas_nv9
+  dbfas_nw
+  dbfas_oi
+  dbfas_oo
+  dbfi_a
+  dbfi_a6
+  dbfi_c
+  dbfi_d_scale
+  dbfi_e
+  dbfi_hp8
+  dbfi_n
+  dbfi_o
+  dbfi_s_scale
+  dhrz_col
+  dhrz_col_d
+  dhrz_ind
+  dhrz_ind_d
+  dmvi
+  dusi
+  dusi_d
+  dvrt_col
+  dvrt_col_d
+  dvrt_ind
+  dvrt_ind_d;
+
+  USEVARIABLES =
+  avrt_ind
+  bvrt_ind
+  cvrt_ind
+  dvrt_ind
+  aage
+  ;
+
+  missing = all (-9999);
+
+  grouping = aage (0=d2, 1=d3, 2=d4, 3=d5);
+
+  DEFINE:
+
+  cut aage (29 39 49);
+
+  ANALYSIS:
+  type = general;
+  estimator = ml;
+  processors = 8;
+
+
+  MODEL:
+
+  avrt_ind WITH bvrt_ind (a);
+  bvrt_ind WITH cvrt_ind (a);
+  cvrt_ind WITH dvrt_ind (a);
+
+  avrt_ind WITH cvrt_ind (b);
+  bvrt_ind WITH dvrt_ind (b);
+
+  avrt_ind WITH dvrt_ind (c);
+
+  avrt_ind bvrt_ind cvrt_ind dvrt_ind (e);
+
+
+
+  OUTPUT: SAMPSTAT PATTERNS STDYX;
+
+
+
+*** WARNING
+  Data set contains unknown or missing values for GROUPING,
+  PATTERN, COHORT, CLUSTER and/or STRATIFICATION variables.
+  Number of cases with unknown or missing values:  5
+*** WARNING
+  Data set contains cases with missing on all variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on all variables:  1
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+Stability of values - Nat vrt_ind group;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 4
+Number of observations
+   Group D2                                                    301
+   Group D3                                                    233
+   Group D4                                                    197
+   Group D5                                                    132
+   Total sample size                                           863
+
+Number of dependent variables                                    4
+Number of independent variables                                  0
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   AVRT_IND    BVRT_IND    CVRT_IND    DVRT_IND
+
+Variables with special functions
+
+  Grouping variable     AAGE
+
+Estimator                                                       ML
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group D2
+     Number of missing data patterns             8
+
+   Group D3
+     Number of missing data patterns             8
+
+   Group D4
+     Number of missing data patterns             8
+
+   Group D5
+     Number of missing data patterns             8
+
+
+SUMMARY OF MISSING DATA PATTERNS
+
+
+     MISSING DATA PATTERNS FOR D2 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AVRT_IND  x  x  x  x  x  x  x  x
+ BVRT_IND  x  x  x  x
+ CVRT_IND  x  x        x  x
+ DVRT_IND  x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D2
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         188           4          12           7          11
+          2          13           5           7           8          58
+          3           7           6           5
+
+
+     MISSING DATA PATTERNS FOR D3 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AVRT_IND  x  x  x  x  x  x  x  x
+ BVRT_IND  x  x  x  x
+ CVRT_IND  x  x        x  x
+ DVRT_IND  x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D3
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         140           4          15           7           3
+          2           7           5           7           8          46
+          3           8           6           7
+
+
+     MISSING DATA PATTERNS FOR D4 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AVRT_IND  x  x  x  x  x  x  x  x
+ BVRT_IND  x  x  x  x
+ CVRT_IND  x  x        x  x
+ DVRT_IND  x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D4
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         104           4          12           7           5
+          2          15           5           6           8          42
+          3           8           6           5
+
+
+     MISSING DATA PATTERNS FOR D5 (x = not missing)
+
+           1  2  3  4  5  6  7  8
+ AVRT_IND  x  x  x  x  x  x  x  x
+ BVRT_IND  x  x  x  x
+ CVRT_IND  x  x        x  x
+ DVRT_IND  x     x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D5
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1          61           4          10           7           6
+          2          11           5           4           8          29
+          3           5           6           6
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR D2
+
+
+           Covariance Coverage
+              AVRT_IND      BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________      ________
+ AVRT_IND       1.000
+ BVRT_IND       0.731         0.731
+ CVRT_IND       0.708         0.668         0.708
+ DVRT_IND       0.708         0.648         0.648         0.708
+
+
+     PROPORTION OF DATA PRESENT FOR D3
+
+
+           Covariance Coverage
+              AVRT_IND      BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________      ________
+ AVRT_IND       1.000
+ BVRT_IND       0.730         0.730
+ CVRT_IND       0.691         0.631         0.691
+ DVRT_IND       0.678         0.635         0.631         0.678
+
+
+     PROPORTION OF DATA PRESENT FOR D4
+
+
+           Covariance Coverage
+              AVRT_IND      BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________      ________
+ AVRT_IND       1.000
+ BVRT_IND       0.706         0.706
+ CVRT_IND       0.660         0.604         0.660
+ DVRT_IND       0.624         0.569         0.558         0.624
+
+
+     PROPORTION OF DATA PRESENT FOR D5
+
+
+           Covariance Coverage
+              AVRT_IND      BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________      ________
+ AVRT_IND       1.000
+ BVRT_IND       0.659         0.659
+ CVRT_IND       0.621         0.545         0.621
+ DVRT_IND       0.576         0.500         0.492         0.576
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D2
+
+
+           Means
+              AVRT_IND      BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________      ________
+               50.623        51.967        50.106        49.312
+
+
+           Covariances
+              AVRT_IND      BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________      ________
+ AVRT_IND     438.773
+ BVRT_IND     288.334       394.924
+ CVRT_IND     264.066       308.456       402.947
+ DVRT_IND     280.222       297.152       336.659       454.505
+
+
+           Correlations
+              AVRT_IND      BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________      ________
+ AVRT_IND       1.000
+ BVRT_IND       0.693         1.000
+ CVRT_IND       0.628         0.773         1.000
+ DVRT_IND       0.627         0.701         0.787         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D3
+
+
+           Means
+              AVRT_IND      BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________      ________
+               47.166        46.967        46.841        47.015
+
+
+           Covariances
+              AVRT_IND      BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________      ________
+ AVRT_IND     337.642
+ BVRT_IND     238.950       350.287
+ CVRT_IND     240.788       230.062       398.199
+ DVRT_IND     224.708       243.067       247.962       359.858
+
+
+           Correlations
+              AVRT_IND      BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________      ________
+ AVRT_IND       1.000
+ BVRT_IND       0.695         1.000
+ CVRT_IND       0.657         0.616         1.000
+ DVRT_IND       0.645         0.685         0.655         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D4
+
+
+           Means
+              AVRT_IND      BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________      ________
+               45.315        43.048        43.244        45.223
+
+
+           Covariances
+              AVRT_IND      BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________      ________
+ AVRT_IND     288.415
+ BVRT_IND     178.972       271.484
+ CVRT_IND     176.799       196.980       301.817
+ DVRT_IND     161.136       189.418       206.390       244.393
+
+
+           Correlations
+              AVRT_IND      BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________      ________
+ AVRT_IND       1.000
+ BVRT_IND       0.640         1.000
+ CVRT_IND       0.599         0.688         1.000
+ DVRT_IND       0.607         0.735         0.760         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D5
+
+
+           Means
+              AVRT_IND      BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________      ________
+               42.424        41.956        42.222        39.814
+
+
+           Covariances
+              AVRT_IND      BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________      ________
+ AVRT_IND     343.886
+ BVRT_IND     200.850       250.079
+ CVRT_IND     243.506       188.647       348.536
+ DVRT_IND     245.599       210.369       235.285       345.277
+
+
+           Correlations
+              AVRT_IND      BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________      ________
+ AVRT_IND       1.000
+ BVRT_IND       0.685         1.000
+ CVRT_IND       0.703         0.639         1.000
+ DVRT_IND       0.713         0.716         0.678         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -10773.913
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D2
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AVRT_IND             50.623      -0.020       0.000    0.66%      31.250     43.750     50.000
+             301.000     438.773      -0.546     100.000    0.66%      56.250     68.750
+     BVRT_IND             52.140      -0.132       6.250    0.45%      31.250     50.000     50.000
+             220.000     384.743      -0.569     100.000    0.45%      56.250     68.750
+     CVRT_IND             50.675       0.046       6.250    0.47%      31.250     43.750     50.000
+             213.000     400.990      -0.524     100.000    0.47%      56.250     68.750
+     DVRT_IND             49.560       0.024       0.000    0.47%      31.250     37.500     50.000
+             213.000     454.802      -0.771     100.000    0.47%      56.250     68.750
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D3
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AVRT_IND             47.166       0.059       0.000    0.43%      31.250     43.750     43.750
+             233.000     337.642      -0.083     100.000    0.86%      50.000     62.500
+     BVRT_IND             47.328       0.347       6.250    1.18%      31.250     43.750     43.750
+             170.000     354.076       0.192     100.000    2.35%      50.000     62.500
+     CVRT_IND             46.946       0.286       6.250    0.62%      25.000     37.500     43.750
+             161.000     401.949      -0.502     100.000    1.24%      50.000     62.500
+     DVRT_IND             47.191       0.263      12.500    5.06%      31.250     43.750     50.000
+             158.000     358.756      -0.006     100.000    1.27%      50.000     62.500
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D4
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AVRT_IND             45.315       0.315       6.250    0.51%      31.250     43.750     43.750
+             197.000     288.415       0.030     100.000    0.51%      50.000     62.500
+     BVRT_IND             43.076       0.335       6.250    1.44%      25.000     37.500     43.750
+             139.000     276.917      -0.224      87.500    0.72%      43.750     56.250
+     CVRT_IND             43.125       0.344       6.250    0.77%      31.250     37.500     43.750
+             130.000     297.386      -0.130      87.500    2.31%      43.750     56.250
+     DVRT_IND             44.732       0.053       6.250    0.81%      31.250     37.500     43.750
+             123.000     243.079      -0.215      87.500    0.81%      50.000     56.250
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D5
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     AVRT_IND             42.424       0.085       0.000    0.76%      25.000     37.500     43.750
+             132.000     343.886      -0.542      87.500    1.52%      50.000     62.500
+     BVRT_IND             41.379      -0.083       0.000    1.15%      25.000     37.500     43.750
+              87.000     248.461      -0.518      75.000    1.15%      43.750     56.250
+     CVRT_IND             40.244       0.556       6.250    3.66%      25.000     37.500     37.500
+              82.000     339.270       0.603     100.000    1.22%      43.750     56.250
+     DVRT_IND             39.062       0.435      12.500   10.53%      25.000     31.250     37.500
+              76.000     319.824      -0.399      87.500    1.32%      43.750     56.250
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       20
+
+Loglikelihood
+
+          H0 Value                      -10817.174
+          H1 Value                      -10773.913
+
+Information Criteria
+
+          Akaike (AIC)                   21674.348
+          Bayesian (BIC)                 21769.556
+          Sample-Size Adjusted BIC       21706.042
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                             86.523
+          Degrees of Freedom                    36
+          P-Value                           0.0000
+
+Chi-Square Contribution From Each Group
+
+          D2                                31.268
+          D3                                12.700
+          D4                                29.270
+          D5                                13.285
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.081
+          90 Percent C.I.                    0.059  0.103
+          Probability RMSEA <= .05           0.012
+
+CFI/TLI
+
+          CFI                                0.963
+          TLI                                0.975
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           1380.793
+          Degrees of Freedom                    24
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.167
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ AVRT_IND WITH
+    BVRT_IND         251.863     14.194     17.745      0.000
+    CVRT_IND         239.606     14.320     16.733      0.000
+    DVRT_IND         227.136     15.066     15.076      0.000
+
+ BVRT_IND WITH
+    CVRT_IND         251.863     14.194     17.745      0.000
+    DVRT_IND         239.606     14.320     16.733      0.000
+
+ CVRT_IND WITH
+    DVRT_IND         251.863     14.194     17.745      0.000
+
+ Means
+    AVRT_IND          50.623      1.092     46.362      0.000
+    BVRT_IND          52.016      1.183     43.967      0.000
+    CVRT_IND          50.029      1.199     41.723      0.000
+    DVRT_IND          49.385      1.208     40.885      0.000
+
+ Variances
+    AVRT_IND         358.871     14.146     25.368      0.000
+    BVRT_IND         358.871     14.146     25.368      0.000
+    CVRT_IND         358.871     14.146     25.368      0.000
+    DVRT_IND         358.871     14.146     25.368      0.000
+
+Group D3
+
+ AVRT_IND WITH
+    BVRT_IND         251.863     14.194     17.745      0.000
+    CVRT_IND         239.606     14.320     16.733      0.000
+    DVRT_IND         227.136     15.066     15.076      0.000
+
+ BVRT_IND WITH
+    CVRT_IND         251.863     14.194     17.745      0.000
+    DVRT_IND         239.606     14.320     16.733      0.000
+
+ CVRT_IND WITH
+    DVRT_IND         251.863     14.194     17.745      0.000
+
+ Means
+    AVRT_IND          47.166      1.241     38.004      0.000
+    BVRT_IND          46.947      1.345     34.900      0.000
+    CVRT_IND          46.828      1.372     34.141      0.000
+    DVRT_IND          47.106      1.391     33.875      0.000
+
+ Variances
+    AVRT_IND         358.871     14.146     25.368      0.000
+    BVRT_IND         358.871     14.146     25.368      0.000
+    CVRT_IND         358.871     14.146     25.368      0.000
+    DVRT_IND         358.871     14.146     25.368      0.000
+
+Group D4
+
+ AVRT_IND WITH
+    BVRT_IND         251.863     14.194     17.745      0.000
+    CVRT_IND         239.606     14.320     16.733      0.000
+    DVRT_IND         227.136     15.066     15.076      0.000
+
+ BVRT_IND WITH
+    CVRT_IND         251.863     14.194     17.745      0.000
+    DVRT_IND         239.606     14.320     16.733      0.000
+
+ CVRT_IND WITH
+    DVRT_IND         251.863     14.194     17.745      0.000
+
+ Means
+    AVRT_IND          45.315      1.350     33.574      0.000
+    BVRT_IND          43.009      1.476     29.130      0.000
+    CVRT_IND          43.169      1.511     28.576      0.000
+    DVRT_IND          45.191      1.547     29.206      0.000
+
+ Variances
+    AVRT_IND         358.871     14.146     25.368      0.000
+    BVRT_IND         358.871     14.146     25.368      0.000
+    CVRT_IND         358.871     14.146     25.368      0.000
+    DVRT_IND         358.871     14.146     25.368      0.000
+
+Group D5
+
+ AVRT_IND WITH
+    BVRT_IND         251.863     14.194     17.745      0.000
+    CVRT_IND         239.606     14.320     16.733      0.000
+    DVRT_IND         227.136     15.066     15.076      0.000
+
+ BVRT_IND WITH
+    CVRT_IND         251.863     14.194     17.745      0.000
+    DVRT_IND         239.606     14.320     16.733      0.000
+
+ CVRT_IND WITH
+    DVRT_IND         251.863     14.194     17.745      0.000
+
+ Means
+    AVRT_IND          42.424      1.649     25.729      0.000
+    BVRT_IND          42.051      1.835     22.911      0.000
+    CVRT_IND          42.054      1.876     22.411      0.000
+    DVRT_IND          39.669      1.936     20.493      0.000
+
+ Variances
+    AVRT_IND         358.871     14.146     25.368      0.000
+    BVRT_IND         358.871     14.146     25.368      0.000
+    CVRT_IND         358.871     14.146     25.368      0.000
+    DVRT_IND         358.871     14.146     25.368      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ AVRT_IND WITH
+    BVRT_IND           0.702      0.015     46.181      0.000
+    CVRT_IND           0.668      0.018     37.675      0.000
+    DVRT_IND           0.633      0.023     27.009      0.000
+
+ BVRT_IND WITH
+    CVRT_IND           0.702      0.015     46.181      0.000
+    DVRT_IND           0.668      0.018     37.675      0.000
+
+ CVRT_IND WITH
+    DVRT_IND           0.702      0.015     46.181      0.000
+
+ Means
+    AVRT_IND           2.672      0.078     34.225      0.000
+    BVRT_IND           2.746      0.083     33.205      0.000
+    CVRT_IND           2.641      0.082     32.148      0.000
+    DVRT_IND           2.607      0.082     31.796      0.000
+
+ Variances
+    AVRT_IND           1.000      0.000    999.000    999.000
+    BVRT_IND           1.000      0.000    999.000    999.000
+    CVRT_IND           1.000      0.000    999.000    999.000
+    DVRT_IND           1.000      0.000    999.000    999.000
+
+Group D3
+
+ AVRT_IND WITH
+    BVRT_IND           0.702      0.015     46.181      0.000
+    CVRT_IND           0.668      0.018     37.675      0.000
+    DVRT_IND           0.633      0.023     27.009      0.000
+
+ BVRT_IND WITH
+    CVRT_IND           0.702      0.015     46.181      0.000
+    DVRT_IND           0.668      0.018     37.675      0.000
+
+ CVRT_IND WITH
+    DVRT_IND           0.702      0.015     46.181      0.000
+
+ Means
+    AVRT_IND           2.490      0.082     30.417      0.000
+    BVRT_IND           2.478      0.086     28.736      0.000
+    CVRT_IND           2.472      0.087     28.326      0.000
+    DVRT_IND           2.487      0.088     28.168      0.000
+
+ Variances
+    AVRT_IND           1.000      0.000    999.000    999.000
+    BVRT_IND           1.000      0.000    999.000    999.000
+    CVRT_IND           1.000      0.000    999.000    999.000
+    DVRT_IND           1.000      0.000    999.000    999.000
+
+Group D4
+
+ AVRT_IND WITH
+    BVRT_IND           0.702      0.015     46.181      0.000
+    CVRT_IND           0.668      0.018     37.675      0.000
+    DVRT_IND           0.633      0.023     27.009      0.000
+
+ BVRT_IND WITH
+    CVRT_IND           0.702      0.015     46.181      0.000
+    DVRT_IND           0.668      0.018     37.675      0.000
+
+ CVRT_IND WITH
+    DVRT_IND           0.702      0.015     46.181      0.000
+
+ Means
+    AVRT_IND           2.392      0.085     27.999      0.000
+    BVRT_IND           2.270      0.090     25.254      0.000
+    CVRT_IND           2.279      0.092     24.892      0.000
+    DVRT_IND           2.386      0.094     25.332      0.000
+
+ Variances
+    AVRT_IND           1.000      0.000    999.000    999.000
+    BVRT_IND           1.000      0.000    999.000    999.000
+    CVRT_IND           1.000      0.000    999.000    999.000
+    DVRT_IND           1.000      0.000    999.000    999.000
+
+Group D5
+
+ AVRT_IND WITH
+    BVRT_IND           0.702      0.015     46.181      0.000
+    CVRT_IND           0.668      0.018     37.675      0.000
+    DVRT_IND           0.633      0.023     27.009      0.000
+
+ BVRT_IND WITH
+    CVRT_IND           0.702      0.015     46.181      0.000
+    DVRT_IND           0.668      0.018     37.675      0.000
+
+ CVRT_IND WITH
+    DVRT_IND           0.702      0.015     46.181      0.000
+
+ Means
+    AVRT_IND           2.239      0.098     22.947      0.000
+    BVRT_IND           2.220      0.106     20.921      0.000
+    CVRT_IND           2.220      0.108     20.580      0.000
+    DVRT_IND           2.094      0.110     19.038      0.000
+
+ Variances
+    AVRT_IND           1.000      0.000    999.000    999.000
+    BVRT_IND           1.000      0.000    999.000    999.000
+    CVRT_IND           1.000      0.000    999.000    999.000
+    DVRT_IND           1.000      0.000    999.000    999.000
+
+
+R-SQUARE
+
+Group D2
+
+Group D3
+
+Group D4
+
+Group D5
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.712E-02
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  17:15:27
+        Ending Time:  17:15:27
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

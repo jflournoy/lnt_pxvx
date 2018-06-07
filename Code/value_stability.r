@@ -14,25 +14,28 @@ library(stringr)
 library(ggplot2)
 opts_chunk$set(echo=F, message=F, warning=F)
 
-source('./ggplottheme.r')
+source('~/code_new/lnt_pxvx/Code/ggplottheme.r')
 
 # Set working directory to that which contains Code, Data, etc
 # setwd('E:/Projects/lnt_pxvx/')
 
-loadStbFN<-'../Rez/stability.RData'
+loadStbFN<-'~/code_new/lnt_pxvx/Rez/stability.RData'
 
 # # Create Models
 # createModels('Code/value_stability_invariance_template.inp')
 # createModels('Code/value_stability_invariance_template-Col.inp')
 # 
 # setwd('E:/Projects/lnt_pxvx/Rez/stability')
-# runModels(recursive = T)
+# runModels(target = '~/code_new/lnt_pxvx/Rez/stability/',
+#           Mplus_command = '/opt/mplus/8/mplus',
+#           recursive = T)
 # 
 # # Read models
 # # setwd('../Rez/stability')
-# saveStbFN<-'../stability.RData'
-# stbModelOut<-readModels(recursive = T,
-# 			filefilter='stability.*')
+# saveStbFN<-'Rez/stability.RData'
+# stbModelOut<-readModels(target = '~/code_new/lnt_pxvx/Rez/stability/',
+#                         recursive = T,
+#                         filefilter='stability.*')
 # stbModelOut_df <- data_frame(model=stbModelOut)
 # save(stbModelOut_df,file=saveStbFN)
 # setwd('../../Code')
@@ -222,16 +225,23 @@ nada <- paramsummaries %>% filter(modelType=='longitudinal',
 #'
 #'
 #'	
-#+fig.width=9, fig.height=6
+#+fig.width=9, fig.height=6, dpi=300
 vVarNames <- c(
-  'USI'='Unmitigated\n Self-Interest',
-  'VRT_IND'='Vertical\n Individualism',
-  'BFA_MT'='Materialism',
-  'aspfin'='Financial\n Aspirations',
-  'MVI_POMP'='Mature\n Values Index',
-  'VRT_COL'='Vertical\n Collectivism',
-  'HRZ_COL'='Horizontal\n Collectivism',
-  'HRZ_IND'='Horizontal\n Individualism'
+  usi ='Unmitigated\nSelf-Interest',
+  usi_d ='Unmitigated Self-Interest Invariant',
+  vrt_ind ='Vertical\nIndividualism',
+  vrt_ind_d ='Vertical Individualism Invariant',
+  bfa_mt ='Materialism',
+  bfa_mt_d ='Materialism Invariant',
+  aspfin ='Financial\nAspirations',
+  aspfin_d ='Financial Aspirations Invariant',
+  mvi ='Mature\nValues Index',
+  vrt_col ='Vertical\nCollectivism',
+  vrt_col_d ='Vertical Collectivism Invariant',
+  hrz_col ='Horizontal\nCollectivism',
+  hrz_col_d ='Horizontal Collectivism Invariant',
+  hrz_ind='Horizontal\nIndividualism',
+  hrz_ind_d='Horizontal Individualism Invariant'
 )
 
 bordergray <- '#dddddd'
@@ -239,7 +249,8 @@ meangray <- '#777777'
 
 paramsummaries %>% filter(modelType=='longitudinal',
 			  paramgroup %in% c('A WITH B', 'A WITH C', 'A WITH D'),
-			  sample=='Nat') %>%
+			  sample=='Nat',
+			  !grepl('_d$',variable)) %>%
   mutate(variable = factor(variable, levels = names(vVarNames), labels = vVarNames)) %>%
 	select(variable, Group, est, se, paramgroup) %>% ungroup() %>%
 	mutate(Group=factor(str_replace(Group, 'D([2345])', '\\10\'s')),
@@ -261,10 +272,38 @@ paramsummaries %>% filter(modelType=='longitudinal',
 	      panel.spacing = unit(0, units = 'in')) + 
 	labs(x="Age Decade Group",
 	     y="Correlation, 95% CI")
-	
+
 paramsummaries %>% filter(modelType=='longitudinal',
                           paramgroup %in% c('A WITH B', 'A WITH C', 'A WITH D'),
-                          sample=='Nat') %>%
+                          sample=='Nat',
+                          grepl('_d$',variable)) %>%
+  mutate(variable = factor(variable, levels = names(vVarNames), labels = vVarNames)) %>%
+  select(variable, Group, est, se, paramgroup) %>% ungroup() %>%
+  mutate(Group=factor(str_replace(Group, 'D([2345])', '\\10\'s')),
+         LL=est-1.96*se,
+         UL=est+1.96*se,
+         lag=factor(as.numeric(as.factor(paramgroup)), levels = c(1,2,3), labels = c('1-year lag', '2-year lag', '3-year lag'))) %>%
+  ggplot(aes(Group, est))+
+  geom_hline(yintercept = .6, color = bordergray, linetype = 3) +
+  geom_point(size=1)+
+  geom_errorbar(aes(ymin=LL, ymax=UL), width=0)+
+  facet_grid(lag~variable)+
+  coord_cartesian(y=c(.3, 1))+
+  scale_y_continuous(breaks = c(.4,.6,.8,1)) +
+  theme(axis.text.x=element_text(angle=360-45, hjust=0),
+        panel.border = element_rect(fill = NA, color = bordergray, size = 1, linetype = 1),
+        strip.background = element_rect(fill=bordergray, color = bordergray, size = 1, linetype = 1),
+        axis.line.x = element_line(color = NA, size = .5, linetype = 1),
+        axis.line.y = element_line(color = NA, size = .5, linetype = 1),
+        panel.spacing = unit(0, units = 'in')) + 
+  labs(x="Age Decade Group",
+       y="Correlation, 95% CI")
+
+
+paramsummaries %>% filter(modelType=='longitudinal',
+                          paramgroup %in% c('A WITH B', 'A WITH C', 'A WITH D'),
+                          sample=='Nat',
+                          !grepl('_d$',variable)) %>%
   mutate(variable = factor(variable, levels = names(vVarNames), labels = vVarNames)) %>%
   select(variable, Group, est, se, paramgroup) %>% ungroup() %>%
   mutate(Group=factor(str_replace(Group, 'D([2345])', '\\10\'s')),
