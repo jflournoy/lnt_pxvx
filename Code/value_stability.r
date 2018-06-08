@@ -16,6 +16,10 @@ opts_chunk$set(echo=F, message=F, warning=F)
 
 source('~/code_new/lnt_pxvx/Code/ggplottheme.r')
 
+mfi <- function(X2,df,N){
+  exp(-0.5 * (X2 - df)/N)
+}
+
 # Set working directory to that which contains Code, Data, etc
 # setwd('E:/Projects/lnt_pxvx/')
 
@@ -49,7 +53,8 @@ summaries <- stbModelOut_df %>% rowwise %>%
   }) %>%
   extract(Title, 
           c('sample', 'variable', 'modelType'),
-          'Stability of values - (\\w+) ([\\w_]+) ([\\w_]+);')
+          'Stability of values - (\\w+) ([\\w_]+) ([\\w_]+);') %>%
+  mutate(MFI = mfi(X2 = ChiSqM_Value, df = ChiSqM_DF, N = 863))
 
 paramsummaries <- stbModelOut_df %>% rowwise %>%
 	  do({
@@ -69,9 +74,9 @@ paramsummaries <- stbModelOut_df %>% rowwise %>%
 
 summaryTableLong <- summaries %>% 
 	select(sample, variable, modelType, Parameters, 
-	       ChiSqM_Value, ChiSqM_DF, ChiSqM_PValue, 
+	       ChiSqM_Value, ChiSqM_DF, ChiSqM_PValue, MFI,
 	       AIC, BIC) %>%
-	gather(stat, value, ChiSqM_Value, ChiSqM_DF, AIC, BIC) 
+	gather(stat, value, ChiSqM_Value, ChiSqM_DF, MFI, AIC, BIC) 
 
 summaryDiffs <- summaryTableLong %>%
 	group_by(sample, variable, stat) %>%
@@ -96,11 +101,10 @@ nada <- summaries %>%
 			mutate_each(funs(gsub('^0(\\.\\d+)',
 					      '\\1', 
 					      sprintf('%.2f', .))),
-				    CFI, TLI, 
+				    MFI, CFI, 
 				    RMSEA_Estimate, 
 				    RMSEA_90CI_LB, 
-				    RMSEA_90CI_UB, 
-				    SRMR) %>%
+				    RMSEA_90CI_UB) %>%
 			mutate(RMSEA=paste0(RMSEA_Estimate,
 					    ' [',
 					    RMSEA_90CI_LB,
@@ -109,8 +113,8 @@ nada <- summaries %>%
 					    ']')) %>%
 			select(variable,
 			       RMSEA,
-			       SRMR,
-			       CFI, TLI) %>%
+			       MFI,
+			       CFI) %>%
 			rename(`RMSEA [90% CI]`=RMSEA) %>%
 			kable(digits=2, caption=paste0('Sample: ', asamp),
 			      align=c('l', rep('r', 4)))
@@ -133,11 +137,10 @@ nada <- summaries %>%
 			mutate_each(funs(gsub('^0(\\.\\d+)',
 					      '\\1', 
 					      sprintf('%.2f', .))),
-				    CFI, TLI, 
+					  MFI,CFI, 
 				    RMSEA_Estimate, 
 				    RMSEA_90CI_LB, 
-				    RMSEA_90CI_UB, 
-				    SRMR) %>%
+				    RMSEA_90CI_UB) %>%
 			mutate(RMSEA=paste0(RMSEA_Estimate,
 					    ' [',
 					    RMSEA_90CI_LB,
@@ -146,8 +149,8 @@ nada <- summaries %>%
 					    ']')) %>%
 			select(variable,
 			       RMSEA,
-			       SRMR,
-			       CFI, TLI) %>%
+			       MFI,
+			       CFI) %>%
 			rename(`RMSEA [90% CI]`=RMSEA) %>%
 			kable(digits=2, caption=paste0('Sample: ', asamp),
 			      align=c('l', rep('r', 4)))
@@ -171,7 +174,7 @@ nada <- bind_rows(summaryTableLong, summaryDiffs) %>%
 	do({
 		asamp <- unique(.$sample)
 		atable <- as_data_frame(.) %>% select(variable, modelType, Parameters, 
-			     ChiSqM_Value, ChiSqM_DF, ChiSqM_PValue,
+			     ChiSqM_Value, ChiSqM_DF, ChiSqM_PValue, MFI,
 			     AIC, BIC) %>%
 			mutate(Parameters=ifelse(is.na(Parameters),
 						 '',
