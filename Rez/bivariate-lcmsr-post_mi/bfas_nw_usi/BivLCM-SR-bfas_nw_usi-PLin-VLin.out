@@ -1,0 +1,648 @@
+Mplus VERSION 8 (Linux)
+MUTHEN & MUTHEN
+07/07/2018   3:55 PM
+
+INPUT INSTRUCTIONS
+
+
+  title: PxVx Bivariate LCM-SR - post mi - Linear bfas_nw with Linear usi;
+  data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
+
+  variable:
+  names =
+  subjid
+  aage
+  aaspfin
+  aaspfin_d
+  abfa_mt
+  abfa_mt_d
+  abfas_ac
+  abfas_ap
+  abfas_ci
+  abfas_co
+  abfas_ea
+  abfas_ee
+  abfas_nv
+  abfas_nv9
+  abfas_nw
+  abfas_oi
+  abfas_oo
+  abfi_a
+  abfi_a6
+  abfi_c
+  abfi_d_scale
+  abfi_e
+  abfi_hp8
+  abfi_n
+  abfi_o
+  abfi_s_scale
+  ahrz_col
+  ahrz_col_d
+  ahrz_ind
+  ahrz_ind_d
+  amvi
+  ausi
+  ausi_d
+  avrt_col
+  avrt_col_d
+  avrt_ind
+  avrt_ind_d
+  bage
+  baspfin
+  baspfin_d
+  bbfa_mt
+  bbfa_mt_d
+  bbfas_ac
+  bbfas_ap
+  bbfas_ci
+  bbfas_co
+  bbfas_ea
+  bbfas_ee
+  bbfas_nv
+  bbfas_nv9
+  bbfas_nw
+  bbfas_oi
+  bbfas_oo
+  bbfi_a
+  bbfi_a6
+  bbfi_c
+  bbfi_d_scale
+  bbfi_e
+  bbfi_hp8
+  bbfi_n
+  bbfi_o
+  bbfi_s_scale
+  bhrz_col
+  bhrz_col_d
+  bhrz_ind
+  bhrz_ind_d
+  bmvi
+  busi
+  busi_d
+  bvrt_col
+  bvrt_col_d
+  bvrt_ind
+  bvrt_ind_d
+  cage
+  caspfin
+  caspfin_d
+  cbfa_mt
+  cbfa_mt_d
+  cbfas_ac
+  cbfas_ap
+  cbfas_ci
+  cbfas_co
+  cbfas_ea
+  cbfas_ee
+  cbfas_nv
+  cbfas_nv9
+  cbfas_nw
+  cbfas_oi
+  cbfas_oo
+  cbfi_a
+  cbfi_a6
+  cbfi_c
+  cbfi_d_scale
+  cbfi_e
+  cbfi_hp8
+  cbfi_n
+  cbfi_o
+  cbfi_s_scale
+  chrz_col
+  chrz_col_d
+  chrz_ind
+  chrz_ind_d
+  cmvi
+  cusi
+  cusi_d
+  cvrt_col
+  cvrt_col_d
+  cvrt_ind
+  cvrt_ind_d
+  dage
+  daspfin
+  daspfin_d
+  dbfa_mt
+  dbfa_mt_d
+  dbfas_ac
+  dbfas_ap
+  dbfas_ci
+  dbfas_co
+  dbfas_ea
+  dbfas_ee
+  dbfas_nv
+  dbfas_nv9
+  dbfas_nw
+  dbfas_oi
+  dbfas_oo
+  dbfi_a
+  dbfi_a6
+  dbfi_c
+  dbfi_d_scale
+  dbfi_e
+  dbfi_hp8
+  dbfi_n
+  dbfi_o
+  dbfi_s_scale
+  dhrz_col
+  dhrz_col_d
+  dhrz_ind
+  dhrz_ind_d
+  dmvi
+  dusi
+  dusi_d
+  dvrt_col
+  dvrt_col_d
+  dvrt_ind
+  dvrt_ind_d;
+
+  USEVARIABLES =
+  abfas_nw
+  bbfas_nw
+  cbfas_nw
+  dbfas_nw
+  ausi
+  busi
+  cusi
+  dusi
+  a1
+  a2
+  a3
+  a4
+  ;
+
+  missing = all (-9999);
+
+  tscores = a1 a2 a3 a4;
+
+  DEFINE:
+  a1 = aage + 0 - 36;
+  a2 = aage + 1 - 36;
+  a3 = aage + 2 - 36;
+  a4 = aage + 3 - 36;
+
+  ANALYSIS:
+  TYPE=RANDOM;
+  PROCESSORS = 6;
+  model=nocovariances; ! supresses default estimation of certain covs in model;
+
+  MODEL:
+
+  i_bfas_nw s_bfas_nw | abfas_nw bbfas_nw cbfas_nw dbfas_nw AT a1 a2 a3 a4;
+  i_usi s_usi | ausi busi cusi dusi AT a1 a2 a3 a4;
+
+  ! freeing factor covs because of "nocovariances"
+  s_bfas_nw WITH i_bfas_nw s_usi i_usi;
+  i_bfas_nw WITH s_usi i_usi;
+  s_usi WITH i_usi;
+
+  p1 BY abfas_nw@1; ! Residual "factors";
+  p2 BY bbfas_nw@1;
+  p3 BY cbfas_nw@1;
+  p4 BY dbfas_nw@1;
+
+  v1 BY ausi@1; ! Residual "factors";
+  v2 BY busi@1;
+  v3 BY cusi@1;
+  v4 BY dusi@1;
+
+  !residual variances on observed/manifest vars set to 0
+  abfas_nw@0;
+  bbfas_nw@0;
+  cbfas_nw@0;
+  dbfas_nw@0;
+
+  !residual variances on observed/manifest vars set to 0
+  ausi@0;
+  busi@0;
+  cusi@0;
+  dusi@0;
+
+  ! means of observed/manifest vars set to 0
+  [abfas_nw@0];
+  [bbfas_nw@0];
+  [cbfas_nw@0];
+  [dbfas_nw@0];
+
+  ! means of observed/manifest vars set to 0
+  [ausi@0];
+  [busi@0];
+  [cusi@0];
+  [dusi@0];
+
+  [p1@0]; ! means of residual "factors" set to 0
+  [p2@0];
+  [p3@0];
+  [p4@0];
+
+  [v1@0]; ! means of residual "factors" set to 0
+  [v2@0];
+  [v3@0];
+  [v4@0];
+
+  p4 on p3 (a); ! Autoregressive paths constrained to equality
+  p3 on p2 (a);
+  p2 on p1 (a);
+
+  v4 on v3 (b); ! Autoregressive paths constrained to equality
+  v3 on v2 (b);
+  v2 on v1 (b);
+
+  p4 on v3 (c); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c);
+  p2 on v1 (c);
+
+  v4 on p3 (d); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d);
+  v2 on p1 (d);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e); ! Within-wave correlations constrained to equality
+  p3 with v3 (e);
+  p4 with v4 (e);
+
+  p2 p3 p4 (f); ! estimate variances of residual "factors"
+  v2 v3 v4 (g); ! estimate variances of residual "factors"
+
+  OUTPUT: SAMPSTAT PATTERNS;
+
+
+
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  5
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+PxVx Bivariate LCM-SR - post mi - Linear bfas_nw with Linear usi;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         864
+
+Number of dependent variables                                    8
+Number of independent variables                                  0
+Number of continuous latent variables                           12
+
+Observed dependent variables
+
+  Continuous
+   ABFAS_NW    BBFAS_NW    CBFAS_NW    DBFAS_NW    AUSI        BUSI
+   CUSI        DUSI
+
+Continuous latent variables
+   P1          P2          P3          P4          V1          V2
+   V3          V4          I_BFAS_N    S_BFAS_N    I_USI       S_USI
+
+Variables with special functions
+
+  Time scores
+   A1          A2          A3          A4
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                   100
+Convergence criterion                                    0.100D-05
+Maximum number of EM iterations                                500
+Convergence criteria for the EM algorithm
+  Loglikelihood change                                   0.100D-02
+  Relative loglikelihood change                          0.100D-05
+  Derivative                                             0.100D-03
+Minimum variance                                         0.100D-03
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+
+Input data file(s)
+  /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            19
+
+
+SUMMARY OF MISSING DATA PATTERNS
+
+
+     MISSING DATA PATTERNS (x = not missing)
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
+ ABFAS_NW  x  x  x  x  x  x  x  x  x  x  x  x  x     x  x  x  x  x
+ BBFAS_NW  x     x  x     x     x     x  x  x     x     x     x
+ CBFAS_NW  x           x  x     x  x     x  x  x  x        x  x
+ DBFAS_NW  x     x     x  x  x              x  x  x     x        x
+ AUSI      x  x  x  x  x  x  x  x  x  x  x  x  x  x     x  x  x  x
+ BUSI      x     x  x     x     x        x     x  x           x
+ CUSI      x           x        x  x        x  x  x           x
+ DUSI      x     x     x  x  x              x  x  x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         487           8          46          15           1
+          2         169           9          23          16           1
+          3          26          10           5          17           1
+          4          47          11           1          18           1
+          5          21          12           3          19           1
+          6           2          13           2
+          7          24          14           3
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AUSI
+              ________      ________      ________      ________      ________
+ ABFAS_NW       0.997
+ BBFAS_NW       0.716         0.720
+ CBFAS_NW       0.679         0.628         0.683
+ DBFAS_NW       0.656         0.604         0.600         0.660
+ AUSI           0.995         0.720         0.683         0.660         0.999
+ BUSI           0.708         0.709         0.627         0.602         0.712
+ CUSI           0.675         0.625         0.678         0.597         0.678
+ DUSI           0.656         0.605         0.601         0.659         0.660
+
+
+           Covariance Coverage
+              BUSI          CUSI          DUSI
+              ________      ________      ________
+ BUSI           0.712
+ CUSI           0.624         0.678
+ DUSI           0.603         0.598         0.660
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AUSI
+              ________      ________      ________      ________      ________
+               45.979        46.031        46.192        45.986        28.927
+
+
+           Means
+              BUSI          CUSI          DUSI
+              ________      ________      ________
+               28.438        28.431        28.397
+
+
+           Covariances
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AUSI
+              ________      ________      ________      ________      ________
+ ABFAS_NW     431.518
+ BBFAS_NW     344.923       410.139
+ CBFAS_NW     334.595       348.718       430.824
+ DBFAS_NW     342.758       352.743       375.808       439.918
+ AUSI          12.487        22.069        24.318        22.617       263.779
+ BUSI          14.745        30.290        26.094        30.037       206.195
+ CUSI          17.822        29.625        39.695        36.781       201.260
+ DUSI           8.988        25.826        21.240        23.598       190.176
+
+
+           Covariances
+              BUSI          CUSI          DUSI
+              ________      ________      ________
+ BUSI         274.489
+ CUSI         211.719       279.203
+ DUSI         197.019       217.602       258.775
+
+
+           Correlations
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AUSI
+              ________      ________      ________      ________      ________
+ ABFAS_NW       1.000
+ BBFAS_NW       0.820         1.000
+ CBFAS_NW       0.776         0.830         1.000
+ DBFAS_NW       0.787         0.830         0.863         1.000
+ AUSI           0.037         0.067         0.072         0.066         1.000
+ BUSI           0.043         0.090         0.076         0.086         0.766
+ CUSI           0.051         0.088         0.114         0.105         0.742
+ DUSI           0.027         0.079         0.064         0.070         0.728
+
+
+           Correlations
+              BUSI          CUSI          DUSI
+              ________      ________      ________
+ BUSI           1.000
+ CUSI           0.765         1.000
+ DUSI           0.739         0.810         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -20794.775
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_NW             45.999       0.118       0.000    0.81%      27.500     40.000     45.000
+             861.000     431.221      -0.382     100.000    0.23%      50.000     65.000
+     BBFAS_NW             46.146       0.094       0.000    0.64%      27.500     40.000     46.111
+             622.000     420.433      -0.489      97.500    0.48%      52.500     65.000
+     CBFAS_NW             46.230       0.065       0.000    1.02%      30.000     40.000     46.250
+             590.000     444.863      -0.425      97.500    0.68%      52.500     65.000
+     DBFAS_NW             45.705       0.097       0.000    0.70%      27.500     40.000     45.000
+             570.000     449.955      -0.484     100.000    0.18%      52.500     62.500
+     AUSI                 28.927       0.158       0.000    4.52%      12.500     25.000     29.167
+             863.000     263.779      -0.620      87.500    0.12%      33.333     45.000
+     BUSI                 28.149       0.129       0.000    5.53%      12.500     25.000     29.167
+             615.000     269.774      -0.737      75.000    0.33%      33.333     41.667
+     CUSI                 28.579       0.262       0.000    4.27%      12.500     25.000     29.167
+             586.000     276.211      -0.522      83.333    0.17%      33.333     41.667
+     DUSI                 28.181       0.189       0.000    5.09%      12.500     25.000     29.167
+             570.000     255.376      -0.459      87.500    0.18%      33.333     41.667
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       24
+
+Loglikelihood
+
+          H0 Value                      -20787.804
+          H0 Scaling Correction Factor      1.0765
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   41623.608
+          Bayesian (BIC)                 41737.886
+          Sample-Size Adjusted BIC       41661.668
+            (n* = (n + 2) / 24)
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ P1       BY
+    ABFAS_NW           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_NW           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_NW           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_NW           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AUSI               1.000      0.000    999.000    999.000
+
+ V2       BY
+    BUSI               1.000      0.000    999.000    999.000
+
+ V3       BY
+    CUSI               1.000      0.000    999.000    999.000
+
+ V4       BY
+    DUSI               1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.168      0.045      3.722      0.000
+    V3                -0.012      0.043     -0.272      0.786
+
+ P3         ON
+    P2                 0.168      0.045      3.722      0.000
+    V2                -0.012      0.043     -0.272      0.786
+
+ P2         ON
+    P1                 0.168      0.045      3.722      0.000
+    V1                -0.012      0.043     -0.272      0.786
+
+ V4         ON
+    V3                 0.178      0.050      3.557      0.000
+    P3                -0.033      0.035     -0.958      0.338
+
+ V3         ON
+    V2                 0.178      0.050      3.557      0.000
+    P2                -0.033      0.035     -0.958      0.338
+
+ V2         ON
+    V1                 0.178      0.050      3.557      0.000
+    P1                -0.033      0.035     -0.958      0.338
+
+ S_BFAS_N WITH
+    I_BFAS_NW         -0.932      0.904     -1.032      0.302
+    S_USI              0.015      0.104      0.146      0.884
+    I_USI              1.639      2.116      0.775      0.438
+
+ I_BFAS_N WITH
+    S_USI             -0.555      2.129     -0.261      0.794
+    I_USI              9.460     14.020      0.675      0.500
+
+ S_USI    WITH
+    I_USI             -0.059      0.462     -0.129      0.897
+
+ P1       WITH
+    V1                -0.165      5.032     -0.033      0.974
+
+ P2       WITH
+    V2                 3.552      2.864      1.240      0.215
+
+ P3       WITH
+    V3                 3.552      2.864      1.240      0.215
+
+ P4       WITH
+    V4                 3.552      2.864      1.240      0.215
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_NW         46.361      0.665     69.705      0.000
+    S_BFAS_NW         -0.278      0.060     -4.621      0.000
+    I_USI             28.924      0.511     56.633      0.000
+    S_USI             -0.262      0.046     -5.667      0.000
+
+ Intercepts
+    ABFAS_NW           0.000      0.000    999.000    999.000
+    BBFAS_NW           0.000      0.000    999.000    999.000
+    CBFAS_NW           0.000      0.000    999.000    999.000
+    DBFAS_NW           0.000      0.000    999.000    999.000
+    AUSI               0.000      0.000    999.000    999.000
+    BUSI               0.000      0.000    999.000    999.000
+    CUSI               0.000      0.000    999.000    999.000
+    DUSI               0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1               109.830      9.903     11.091      0.000
+    V1                72.549      6.556     11.067      0.000
+    I_BFAS_NW        311.568     22.755     13.692      0.000
+    S_BFAS_NW          0.179      0.171      1.049      0.294
+    I_USI            180.650     12.907     13.996      0.000
+    S_USI              0.065      0.088      0.733      0.464
+
+ Residual Variances
+    ABFAS_NW           0.000      0.000    999.000    999.000
+    BBFAS_NW           0.000      0.000    999.000    999.000
+    CBFAS_NW           0.000      0.000    999.000    999.000
+    DBFAS_NW           0.000      0.000    999.000    999.000
+    AUSI               0.000      0.000    999.000    999.000
+    BUSI               0.000      0.000    999.000    999.000
+    CUSI               0.000      0.000    999.000    999.000
+    DUSI               0.000      0.000    999.000    999.000
+    P2                75.915      5.100     14.886      0.000
+    P3                75.915      5.100     14.886      0.000
+    P4                75.915      5.100     14.886      0.000
+    V2                70.042      4.541     15.424      0.000
+    V3                70.042      4.541     15.424      0.000
+    V4                70.042      4.541     15.424      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.241E-04
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  15:55:32
+        Ending Time:  15:55:55
+       Elapsed Time:  00:00:23
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen
