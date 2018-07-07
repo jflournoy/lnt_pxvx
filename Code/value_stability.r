@@ -164,6 +164,7 @@ nada <- summaries %>%
 #'
 #+results='asis'
 nada <- bind_rows(summaryTableLong, summaryDiffs) %>%
+  filter(!grepl('_d$', variable)) %>%
 	spread(stat, value) %>%
 	mutate(modelType=factor(modelType, levels=c('longitudinal', 'group', 'difference'))) %>%
 	arrange(sample, variable, modelType) %>%
@@ -184,6 +185,29 @@ nada <- bind_rows(summaryTableLong, summaryDiffs) %>%
 		cat('\n\n\n')
 		data_frame(table=list(atable), sample=asamp)
 	})
+
+nada <- bind_rows(summaryTableLong, summaryDiffs) %>%
+  filter(grepl('_d$', variable)) %>%
+  spread(stat, value) %>%
+  mutate(modelType=factor(modelType, levels=c('longitudinal', 'group', 'difference'))) %>%
+  arrange(sample, variable, modelType) %>%
+  mutate(ChiSqM_PValue=ifelse(is.na(ChiSqM_PValue),
+                              1-pchisq(ChiSqM_Value, ChiSqM_DF),
+                              ChiSqM_PValue)) %>%
+  group_by(sample) %>%
+  do({
+    asamp <- unique(.$sample)
+    atable <- as_data_frame(.) %>% select(variable, modelType, Parameters, 
+                                          ChiSqM_Value, ChiSqM_DF, ChiSqM_PValue, MFI,
+                                          AIC, BIC) %>%
+      mutate(Parameters=ifelse(is.na(Parameters),
+                               '',
+                               Parameters)) %>%
+      kable(caption=paste0('Sample: ', asamp))
+    print(atable)
+    cat('\n\n\n')
+    data_frame(table=list(atable), sample=asamp)
+  })
 
 #'
 #' # Group-invariant stability

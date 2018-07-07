@@ -370,9 +370,32 @@ v_plot_mvi <- vDF %>%
   coord_cartesian(y = c(20,80)) + 
   labs(y="Scale Score\n(in POMP units)",x="Age")
 
+v_plot_pub <- vDF %>%
+  filter(wave == 'a', !grepl('Invariant', variable)) %>%
+  left_join(summary_data_for_tables_w) %>%
+  ggplot(aes(x = half_decade, y = mean)) +
+  geom_errorbar(aes(ymin = ci_l, ymax = ci_u),
+                width = 0, color = meangray,
+                position = position_dodge(width = 2)) + 
+  geom_point(position = position_dodge(width = 2), color = meangray) + 
+  # geom_line(position = position_dodge(width = 2))+
+  geom_abline(aes(intercept = i_age_zero, slope = s_mu)) + 
+  facet_wrap(~variable, ncol = 2) + 
+  scale_x_continuous(breaks = seq(25,50,5)) +
+  scale_y_continuous(breaks = c(25,50,75)) + 
+  theme(panel.border = element_rect(fill = NA, color = bordergray, size = 2, linetype = 1),
+        strip.background = element_rect(fill=bordergray, color = bordergray, size = 1, linetype = 1),
+        axis.line.x = element_line(color = NA, size = .5, linetype = 1),
+        axis.line.y = element_line(color = NA, size = .5, linetype = 1),
+        panel.spacing = unit(0, units = 'in')) + 
+  labs(y="Scale Score (in POMP units)",x="Age")
+
 ggsave(plot = v_plot, filename = 'v_plot_mi.png', width = 7.5, height = 9.5, units = 'in', dpi = 300)
 ggsave(plot = v_plot_mvi, filename = 'v_plot_mi_mvi.png', width = 3.5, height = 2.5, units = 'in', dpi = 300)
+ggsave(plot = v_plot_pub, filename = 'v_plot_mi_pub.png', width = 7.5, height = 9.5, units = 'in', dpi = 300)
 
+#' ![](v_plot_mi_pub.png)
+#'
 #' ![](v_plot_mi.png)
 #' 
 #' **MVI**
