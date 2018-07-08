@@ -1,0 +1,3160 @@
+Mplus VERSION 8 (Linux)
+MUTHEN & MUTHEN
+07/07/2018   6:26 PM
+
+INPUT INSTRUCTIONS
+
+
+  title: PxVx Bivariate LCM-SR - decadegroup - Linear bfas_ac with Linear mvi;
+  data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
+
+  variable:
+  names =
+  subjid
+  aage
+  aaspfin
+  aaspfin_d
+  abfa_mt
+  abfa_mt_d
+  abfas_ac
+  abfas_ap
+  abfas_ci
+  abfas_co
+  abfas_ea
+  abfas_ee
+  abfas_nv
+  abfas_nv9
+  abfas_nw
+  abfas_oi
+  abfas_oo
+  abfi_a
+  abfi_a6
+  abfi_c
+  abfi_d_scale
+  abfi_e
+  abfi_hp8
+  abfi_n
+  abfi_o
+  abfi_s_scale
+  ahrz_col
+  ahrz_col_d
+  ahrz_ind
+  ahrz_ind_d
+  amvi
+  ausi
+  ausi_d
+  avrt_col
+  avrt_col_d
+  avrt_ind
+  avrt_ind_d
+  bage
+  baspfin
+  baspfin_d
+  bbfa_mt
+  bbfa_mt_d
+  bbfas_ac
+  bbfas_ap
+  bbfas_ci
+  bbfas_co
+  bbfas_ea
+  bbfas_ee
+  bbfas_nv
+  bbfas_nv9
+  bbfas_nw
+  bbfas_oi
+  bbfas_oo
+  bbfi_a
+  bbfi_a6
+  bbfi_c
+  bbfi_d_scale
+  bbfi_e
+  bbfi_hp8
+  bbfi_n
+  bbfi_o
+  bbfi_s_scale
+  bhrz_col
+  bhrz_col_d
+  bhrz_ind
+  bhrz_ind_d
+  bmvi
+  busi
+  busi_d
+  bvrt_col
+  bvrt_col_d
+  bvrt_ind
+  bvrt_ind_d
+  cage
+  caspfin
+  caspfin_d
+  cbfa_mt
+  cbfa_mt_d
+  cbfas_ac
+  cbfas_ap
+  cbfas_ci
+  cbfas_co
+  cbfas_ea
+  cbfas_ee
+  cbfas_nv
+  cbfas_nv9
+  cbfas_nw
+  cbfas_oi
+  cbfas_oo
+  cbfi_a
+  cbfi_a6
+  cbfi_c
+  cbfi_d_scale
+  cbfi_e
+  cbfi_hp8
+  cbfi_n
+  cbfi_o
+  cbfi_s_scale
+  chrz_col
+  chrz_col_d
+  chrz_ind
+  chrz_ind_d
+  cmvi
+  cusi
+  cusi_d
+  cvrt_col
+  cvrt_col_d
+  cvrt_ind
+  cvrt_ind_d
+  dage
+  daspfin
+  daspfin_d
+  dbfa_mt
+  dbfa_mt_d
+  dbfas_ac
+  dbfas_ap
+  dbfas_ci
+  dbfas_co
+  dbfas_ea
+  dbfas_ee
+  dbfas_nv
+  dbfas_nv9
+  dbfas_nw
+  dbfas_oi
+  dbfas_oo
+  dbfi_a
+  dbfi_a6
+  dbfi_c
+  dbfi_d_scale
+  dbfi_e
+  dbfi_hp8
+  dbfi_n
+  dbfi_o
+  dbfi_s_scale
+  dhrz_col
+  dhrz_col_d
+  dhrz_ind
+  dhrz_ind_d
+  dmvi
+  dusi
+  dusi_d
+  dvrt_col
+  dvrt_col_d
+  dvrt_ind
+  dvrt_ind_d;
+
+  USEVARIABLES =
+  abfas_ac
+  bbfas_ac
+  cbfas_ac
+  dbfas_ac
+  amvi
+  bmvi
+  cmvi
+  dmvi
+  a1
+  a2
+  a3
+  a4
+  ;
+
+  missing = all (-9999);
+
+  tscores = a1 a2 a3 a4;
+
+  grouping = aage (0=d2, 1=d3, 2=d4, 3=d5);
+
+  DEFINE:
+
+  cut aage (29 39 49);
+
+  a1 = aage + 0 - 36;
+  a2 = aage + 1 - 36;
+  a3 = aage + 2 - 36;
+  a4 = aage + 3 - 36;
+
+  ANALYSIS:
+  TYPE=RANDOM;
+  PROCESSORS = 6;
+  model=nocovariances; ! supresses default estimation of certain covs in model;
+
+  MODEL:
+
+  i_bfas_ac s_bfas_ac | abfas_ac bbfas_ac cbfas_ac dbfas_ac AT a1 a2 a3 a4;
+  i_mvi s_mvi | amvi bmvi cmvi dmvi AT a1 a2 a3 a4;
+
+  ! freeing factor covs because of "nocovariances"
+  s_bfas_ac WITH i_bfas_ac s_mvi i_mvi;
+  i_bfas_ac WITH s_mvi i_mvi;
+  s_mvi WITH i_mvi;
+
+  p1 BY abfas_ac@1; ! Residual "factors";
+  p2 BY bbfas_ac@1;
+  p3 BY cbfas_ac@1;
+  p4 BY dbfas_ac@1;
+
+  v1 BY amvi@1; ! Residual "factors";
+  v2 BY bmvi@1;
+  v3 BY cmvi@1;
+  v4 BY dmvi@1;
+
+  !residual variances on observed/manifest vars set to 0
+  abfas_ac@0;
+  bbfas_ac@0;
+  cbfas_ac@0;
+  dbfas_ac@0;
+
+  !residual variances on observed/manifest vars set to 0
+  amvi@0;
+  bmvi@0;
+  cmvi@0;
+  dmvi@0;
+
+  ! means of observed/manifest vars set to 0
+  [abfas_ac@0];
+  [bbfas_ac@0];
+  [cbfas_ac@0];
+  [dbfas_ac@0];
+
+  ! means of observed/manifest vars set to 0
+  [amvi@0];
+  [bmvi@0];
+  [cmvi@0];
+  [dmvi@0];
+
+  [p1@0]; ! means of residual "factors" set to 0
+  [p2@0];
+  [p3@0];
+  [p4@0];
+
+  [v1@0]; ! means of residual "factors" set to 0
+  [v2@0];
+  [v3@0];
+  [v4@0];
+
+  p4 on p3 (a); ! Autoregressive paths constrained to equality
+  p3 on p2 (a);
+  p2 on p1 (a);
+
+  v4 on v3 (b); ! Autoregressive paths constrained to equality
+  v3 on v2 (b);
+  v2 on v1 (b);
+
+  p4 on v3 (c); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c);
+  p2 on v1 (c);
+
+  v4 on p3 (d); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d);
+  v2 on p1 (d);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e); ! Within-wave correlations constrained to equality
+  p3 with v3 (e);
+  p4 with v4 (e);
+
+  p2 p3 p4 (f); ! estimate variances of residual "factors"
+  v2 v3 v4 (g); ! estimate variances of residual "factors"
+
+  MODEL d2:
+
+  p4 on p3 (a2); ! Autoregressive paths constrained to equality
+  p3 on p2 (a2);
+  p2 on p1 (a2);
+
+  v4 on v3 (b2); ! Autoregressive paths constrained to equality
+  v3 on v2 (b2);
+  v2 on v1 (b2);
+
+  p4 on v3 (c2); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c2);
+  p2 on v1 (c2);
+
+  v4 on p3 (d2); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d2);
+  v2 on p1 (d2);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e2); ! Within-wave correlations constrained to equality
+  p3 with v3 (e2);
+  p4 with v4 (e2);
+
+  p2 p3 p4 (f2); ! estimate variances of residual "factors"
+  v2 v3 v4 (g2); ! estimate variances of residual "factors"
+
+  MODEL d3:
+
+  p4 on p3 (a3); ! Autoregressive paths constrained to equality
+  p3 on p2 (a3);
+  p2 on p1 (a3);
+
+  v4 on v3 (b3); ! Autoregressive paths constrained to equality
+  v3 on v2 (b3);
+  v2 on v1 (b3);
+
+  p4 on v3 (c3); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c3);
+  p2 on v1 (c3);
+
+  v4 on p3 (d3); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d3);
+  v2 on p1 (d3);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e3); ! Within-wave correlations constrained to equality
+  p3 with v3 (e3);
+  p4 with v4 (e3);
+
+  p2 p3 p4 (f3); ! estimate variances of residual "factors"
+  v2 v3 v4 (g3); ! estimate variances of residual "factors"
+
+  MODEL d4:
+
+  p4 on p3 (a4); ! Autoregressive paths constrained to equality
+  p3 on p2 (a4);
+  p2 on p1 (a4);
+
+  v4 on v3 (b4); ! Autoregressive paths constrained to equality
+  v3 on v2 (b4);
+  v2 on v1 (b4);
+
+  p4 on v3 (c4); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c4);
+  p2 on v1 (c4);
+
+  v4 on p3 (d4); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d4);
+  v2 on p1 (d4);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e4); ! Within-wave correlations constrained to equality
+  p3 with v3 (e4);
+  p4 with v4 (e4);
+
+  p2 p3 p4 (f4); ! estimate variances of residual "factors"
+  v2 v3 v4 (g4); ! estimate variances of residual "factors"
+
+  MODEL d5:
+
+  p4 on p3 (a5); ! Autoregressive paths constrained to equality
+  p3 on p2 (a5);
+  p2 on p1 (a5);
+
+  v4 on v3 (b5); ! Autoregressive paths constrained to equality
+  v3 on v2 (b5);
+  v2 on v1 (b5);
+
+  p4 on v3 (c5); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c5);
+  p2 on v1 (c5);
+
+  v4 on p3 (d5); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d5);
+  v2 on p1 (d5);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e5); ! Within-wave correlations constrained to equality
+  p3 with v3 (e5);
+  p4 with v4 (e5);
+
+  p2 p3 p4 (f5); ! estimate variances of residual "factors"
+  v2 v3 v4 (g5); ! estimate variances of residual "factors"
+
+  OUTPUT: SAMPSTAT PATTERNS;
+
+
+
+*** WARNING
+  Data set contains unknown or missing values for GROUPING,
+  PATTERN, COHORT, CLUSTER and/or STRATIFICATION variables.
+  Number of cases with unknown or missing values:  5
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+PxVx Bivariate LCM-SR - decadegroup - Linear bfas_ac with Linear mvi;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 4
+Number of observations
+   Group D2                                                    301
+   Group D3                                                    233
+   Group D4                                                    198
+   Group D5                                                    132
+   Total sample size                                           864
+
+Number of dependent variables                                    8
+Number of independent variables                                  0
+Number of continuous latent variables                           12
+
+Observed dependent variables
+
+  Continuous
+   ABFAS_AC    BBFAS_AC    CBFAS_AC    DBFAS_AC    AMVI        BMVI
+   CMVI        DMVI
+
+Continuous latent variables
+   P1          P2          P3          P4          V1          V2
+   V3          V4          I_BFAS_A    S_BFAS_A    I_MVI       S_MVI
+
+Variables with special functions
+
+  Grouping variable     AAGE
+
+  Time scores
+   A1          A2          A3          A4
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                   100
+Convergence criterion                                    0.100D-05
+Maximum number of EM iterations                                500
+Convergence criteria for the EM algorithm
+  Loglikelihood change                                   0.100D-02
+  Relative loglikelihood change                          0.100D-05
+  Derivative                                             0.100D-03
+Minimum variance                                         0.100D-03
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+
+Input data file(s)
+  /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group D2
+     Number of missing data patterns            10
+
+   Group D3
+     Number of missing data patterns            10
+
+   Group D4
+     Number of missing data patterns            11
+
+   Group D5
+     Number of missing data patterns             9
+
+
+SUMMARY OF MISSING DATA PATTERNS
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D2
+
+           1  2  3  4  5  6  7  8  9 10
+ ABFAS_AC  x  x  x  x  x  x  x  x  x
+ BBFAS_AC  x     x  x  x     x        x
+ CBFAS_AC  x           x        x  x  x
+ DBFAS_AC  x     x        x        x  x
+ AMVI      x  x  x  x  x  x     x  x  x
+ BMVI      x     x  x  x     x        x
+ CMVI      x           x        x  x  x
+ DMVI      x     x        x        x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D2
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         188           5          15           9           6
+          2          57           6          11          10           1
+          3           6           7           1
+          4          11           8           5
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D3
+
+           1  2  3  4  5  6  7  8  9 10
+ ABFAS_AC  x  x  x  x  x  x  x  x  x  x
+ BBFAS_AC  x     x  x  x           x
+ CBFAS_AC  x           x     x  x
+ DBFAS_AC  x     x        x     x     x
+ AMVI      x  x  x  x  x  x  x  x  x  x
+ BMVI      x     x  x  x
+ CMVI      x           x     x  x
+ DMVI      x     x        x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D3
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         140           5           7           9           1
+          2          44           6           3          10           1
+          3           8           7           7
+          4          15           8           7
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D4
+
+           1  2  3  4  5  6  7  8  9 10 11
+ ABFAS_AC  x  x  x  x  x  x  x  x  x  x  x
+ BBFAS_AC  x     x  x  x           x  x
+ CBFAS_AC  x           x     x  x     x
+ DBFAS_AC  x     x        x     x     x
+ AMVI      x  x  x  x  x  x  x  x  x  x
+ BMVI      x     x  x  x
+ CMVI      x           x     x  x     x
+ DMVI      x     x        x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D4
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         105           5          15           9           2
+          2          39           6           4          10           1
+          3           8           7           6          11           1
+          4          12           8           5
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D5
+
+           1  2  3  4  5  6  7  8  9
+ ABFAS_AC  x  x  x  x  x  x  x  x
+ BBFAS_AC  x     x  x  x           x
+ CBFAS_AC  x           x     x  x  x
+ DBFAS_AC  x     x        x     x  x
+ AMVI      x  x  x  x  x  x  x  x  x
+ BMVI      x     x  x  x           x
+ CMVI      x           x     x  x  x
+ DMVI      x     x        x     x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D5
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1          60           4          10           7           6
+          2          29           5          11           8           4
+          3           5           6           6           9           1
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR D2
+
+
+           Covariance Coverage
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC       0.997
+ BBFAS_AC       0.734         0.738
+ CBFAS_AC       0.711         0.678         0.714
+ DBFAS_AC       0.701         0.648         0.648         0.704
+ AMVI           0.993         0.734         0.714         0.704         0.997
+ BMVI           0.734         0.738         0.678         0.648         0.734
+ CMVI           0.711         0.678         0.714         0.648         0.714
+ DMVI           0.701         0.648         0.648         0.704         0.704
+
+
+           Covariance Coverage
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI           0.738
+ CMVI           0.678         0.714
+ DMVI           0.648         0.648         0.704
+
+
+     PROPORTION OF DATA PRESENT FOR D3
+
+
+           Covariance Coverage
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC       0.996
+ BBFAS_AC       0.760         0.764
+ CBFAS_AC       0.665         0.635         0.670
+ DBFAS_AC       0.652         0.639         0.609         0.657
+ AMVI           0.966         0.734         0.670         0.657         0.970
+ BMVI           0.760         0.764         0.635         0.639         0.734
+ CMVI           0.665         0.635         0.670         0.609         0.670
+ DMVI           0.652         0.639         0.609         0.657         0.657
+
+
+           Covariance Coverage
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI           0.764
+ CMVI           0.635         0.670
+ DMVI           0.639         0.609         0.657
+
+
+     PROPORTION OF DATA PRESENT FOR D4
+
+
+           Covariance Coverage
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC       0.995
+ BBFAS_AC       0.742         0.747
+ CBFAS_AC       0.641         0.611         0.646
+ DBFAS_AC       0.601         0.576         0.545         0.606
+ AMVI           0.965         0.717         0.646         0.606         0.970
+ BMVI           0.737         0.742         0.611         0.576         0.712
+ CMVI           0.641         0.611         0.646         0.545         0.646
+ DMVI           0.601         0.576         0.545         0.606         0.606
+
+
+           Covariance Coverage
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI           0.742
+ CMVI           0.611         0.646
+ DMVI           0.576         0.545         0.606
+
+
+     PROPORTION OF DATA PRESENT FOR D5
+
+
+           Covariance Coverage
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC       1.000
+ BBFAS_AC       0.697         0.697
+ CBFAS_AC       0.576         0.538         0.576
+ DBFAS_AC       0.545         0.492         0.462         0.545
+ AMVI           0.955         0.652         0.576         0.545         0.955
+ BMVI           0.697         0.697         0.538         0.492         0.652
+ CMVI           0.576         0.538         0.576         0.462         0.576
+ DMVI           0.545         0.492         0.462         0.545         0.545
+
+
+           Covariance Coverage
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI           0.697
+ CMVI           0.538         0.576
+ DMVI           0.492         0.462         0.545
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D2
+
+
+           Means
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+               76.100        75.081        75.849        75.954        63.766
+
+
+           Means
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+               62.600        63.293        62.755
+
+
+           Covariances
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC     295.936
+ BBFAS_AC     241.962       305.174
+ CBFAS_AC     203.047       244.770       278.306
+ DBFAS_AC     211.630       222.056       231.353       272.618
+ AMVI          57.958        62.669        51.223        46.971        64.062
+ BMVI          52.508        71.937        62.032        54.352        50.708
+ CMVI          49.022        65.344        65.998        56.753        48.444
+ DMVI          44.530        57.273        56.280        51.920        42.226
+
+
+           Covariances
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI          68.224
+ CMVI          57.814        80.511
+ DMVI          50.116        57.072        63.564
+
+
+           Correlations
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC       1.000
+ BBFAS_AC       0.805         1.000
+ CBFAS_AC       0.708         0.840         1.000
+ DBFAS_AC       0.745         0.770         0.840         1.000
+ AMVI           0.421         0.448         0.384         0.355         1.000
+ BMVI           0.370         0.499         0.450         0.399         0.767
+ CMVI           0.318         0.417         0.441         0.383         0.675
+ DMVI           0.325         0.411         0.423         0.394         0.662
+
+
+           Correlations
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI           1.000
+ CMVI           0.780         1.000
+ DMVI           0.761         0.798         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D3
+
+
+           Means
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+               77.302        78.271        76.414        78.868        64.232
+
+
+           Means
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+               63.689        64.095        63.957
+
+
+           Covariances
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC     240.549
+ BBFAS_AC     192.249       256.230
+ CBFAS_AC     193.815       216.709       276.668
+ DBFAS_AC     163.512       181.263       196.731       216.390
+ AMVI          64.936        53.347        58.157        44.720        65.308
+ BMVI          51.129        48.160        47.518        35.243        48.822
+ CMVI          54.195        45.100        57.829        43.063        51.441
+ DMVI          51.227        47.244        52.367        49.113        47.174
+
+
+           Covariances
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI          57.769
+ CMVI          49.574        70.063
+ DMVI          46.960        50.214        62.518
+
+
+           Correlations
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC       1.000
+ BBFAS_AC       0.774         1.000
+ CBFAS_AC       0.751         0.814         1.000
+ DBFAS_AC       0.717         0.770         0.804         1.000
+ AMVI           0.518         0.412         0.433         0.376         1.000
+ BMVI           0.434         0.396         0.376         0.315         0.795
+ CMVI           0.417         0.337         0.415         0.350         0.760
+ DMVI           0.418         0.373         0.398         0.422         0.738
+
+
+           Correlations
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI           1.000
+ CMVI           0.779         1.000
+ DMVI           0.781         0.759         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D4
+
+
+           Means
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+               77.276        78.737        78.203        77.304        65.184
+
+
+           Means
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+               65.473        64.464        64.760
+
+
+           Covariances
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC     219.768
+ BBFAS_AC     159.399       200.137
+ CBFAS_AC     175.012       171.420       229.674
+ DBFAS_AC     184.075       175.660       195.272       255.097
+ AMVI          51.867        50.850        40.211        40.923        56.106
+ BMVI          42.485        49.510        49.305        46.613        41.142
+ CMVI          41.262        40.025        38.234        45.942        41.006
+ DMVI          53.745        50.550        50.522        54.522        39.876
+
+
+           Covariances
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI          52.653
+ CMVI          41.038        51.397
+ DMVI          40.606        42.179        49.573
+
+
+           Correlations
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC       1.000
+ BBFAS_AC       0.760         1.000
+ CBFAS_AC       0.779         0.800         1.000
+ DBFAS_AC       0.777         0.777         0.807         1.000
+ AMVI           0.467         0.480         0.354         0.342         1.000
+ BMVI           0.395         0.482         0.448         0.402         0.757
+ CMVI           0.388         0.395         0.352         0.401         0.764
+ DMVI           0.515         0.507         0.473         0.485         0.756
+
+
+           Correlations
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI           1.000
+ CMVI           0.789         1.000
+ DMVI           0.795         0.836         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D5
+
+
+           Means
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+               82.474        81.828        80.643        79.622        66.683
+
+
+           Means
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+               67.087        66.849        66.468
+
+
+           Covariances
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC     267.691
+ BBFAS_AC     172.101       168.399
+ CBFAS_AC     198.182       142.301       234.583
+ DBFAS_AC     237.540       167.459       218.551       290.532
+ AMVI          50.245        29.860        54.515        55.512        66.635
+ BMVI          39.767        29.676        53.043        51.117        51.191
+ CMVI          53.866        40.712        59.036        70.906        45.724
+ DMVI          39.128        24.783        40.508        45.399        49.466
+
+
+           Covariances
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI          60.204
+ CMVI          48.725        61.537
+ DMVI          48.498        48.380        57.633
+
+
+           Correlations
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC       1.000
+ BBFAS_AC       0.811         1.000
+ CBFAS_AC       0.791         0.716         1.000
+ DBFAS_AC       0.852         0.757         0.837         1.000
+ AMVI           0.376         0.282         0.436         0.399         1.000
+ BMVI           0.313         0.295         0.446         0.387         0.808
+ CMVI           0.420         0.400         0.491         0.530         0.714
+ DMVI           0.315         0.252         0.348         0.351         0.798
+
+
+           Correlations
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI           1.000
+ CMVI           0.801         1.000
+ DMVI           0.823         0.812         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -18133.052
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D2
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_AC             76.056      -0.996      12.500    0.33%      62.500     75.000     80.000
+             300.000     296.036       0.890     100.000    4.33%      82.500     90.000
+     BBFAS_AC             75.413      -0.861      10.000    0.45%      61.111     75.000     77.500
+             222.000     297.720       0.636     100.000    6.31%      82.500     90.000
+     CBFAS_AC             75.775      -0.891      20.000    0.47%      65.000     75.000     77.500
+             215.000     277.765       0.460     100.000    3.26%      82.500     90.000
+     DBFAS_AC             76.226      -1.076      10.000    0.47%      65.000     75.000     80.000
+             212.000     274.970       1.266     100.000    3.30%      82.500     90.000
+     AMVI                 63.781       0.026      39.062    0.33%      57.353     61.029     63.235
+             300.000      64.132       0.128      86.765    0.33%      65.441     70.588
+     BMVI                 62.699       0.015      41.912    0.45%      55.882     59.559     62.500
+             222.000      66.807      -0.454      80.882    0.45%      63.971     70.588
+     CMVI                 63.293      -0.063      33.088    0.47%      55.882     61.029     62.500
+             215.000      79.579       0.245      86.765    0.47%      65.441     70.588
+     DMVI                 63.000      -0.073      36.029    0.47%      56.618     61.029     63.235
+             212.000      63.144       0.524      85.294    0.47%      64.706     69.118
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D3
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_AC             77.302      -0.508      40.000    0.86%      62.500     75.000     77.500
+             233.000     240.549      -0.591     100.000    5.58%      82.500     92.500
+     BBFAS_AC             78.577      -0.742      27.500    0.58%      65.000     77.500     80.000
+             171.000     262.688       0.015     100.000    7.02%      85.000     95.000
+     CBFAS_AC             76.347      -0.625      27.500    0.62%      60.000     75.000     80.000
+             161.000     283.665      -0.216     100.000    8.07%      82.500     92.500
+     DBFAS_AC             79.347      -0.697      35.000    0.63%      67.500     77.500     82.500
+             159.000     212.902       0.124     100.000    7.55%      85.000     92.500
+     AMVI                 64.232      -0.060      32.353    0.43%      56.618     61.765     63.971
+             233.000      65.308       0.444      86.029    0.43%      66.912     71.324
+     BMVI                 63.443       0.007      40.441    0.59%      56.618     61.029     62.868
+             170.000      60.193      -0.013      86.029    0.59%      65.441     69.853
+     CMVI                 63.788       0.049      39.706    0.62%      56.618     61.029     63.235
+             161.000      69.990      -0.097      87.500    0.62%      65.441     71.324
+     DMVI                 63.920       0.081      42.647    0.63%      57.353     61.029     63.603
+             158.000      62.185      -0.100      85.294    0.63%      65.441     71.324
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D4
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_AC             77.276      -0.816      27.500    0.51%      67.500     75.000     77.500
+             198.000     219.768       0.844     100.000    6.57%      80.556     90.000
+     BBFAS_AC             78.640      -0.743      32.500    0.70%      70.000     77.500     77.778
+             143.000     201.389       0.577     100.000    6.29%      82.500     92.500
+     CBFAS_AC             78.655      -0.709      32.500    0.76%      67.500     75.000     78.889
+             132.000     229.406       0.333     100.000    7.58%      82.500     92.500
+     DBFAS_AC             77.667      -0.767      27.500    0.81%      67.500     75.000     80.000
+             123.000     261.389       0.537     100.000   10.57%      82.500     92.500
+     AMVI                 65.223      -0.002      47.794    1.52%      58.824     63.235     65.441
+             197.000      55.873      -0.325      82.812    0.51%      66.912     71.324
+     BMVI                 65.398       0.236      49.265    0.71%      59.559     63.235     64.706
+             140.000      52.404       0.150      88.235    0.71%      66.912     71.324
+     CMVI                 64.509       0.114      44.853    0.76%      58.088     62.500     63.971
+             132.000      52.452      -0.116      81.618    1.52%      65.441     69.853
+     DMVI                 64.485       0.112      46.324    0.81%      58.824     62.500     63.971
+             123.000      49.125      -0.337      83.088    0.81%      66.176     71.324
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D5
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_AC             82.309      -1.385       7.500    0.76%      71.875     82.500     87.500
+             131.000     265.739       2.524     100.000   12.21%      90.000     95.000
+     BBFAS_AC             83.004      -1.094      42.500    1.15%      75.000     82.500     85.000
+              87.000     171.564       1.006     100.000    9.20%      88.889     92.500
+     CBFAS_AC             82.226      -1.341      17.500    1.22%      70.000     82.500     87.500
+              82.000     236.891       2.422     100.000    8.54%      90.000     95.000
+     DBFAS_AC             82.664      -1.804       5.000    1.32%      72.500     80.000     85.000
+              76.000     262.720       5.417     100.000   14.47%      87.500     97.500
+     AMVI                 66.683       0.214      43.382    0.76%      60.294     63.971     66.176
+             132.000      66.635       0.397      92.647    0.76%      67.647     72.794
+     BMVI                 67.492      -0.138      48.529    1.15%      60.294     65.441     67.647
+              87.000      59.577      -0.604      82.353    1.15%      69.853     73.529
+     CMVI                 67.726      -0.376      44.853    1.22%      60.294     66.176     67.647
+              82.000      61.225       0.192      84.559    1.22%      69.853     75.000
+     DMVI                 67.355      -0.200      44.118    1.32%      61.029     65.441     67.279
+              76.000      56.142       0.278      83.088    2.63%      68.382     72.794
+
+     THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO AN ILL-CONDITIONED
+     FISHER INFORMATION MATRIX.  CHANGE YOUR MODEL AND/OR STARTING VALUES.
+
+     THE MODEL ESTIMATION DID NOT TERMINATE NORMALLY DUE TO A NON-POSITIVE
+     DEFINITE FISHER INFORMATION MATRIX.  THIS MAY BE DUE TO THE STARTING VALUES
+     BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE CONDITION
+     NUMBER IS       0.566D-10.
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES COULD NOT BE
+     COMPUTED.  THIS IS OFTEN DUE TO THE STARTING VALUES BUT MAY ALSO BE
+     AN INDICATION OF MODEL NONIDENTIFICATION.  CHANGE YOUR MODEL AND/OR
+     STARTING VALUES.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 2, Group D2: [ S_BFAS_AC ]
+
+
+
+
+
+
+MODEL RESULTS
+
+                    Estimate
+
+Group D2
+
+ P1       BY
+    ABFAS_AC           1.000
+
+ P2       BY
+    BBFAS_AC           1.000
+
+ P3       BY
+    CBFAS_AC           1.000
+
+ P4       BY
+    DBFAS_AC           1.000
+
+ V1       BY
+    AMVI               1.000
+
+ V2       BY
+    BMVI               1.000
+
+ V3       BY
+    CMVI               1.000
+
+ V4       BY
+    DMVI               1.000
+
+ P4         ON
+    P3                 0.328
+    V3                 0.146
+
+ P3         ON
+    P2                 0.328
+    V2                 0.146
+
+ P2         ON
+    P1                 0.328
+    V1                 0.146
+
+ V4         ON
+    V3                 0.224
+    P3                 0.024
+
+ V3         ON
+    V2                 0.224
+    P2                 0.024
+
+ V2         ON
+    V1                 0.224
+    P1                 0.024
+
+ S_BFAS_A WITH
+    I_BFAS_AC         13.215
+    S_MVI             -0.024
+    I_MVI             -0.930
+
+ I_BFAS_A WITH
+    S_MVI             -0.744
+    I_MVI             20.220
+
+ S_MVI    WITH
+    I_MVI             13.518
+
+ P1       WITH
+    V1                13.709
+
+ P2       WITH
+    V2                 8.118
+
+ P3       WITH
+    V3                 8.118
+
+ P4       WITH
+    V4                 8.118
+
+ Means
+    P1                 0.000
+    V1                 0.000
+    I_BFAS_AC         75.493
+    S_BFAS_AC         -0.010
+    I_MVI             53.316
+    S_MVI             -0.285
+
+ Intercepts
+    ABFAS_AC           0.000
+    BBFAS_AC           0.000
+    CBFAS_AC           0.000
+    DBFAS_AC           0.000
+    AMVI               0.000
+    BMVI               0.000
+    CMVI               0.000
+    DMVI               0.000
+    P2                 0.000
+    P3                 0.000
+    P4                 0.000
+    V2                 0.000
+    V3                 0.000
+    V4                 0.000
+
+ Variances
+    P1                97.521
+    V1                22.701
+    I_BFAS_AC        672.028
+    S_BFAS_AC          0.373
+    I_MVI            556.653
+    S_MVI              0.355
+
+ Residual Variances
+    ABFAS_AC           0.000
+    BBFAS_AC           0.000
+    CBFAS_AC           0.000
+    DBFAS_AC           0.000
+    AMVI               0.000
+    BMVI               0.000
+    CMVI               0.000
+    DMVI               0.000
+    P2                64.287
+    P3                64.287
+    P4                64.287
+    V2                18.849
+    V3                18.849
+    V4                18.849
+
+Group D3
+
+ P1       BY
+    ABFAS_AC           1.000
+
+ P2       BY
+    BBFAS_AC           1.000
+
+ P3       BY
+    CBFAS_AC           1.000
+
+ P4       BY
+    DBFAS_AC           1.000
+
+ V1       BY
+    AMVI               1.000
+
+ V2       BY
+    BMVI               1.000
+
+ V3       BY
+    CMVI               1.000
+
+ V4       BY
+    DMVI               1.000
+
+ P4         ON
+    P3                 0.104
+    V3                -0.035
+
+ P3         ON
+    P2                 0.104
+    V2                -0.035
+
+ P2         ON
+    P1                 0.104
+    V1                -0.035
+
+ V4         ON
+    V3                -0.059
+    P3                -0.018
+
+ V3         ON
+    V2                -0.059
+    P2                -0.018
+
+ V2         ON
+    V1                -0.059
+    P1                -0.018
+
+ S_BFAS_A WITH
+    I_BFAS_AC         72.094
+    S_MVI              1.136
+    I_MVI             34.619
+
+ I_BFAS_A WITH
+    S_MVI             36.864
+    I_MVI           1169.916
+
+ S_MVI    WITH
+    I_MVI             31.026
+
+ P1       WITH
+    V1                 2.806
+
+ P2       WITH
+    V2                 4.563
+
+ P3       WITH
+    V3                 4.563
+
+ P4       WITH
+    V4                 4.563
+
+ Means
+    P1                 0.000
+    V1                 0.000
+    I_BFAS_AC         87.372
+    S_BFAS_AC          0.288
+    I_MVI             62.131
+    S_MVI             -0.056
+
+ Intercepts
+    ABFAS_AC           0.000
+    BBFAS_AC           0.000
+    CBFAS_AC           0.000
+    DBFAS_AC           0.000
+    AMVI               0.000
+    BMVI               0.000
+    CMVI               0.000
+    DMVI               0.000
+    P2                 0.000
+    P3                 0.000
+    P4                 0.000
+    V2                 0.000
+    V3                 0.000
+    V4                 0.000
+
+ Variances
+    P1                57.892
+    V1                12.541
+    I_BFAS_AC       2575.291
+    S_BFAS_AC          2.175
+    I_MVI           1089.760
+    S_MVI              0.926
+
+ Residual Variances
+    ABFAS_AC           0.000
+    BBFAS_AC           0.000
+    CBFAS_AC           0.000
+    DBFAS_AC           0.000
+    AMVI               0.000
+    BMVI               0.000
+    CMVI               0.000
+    DMVI               0.000
+    P2                57.031
+    P3                57.031
+    P4                57.031
+    V2                13.042
+    V3                13.042
+    V4                13.042
+
+Group D4
+
+ P1       BY
+    ABFAS_AC           1.000
+
+ P2       BY
+    BBFAS_AC           1.000
+
+ P3       BY
+    CBFAS_AC           1.000
+
+ P4       BY
+    DBFAS_AC           1.000
+
+ V1       BY
+    AMVI               1.000
+
+ V2       BY
+    BMVI               1.000
+
+ V3       BY
+    CMVI               1.000
+
+ V4       BY
+    DMVI               1.000
+
+ P4         ON
+    P3                -0.073
+    V3                 0.490
+
+ P3         ON
+    P2                -0.073
+    V2                 0.490
+
+ P2         ON
+    P1                -0.073
+    V1                 0.490
+
+ V4         ON
+    V3                -0.002
+    P3                -0.054
+
+ V3         ON
+    V2                -0.002
+    P2                -0.054
+
+ V2         ON
+    V1                -0.002
+    P1                -0.054
+
+ S_BFAS_A WITH
+    I_BFAS_AC         49.772
+    S_MVI              0.238
+    I_MVI              7.145
+
+ I_BFAS_A WITH
+    S_MVI              9.995
+    I_MVI            351.214
+
+ S_MVI    WITH
+    I_MVI              6.920
+
+ P1       WITH
+    V1                 8.880
+
+ P2       WITH
+    V2                 0.682
+
+ P3       WITH
+    V3                 0.682
+
+ P4       WITH
+    V4                 0.682
+
+ Means
+    P1                 0.000
+    V1                 0.000
+    I_BFAS_AC         76.777
+    S_BFAS_AC         -0.033
+    I_MVI             58.141
+    S_MVI             -0.210
+
+ Intercepts
+    ABFAS_AC           0.000
+    BBFAS_AC           0.000
+    CBFAS_AC           0.000
+    DBFAS_AC           0.000
+    AMVI               0.000
+    BMVI               0.000
+    CMVI               0.000
+    DMVI               0.000
+    P2                 0.000
+    P3                 0.000
+    P4                 0.000
+    V2                 0.000
+    V3                 0.000
+    V4                 0.000
+
+ Variances
+    P1                57.932
+    V1                14.436
+    I_BFAS_AC       2095.627
+    S_BFAS_AC          1.248
+    I_MVI            255.744
+    S_MVI              0.223
+
+ Residual Variances
+    ABFAS_AC           0.000
+    BBFAS_AC           0.000
+    CBFAS_AC           0.000
+    DBFAS_AC           0.000
+    AMVI               0.000
+    BMVI               0.000
+    CMVI               0.000
+    DMVI               0.000
+    P2                40.178
+    P3                40.178
+    P4                40.178
+    V2                 9.734
+    V3                 9.734
+    V4                 9.734
+
+Group D5
+
+ P1       BY
+    ABFAS_AC           1.000
+
+ P2       BY
+    BBFAS_AC           1.000
+
+ P3       BY
+    CBFAS_AC           1.000
+
+ P4       BY
+    DBFAS_AC           1.000
+
+ V1       BY
+    AMVI               1.000
+
+ V2       BY
+    BMVI               1.000
+
+ V3       BY
+    CMVI               1.000
+
+ V4       BY
+    DMVI               1.000
+
+ P4         ON
+    P3                -0.066
+    V3                 0.142
+
+ P3         ON
+    P2                -0.066
+    V2                 0.142
+
+ P2         ON
+    P1                -0.066
+    V1                 0.142
+
+ V4         ON
+    V3                 0.109
+    P3                -0.059
+
+ V3         ON
+    V2                 0.109
+    P2                -0.059
+
+ V2         ON
+    V1                 0.109
+    P1                -0.059
+
+ S_BFAS_A WITH
+    I_BFAS_AC         59.925
+    S_MVI             -0.322
+    I_MVI             -6.644
+
+ I_BFAS_A WITH
+    S_MVI            -10.834
+    I_MVI           -185.261
+
+ S_MVI    WITH
+    I_MVI              4.320
+
+ P1       WITH
+    V1                 6.660
+
+ P2       WITH
+    V2                -1.939
+
+ P3       WITH
+    V3                -1.939
+
+ P4       WITH
+    V4                -1.939
+
+ Means
+    P1                 0.000
+    V1                 0.000
+    I_BFAS_AC         54.069
+    S_BFAS_AC         -0.863
+    I_MVI             62.566
+    S_MVI             -0.131
+
+ Intercepts
+    ABFAS_AC           0.000
+    BBFAS_AC           0.000
+    CBFAS_AC           0.000
+    DBFAS_AC           0.000
+    AMVI               0.000
+    BMVI               0.000
+    CMVI               0.000
+    DMVI               0.000
+    P2                 0.000
+    P3                 0.000
+    P4                 0.000
+    V2                 0.000
+    V3                 0.000
+    V4                 0.000
+
+ Variances
+    P1                57.218
+    V1                17.669
+    I_BFAS_AC       2208.507
+    S_BFAS_AC          1.769
+    I_MVI            177.122
+    S_MVI              0.144
+
+ Residual Variances
+    ABFAS_AC           0.000
+    BBFAS_AC           0.000
+    CBFAS_AC           0.000
+    DBFAS_AC           0.000
+    AMVI               0.000
+    BMVI               0.000
+    CMVI               0.000
+    DMVI               0.000
+    P2                41.770
+    P3                41.770
+    P4                41.770
+    V2                11.722
+    V3                11.722
+    V4                11.722
+
+
+MODEL COMMAND WITH FINAL ESTIMATES USED AS STARTING VALUES
+
+     i_bfas_ac s_bfas_ac | abfas_ac bbfas_ac cbfas_ac dbfas_ac AT a1 a2 a3 a4;
+     i_mvi s_mvi | amvi bmvi cmvi dmvi AT a1 a2 a3 a4;
+
+     p1 BY abfas_ac;
+     p2 BY bbfas_ac;
+     p3 BY cbfas_ac;
+     p4 BY dbfas_ac;
+     v1 BY amvi;
+     v2 BY bmvi;
+     v3 BY cmvi;
+     v4 BY dmvi;
+
+     p4 ON p3;
+     p4 ON v3;
+     p3 ON p2;
+     p3 ON v2;
+     p2 ON p1;
+     p2 ON v1;
+     v4 ON v3;
+     v4 ON p3;
+     v3 ON v2;
+     v3 ON p2;
+     v2 ON v1;
+     v2 ON p1;
+
+  MODEL D2:
+
+     p1 BY abfas_ac@1;
+     p2 BY bbfas_ac@1;
+     p3 BY cbfas_ac@1;
+     p4 BY dbfas_ac@1;
+     v1 BY amvi@1;
+     v2 BY bmvi@1;
+     v3 BY cmvi@1;
+     v4 BY dmvi@1;
+
+     p4 ON p3*0.32804 (a2);
+     p4 ON v3*0.14603 (c2);
+     p3 ON p2*0.32804 (a2);
+     p3 ON v2*0.14603 (c2);
+     p2 ON p1*0.32804 (a2);
+     p2 ON v1*0.14603 (c2);
+     v4 ON v3*0.22385 (b2);
+     v4 ON p3*0.02431 (d2);
+     v3 ON v2*0.22385 (b2);
+     v3 ON p2*0.02431 (d2);
+     v2 ON v1*0.22385 (b2);
+     v2 ON p1*0.02431 (d2);
+
+     abfas_ac@0;
+     bbfas_ac@0;
+     cbfas_ac@0;
+     dbfas_ac@0;
+     amvi@0;
+     bmvi@0;
+     cmvi@0;
+     dmvi@0;
+     p1*97.52117;
+     p2*64.28709 (f2);
+     p3*64.28709 (f2);
+     p4*64.28709 (f2);
+     v1*22.70076;
+     v2*18.84907 (g2);
+     v3*18.84907 (g2);
+     v4*18.84907 (g2);
+     i_bfas_ac*672.02753;
+     s_bfas_ac*0.37345;
+     i_mvi*556.65302;
+     s_mvi*0.35540;
+
+  MODEL D3:
+
+     p1 BY abfas_ac@1;
+     p2 BY bbfas_ac@1;
+     p3 BY cbfas_ac@1;
+     p4 BY dbfas_ac@1;
+     v1 BY amvi@1;
+     v2 BY bmvi@1;
+     v3 BY cmvi@1;
+     v4 BY dmvi@1;
+
+     p4 ON p3*0.10385 (a3);
+     p4 ON v3*-0.03487 (c3);
+     p3 ON p2*0.10385 (a3);
+     p3 ON v2*-0.03487 (c3);
+     p2 ON p1*0.10385 (a3);
+     p2 ON v1*-0.03487 (c3);
+     v4 ON v3*-0.05902 (b3);
+     v4 ON p3*-0.01802 (d3);
+     v3 ON v2*-0.05902 (b3);
+     v3 ON p2*-0.01802 (d3);
+     v2 ON v1*-0.05902 (b3);
+     v2 ON p1*-0.01802 (d3);
+
+     abfas_ac@0;
+     bbfas_ac@0;
+     cbfas_ac@0;
+     dbfas_ac@0;
+     amvi@0;
+     bmvi@0;
+     cmvi@0;
+     dmvi@0;
+     p1*57.89176;
+     p2*57.03095 (f3);
+     p3*57.03095 (f3);
+     p4*57.03095 (f3);
+     v1*12.54097;
+     v2*13.04211 (g3);
+     v3*13.04211 (g3);
+     v4*13.04211 (g3);
+     i_bfas_ac*2575.29077;
+     s_bfas_ac*2.17462;
+     i_mvi*1089.75964;
+     s_mvi*0.92576;
+
+  MODEL D4:
+
+     p1 BY abfas_ac@1;
+     p2 BY bbfas_ac@1;
+     p3 BY cbfas_ac@1;
+     p4 BY dbfas_ac@1;
+     v1 BY amvi@1;
+     v2 BY bmvi@1;
+     v3 BY cmvi@1;
+     v4 BY dmvi@1;
+
+     p4 ON p3*-0.07282 (a4);
+     p4 ON v3*0.49017 (c4);
+     p3 ON p2*-0.07282 (a4);
+     p3 ON v2*0.49017 (c4);
+     p2 ON p1*-0.07282 (a4);
+     p2 ON v1*0.49017 (c4);
+     v4 ON v3*-0.00226 (b4);
+     v4 ON p3*-0.05370 (d4);
+     v3 ON v2*-0.00226 (b4);
+     v3 ON p2*-0.05370 (d4);
+     v2 ON v1*-0.00226 (b4);
+     v2 ON p1*-0.05370 (d4);
+
+     abfas_ac@0;
+     bbfas_ac@0;
+     cbfas_ac@0;
+     dbfas_ac@0;
+     amvi@0;
+     bmvi@0;
+     cmvi@0;
+     dmvi@0;
+     p1*57.93203;
+     p2*40.17780 (f4);
+     p3*40.17780 (f4);
+     p4*40.17780 (f4);
+     v1*14.43567;
+     v2*9.73368 (g4);
+     v3*9.73368 (g4);
+     v4*9.73368 (g4);
+     i_bfas_ac*2095.62695;
+     s_bfas_ac*1.24835;
+     i_mvi*255.74406;
+     s_mvi*0.22253;
+
+  MODEL D5:
+
+     p1 BY abfas_ac@1;
+     p2 BY bbfas_ac@1;
+     p3 BY cbfas_ac@1;
+     p4 BY dbfas_ac@1;
+     v1 BY amvi@1;
+     v2 BY bmvi@1;
+     v3 BY cmvi@1;
+     v4 BY dmvi@1;
+
+     p4 ON p3*-0.06614 (a5);
+     p4 ON v3*0.14178 (c5);
+     p3 ON p2*-0.06614 (a5);
+     p3 ON v2*0.14178 (c5);
+     p2 ON p1*-0.06614 (a5);
+     p2 ON v1*0.14178 (c5);
+     v4 ON v3*0.10900 (b5);
+     v4 ON p3*-0.05909 (d5);
+     v3 ON v2*0.10900 (b5);
+     v3 ON p2*-0.05909 (d5);
+     v2 ON v1*0.10900 (b5);
+     v2 ON p1*-0.05909 (d5);
+
+     abfas_ac@0;
+     bbfas_ac@0;
+     cbfas_ac@0;
+     dbfas_ac@0;
+     amvi@0;
+     bmvi@0;
+     cmvi@0;
+     dmvi@0;
+     p1*57.21768;
+     p2*41.77039 (f5);
+     p3*41.77039 (f5);
+     p4*41.77039 (f5);
+     v1*17.66858;
+     v2*11.72154 (g5);
+     v3*11.72154 (g5);
+     v4*11.72154 (g5);
+     i_bfas_ac*2208.50684;
+     s_bfas_ac*1.76868;
+     i_mvi*177.12238;
+     s_mvi*0.14406;
+
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR D2
+
+
+           NU
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           NU
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+                    0             0             0
+
+
+           LAMBDA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ ABFAS_AC           0             0             0             0             0
+ BBFAS_AC           0             0             0             0             0
+ CBFAS_AC           0             0             0             0             0
+ DBFAS_AC           0             0             0             0             0
+ AMVI               0             0             0             0             0
+ BMVI               0             0             0             0             0
+ CMVI               0             0             0             0             0
+ DMVI               0             0             0             0             0
+
+
+           LAMBDA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ ABFAS_AC           0             0             0             0             0
+ BBFAS_AC           0             0             0             0             0
+ CBFAS_AC           0             0             0             0             0
+ DBFAS_AC           0             0             0             0             0
+ AMVI               0             0             0             0             0
+ BMVI               0             0             0             0             0
+ CMVI               0             0             0             0             0
+ DMVI               0             0             0             0             0
+
+
+           LAMBDA
+              I_MVI         S_MVI
+              ________      ________
+ ABFAS_AC           0             0
+ BBFAS_AC           0             0
+ CBFAS_AC           0             0
+ DBFAS_AC           0             0
+ AMVI               0             0
+ BMVI               0             0
+ CMVI               0             0
+ DMVI               0             0
+
+
+           THETA
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC           0
+ BBFAS_AC           0             0
+ CBFAS_AC           0             0             0
+ DBFAS_AC           0             0             0             0
+ AMVI               0             0             0             0             0
+ BMVI               0             0             0             0             0
+ CMVI               0             0             0             0             0
+ DMVI               0             0             0             0             0
+
+
+           THETA
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI               0
+ CMVI               0             0
+ DMVI               0             0             0
+
+
+           ALPHA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           ALPHA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+                    0             0             0             1             2
+
+
+           ALPHA
+              I_MVI         S_MVI
+              ________      ________
+                    3             4
+
+
+           BETA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1                 0             0             0             0             0
+ P2                 5             0             0             0             6
+ P3                 0             5             0             0             0
+ P4                 0             0             5             0             0
+ V1                 0             0             0             0             0
+ V2                 7             0             0             0             8
+ V3                 0             7             0             0             0
+ V4                 0             0             7             0             0
+ I_BFAS_A           0             0             0             0             0
+ S_BFAS_A           0             0             0             0             0
+ I_MVI              0             0             0             0             0
+ S_MVI              0             0             0             0             0
+
+
+           BETA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ P1                 0             0             0             0             0
+ P2                 0             0             0             0             0
+ P3                 6             0             0             0             0
+ P4                 0             6             0             0             0
+ V1                 0             0             0             0             0
+ V2                 0             0             0             0             0
+ V3                 8             0             0             0             0
+ V4                 0             8             0             0             0
+ I_BFAS_A           0             0             0             0             0
+ S_BFAS_A           0             0             0             0             0
+ I_MVI              0             0             0             0             0
+ S_MVI              0             0             0             0             0
+
+
+           BETA
+              I_MVI         S_MVI
+              ________      ________
+ P1                 0             0
+ P2                 0             0
+ P3                 0             0
+ P4                 0             0
+ V1                 0             0
+ V2                 0             0
+ V3                 0             0
+ V4                 0             0
+ I_BFAS_A           0             0
+ S_BFAS_A           0             0
+ I_MVI              0             0
+ S_MVI              0             0
+
+
+           PSI
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1                 9
+ P2                 0            10
+ P3                 0             0            10
+ P4                 0             0             0            10
+ V1                11             0             0             0            12
+ V2                 0            13             0             0             0
+ V3                 0             0            13             0             0
+ V4                 0             0             0            13             0
+ I_BFAS_A           0             0             0             0             0
+ S_BFAS_A           0             0             0             0             0
+ I_MVI              0             0             0             0             0
+ S_MVI              0             0             0             0             0
+
+
+           PSI
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ V2                14
+ V3                 0            14
+ V4                 0             0            14
+ I_BFAS_A           0             0             0            15
+ S_BFAS_A           0             0             0            16            17
+ I_MVI              0             0             0            18            19
+ S_MVI              0             0             0            21            22
+
+
+           PSI
+              I_MVI         S_MVI
+              ________      ________
+ I_MVI             20
+ S_MVI             23            24
+
+
+     PARAMETER SPECIFICATION FOR D3
+
+
+           NU
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           NU
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+                    0             0             0
+
+
+           LAMBDA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ ABFAS_AC           0             0             0             0             0
+ BBFAS_AC           0             0             0             0             0
+ CBFAS_AC           0             0             0             0             0
+ DBFAS_AC           0             0             0             0             0
+ AMVI               0             0             0             0             0
+ BMVI               0             0             0             0             0
+ CMVI               0             0             0             0             0
+ DMVI               0             0             0             0             0
+
+
+           LAMBDA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ ABFAS_AC           0             0             0             0             0
+ BBFAS_AC           0             0             0             0             0
+ CBFAS_AC           0             0             0             0             0
+ DBFAS_AC           0             0             0             0             0
+ AMVI               0             0             0             0             0
+ BMVI               0             0             0             0             0
+ CMVI               0             0             0             0             0
+ DMVI               0             0             0             0             0
+
+
+           LAMBDA
+              I_MVI         S_MVI
+              ________      ________
+ ABFAS_AC           0             0
+ BBFAS_AC           0             0
+ CBFAS_AC           0             0
+ DBFAS_AC           0             0
+ AMVI               0             0
+ BMVI               0             0
+ CMVI               0             0
+ DMVI               0             0
+
+
+           THETA
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC           0
+ BBFAS_AC           0             0
+ CBFAS_AC           0             0             0
+ DBFAS_AC           0             0             0             0
+ AMVI               0             0             0             0             0
+ BMVI               0             0             0             0             0
+ CMVI               0             0             0             0             0
+ DMVI               0             0             0             0             0
+
+
+           THETA
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI               0
+ CMVI               0             0
+ DMVI               0             0             0
+
+
+           ALPHA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           ALPHA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+                    0             0             0            25            26
+
+
+           ALPHA
+              I_MVI         S_MVI
+              ________      ________
+                   27            28
+
+
+           BETA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1                 0             0             0             0             0
+ P2                29             0             0             0            30
+ P3                 0            29             0             0             0
+ P4                 0             0            29             0             0
+ V1                 0             0             0             0             0
+ V2                31             0             0             0            32
+ V3                 0            31             0             0             0
+ V4                 0             0            31             0             0
+ I_BFAS_A           0             0             0             0             0
+ S_BFAS_A           0             0             0             0             0
+ I_MVI              0             0             0             0             0
+ S_MVI              0             0             0             0             0
+
+
+           BETA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ P1                 0             0             0             0             0
+ P2                 0             0             0             0             0
+ P3                30             0             0             0             0
+ P4                 0            30             0             0             0
+ V1                 0             0             0             0             0
+ V2                 0             0             0             0             0
+ V3                32             0             0             0             0
+ V4                 0            32             0             0             0
+ I_BFAS_A           0             0             0             0             0
+ S_BFAS_A           0             0             0             0             0
+ I_MVI              0             0             0             0             0
+ S_MVI              0             0             0             0             0
+
+
+           BETA
+              I_MVI         S_MVI
+              ________      ________
+ P1                 0             0
+ P2                 0             0
+ P3                 0             0
+ P4                 0             0
+ V1                 0             0
+ V2                 0             0
+ V3                 0             0
+ V4                 0             0
+ I_BFAS_A           0             0
+ S_BFAS_A           0             0
+ I_MVI              0             0
+ S_MVI              0             0
+
+
+           PSI
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1                33
+ P2                 0            34
+ P3                 0             0            34
+ P4                 0             0             0            34
+ V1                35             0             0             0            36
+ V2                 0            37             0             0             0
+ V3                 0             0            37             0             0
+ V4                 0             0             0            37             0
+ I_BFAS_A           0             0             0             0             0
+ S_BFAS_A           0             0             0             0             0
+ I_MVI              0             0             0             0             0
+ S_MVI              0             0             0             0             0
+
+
+           PSI
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ V2                38
+ V3                 0            38
+ V4                 0             0            38
+ I_BFAS_A           0             0             0            39
+ S_BFAS_A           0             0             0            40            41
+ I_MVI              0             0             0            42            43
+ S_MVI              0             0             0            45            46
+
+
+           PSI
+              I_MVI         S_MVI
+              ________      ________
+ I_MVI             44
+ S_MVI             47            48
+
+
+     PARAMETER SPECIFICATION FOR D4
+
+
+           NU
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           NU
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+                    0             0             0
+
+
+           LAMBDA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ ABFAS_AC           0             0             0             0             0
+ BBFAS_AC           0             0             0             0             0
+ CBFAS_AC           0             0             0             0             0
+ DBFAS_AC           0             0             0             0             0
+ AMVI               0             0             0             0             0
+ BMVI               0             0             0             0             0
+ CMVI               0             0             0             0             0
+ DMVI               0             0             0             0             0
+
+
+           LAMBDA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ ABFAS_AC           0             0             0             0             0
+ BBFAS_AC           0             0             0             0             0
+ CBFAS_AC           0             0             0             0             0
+ DBFAS_AC           0             0             0             0             0
+ AMVI               0             0             0             0             0
+ BMVI               0             0             0             0             0
+ CMVI               0             0             0             0             0
+ DMVI               0             0             0             0             0
+
+
+           LAMBDA
+              I_MVI         S_MVI
+              ________      ________
+ ABFAS_AC           0             0
+ BBFAS_AC           0             0
+ CBFAS_AC           0             0
+ DBFAS_AC           0             0
+ AMVI               0             0
+ BMVI               0             0
+ CMVI               0             0
+ DMVI               0             0
+
+
+           THETA
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC           0
+ BBFAS_AC           0             0
+ CBFAS_AC           0             0             0
+ DBFAS_AC           0             0             0             0
+ AMVI               0             0             0             0             0
+ BMVI               0             0             0             0             0
+ CMVI               0             0             0             0             0
+ DMVI               0             0             0             0             0
+
+
+           THETA
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI               0
+ CMVI               0             0
+ DMVI               0             0             0
+
+
+           ALPHA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           ALPHA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+                    0             0             0            49            50
+
+
+           ALPHA
+              I_MVI         S_MVI
+              ________      ________
+                   51            52
+
+
+           BETA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1                 0             0             0             0             0
+ P2                53             0             0             0            54
+ P3                 0            53             0             0             0
+ P4                 0             0            53             0             0
+ V1                 0             0             0             0             0
+ V2                55             0             0             0            56
+ V3                 0            55             0             0             0
+ V4                 0             0            55             0             0
+ I_BFAS_A           0             0             0             0             0
+ S_BFAS_A           0             0             0             0             0
+ I_MVI              0             0             0             0             0
+ S_MVI              0             0             0             0             0
+
+
+           BETA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ P1                 0             0             0             0             0
+ P2                 0             0             0             0             0
+ P3                54             0             0             0             0
+ P4                 0            54             0             0             0
+ V1                 0             0             0             0             0
+ V2                 0             0             0             0             0
+ V3                56             0             0             0             0
+ V4                 0            56             0             0             0
+ I_BFAS_A           0             0             0             0             0
+ S_BFAS_A           0             0             0             0             0
+ I_MVI              0             0             0             0             0
+ S_MVI              0             0             0             0             0
+
+
+           BETA
+              I_MVI         S_MVI
+              ________      ________
+ P1                 0             0
+ P2                 0             0
+ P3                 0             0
+ P4                 0             0
+ V1                 0             0
+ V2                 0             0
+ V3                 0             0
+ V4                 0             0
+ I_BFAS_A           0             0
+ S_BFAS_A           0             0
+ I_MVI              0             0
+ S_MVI              0             0
+
+
+           PSI
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1                57
+ P2                 0            58
+ P3                 0             0            58
+ P4                 0             0             0            58
+ V1                59             0             0             0            60
+ V2                 0            61             0             0             0
+ V3                 0             0            61             0             0
+ V4                 0             0             0            61             0
+ I_BFAS_A           0             0             0             0             0
+ S_BFAS_A           0             0             0             0             0
+ I_MVI              0             0             0             0             0
+ S_MVI              0             0             0             0             0
+
+
+           PSI
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ V2                62
+ V3                 0            62
+ V4                 0             0            62
+ I_BFAS_A           0             0             0            63
+ S_BFAS_A           0             0             0            64            65
+ I_MVI              0             0             0            66            67
+ S_MVI              0             0             0            69            70
+
+
+           PSI
+              I_MVI         S_MVI
+              ________      ________
+ I_MVI             68
+ S_MVI             71            72
+
+
+     PARAMETER SPECIFICATION FOR D5
+
+
+           NU
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           NU
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+                    0             0             0
+
+
+           LAMBDA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ ABFAS_AC           0             0             0             0             0
+ BBFAS_AC           0             0             0             0             0
+ CBFAS_AC           0             0             0             0             0
+ DBFAS_AC           0             0             0             0             0
+ AMVI               0             0             0             0             0
+ BMVI               0             0             0             0             0
+ CMVI               0             0             0             0             0
+ DMVI               0             0             0             0             0
+
+
+           LAMBDA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ ABFAS_AC           0             0             0             0             0
+ BBFAS_AC           0             0             0             0             0
+ CBFAS_AC           0             0             0             0             0
+ DBFAS_AC           0             0             0             0             0
+ AMVI               0             0             0             0             0
+ BMVI               0             0             0             0             0
+ CMVI               0             0             0             0             0
+ DMVI               0             0             0             0             0
+
+
+           LAMBDA
+              I_MVI         S_MVI
+              ________      ________
+ ABFAS_AC           0             0
+ BBFAS_AC           0             0
+ CBFAS_AC           0             0
+ DBFAS_AC           0             0
+ AMVI               0             0
+ BMVI               0             0
+ CMVI               0             0
+ DMVI               0             0
+
+
+           THETA
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC           0
+ BBFAS_AC           0             0
+ CBFAS_AC           0             0             0
+ DBFAS_AC           0             0             0             0
+ AMVI               0             0             0             0             0
+ BMVI               0             0             0             0             0
+ CMVI               0             0             0             0             0
+ DMVI               0             0             0             0             0
+
+
+           THETA
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI               0
+ CMVI               0             0
+ DMVI               0             0             0
+
+
+           ALPHA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           ALPHA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+                    0             0             0            73            74
+
+
+           ALPHA
+              I_MVI         S_MVI
+              ________      ________
+                   75            76
+
+
+           BETA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1                 0             0             0             0             0
+ P2                77             0             0             0            78
+ P3                 0            77             0             0             0
+ P4                 0             0            77             0             0
+ V1                 0             0             0             0             0
+ V2                79             0             0             0            80
+ V3                 0            79             0             0             0
+ V4                 0             0            79             0             0
+ I_BFAS_A           0             0             0             0             0
+ S_BFAS_A           0             0             0             0             0
+ I_MVI              0             0             0             0             0
+ S_MVI              0             0             0             0             0
+
+
+           BETA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ P1                 0             0             0             0             0
+ P2                 0             0             0             0             0
+ P3                78             0             0             0             0
+ P4                 0            78             0             0             0
+ V1                 0             0             0             0             0
+ V2                 0             0             0             0             0
+ V3                80             0             0             0             0
+ V4                 0            80             0             0             0
+ I_BFAS_A           0             0             0             0             0
+ S_BFAS_A           0             0             0             0             0
+ I_MVI              0             0             0             0             0
+ S_MVI              0             0             0             0             0
+
+
+           BETA
+              I_MVI         S_MVI
+              ________      ________
+ P1                 0             0
+ P2                 0             0
+ P3                 0             0
+ P4                 0             0
+ V1                 0             0
+ V2                 0             0
+ V3                 0             0
+ V4                 0             0
+ I_BFAS_A           0             0
+ S_BFAS_A           0             0
+ I_MVI              0             0
+ S_MVI              0             0
+
+
+           PSI
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1                81
+ P2                 0            82
+ P3                 0             0            82
+ P4                 0             0             0            82
+ V1                83             0             0             0            84
+ V2                 0            85             0             0             0
+ V3                 0             0            85             0             0
+ V4                 0             0             0            85             0
+ I_BFAS_A           0             0             0             0             0
+ S_BFAS_A           0             0             0             0             0
+ I_MVI              0             0             0             0             0
+ S_MVI              0             0             0             0             0
+
+
+           PSI
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ V2                86
+ V3                 0            86
+ V4                 0             0            86
+ I_BFAS_A           0             0             0            87
+ S_BFAS_A           0             0             0            88            89
+ I_MVI              0             0             0            90            91
+ S_MVI              0             0             0            93            94
+
+
+           PSI
+              I_MVI         S_MVI
+              ________      ________
+ I_MVI             92
+ S_MVI             95            96
+
+
+     STARTING VALUES FOR D2
+
+
+           NU
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           LAMBDA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ ABFAS_AC       1.000         0.000         0.000         0.000         0.000
+ BBFAS_AC       0.000         1.000         0.000         0.000         0.000
+ CBFAS_AC       0.000         0.000         1.000         0.000         0.000
+ DBFAS_AC       0.000         0.000         0.000         1.000         0.000
+ AMVI           0.000         0.000         0.000         0.000         1.000
+ BMVI           0.000         0.000         0.000         0.000         0.000
+ CMVI           0.000         0.000         0.000         0.000         0.000
+ DMVI           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ ABFAS_AC       0.000         0.000         0.000         0.000         0.000
+ BBFAS_AC       0.000         0.000         0.000         0.000         0.000
+ CBFAS_AC       0.000         0.000         0.000         0.000         0.000
+ DBFAS_AC       0.000         0.000         0.000         0.000         0.000
+ AMVI           0.000         0.000         0.000         0.000         0.000
+ BMVI           1.000         0.000         0.000         0.000         0.000
+ CMVI           0.000         1.000         0.000         0.000         0.000
+ DMVI           0.000         0.000         1.000         0.000         0.000
+
+
+           LAMBDA
+              I_MVI         S_MVI
+              ________      ________
+ ABFAS_AC       0.000         0.000
+ BBFAS_AC       0.000         0.000
+ CBFAS_AC       0.000         0.000
+ DBFAS_AC       0.000         0.000
+ AMVI           0.000         0.000
+ BMVI           0.000         0.000
+ CMVI           0.000         0.000
+ DMVI           0.000         0.000
+
+
+           THETA
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC       0.000
+ BBFAS_AC       0.000         0.000
+ CBFAS_AC       0.000         0.000         0.000
+ DBFAS_AC       0.000         0.000         0.000         0.000
+ AMVI           0.000         0.000         0.000         0.000         0.000
+ BMVI           0.000         0.000         0.000         0.000         0.000
+ CMVI           0.000         0.000         0.000         0.000         0.000
+ DMVI           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI           0.000
+ CMVI           0.000         0.000
+ DMVI           0.000         0.000         0.000
+
+
+           ALPHA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000        72.753        -0.098
+
+
+           ALPHA
+              I_MVI         S_MVI
+              ________      ________
+               52.995        -0.300
+
+
+           BETA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1             0.000         0.000         0.000         0.000         0.000
+ P2             0.000         0.000         0.000         0.000         0.000
+ P3             0.000         0.000         0.000         0.000         0.000
+ P4             0.000         0.000         0.000         0.000         0.000
+ V1             0.000         0.000         0.000         0.000         0.000
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ I_MVI          0.000         0.000         0.000         0.000         0.000
+ S_MVI          0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ P1             0.000         0.000         0.000         0.000         0.000
+ P2             0.000         0.000         0.000         0.000         0.000
+ P3             0.000         0.000         0.000         0.000         0.000
+ P4             0.000         0.000         0.000         0.000         0.000
+ V1             0.000         0.000         0.000         0.000         0.000
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ I_MVI          0.000         0.000         0.000         0.000         0.000
+ S_MVI          0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              I_MVI         S_MVI
+              ________      ________
+ P1             0.000         0.000
+ P2             0.000         0.000
+ P3             0.000         0.000
+ P4             0.000         0.000
+ V1             0.000         0.000
+ V2             0.000         0.000
+ V3             0.000         0.000
+ V4             0.000         0.000
+ I_BFAS_A       0.000         0.000
+ S_BFAS_A       0.000         0.000
+ I_MVI          0.000         0.000
+ S_MVI          0.000         0.000
+
+
+           PSI
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1             0.050
+ P2             0.000         0.050
+ P3             0.000         0.000         0.050
+ P4             0.000         0.000         0.000         0.050
+ V1             0.000         0.000         0.000         0.000         0.050
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ I_MVI          0.000         0.000         0.000         0.000         0.000
+ S_MVI          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ V2             0.050
+ V3             0.000         0.050
+ V4             0.000         0.000         0.050
+ I_BFAS_A       0.000         0.000         0.000     23335.496
+ S_BFAS_A       0.000         0.000         0.000         0.000        19.303
+ I_MVI          0.000         0.000         0.000         0.000         0.000
+ S_MVI          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              I_MVI         S_MVI
+              ________      ________
+ I_MVI       6910.512
+ S_MVI          0.000         5.635
+
+
+     STARTING VALUES FOR D3
+
+
+           NU
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           LAMBDA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ ABFAS_AC       1.000         0.000         0.000         0.000         0.000
+ BBFAS_AC       0.000         1.000         0.000         0.000         0.000
+ CBFAS_AC       0.000         0.000         1.000         0.000         0.000
+ DBFAS_AC       0.000         0.000         0.000         1.000         0.000
+ AMVI           0.000         0.000         0.000         0.000         1.000
+ BMVI           0.000         0.000         0.000         0.000         0.000
+ CMVI           0.000         0.000         0.000         0.000         0.000
+ DMVI           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ ABFAS_AC       0.000         0.000         0.000         0.000         0.000
+ BBFAS_AC       0.000         0.000         0.000         0.000         0.000
+ CBFAS_AC       0.000         0.000         0.000         0.000         0.000
+ DBFAS_AC       0.000         0.000         0.000         0.000         0.000
+ AMVI           0.000         0.000         0.000         0.000         0.000
+ BMVI           1.000         0.000         0.000         0.000         0.000
+ CMVI           0.000         1.000         0.000         0.000         0.000
+ DMVI           0.000         0.000         1.000         0.000         0.000
+
+
+           LAMBDA
+              I_MVI         S_MVI
+              ________      ________
+ ABFAS_AC       0.000         0.000
+ BBFAS_AC       0.000         0.000
+ CBFAS_AC       0.000         0.000
+ DBFAS_AC       0.000         0.000
+ AMVI           0.000         0.000
+ BMVI           0.000         0.000
+ CMVI           0.000         0.000
+ DMVI           0.000         0.000
+
+
+           THETA
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC       0.000
+ BBFAS_AC       0.000         0.000
+ CBFAS_AC       0.000         0.000         0.000
+ DBFAS_AC       0.000         0.000         0.000         0.000
+ AMVI           0.000         0.000         0.000         0.000         0.000
+ BMVI           0.000         0.000         0.000         0.000         0.000
+ CMVI           0.000         0.000         0.000         0.000         0.000
+ DMVI           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI           0.000
+ CMVI           0.000         0.000
+ DMVI           0.000         0.000         0.000
+
+
+           ALPHA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000        72.753        -0.098
+
+
+           ALPHA
+              I_MVI         S_MVI
+              ________      ________
+               52.995        -0.300
+
+
+           BETA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1             0.000         0.000         0.000         0.000         0.000
+ P2             0.000         0.000         0.000         0.000         0.000
+ P3             0.000         0.000         0.000         0.000         0.000
+ P4             0.000         0.000         0.000         0.000         0.000
+ V1             0.000         0.000         0.000         0.000         0.000
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ I_MVI          0.000         0.000         0.000         0.000         0.000
+ S_MVI          0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ P1             0.000         0.000         0.000         0.000         0.000
+ P2             0.000         0.000         0.000         0.000         0.000
+ P3             0.000         0.000         0.000         0.000         0.000
+ P4             0.000         0.000         0.000         0.000         0.000
+ V1             0.000         0.000         0.000         0.000         0.000
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ I_MVI          0.000         0.000         0.000         0.000         0.000
+ S_MVI          0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              I_MVI         S_MVI
+              ________      ________
+ P1             0.000         0.000
+ P2             0.000         0.000
+ P3             0.000         0.000
+ P4             0.000         0.000
+ V1             0.000         0.000
+ V2             0.000         0.000
+ V3             0.000         0.000
+ V4             0.000         0.000
+ I_BFAS_A       0.000         0.000
+ S_BFAS_A       0.000         0.000
+ I_MVI          0.000         0.000
+ S_MVI          0.000         0.000
+
+
+           PSI
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1             0.050
+ P2             0.000         0.050
+ P3             0.000         0.000         0.050
+ P4             0.000         0.000         0.000         0.050
+ V1             0.000         0.000         0.000         0.000         0.050
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ I_MVI          0.000         0.000         0.000         0.000         0.000
+ S_MVI          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ V2             0.050
+ V3             0.000         0.050
+ V4             0.000         0.000         0.050
+ I_BFAS_A       0.000         0.000         0.000     23335.496
+ S_BFAS_A       0.000         0.000         0.000         0.000        19.303
+ I_MVI          0.000         0.000         0.000         0.000         0.000
+ S_MVI          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              I_MVI         S_MVI
+              ________      ________
+ I_MVI       6910.512
+ S_MVI          0.000         5.635
+
+
+     STARTING VALUES FOR D4
+
+
+           NU
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           LAMBDA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ ABFAS_AC       1.000         0.000         0.000         0.000         0.000
+ BBFAS_AC       0.000         1.000         0.000         0.000         0.000
+ CBFAS_AC       0.000         0.000         1.000         0.000         0.000
+ DBFAS_AC       0.000         0.000         0.000         1.000         0.000
+ AMVI           0.000         0.000         0.000         0.000         1.000
+ BMVI           0.000         0.000         0.000         0.000         0.000
+ CMVI           0.000         0.000         0.000         0.000         0.000
+ DMVI           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ ABFAS_AC       0.000         0.000         0.000         0.000         0.000
+ BBFAS_AC       0.000         0.000         0.000         0.000         0.000
+ CBFAS_AC       0.000         0.000         0.000         0.000         0.000
+ DBFAS_AC       0.000         0.000         0.000         0.000         0.000
+ AMVI           0.000         0.000         0.000         0.000         0.000
+ BMVI           1.000         0.000         0.000         0.000         0.000
+ CMVI           0.000         1.000         0.000         0.000         0.000
+ DMVI           0.000         0.000         1.000         0.000         0.000
+
+
+           LAMBDA
+              I_MVI         S_MVI
+              ________      ________
+ ABFAS_AC       0.000         0.000
+ BBFAS_AC       0.000         0.000
+ CBFAS_AC       0.000         0.000
+ DBFAS_AC       0.000         0.000
+ AMVI           0.000         0.000
+ BMVI           0.000         0.000
+ CMVI           0.000         0.000
+ DMVI           0.000         0.000
+
+
+           THETA
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC       0.000
+ BBFAS_AC       0.000         0.000
+ CBFAS_AC       0.000         0.000         0.000
+ DBFAS_AC       0.000         0.000         0.000         0.000
+ AMVI           0.000         0.000         0.000         0.000         0.000
+ BMVI           0.000         0.000         0.000         0.000         0.000
+ CMVI           0.000         0.000         0.000         0.000         0.000
+ DMVI           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI           0.000
+ CMVI           0.000         0.000
+ DMVI           0.000         0.000         0.000
+
+
+           ALPHA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000        72.753        -0.098
+
+
+           ALPHA
+              I_MVI         S_MVI
+              ________      ________
+               52.995        -0.300
+
+
+           BETA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1             0.000         0.000         0.000         0.000         0.000
+ P2             0.000         0.000         0.000         0.000         0.000
+ P3             0.000         0.000         0.000         0.000         0.000
+ P4             0.000         0.000         0.000         0.000         0.000
+ V1             0.000         0.000         0.000         0.000         0.000
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ I_MVI          0.000         0.000         0.000         0.000         0.000
+ S_MVI          0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ P1             0.000         0.000         0.000         0.000         0.000
+ P2             0.000         0.000         0.000         0.000         0.000
+ P3             0.000         0.000         0.000         0.000         0.000
+ P4             0.000         0.000         0.000         0.000         0.000
+ V1             0.000         0.000         0.000         0.000         0.000
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ I_MVI          0.000         0.000         0.000         0.000         0.000
+ S_MVI          0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              I_MVI         S_MVI
+              ________      ________
+ P1             0.000         0.000
+ P2             0.000         0.000
+ P3             0.000         0.000
+ P4             0.000         0.000
+ V1             0.000         0.000
+ V2             0.000         0.000
+ V3             0.000         0.000
+ V4             0.000         0.000
+ I_BFAS_A       0.000         0.000
+ S_BFAS_A       0.000         0.000
+ I_MVI          0.000         0.000
+ S_MVI          0.000         0.000
+
+
+           PSI
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1             0.050
+ P2             0.000         0.050
+ P3             0.000         0.000         0.050
+ P4             0.000         0.000         0.000         0.050
+ V1             0.000         0.000         0.000         0.000         0.050
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ I_MVI          0.000         0.000         0.000         0.000         0.000
+ S_MVI          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ V2             0.050
+ V3             0.000         0.050
+ V4             0.000         0.000         0.050
+ I_BFAS_A       0.000         0.000         0.000     23335.496
+ S_BFAS_A       0.000         0.000         0.000         0.000        19.303
+ I_MVI          0.000         0.000         0.000         0.000         0.000
+ S_MVI          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              I_MVI         S_MVI
+              ________      ________
+ I_MVI       6910.512
+ S_MVI          0.000         5.635
+
+
+     STARTING VALUES FOR D5
+
+
+           NU
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           LAMBDA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ ABFAS_AC       1.000         0.000         0.000         0.000         0.000
+ BBFAS_AC       0.000         1.000         0.000         0.000         0.000
+ CBFAS_AC       0.000         0.000         1.000         0.000         0.000
+ DBFAS_AC       0.000         0.000         0.000         1.000         0.000
+ AMVI           0.000         0.000         0.000         0.000         1.000
+ BMVI           0.000         0.000         0.000         0.000         0.000
+ CMVI           0.000         0.000         0.000         0.000         0.000
+ DMVI           0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ ABFAS_AC       0.000         0.000         0.000         0.000         0.000
+ BBFAS_AC       0.000         0.000         0.000         0.000         0.000
+ CBFAS_AC       0.000         0.000         0.000         0.000         0.000
+ DBFAS_AC       0.000         0.000         0.000         0.000         0.000
+ AMVI           0.000         0.000         0.000         0.000         0.000
+ BMVI           1.000         0.000         0.000         0.000         0.000
+ CMVI           0.000         1.000         0.000         0.000         0.000
+ DMVI           0.000         0.000         1.000         0.000         0.000
+
+
+           LAMBDA
+              I_MVI         S_MVI
+              ________      ________
+ ABFAS_AC       0.000         0.000
+ BBFAS_AC       0.000         0.000
+ CBFAS_AC       0.000         0.000
+ DBFAS_AC       0.000         0.000
+ AMVI           0.000         0.000
+ BMVI           0.000         0.000
+ CMVI           0.000         0.000
+ DMVI           0.000         0.000
+
+
+           THETA
+              ABFAS_AC      BBFAS_AC      CBFAS_AC      DBFAS_AC      AMVI
+              ________      ________      ________      ________      ________
+ ABFAS_AC       0.000
+ BBFAS_AC       0.000         0.000
+ CBFAS_AC       0.000         0.000         0.000
+ DBFAS_AC       0.000         0.000         0.000         0.000
+ AMVI           0.000         0.000         0.000         0.000         0.000
+ BMVI           0.000         0.000         0.000         0.000         0.000
+ CMVI           0.000         0.000         0.000         0.000         0.000
+ DMVI           0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              BMVI          CMVI          DMVI
+              ________      ________      ________
+ BMVI           0.000
+ CMVI           0.000         0.000
+ DMVI           0.000         0.000         0.000
+
+
+           ALPHA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000        72.753        -0.098
+
+
+           ALPHA
+              I_MVI         S_MVI
+              ________      ________
+               52.995        -0.300
+
+
+           BETA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1             0.000         0.000         0.000         0.000         0.000
+ P2             0.000         0.000         0.000         0.000         0.000
+ P3             0.000         0.000         0.000         0.000         0.000
+ P4             0.000         0.000         0.000         0.000         0.000
+ V1             0.000         0.000         0.000         0.000         0.000
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ I_MVI          0.000         0.000         0.000         0.000         0.000
+ S_MVI          0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ P1             0.000         0.000         0.000         0.000         0.000
+ P2             0.000         0.000         0.000         0.000         0.000
+ P3             0.000         0.000         0.000         0.000         0.000
+ P4             0.000         0.000         0.000         0.000         0.000
+ V1             0.000         0.000         0.000         0.000         0.000
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ I_MVI          0.000         0.000         0.000         0.000         0.000
+ S_MVI          0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              I_MVI         S_MVI
+              ________      ________
+ P1             0.000         0.000
+ P2             0.000         0.000
+ P3             0.000         0.000
+ P4             0.000         0.000
+ V1             0.000         0.000
+ V2             0.000         0.000
+ V3             0.000         0.000
+ V4             0.000         0.000
+ I_BFAS_A       0.000         0.000
+ S_BFAS_A       0.000         0.000
+ I_MVI          0.000         0.000
+ S_MVI          0.000         0.000
+
+
+           PSI
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1             0.050
+ P2             0.000         0.050
+ P3             0.000         0.000         0.050
+ P4             0.000         0.000         0.000         0.050
+ V1             0.000         0.000         0.000         0.000         0.050
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_A       0.000         0.000         0.000         0.000         0.000
+ I_MVI          0.000         0.000         0.000         0.000         0.000
+ S_MVI          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              V2            V3            V4            I_BFAS_A      S_BFAS_A
+              ________      ________      ________      ________      ________
+ V2             0.050
+ V3             0.000         0.050
+ V4             0.000         0.000         0.050
+ I_BFAS_A       0.000         0.000         0.000     23335.496
+ S_BFAS_A       0.000         0.000         0.000         0.000        19.303
+ I_MVI          0.000         0.000         0.000         0.000         0.000
+ S_MVI          0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              I_MVI         S_MVI
+              ________      ________
+ I_MVI       6910.512
+ S_MVI          0.000         5.635
+
+
+     Beginning Time:  18:26:06
+        Ending Time:  18:26:30
+       Elapsed Time:  00:00:24
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

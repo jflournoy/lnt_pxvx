@@ -1,0 +1,1524 @@
+Mplus VERSION 8 (Linux)
+MUTHEN & MUTHEN
+07/07/2018   7:37 PM
+
+INPUT INSTRUCTIONS
+
+
+  title: PxVx Bivariate LCM-SR - decadegroup - Linear bfi_n with Linear bfa_mt_d;
+  data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
+
+  variable:
+  names =
+  subjid
+  aage
+  aaspfin
+  aaspfin_d
+  abfa_mt
+  abfa_mt_d
+  abfas_ac
+  abfas_ap
+  abfas_ci
+  abfas_co
+  abfas_ea
+  abfas_ee
+  abfas_nv
+  abfas_nv9
+  abfas_nw
+  abfas_oi
+  abfas_oo
+  abfi_a
+  abfi_a6
+  abfi_c
+  abfi_d_scale
+  abfi_e
+  abfi_hp8
+  abfi_n
+  abfi_o
+  abfi_s_scale
+  ahrz_col
+  ahrz_col_d
+  ahrz_ind
+  ahrz_ind_d
+  amvi
+  ausi
+  ausi_d
+  avrt_col
+  avrt_col_d
+  avrt_ind
+  avrt_ind_d
+  bage
+  baspfin
+  baspfin_d
+  bbfa_mt
+  bbfa_mt_d
+  bbfas_ac
+  bbfas_ap
+  bbfas_ci
+  bbfas_co
+  bbfas_ea
+  bbfas_ee
+  bbfas_nv
+  bbfas_nv9
+  bbfas_nw
+  bbfas_oi
+  bbfas_oo
+  bbfi_a
+  bbfi_a6
+  bbfi_c
+  bbfi_d_scale
+  bbfi_e
+  bbfi_hp8
+  bbfi_n
+  bbfi_o
+  bbfi_s_scale
+  bhrz_col
+  bhrz_col_d
+  bhrz_ind
+  bhrz_ind_d
+  bmvi
+  busi
+  busi_d
+  bvrt_col
+  bvrt_col_d
+  bvrt_ind
+  bvrt_ind_d
+  cage
+  caspfin
+  caspfin_d
+  cbfa_mt
+  cbfa_mt_d
+  cbfas_ac
+  cbfas_ap
+  cbfas_ci
+  cbfas_co
+  cbfas_ea
+  cbfas_ee
+  cbfas_nv
+  cbfas_nv9
+  cbfas_nw
+  cbfas_oi
+  cbfas_oo
+  cbfi_a
+  cbfi_a6
+  cbfi_c
+  cbfi_d_scale
+  cbfi_e
+  cbfi_hp8
+  cbfi_n
+  cbfi_o
+  cbfi_s_scale
+  chrz_col
+  chrz_col_d
+  chrz_ind
+  chrz_ind_d
+  cmvi
+  cusi
+  cusi_d
+  cvrt_col
+  cvrt_col_d
+  cvrt_ind
+  cvrt_ind_d
+  dage
+  daspfin
+  daspfin_d
+  dbfa_mt
+  dbfa_mt_d
+  dbfas_ac
+  dbfas_ap
+  dbfas_ci
+  dbfas_co
+  dbfas_ea
+  dbfas_ee
+  dbfas_nv
+  dbfas_nv9
+  dbfas_nw
+  dbfas_oi
+  dbfas_oo
+  dbfi_a
+  dbfi_a6
+  dbfi_c
+  dbfi_d_scale
+  dbfi_e
+  dbfi_hp8
+  dbfi_n
+  dbfi_o
+  dbfi_s_scale
+  dhrz_col
+  dhrz_col_d
+  dhrz_ind
+  dhrz_ind_d
+  dmvi
+  dusi
+  dusi_d
+  dvrt_col
+  dvrt_col_d
+  dvrt_ind
+  dvrt_ind_d;
+
+  USEVARIABLES =
+  abfi_n
+  bbfi_n
+  cbfi_n
+  dbfi_n
+  abfa_mt_d
+  bbfa_mt_d
+  cbfa_mt_d
+  dbfa_mt_d
+  a1
+  a2
+  a3
+  a4
+  ;
+
+  missing = all (-9999);
+
+  tscores = a1 a2 a3 a4;
+
+  grouping = aage (0=d2, 1=d3, 2=d4, 3=d5);
+
+  DEFINE:
+
+  cut aage (29 39 49);
+
+  a1 = aage + 0 - 36;
+  a2 = aage + 1 - 36;
+  a3 = aage + 2 - 36;
+  a4 = aage + 3 - 36;
+
+  ANALYSIS:
+  TYPE=RANDOM;
+  PROCESSORS = 6;
+  model=nocovariances; ! supresses default estimation of certain covs in model;
+
+  MODEL:
+
+  i_bfi_n s_bfi_n | abfi_n bbfi_n cbfi_n dbfi_n AT a1 a2 a3 a4;
+  i_bfa_mt_d s_bfa_mt_d | abfa_mt_d bbfa_mt_d cbfa_mt_d dbfa_mt_d AT a1 a2 a3 a4;
+
+  ! freeing factor covs because of "nocovariances"
+  s_bfi_n WITH i_bfi_n s_bfa_mt_d i_bfa_mt_d;
+  i_bfi_n WITH s_bfa_mt_d i_bfa_mt_d;
+  s_bfa_mt_d WITH i_bfa_mt_d;
+
+  p1 BY abfi_n@1; ! Residual "factors";
+  p2 BY bbfi_n@1;
+  p3 BY cbfi_n@1;
+  p4 BY dbfi_n@1;
+
+  v1 BY abfa_mt_d@1; ! Residual "factors";
+  v2 BY bbfa_mt_d@1;
+  v3 BY cbfa_mt_d@1;
+  v4 BY dbfa_mt_d@1;
+
+  !residual variances on observed/manifest vars set to 0
+  abfi_n@0;
+  bbfi_n@0;
+  cbfi_n@0;
+  dbfi_n@0;
+
+  !residual variances on observed/manifest vars set to 0
+  abfa_mt_d@0;
+  bbfa_mt_d@0;
+  cbfa_mt_d@0;
+  dbfa_mt_d@0;
+
+  ! means of observed/manifest vars set to 0
+  [abfi_n@0];
+  [bbfi_n@0];
+  [cbfi_n@0];
+  [dbfi_n@0];
+
+  ! means of observed/manifest vars set to 0
+  [abfa_mt_d@0];
+  [bbfa_mt_d@0];
+  [cbfa_mt_d@0];
+  [dbfa_mt_d@0];
+
+  [p1@0]; ! means of residual "factors" set to 0
+  [p2@0];
+  [p3@0];
+  [p4@0];
+
+  [v1@0]; ! means of residual "factors" set to 0
+  [v2@0];
+  [v3@0];
+  [v4@0];
+
+  p4 on p3 (a); ! Autoregressive paths constrained to equality
+  p3 on p2 (a);
+  p2 on p1 (a);
+
+  v4 on v3 (b); ! Autoregressive paths constrained to equality
+  v3 on v2 (b);
+  v2 on v1 (b);
+
+  p4 on v3 (c); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c);
+  p2 on v1 (c);
+
+  v4 on p3 (d); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d);
+  v2 on p1 (d);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e); ! Within-wave correlations constrained to equality
+  p3 with v3 (e);
+  p4 with v4 (e);
+
+  p2 p3 p4 (f); ! estimate variances of residual "factors"
+  v2 v3 v4 (g); ! estimate variances of residual "factors"
+
+  MODEL d2:
+
+  p4 on p3 (a2); ! Autoregressive paths constrained to equality
+  p3 on p2 (a2);
+  p2 on p1 (a2);
+
+  v4 on v3 (b2); ! Autoregressive paths constrained to equality
+  v3 on v2 (b2);
+  v2 on v1 (b2);
+
+  p4 on v3 (c2); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c2);
+  p2 on v1 (c2);
+
+  v4 on p3 (d2); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d2);
+  v2 on p1 (d2);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e2); ! Within-wave correlations constrained to equality
+  p3 with v3 (e2);
+  p4 with v4 (e2);
+
+  p2 p3 p4 (f2); ! estimate variances of residual "factors"
+  v2 v3 v4 (g2); ! estimate variances of residual "factors"
+
+  MODEL d3:
+
+  p4 on p3 (a3); ! Autoregressive paths constrained to equality
+  p3 on p2 (a3);
+  p2 on p1 (a3);
+
+  v4 on v3 (b3); ! Autoregressive paths constrained to equality
+  v3 on v2 (b3);
+  v2 on v1 (b3);
+
+  p4 on v3 (c3); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c3);
+  p2 on v1 (c3);
+
+  v4 on p3 (d3); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d3);
+  v2 on p1 (d3);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e3); ! Within-wave correlations constrained to equality
+  p3 with v3 (e3);
+  p4 with v4 (e3);
+
+  p2 p3 p4 (f3); ! estimate variances of residual "factors"
+  v2 v3 v4 (g3); ! estimate variances of residual "factors"
+
+  MODEL d4:
+
+  p4 on p3 (a4); ! Autoregressive paths constrained to equality
+  p3 on p2 (a4);
+  p2 on p1 (a4);
+
+  v4 on v3 (b4); ! Autoregressive paths constrained to equality
+  v3 on v2 (b4);
+  v2 on v1 (b4);
+
+  p4 on v3 (c4); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c4);
+  p2 on v1 (c4);
+
+  v4 on p3 (d4); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d4);
+  v2 on p1 (d4);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e4); ! Within-wave correlations constrained to equality
+  p3 with v3 (e4);
+  p4 with v4 (e4);
+
+  p2 p3 p4 (f4); ! estimate variances of residual "factors"
+  v2 v3 v4 (g4); ! estimate variances of residual "factors"
+
+  MODEL d5:
+
+  p4 on p3 (a5); ! Autoregressive paths constrained to equality
+  p3 on p2 (a5);
+  p2 on p1 (a5);
+
+  v4 on v3 (b5); ! Autoregressive paths constrained to equality
+  v3 on v2 (b5);
+  v2 on v1 (b5);
+
+  p4 on v3 (c5); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c5);
+  p2 on v1 (c5);
+
+  v4 on p3 (d5); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d5);
+  v2 on p1 (d5);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e5); ! Within-wave correlations constrained to equality
+  p3 with v3 (e5);
+  p4 with v4 (e5);
+
+  p2 p3 p4 (f5); ! estimate variances of residual "factors"
+  v2 v3 v4 (g5); ! estimate variances of residual "factors"
+
+  OUTPUT: SAMPSTAT PATTERNS;
+
+
+
+*** WARNING in VARIABLE command
+  Note that only the first 8 characters of variable names are used in the output.
+  Shorten variable names to avoid any confusion.
+*** WARNING
+  Data set contains unknown or missing values for GROUPING,
+  PATTERN, COHORT, CLUSTER and/or STRATIFICATION variables.
+  Number of cases with unknown or missing values:  5
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+PxVx Bivariate LCM-SR - decadegroup - Linear bfi_n with Linear bfa_mt_d;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 4
+Number of observations
+   Group D2                                                    301
+   Group D3                                                    233
+   Group D4                                                    198
+   Group D5                                                    132
+   Total sample size                                           864
+
+Number of dependent variables                                    8
+Number of independent variables                                  0
+Number of continuous latent variables                           12
+
+Observed dependent variables
+
+  Continuous
+   ABFI_N      BBFI_N      CBFI_N      DBFI_N      ABFA_MT_D   BBFA_MT_D
+   CBFA_MT_D   DBFA_MT_D
+
+Continuous latent variables
+   P1          P2          P3          P4          V1          V2
+   V3          V4          I_BFI_N     S_BFI_N     I_BFA_MT    S_BFA_MT
+
+Variables with special functions
+
+  Grouping variable     AAGE
+
+  Time scores
+   A1          A2          A3          A4
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                   100
+Convergence criterion                                    0.100D-05
+Maximum number of EM iterations                                500
+Convergence criteria for the EM algorithm
+  Loglikelihood change                                   0.100D-02
+  Relative loglikelihood change                          0.100D-05
+  Derivative                                             0.100D-03
+Minimum variance                                         0.100D-03
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+
+Input data file(s)
+  /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group D2
+     Number of missing data patterns            11
+
+   Group D3
+     Number of missing data patterns            11
+
+   Group D4
+     Number of missing data patterns            10
+
+   Group D5
+     Number of missing data patterns            10
+
+
+SUMMARY OF MISSING DATA PATTERNS
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D2
+
+           1  2  3  4  5  6  7  8  9 10 11
+ ABFI_N    x  x  x  x  x  x  x  x  x  x  x
+ BBFI_N    x     x  x  x           x     x
+ CBFI_N    x           x     x  x  x  x  x
+ DBFI_N    x     x        x     x  x  x  x
+ ABFA_MT_  x  x  x  x  x  x  x  x     x  x
+ BBFA_MT_  x     x  x  x           x
+ CBFA_MT_  x           x     x  x  x  x  x
+ DBFA_MT_  x     x        x     x  x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D2
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         188           5          15           9           1
+          2          57           6          11          10           1
+          3           6           7           4          11           1
+          4          12           8           5
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D3
+
+           1  2  3  4  5  6  7  8  9 10 11
+ ABFI_N    x  x  x  x  x  x  x  x  x  x  x
+ BBFI_N    x     x  x  x           x  x
+ CBFI_N    x           x     x  x  x  x
+ DBFI_N    x     x        x     x  x  x  x
+ ABFA_MT_  x  x  x  x  x  x  x  x     x  x
+ BBFA_MT_  x     x  x  x           x  x
+ CBFA_MT_  x           x     x  x  x  x
+ DBFA_MT_  x     x        x     x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D3
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         139           5           6           9           1
+          2          43           6           4          10           1
+          3           8           7           7          11           1
+          4          16           8           7
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D4
+
+           1  2  3  4  5  6  7  8  9 10
+ ABFI_N    x  x  x  x  x  x  x  x  x  x
+ BBFI_N    x     x  x  x              x
+ CBFI_N    x           x     x  x  x  x
+ DBFI_N    x     x        x     x  x  x
+ ABFA_MT_  x  x  x  x  x  x  x  x  x  x
+ BBFA_MT_  x     x  x  x
+ CBFA_MT_  x           x     x  x  x  x
+ DBFA_MT_  x     x        x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D4
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         105           5          15           9           1
+          2          40           6           4          10           1
+          3           8           7           5
+          4          14           8           5
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D5
+
+           1  2  3  4  5  6  7  8  9 10
+ ABFI_N    x  x  x  x  x  x  x  x  x
+ BBFI_N    x     x  x  x           x
+ CBFI_N    x           x     x  x  x
+ DBFI_N    x     x        x     x  x  x
+ ABFA_MT_  x  x  x  x  x  x  x  x     x
+ BBFA_MT_  x     x  x  x           x
+ CBFA_MT_  x           x     x  x  x
+ DBFA_MT_  x     x        x     x  x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D5
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1          60           5          11           9           1
+          2          29           6           5          10           1
+          3           5           7           6
+          4          10           8           4
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR D2
+
+
+           Covariance Coverage
+              ABFI_N        BBFI_N        CBFI_N        DBFI_N        ABFA_MT_
+              ________      ________      ________      ________      ________
+ ABFI_N         1.000
+ BBFI_N         0.741         0.741
+ CBFI_N         0.714         0.681         0.714
+ DBFI_N         0.708         0.651         0.651         0.708
+ ABFA_MT_       0.997         0.738         0.711         0.704         0.997
+ BBFA_MT_       0.738         0.738         0.678         0.648         0.734
+ CBFA_MT_       0.714         0.681         0.714         0.651         0.711
+ DBFA_MT_       0.704         0.651         0.648         0.704         0.701
+
+
+           Covariance Coverage
+              BBFA_MT_      CBFA_MT_      DBFA_MT_
+              ________      ________      ________
+ BBFA_MT_       0.738
+ CBFA_MT_       0.678         0.714
+ DBFA_MT_       0.648         0.648         0.704
+
+
+     PROPORTION OF DATA PRESENT FOR D3
+
+
+           Covariance Coverage
+              ABFI_N        BBFI_N        CBFI_N        DBFI_N        ABFA_MT_
+              ________      ________      ________      ________      ________
+ ABFI_N         1.000
+ BBFI_N         0.734         0.734
+ CBFI_N         0.695         0.631         0.695
+ DBFI_N         0.691         0.639         0.639         0.691
+ ABFA_MT_       0.996         0.730         0.691         0.687         0.996
+ BBFA_MT_       0.730         0.730         0.627         0.635         0.725
+ CBFA_MT_       0.695         0.631         0.695         0.639         0.691
+ DBFA_MT_       0.687         0.639         0.635         0.687         0.682
+
+
+           Covariance Coverage
+              BBFA_MT_      CBFA_MT_      DBFA_MT_
+              ________      ________      ________
+ BBFA_MT_       0.730
+ CBFA_MT_       0.627         0.695
+ DBFA_MT_       0.635         0.635         0.687
+
+
+     PROPORTION OF DATA PRESENT FOR D4
+
+
+           Covariance Coverage
+              ABFI_N        BBFI_N        CBFI_N        DBFI_N        ABFA_MT_
+              ________      ________      ________      ________      ________
+ ABFI_N         1.000
+ BBFI_N         0.722         0.722
+ CBFI_N         0.667         0.611         0.667
+ DBFI_N         0.626         0.576         0.566         0.626
+ ABFA_MT_       0.995         0.717         0.662         0.621         0.995
+ BBFA_MT_       0.722         0.722         0.611         0.576         0.717
+ CBFA_MT_       0.667         0.611         0.667         0.566         0.662
+ DBFA_MT_       0.621         0.576         0.561         0.621         0.616
+
+
+           Covariance Coverage
+              BBFA_MT_      CBFA_MT_      DBFA_MT_
+              ________      ________      ________
+ BBFA_MT_       0.722
+ CBFA_MT_       0.611         0.667
+ DBFA_MT_       0.576         0.561         0.621
+
+
+     PROPORTION OF DATA PRESENT FOR D5
+
+
+           Covariance Coverage
+              ABFI_N        BBFI_N        CBFI_N        DBFI_N        ABFA_MT_
+              ________      ________      ________      ________      ________
+ ABFI_N         1.000
+ BBFI_N         0.659         0.659
+ CBFI_N         0.629         0.545         0.629
+ DBFI_N         0.576         0.500         0.500         0.576
+ ABFA_MT_       0.992         0.652         0.621         0.568         0.992
+ BBFA_MT_       0.659         0.659         0.545         0.500         0.652
+ CBFA_MT_       0.629         0.545         0.629         0.500         0.621
+ DBFA_MT_       0.568         0.500         0.492         0.568         0.561
+
+
+           Covariance Coverage
+              BBFA_MT_      CBFA_MT_      DBFA_MT_
+              ________      ________      ________
+ BBFA_MT_       0.659
+ CBFA_MT_       0.545         0.629
+ DBFA_MT_       0.500         0.492         0.568
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D2
+
+
+           Means
+              ABFI_N        BBFI_N        CBFI_N        DBFI_N        ABFA_MT_
+              ________      ________      ________      ________      ________
+               52.551        52.360        51.585        52.515        42.127
+
+
+           Means
+              BBFA_MT_      CBFA_MT_      DBFA_MT_
+              ________      ________      ________
+               42.170        43.212        40.157
+
+
+           Covariances
+              ABFI_N        BBFI_N        CBFI_N        DBFI_N        ABFA_MT_
+              ________      ________      ________      ________      ________
+ ABFI_N       513.407
+ BBFI_N       395.823       495.284
+ CBFI_N       386.240       405.907       495.903
+ DBFI_N       408.260       423.689       455.774       547.838
+ ABFA_MT_      70.129        45.786        52.077        45.991       479.916
+ BBFA_MT_      86.497        81.561        74.436        70.133       307.696
+ CBFA_MT_      86.157        75.902        94.097        85.050       306.434
+ DBFA_MT_      99.192        66.719        84.178        89.549       287.107
+
+
+           Covariances
+              BBFA_MT_      CBFA_MT_      DBFA_MT_
+              ________      ________      ________
+ BBFA_MT_     507.535
+ CBFA_MT_     375.780       517.824
+ DBFA_MT_     366.216       406.191       546.682
+
+
+           Correlations
+              ABFI_N        BBFI_N        CBFI_N        DBFI_N        ABFA_MT_
+              ________      ________      ________      ________      ________
+ ABFI_N         1.000
+ BBFI_N         0.785         1.000
+ CBFI_N         0.765         0.819         1.000
+ DBFI_N         0.770         0.813         0.874         1.000
+ ABFA_MT_       0.141         0.094         0.107         0.090         1.000
+ BBFA_MT_       0.169         0.163         0.148         0.133         0.623
+ CBFA_MT_       0.167         0.150         0.186         0.160         0.615
+ DBFA_MT_       0.187         0.128         0.162         0.164         0.561
+
+
+           Correlations
+              BBFA_MT_      CBFA_MT_      DBFA_MT_
+              ________      ________      ________
+ BBFA_MT_       1.000
+ CBFA_MT_       0.733         1.000
+ DBFA_MT_       0.695         0.763         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D3
+
+
+           Means
+              ABFI_N        BBFI_N        CBFI_N        DBFI_N        ABFA_MT_
+              ________      ________      ________      ________      ________
+               47.296        46.649        45.602        44.438        40.632
+
+
+           Means
+              BBFA_MT_      CBFA_MT_      DBFA_MT_
+              ________      ________      ________
+               38.953        39.020        41.202
+
+
+           Covariances
+              ABFI_N        BBFI_N        CBFI_N        DBFI_N        ABFA_MT_
+              ________      ________      ________      ________      ________
+ ABFI_N       422.844
+ BBFI_N       327.850       423.318
+ CBFI_N       308.646       339.936       374.746
+ DBFI_N       328.418       355.736       341.589       443.946
+ ABFA_MT_      81.435        57.589        63.510        51.828       444.330
+ BBFA_MT_      68.036        63.484        70.316        77.696       309.796
+ CBFA_MT_      54.097        43.919        76.975        67.426       311.276
+ DBFA_MT_      58.183        54.627        58.302        74.678       261.904
+
+
+           Covariances
+              BBFA_MT_      CBFA_MT_      DBFA_MT_
+              ________      ________      ________
+ BBFA_MT_     446.969
+ CBFA_MT_     339.719       465.503
+ DBFA_MT_     322.869       307.039       414.204
+
+
+           Correlations
+              ABFI_N        BBFI_N        CBFI_N        DBFI_N        ABFA_MT_
+              ________      ________      ________      ________      ________
+ ABFI_N         1.000
+ BBFI_N         0.775         1.000
+ CBFI_N         0.775         0.853         1.000
+ DBFI_N         0.758         0.821         0.837         1.000
+ ABFA_MT_       0.188         0.133         0.156         0.117         1.000
+ BBFA_MT_       0.156         0.146         0.172         0.174         0.695
+ CBFA_MT_       0.122         0.099         0.184         0.148         0.684
+ DBFA_MT_       0.139         0.130         0.148         0.174         0.610
+
+
+           Correlations
+              BBFA_MT_      CBFA_MT_      DBFA_MT_
+              ________      ________      ________
+ BBFA_MT_       1.000
+ CBFA_MT_       0.745         1.000
+ DBFA_MT_       0.750         0.699         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D4
+
+
+           Means
+              ABFI_N        BBFI_N        CBFI_N        DBFI_N        ABFA_MT_
+              ________      ________      ________      ________      ________
+               48.620        49.029        47.144        46.320        36.258
+
+
+           Means
+              BBFA_MT_      CBFA_MT_      DBFA_MT_
+              ________      ________      ________
+               37.956        36.972        38.261
+
+
+           Covariances
+              ABFI_N        BBFI_N        CBFI_N        DBFI_N        ABFA_MT_
+              ________      ________      ________      ________      ________
+ ABFI_N       410.471
+ BBFI_N       346.781       443.162
+ CBFI_N       336.405       361.337       440.205
+ DBFI_N       334.517       349.931       357.089       427.701
+ ABFA_MT_      10.763         6.111         5.472        30.364       427.708
+ BBFA_MT_      17.065        14.805        35.922        64.650       280.826
+ CBFA_MT_      28.417        36.967        53.417        57.383       295.112
+ DBFA_MT_      53.303        63.271        59.710        72.248       257.848
+
+
+           Covariances
+              BBFA_MT_      CBFA_MT_      DBFA_MT_
+              ________      ________      ________
+ BBFA_MT_     402.383
+ CBFA_MT_     289.815       417.085
+ DBFA_MT_     248.596       232.296       372.350
+
+
+           Correlations
+              ABFI_N        BBFI_N        CBFI_N        DBFI_N        ABFA_MT_
+              ________      ________      ________      ________      ________
+ ABFI_N         1.000
+ BBFI_N         0.813         1.000
+ CBFI_N         0.791         0.818         1.000
+ DBFI_N         0.798         0.804         0.823         1.000
+ ABFA_MT_       0.026         0.014         0.013         0.071         1.000
+ BBFA_MT_       0.042         0.035         0.085         0.156         0.677
+ CBFA_MT_       0.069         0.086         0.125         0.136         0.699
+ DBFA_MT_       0.136         0.156         0.147         0.181         0.646
+
+
+           Correlations
+              BBFA_MT_      CBFA_MT_      DBFA_MT_
+              ________      ________      ________
+ BBFA_MT_       1.000
+ CBFA_MT_       0.707         1.000
+ DBFA_MT_       0.642         0.589         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D5
+
+
+           Means
+              ABFI_N        BBFI_N        CBFI_N        DBFI_N        ABFA_MT_
+              ________      ________      ________      ________      ________
+               48.433        45.609        45.912        45.727        34.669
+
+
+           Means
+              BBFA_MT_      CBFA_MT_      DBFA_MT_
+              ________      ________      ________
+               34.934        36.558        35.025
+
+
+           Covariances
+              ABFI_N        BBFI_N        CBFI_N        DBFI_N        ABFA_MT_
+              ________      ________      ________      ________      ________
+ ABFI_N       436.598
+ BBFI_N       326.075       372.684
+ CBFI_N       363.543       345.330       443.373
+ DBFI_N       325.271       337.644       388.358       450.350
+ ABFA_MT_      56.491        82.793       105.411        85.551       407.310
+ BBFA_MT_      32.827        73.766        91.259        90.945       315.687
+ CBFA_MT_      13.681        65.736        78.126        63.324       309.069
+ DBFA_MT_      -0.573        44.941        53.076        39.522       339.384
+
+
+           Covariances
+              BBFA_MT_      CBFA_MT_      DBFA_MT_
+              ________      ________      ________
+ BBFA_MT_     462.448
+ CBFA_MT_     342.188       482.420
+ DBFA_MT_     335.444       348.235       528.454
+
+
+           Correlations
+              ABFI_N        BBFI_N        CBFI_N        DBFI_N        ABFA_MT_
+              ________      ________      ________      ________      ________
+ ABFI_N         1.000
+ BBFI_N         0.808         1.000
+ CBFI_N         0.826         0.850         1.000
+ DBFI_N         0.734         0.824         0.869         1.000
+ ABFA_MT_       0.134         0.213         0.248         0.200         1.000
+ BBFA_MT_       0.073         0.178         0.202         0.199         0.727
+ CBFA_MT_       0.030         0.155         0.169         0.136         0.697
+ DBFA_MT_      -0.001         0.101         0.110         0.081         0.732
+
+
+           Correlations
+              BBFA_MT_      CBFA_MT_      DBFA_MT_
+              ________      ________      ________
+ BBFA_MT_       1.000
+ CBFA_MT_       0.724         1.000
+ DBFA_MT_       0.679         0.690         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -21879.627
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D2
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_N               52.551      -0.015       0.000    0.33%      31.250     43.750     53.125
+             301.000     513.407      -0.733     100.000    1.00%      59.375     75.000
+     BBFI_N               52.955      -0.305       0.000    0.90%      34.375     46.875     56.250
+             223.000     491.642      -0.326     100.000    0.90%      62.500     71.875
+     CBFI_N               51.686      -0.100       0.000    1.40%      31.250     46.875     53.125
+             215.000     502.971      -0.456     100.000    0.93%      56.250     71.875
+     DBFI_N               52.993      -0.280       0.000    1.88%      34.375     46.875     53.125
+             213.000     548.646      -0.560     100.000    0.47%      62.500     75.000
+     ABFA_MT_D            42.153       0.202       0.000    2.00%      18.750     33.333     43.750
+             300.000     480.435      -0.684     100.000    0.67%      50.000     62.500
+     BBFA_MT_D            42.089       0.238       0.000    2.70%      18.750     33.333     43.750
+             222.000     507.380      -0.561     100.000    0.90%      50.000     62.500
+     CBFA_MT_D            42.810       0.239       0.000    4.19%      25.000     37.500     43.750
+             215.000     525.663      -0.333     100.000    1.86%      50.000     62.500
+     DBFA_MT_D            40.389       0.334       0.000    6.60%      18.750     31.250     37.500
+             212.000     558.428      -0.411     100.000    1.42%      43.750     62.500
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D3
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_N               47.296      -0.018       0.000    1.29%      28.125     43.750     50.000
+             233.000     422.844      -0.553      96.875    0.43%      53.125     65.625
+     BBFI_N               45.739      -0.123       0.000    0.58%      25.000     42.857     46.875
+             171.000     417.791      -0.669      90.625    0.58%      50.000     62.500
+     CBFI_N               45.342      -0.152       0.000    0.62%      28.125     40.625     46.875
+             161.000     376.810      -0.692      87.500    1.24%      53.125     62.500
+     DBFI_N               44.424      -0.057       0.000    1.24%      25.000     37.500     43.750
+             161.000     448.709      -0.686      90.625    0.62%      50.000     65.625
+     ABFA_MT_D            40.706       0.337       0.000    3.02%      25.000     31.250     37.500
+             232.000     444.161      -0.106     100.000    1.29%      43.750     56.250
+     BBFA_MT_D            39.693       0.240       0.000    4.09%      18.750     31.250     37.500
+             171.000     458.052      -0.485     100.000    0.58%      50.000     56.250
+     CBFA_MT_D            39.648       0.275       0.000    3.11%      25.000     31.250     37.500
+             161.000     445.319      -0.356     100.000    0.62%      43.750     56.250
+     DBFA_MT_D            41.903       0.025       0.000    3.77%      25.000     37.500     43.750
+             159.000     416.939      -0.348     100.000    0.63%      50.000     56.250
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D4
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_N               48.620      -0.018       3.125    0.51%      28.125     43.750     50.000
+             198.000     410.471      -0.630      96.875    0.51%      56.250     65.625
+     BBFI_N               48.659       0.159       3.125    1.40%      31.250     40.625     46.875
+             143.000     473.710      -0.571      96.875    0.70%      53.125     65.625
+     CBFI_N               45.928       0.169       0.000    0.76%      25.000     40.625     45.312
+             132.000     443.735      -0.730      90.625    1.52%      50.000     65.625
+     DBFI_N               43.725       0.015       3.125    2.42%      21.875     40.625     43.750
+             124.000     430.396      -0.730      90.625    0.81%      50.000     59.375
+     ABFA_MT_D            36.258       0.329       0.000    4.04%      18.750     25.000     37.500
+             198.000     427.708      -0.254     100.000    0.51%      43.750     56.250
+     BBFA_MT_D            37.837       0.273       0.000    2.82%      18.750     31.250     37.500
+             142.000     407.964      -0.402      93.750    0.70%      43.750     56.250
+     CBFA_MT_D            38.305       0.318       0.000    3.79%      18.750     31.250     37.500
+             132.000     424.009      -0.414      93.750    0.76%      43.750     56.250
+     DBFA_MT_D            38.770       0.256       0.000    2.44%      18.750     31.250     37.500
+             123.000     377.896      -0.440      87.500    0.81%      43.750     56.250
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D5
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_N               48.284       0.112       3.125    0.76%      31.250     42.857     50.000
+             131.000     435.456      -0.428      93.750    3.05%      53.125     65.625
+     BBFI_N               44.886       0.159       9.375    2.30%      28.125     37.500     43.750
+              87.000     370.132      -0.696      93.750    1.15%      50.000     65.625
+     CBFI_N               44.970       0.229       0.000    1.22%      25.000     34.375     43.750
+              82.000     462.261      -0.707      96.875    1.22%      50.000     65.625
+     DBFI_N               44.490       0.390       3.125    1.32%      25.000     37.500     42.188
+              76.000     425.799      -0.257     100.000    1.32%      46.875     62.500
+     ABFA_MT_D            34.749       0.411       0.000    5.34%      18.750     25.000     31.250
+             131.000     408.534      -0.283      87.500    0.76%      37.500     50.000
+     BBFA_MT_D            34.363       0.133       0.000   10.34%      18.750     25.000     31.250
+              87.000     420.146      -0.555      87.500    1.15%      37.500     50.000
+     CBFA_MT_D            35.976       0.023       0.000    8.54%      12.500     31.250     37.500
+              82.000     464.521      -0.868      81.250    1.22%      37.500     56.250
+     DBFA_MT_D            35.033       0.531       0.000    7.89%      18.750     25.000     37.500
+              76.000     463.691       0.070      93.750    1.32%      37.500     50.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       96
+
+Loglikelihood
+
+          H0 Value                      -21915.908
+          H0 Scaling Correction Factor      0.9511
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   44023.816
+          Bayesian (BIC)                 44480.927
+          Sample-Size Adjusted BIC       44176.056
+            (n* = (n + 2) / 24)
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ P1       BY
+    ABFI_N             1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_N             1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_N             1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_N             1.000      0.000    999.000    999.000
+
+ V1       BY
+    ABFA_MT_D          1.000      0.000    999.000    999.000
+
+ V2       BY
+    BBFA_MT_D          1.000      0.000    999.000    999.000
+
+ V3       BY
+    CBFA_MT_D          1.000      0.000    999.000    999.000
+
+ V4       BY
+    DBFA_MT_D          1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.093      0.073      1.273      0.203
+    V3                 0.033      0.044      0.743      0.458
+
+ P3         ON
+    P2                 0.093      0.073      1.273      0.203
+    V2                 0.033      0.044      0.743      0.458
+
+ P2         ON
+    P1                 0.093      0.073      1.273      0.203
+    V1                 0.033      0.044      0.743      0.458
+
+ V4         ON
+    V3                 0.037      0.079      0.465      0.642
+    P3                 0.071      0.072      0.976      0.329
+
+ V3         ON
+    V2                 0.037      0.079      0.465      0.642
+    P2                 0.071      0.072      0.976      0.329
+
+ V2         ON
+    V1                 0.037      0.079      0.465      0.642
+    P1                 0.071      0.072      0.976      0.329
+
+ S_BFI_N  WITH
+    I_BFI_N          131.548     65.226      2.017      0.044
+    S_BFA_MT_D        -1.328      2.039     -0.651      0.515
+    I_BFA_MT_D       -47.316     73.966     -0.640      0.522
+
+ I_BFI_N  WITH
+    S_BFA_MT_D       -36.069     75.501     -0.478      0.633
+    I_BFA_MT_D     -1228.320   2732.004     -0.450      0.653
+
+ S_BFA_MT WITH
+    I_BFA_MT_D       366.741    138.466      2.649      0.008
+
+ P1       WITH
+    V1                17.910     14.772      1.212      0.225
+
+ P2       WITH
+    V2                16.222      7.203      2.252      0.024
+
+ P3       WITH
+    V3                16.222      7.203      2.252      0.024
+
+ P4       WITH
+    V4                16.222      7.203      2.252      0.024
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_N           50.318     11.888      4.233      0.000
+    S_BFI_N           -0.057      0.337     -0.168      0.866
+    I_BFA_MT_D        24.978     15.656      1.595      0.111
+    S_BFA_MT_D        -0.490      0.445     -1.099      0.272
+
+ Intercepts
+    ABFI_N             0.000      0.000    999.000    999.000
+    BBFI_N             0.000      0.000    999.000    999.000
+    CBFI_N             0.000      0.000    999.000    999.000
+    DBFI_N             0.000      0.000    999.000    999.000
+    ABFA_MT_D          0.000      0.000    999.000    999.000
+    BBFA_MT_D          0.000      0.000    999.000    999.000
+    CBFA_MT_D          0.000      0.000    999.000    999.000
+    DBFA_MT_D          0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1               140.241     21.655      6.476      0.000
+    V1               209.066     21.661      9.652      0.000
+    I_BFI_N         5462.117   2419.130      2.258      0.024
+    S_BFI_N            3.380      1.759      1.922      0.055
+    I_BFA_MT_D     13756.733   4946.675      2.781      0.005
+    S_BFA_MT_D         9.989      3.880      2.574      0.010
+
+ Residual Variances
+    ABFI_N             0.000      0.000    999.000    999.000
+    BBFI_N             0.000      0.000    999.000    999.000
+    CBFI_N             0.000      0.000    999.000    999.000
+    DBFI_N             0.000      0.000    999.000    999.000
+    ABFA_MT_D          0.000      0.000    999.000    999.000
+    BBFA_MT_D          0.000      0.000    999.000    999.000
+    CBFA_MT_D          0.000      0.000    999.000    999.000
+    DBFA_MT_D          0.000      0.000    999.000    999.000
+    P2                86.633      8.679      9.982      0.000
+    P3                86.633      8.679      9.982      0.000
+    P4                86.633      8.679      9.982      0.000
+    V2               141.281     16.097      8.777      0.000
+    V3               141.281     16.097      8.777      0.000
+    V4               141.281     16.097      8.777      0.000
+
+Group D3
+
+ P1       BY
+    ABFI_N             1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_N             1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_N             1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_N             1.000      0.000    999.000    999.000
+
+ V1       BY
+    ABFA_MT_D          1.000      0.000    999.000    999.000
+
+ V2       BY
+    BBFA_MT_D          1.000      0.000    999.000    999.000
+
+ V3       BY
+    CBFA_MT_D          1.000      0.000    999.000    999.000
+
+ V4       BY
+    DBFA_MT_D          1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.002      0.073      0.029      0.977
+    V3                -0.001      0.051     -0.020      0.984
+
+ P3         ON
+    P2                 0.002      0.073      0.029      0.977
+    V2                -0.001      0.051     -0.020      0.984
+
+ P2         ON
+    P1                 0.002      0.073      0.029      0.977
+    V1                -0.001      0.051     -0.020      0.984
+
+ V4         ON
+    V3                -0.104      0.092     -1.123      0.261
+    P3                -0.068      0.086     -0.787      0.431
+
+ V3         ON
+    V2                -0.104      0.092     -1.123      0.261
+    P2                -0.068      0.086     -0.787      0.431
+
+ V2         ON
+    V1                -0.104      0.092     -1.123      0.261
+    P1                -0.068      0.086     -0.787      0.431
+
+ S_BFI_N  WITH
+    I_BFI_N          115.349     64.651      1.784      0.074
+    S_BFA_MT_D         2.677      2.138      1.252      0.211
+    I_BFA_MT_D        91.841     71.346      1.287      0.198
+
+ I_BFI_N  WITH
+    S_BFA_MT_D        89.024     73.596      1.210      0.226
+    I_BFA_MT_D      3118.898   2461.391      1.267      0.205
+
+ S_BFA_MT WITH
+    I_BFA_MT_D       271.197    158.215      1.714      0.087
+
+ P1       WITH
+    V1                13.477     13.112      1.028      0.304
+
+ P2       WITH
+    V2                 5.198      7.068      0.735      0.462
+
+ P3       WITH
+    V3                 5.198      7.068      0.735      0.462
+
+ P4       WITH
+    V4                 5.198      7.068      0.735      0.462
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_N           14.255     11.701      1.218      0.223
+    S_BFI_N           -0.946      0.342     -2.768      0.006
+    I_BFA_MT_D        45.643     14.174      3.220      0.001
+    S_BFA_MT_D         0.168      0.418      0.401      0.688
+
+ Intercepts
+    ABFI_N             0.000      0.000    999.000    999.000
+    BBFI_N             0.000      0.000    999.000    999.000
+    CBFI_N             0.000      0.000    999.000    999.000
+    DBFI_N             0.000      0.000    999.000    999.000
+    ABFA_MT_D          0.000      0.000    999.000    999.000
+    BBFA_MT_D          0.000      0.000    999.000    999.000
+    CBFA_MT_D          0.000      0.000    999.000    999.000
+    DBFA_MT_D          0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1               111.909     19.315      5.794      0.000
+    V1               137.610     22.203      6.198      0.000
+    I_BFI_N         4442.672   2261.420      1.965      0.049
+    S_BFI_N            3.226      1.855      1.739      0.082
+    I_BFA_MT_D      9424.590   5290.465      1.781      0.075
+    S_BFA_MT_D         8.074      4.742      1.703      0.089
+
+ Residual Variances
+    ABFI_N             0.000      0.000    999.000    999.000
+    BBFI_N             0.000      0.000    999.000    999.000
+    CBFI_N             0.000      0.000    999.000    999.000
+    DBFI_N             0.000      0.000    999.000    999.000
+    ABFA_MT_D          0.000      0.000    999.000    999.000
+    BBFA_MT_D          0.000      0.000    999.000    999.000
+    CBFA_MT_D          0.000      0.000    999.000    999.000
+    DBFA_MT_D          0.000      0.000    999.000    999.000
+    P2                65.674      8.597      7.639      0.000
+    P3                65.674      8.597      7.639      0.000
+    P4                65.674      8.597      7.639      0.000
+    V2               106.078     12.176      8.712      0.000
+    V3               106.078     12.176      8.712      0.000
+    V4               106.078     12.176      8.712      0.000
+
+Group D4
+
+ P1       BY
+    ABFI_N             1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_N             1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_N             1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_N             1.000      0.000    999.000    999.000
+
+ V1       BY
+    ABFA_MT_D          1.000      0.000    999.000    999.000
+
+ V2       BY
+    BBFA_MT_D          1.000      0.000    999.000    999.000
+
+ V3       BY
+    CBFA_MT_D          1.000      0.000    999.000    999.000
+
+ V4       BY
+    DBFA_MT_D          1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.070      0.093      0.752      0.452
+    V3                -0.033      0.056     -0.587      0.558
+
+ P3         ON
+    P2                 0.070      0.093      0.752      0.452
+    V2                -0.033      0.056     -0.587      0.558
+
+ P2         ON
+    P1                 0.070      0.093      0.752      0.452
+    V1                -0.033      0.056     -0.587      0.558
+
+ V4         ON
+    V3                -0.081      0.099     -0.818      0.413
+    P3                -0.082      0.097     -0.840      0.401
+
+ V3         ON
+    V2                -0.081      0.099     -0.818      0.413
+    P2                -0.082      0.097     -0.840      0.401
+
+ V2         ON
+    V1                -0.081      0.099     -0.818      0.413
+    P1                -0.082      0.097     -0.840      0.401
+
+ S_BFI_N  WITH
+    I_BFI_N           46.177     31.978      1.444      0.149
+    S_BFA_MT_D        -0.461      0.892     -0.517      0.605
+    I_BFA_MT_D        -4.899     26.789     -0.183      0.855
+
+ I_BFI_N  WITH
+    S_BFA_MT_D         3.447     30.214      0.114      0.909
+    I_BFA_MT_D       480.959    911.602      0.528      0.598
+
+ S_BFA_MT WITH
+    I_BFA_MT_D       100.808     66.440      1.517      0.129
+
+ P1       WITH
+    V1                16.625     10.779      1.542      0.123
+
+ P2       WITH
+    V2                -8.194      8.153     -1.005      0.315
+
+ P3       WITH
+    V3                -8.194      8.153     -1.005      0.315
+
+ P4       WITH
+    V4                -8.194      8.153     -1.005      0.315
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_N           20.781     12.153      1.710      0.087
+    S_BFI_N           -0.829      0.364     -2.280      0.023
+    I_BFA_MT_D        54.353     14.976      3.629      0.000
+    S_BFA_MT_D         0.522      0.459      1.139      0.255
+
+ Intercepts
+    ABFI_N             0.000      0.000    999.000    999.000
+    BBFI_N             0.000      0.000    999.000    999.000
+    CBFI_N             0.000      0.000    999.000    999.000
+    DBFI_N             0.000      0.000    999.000    999.000
+    ABFA_MT_D          0.000      0.000    999.000    999.000
+    BBFA_MT_D          0.000      0.000    999.000    999.000
+    CBFA_MT_D          0.000      0.000    999.000    999.000
+    DBFA_MT_D          0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                80.895     16.386      4.937      0.000
+    V1               115.890     24.766      4.679      0.000
+    I_BFI_N         1965.286   1142.165      1.721      0.085
+    S_BFI_N            1.308      0.917      1.427      0.154
+    I_BFA_MT_D      3170.676   2015.508      1.573      0.116
+    S_BFA_MT_D         3.459      2.192      1.578      0.115
+
+ Residual Variances
+    ABFI_N             0.000      0.000    999.000    999.000
+    BBFI_N             0.000      0.000    999.000    999.000
+    CBFI_N             0.000      0.000    999.000    999.000
+    DBFI_N             0.000      0.000    999.000    999.000
+    ABFA_MT_D          0.000      0.000    999.000    999.000
+    BBFA_MT_D          0.000      0.000    999.000    999.000
+    CBFA_MT_D          0.000      0.000    999.000    999.000
+    DBFA_MT_D          0.000      0.000    999.000    999.000
+    P2                84.500     10.463      8.076      0.000
+    P3                84.500     10.463      8.076      0.000
+    P4                84.500     10.463      8.076      0.000
+    V2               129.780     20.478      6.337      0.000
+    V3               129.780     20.478      6.337      0.000
+    V4               129.780     20.478      6.337      0.000
+
+Group D5
+
+ P1       BY
+    ABFI_N             1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_N             1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_N             1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_N             1.000      0.000    999.000    999.000
+
+ V1       BY
+    ABFA_MT_D          1.000      0.000    999.000    999.000
+
+ V2       BY
+    BBFA_MT_D          1.000      0.000    999.000    999.000
+
+ V3       BY
+    CBFA_MT_D          1.000      0.000    999.000    999.000
+
+ V4       BY
+    DBFA_MT_D          1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                -0.229      0.067     -3.439      0.001
+    V3                -0.042      0.056     -0.761      0.447
+
+ P3         ON
+    P2                -0.229      0.067     -3.439      0.001
+    V2                -0.042      0.056     -0.761      0.447
+
+ P2         ON
+    P1                -0.229      0.067     -3.439      0.001
+    V1                -0.042      0.056     -0.761      0.447
+
+ V4         ON
+    V3                 0.070      0.118      0.596      0.551
+    P3                -0.042      0.127     -0.331      0.741
+
+ V3         ON
+    V2                 0.070      0.118      0.596      0.551
+    P2                -0.042      0.127     -0.331      0.741
+
+ V2         ON
+    V1                 0.070      0.118      0.596      0.551
+    P1                -0.042      0.127     -0.331      0.741
+
+ S_BFI_N  WITH
+    I_BFI_N          474.021    137.155      3.456      0.001
+    S_BFA_MT_D         0.770      2.084      0.369      0.712
+    I_BFA_MT_D        40.884     70.008      0.584      0.559
+
+ I_BFI_N  WITH
+    S_BFA_MT_D         9.554     69.300      0.138      0.890
+    I_BFA_MT_D       887.417   2322.247      0.382      0.702
+
+ S_BFA_MT WITH
+    I_BFA_MT_D        82.630     55.877      1.479      0.139
+
+ P1       WITH
+    V1                 3.643     10.892      0.334      0.738
+
+ P2       WITH
+    V2                -3.694      7.204     -0.513      0.608
+
+ P3       WITH
+    V3                -3.694      7.204     -0.513      0.608
+
+ P4       WITH
+    V4                -3.694      7.204     -0.513      0.608
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_N           22.724     16.299      1.394      0.163
+    S_BFI_N           -0.755      0.503     -1.502      0.133
+    I_BFA_MT_D        46.687     17.604      2.652      0.008
+    S_BFA_MT_D         0.364      0.544      0.670      0.503
+
+ Intercepts
+    ABFI_N             0.000      0.000    999.000    999.000
+    BBFI_N             0.000      0.000    999.000    999.000
+    CBFI_N             0.000      0.000    999.000    999.000
+    DBFI_N             0.000      0.000    999.000    999.000
+    ABFA_MT_D          0.000      0.000    999.000    999.000
+    BBFA_MT_D          0.000      0.000    999.000    999.000
+    CBFA_MT_D          0.000      0.000    999.000    999.000
+    DBFA_MT_D          0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                65.786     13.341      4.931      0.000
+    V1                97.936     25.155      3.893      0.000
+    I_BFI_N        15628.054   4363.041      3.582      0.000
+    S_BFI_N           14.713      4.331      3.397      0.001
+    I_BFA_MT_D      3178.712   2002.629      1.587      0.112
+    S_BFA_MT_D         2.374      1.563      1.519      0.129
+
+ Residual Variances
+    ABFI_N             0.000      0.000    999.000    999.000
+    BBFI_N             0.000      0.000    999.000    999.000
+    CBFI_N             0.000      0.000    999.000    999.000
+    DBFI_N             0.000      0.000    999.000    999.000
+    ABFA_MT_D          0.000      0.000    999.000    999.000
+    BBFA_MT_D          0.000      0.000    999.000    999.000
+    CBFA_MT_D          0.000      0.000    999.000    999.000
+    DBFA_MT_D          0.000      0.000    999.000    999.000
+    P2                41.264      4.025     10.252      0.000
+    P3                41.264      4.025     10.252      0.000
+    P4                41.264      4.025     10.252      0.000
+    V2               152.256     20.688      7.360      0.000
+    V3               152.256     20.688      7.360      0.000
+    V4               152.256     20.688      7.360      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.379E-09
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  19:37:57
+        Ending Time:  19:38:14
+       Elapsed Time:  00:00:17
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

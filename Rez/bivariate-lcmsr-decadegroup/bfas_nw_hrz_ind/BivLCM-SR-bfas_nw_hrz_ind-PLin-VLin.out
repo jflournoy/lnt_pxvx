@@ -1,0 +1,1525 @@
+Mplus VERSION 8 (Linux)
+MUTHEN & MUTHEN
+07/08/2018  12:26 PM
+
+INPUT INSTRUCTIONS
+
+
+  title: PxVx Bivariate LCM-SR - decadegroup - Linear bfas_nw with Linear hrz_ind;
+  data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
+
+  variable:
+  names =
+  subjid
+  aage
+  aaspfin
+  aaspfin_d
+  abfa_mt
+  abfa_mt_d
+  abfas_ac
+  abfas_ap
+  abfas_ci
+  abfas_co
+  abfas_ea
+  abfas_ee
+  abfas_nv
+  abfas_nv9
+  abfas_nw
+  abfas_oi
+  abfas_oo
+  abfi_a
+  abfi_a6
+  abfi_c
+  abfi_d_scale
+  abfi_e
+  abfi_hp8
+  abfi_n
+  abfi_o
+  abfi_s_scale
+  ahrz_col
+  ahrz_col_d
+  ahrz_ind
+  ahrz_ind_d
+  amvi
+  ausi
+  ausi_d
+  avrt_col
+  avrt_col_d
+  avrt_ind
+  avrt_ind_d
+  bage
+  baspfin
+  baspfin_d
+  bbfa_mt
+  bbfa_mt_d
+  bbfas_ac
+  bbfas_ap
+  bbfas_ci
+  bbfas_co
+  bbfas_ea
+  bbfas_ee
+  bbfas_nv
+  bbfas_nv9
+  bbfas_nw
+  bbfas_oi
+  bbfas_oo
+  bbfi_a
+  bbfi_a6
+  bbfi_c
+  bbfi_d_scale
+  bbfi_e
+  bbfi_hp8
+  bbfi_n
+  bbfi_o
+  bbfi_s_scale
+  bhrz_col
+  bhrz_col_d
+  bhrz_ind
+  bhrz_ind_d
+  bmvi
+  busi
+  busi_d
+  bvrt_col
+  bvrt_col_d
+  bvrt_ind
+  bvrt_ind_d
+  cage
+  caspfin
+  caspfin_d
+  cbfa_mt
+  cbfa_mt_d
+  cbfas_ac
+  cbfas_ap
+  cbfas_ci
+  cbfas_co
+  cbfas_ea
+  cbfas_ee
+  cbfas_nv
+  cbfas_nv9
+  cbfas_nw
+  cbfas_oi
+  cbfas_oo
+  cbfi_a
+  cbfi_a6
+  cbfi_c
+  cbfi_d_scale
+  cbfi_e
+  cbfi_hp8
+  cbfi_n
+  cbfi_o
+  cbfi_s_scale
+  chrz_col
+  chrz_col_d
+  chrz_ind
+  chrz_ind_d
+  cmvi
+  cusi
+  cusi_d
+  cvrt_col
+  cvrt_col_d
+  cvrt_ind
+  cvrt_ind_d
+  dage
+  daspfin
+  daspfin_d
+  dbfa_mt
+  dbfa_mt_d
+  dbfas_ac
+  dbfas_ap
+  dbfas_ci
+  dbfas_co
+  dbfas_ea
+  dbfas_ee
+  dbfas_nv
+  dbfas_nv9
+  dbfas_nw
+  dbfas_oi
+  dbfas_oo
+  dbfi_a
+  dbfi_a6
+  dbfi_c
+  dbfi_d_scale
+  dbfi_e
+  dbfi_hp8
+  dbfi_n
+  dbfi_o
+  dbfi_s_scale
+  dhrz_col
+  dhrz_col_d
+  dhrz_ind
+  dhrz_ind_d
+  dmvi
+  dusi
+  dusi_d
+  dvrt_col
+  dvrt_col_d
+  dvrt_ind
+  dvrt_ind_d;
+
+  USEVARIABLES =
+  abfas_nw
+  bbfas_nw
+  cbfas_nw
+  dbfas_nw
+  ahrz_ind
+  bhrz_ind
+  chrz_ind
+  dhrz_ind
+  a1
+  a2
+  a3
+  a4
+  aagegrp
+  ;
+
+  missing = all (-9999);
+
+  tscores = a1 a2 a3 a4;
+
+  grouping = aagegrp (0=d2, 1=d3, 2=d4, 3=d5);
+
+  DEFINE:
+
+  aagegrp = aage;
+
+  cut aagegrp (29 39 49);
+
+  a1 = aage + 0 - 36;
+  a2 = aage + 1 - 36;
+  a3 = aage + 2 - 36;
+  a4 = aage + 3 - 36;
+
+  ANALYSIS:
+  TYPE=RANDOM;
+  PROCESSORS = 6;
+  model=nocovariances; ! supresses default estimation of certain covs in model;
+
+  MODEL:
+
+  i_bfas_nw s_bfas_nw | abfas_nw bbfas_nw cbfas_nw dbfas_nw AT a1 a2 a3 a4;
+  i_hrz_ind s_hrz_ind | ahrz_ind bhrz_ind chrz_ind dhrz_ind AT a1 a2 a3 a4;
+
+  ! freeing factor covs because of "nocovariances"
+  s_bfas_nw WITH i_bfas_nw s_hrz_ind i_hrz_ind;
+  i_bfas_nw WITH s_hrz_ind i_hrz_ind;
+  s_hrz_ind WITH i_hrz_ind;
+
+  p1 BY abfas_nw@1; ! Residual "factors";
+  p2 BY bbfas_nw@1;
+  p3 BY cbfas_nw@1;
+  p4 BY dbfas_nw@1;
+
+  v1 BY ahrz_ind@1; ! Residual "factors";
+  v2 BY bhrz_ind@1;
+  v3 BY chrz_ind@1;
+  v4 BY dhrz_ind@1;
+
+  !residual variances on observed/manifest vars set to 0
+  abfas_nw@0;
+  bbfas_nw@0;
+  cbfas_nw@0;
+  dbfas_nw@0;
+
+  !residual variances on observed/manifest vars set to 0
+  ahrz_ind@0;
+  bhrz_ind@0;
+  chrz_ind@0;
+  dhrz_ind@0;
+
+  ! means of observed/manifest vars set to 0
+  [abfas_nw@0];
+  [bbfas_nw@0];
+  [cbfas_nw@0];
+  [dbfas_nw@0];
+
+  ! means of observed/manifest vars set to 0
+  [ahrz_ind@0];
+  [bhrz_ind@0];
+  [chrz_ind@0];
+  [dhrz_ind@0];
+
+  [p1@0]; ! means of residual "factors" set to 0
+  [p2@0];
+  [p3@0];
+  [p4@0];
+
+  [v1@0]; ! means of residual "factors" set to 0
+  [v2@0];
+  [v3@0];
+  [v4@0];
+
+  p4 on p3 (a); ! Autoregressive paths constrained to equality
+  p3 on p2 (a);
+  p2 on p1 (a);
+
+  v4 on v3 (b); ! Autoregressive paths constrained to equality
+  v3 on v2 (b);
+  v2 on v1 (b);
+
+  p4 on v3 (c); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c);
+  p2 on v1 (c);
+
+  v4 on p3 (d); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d);
+  v2 on p1 (d);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e); ! Within-wave correlations constrained to equality
+  p3 with v3 (e);
+  p4 with v4 (e);
+
+  p2 p3 p4 (f); ! estimate variances of residual "factors"
+  v2 v3 v4 (g); ! estimate variances of residual "factors"
+
+  MODEL d2:
+
+  p4 on p3 (a2); ! Autoregressive paths constrained to equality
+  p3 on p2 (a2);
+  p2 on p1 (a2);
+
+  v4 on v3 (b2); ! Autoregressive paths constrained to equality
+  v3 on v2 (b2);
+  v2 on v1 (b2);
+
+  p4 on v3 (c2); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c2);
+  p2 on v1 (c2);
+
+  v4 on p3 (d2); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d2);
+  v2 on p1 (d2);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e2); ! Within-wave correlations constrained to equality
+  p3 with v3 (e2);
+  p4 with v4 (e2);
+
+  p2 p3 p4 (f2); ! estimate variances of residual "factors"
+  v2 v3 v4 (g2); ! estimate variances of residual "factors"
+
+  MODEL d3:
+
+  p4 on p3 (a3); ! Autoregressive paths constrained to equality
+  p3 on p2 (a3);
+  p2 on p1 (a3);
+
+  v4 on v3 (b3); ! Autoregressive paths constrained to equality
+  v3 on v2 (b3);
+  v2 on v1 (b3);
+
+  p4 on v3 (c3); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c3);
+  p2 on v1 (c3);
+
+  v4 on p3 (d3); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d3);
+  v2 on p1 (d3);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e3); ! Within-wave correlations constrained to equality
+  p3 with v3 (e3);
+  p4 with v4 (e3);
+
+  p2 p3 p4 (f3); ! estimate variances of residual "factors"
+  v2 v3 v4 (g3); ! estimate variances of residual "factors"
+
+  MODEL d4:
+
+  p4 on p3 (a4); ! Autoregressive paths constrained to equality
+  p3 on p2 (a4);
+  p2 on p1 (a4);
+
+  v4 on v3 (b4); ! Autoregressive paths constrained to equality
+  v3 on v2 (b4);
+  v2 on v1 (b4);
+
+  p4 on v3 (c4); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c4);
+  p2 on v1 (c4);
+
+  v4 on p3 (d4); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d4);
+  v2 on p1 (d4);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e4); ! Within-wave correlations constrained to equality
+  p3 with v3 (e4);
+  p4 with v4 (e4);
+
+  p2 p3 p4 (f4); ! estimate variances of residual "factors"
+  v2 v3 v4 (g4); ! estimate variances of residual "factors"
+
+  MODEL d5:
+
+  p4 on p3 (a5); ! Autoregressive paths constrained to equality
+  p3 on p2 (a5);
+  p2 on p1 (a5);
+
+  v4 on v3 (b5); ! Autoregressive paths constrained to equality
+  v3 on v2 (b5);
+  v2 on v1 (b5);
+
+  p4 on v3 (c5); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c5);
+  p2 on v1 (c5);
+
+  v4 on p3 (d5); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d5);
+  v2 on p1 (d5);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e5); ! Within-wave correlations constrained to equality
+  p3 with v3 (e5);
+  p4 with v4 (e5);
+
+  p2 p3 p4 (f5); ! estimate variances of residual "factors"
+  v2 v3 v4 (g5); ! estimate variances of residual "factors"
+
+  OUTPUT: SAMPSTAT PATTERNS;
+
+
+
+*** WARNING
+  Data set contains unknown or missing values for GROUPING,
+  PATTERN, COHORT, CLUSTER and/or STRATIFICATION variables.
+  Number of cases with unknown or missing values:  5
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+PxVx Bivariate LCM-SR - decadegroup - Linear bfas_nw with Linear hrz_ind;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 4
+Number of observations
+   Group D2                                                    301
+   Group D3                                                    233
+   Group D4                                                    198
+   Group D5                                                    132
+   Total sample size                                           864
+
+Number of dependent variables                                    8
+Number of independent variables                                  0
+Number of continuous latent variables                           12
+
+Observed dependent variables
+
+  Continuous
+   ABFAS_NW    BBFAS_NW    CBFAS_NW    DBFAS_NW    AHRZ_IND    BHRZ_IND
+   CHRZ_IND    DHRZ_IND
+
+Continuous latent variables
+   P1          P2          P3          P4          V1          V2
+   V3          V4          I_BFAS_N    S_BFAS_N    I_HRZ_IN    S_HRZ_IN
+
+Variables with special functions
+
+  Grouping variable     AAGEGRP
+
+  Time scores
+   A1          A2          A3          A4
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                   100
+Convergence criterion                                    0.100D-05
+Maximum number of EM iterations                                500
+Convergence criteria for the EM algorithm
+  Loglikelihood change                                   0.100D-02
+  Relative loglikelihood change                          0.100D-05
+  Derivative                                             0.100D-03
+Minimum variance                                         0.100D-03
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+
+Input data file(s)
+  /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group D2
+     Number of missing data patterns            15
+
+   Group D3
+     Number of missing data patterns            11
+
+   Group D4
+     Number of missing data patterns            15
+
+   Group D5
+     Number of missing data patterns             9
+
+
+SUMMARY OF MISSING DATA PATTERNS
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D2
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+ ABFAS_NW  x  x  x  x  x  x  x  x  x  x     x  x  x  x
+ BBFAS_NW  x     x  x  x  x           x  x  x  x  x
+ CBFAS_NW  x        x     x     x  x  x  x  x  x     x
+ DBFAS_NW  x     x  x        x     x     x  x        x
+ AHRZ_IND  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ BHRZ_IND  x     x  x  x  x           x  x     x     x
+ CHRZ_IND  x              x     x  x     x  x  x     x
+ DHRZ_IND  x     x  x        x     x     x  x  x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D2
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         185           6          13          11           1
+          2          57           7          11          12           2
+          3           6           8           5          13           1
+          4           1           9           5          14           1
+          5          11          10           1          15           1
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D3
+
+           1  2  3  4  5  6  7  8  9 10 11
+ ABFAS_NW  x  x  x  x  x  x  x  x     x  x
+ BBFAS_NW  x     x  x  x           x  x
+ CBFAS_NW  x           x     x  x  x
+ DBFAS_NW  x     x        x     x  x     x
+ AHRZ_IND  x  x  x  x  x  x  x  x  x  x  x
+ BHRZ_IND  x     x  x  x           x
+ CHRZ_IND  x           x     x  x  x
+ DHRZ_IND  x     x        x     x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D3
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         139           5           7           9           1
+          2          44           6           3          10           1
+          3           8           7           7          11           1
+          4          15           8           7
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D4
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+ ABFAS_NW  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ BBFAS_NW  x     x  x  x  x           x  x        x
+ CBFAS_NW  x        x     x     x  x  x     x        x
+ DBFAS_NW  x     x  x        x     x  x     x     x
+ AHRZ_IND  x  x  x  x  x  x  x  x  x  x  x  x     x  x
+ BHRZ_IND  x     x  x  x  x                 x
+ CHRZ_IND  x              x     x  x  x     x
+ DHRZ_IND  x     x  x        x     x  x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D4
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         103           6          15          11           2
+          2          39           7           4          12           1
+          3           7           8           5          13           1
+          4           1           9           5          14           1
+          5          12          10           1          15           1
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D5
+
+           1  2  3  4  5  6  7  8  9
+ ABFAS_NW  x  x  x  x  x  x  x  x
+ BBFAS_NW  x     x  x  x           x
+ CBFAS_NW  x           x     x  x  x
+ DBFAS_NW  x     x        x     x  x
+ AHRZ_IND  x  x  x  x  x  x  x  x  x
+ BHRZ_IND  x     x  x  x           x
+ CHRZ_IND  x           x     x  x  x
+ DHRZ_IND  x     x        x     x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D5
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1          60           4          10           7           6
+          2          29           5          11           8           4
+          3           5           6           6           9           1
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR D2
+
+
+           Covariance Coverage
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AHRZ_IND
+              ________      ________      ________      ________      ________
+ ABFAS_NW       0.997
+ BBFAS_NW       0.734         0.738
+ CBFAS_NW       0.711         0.678         0.714
+ DBFAS_NW       0.701         0.648         0.648         0.704
+ AHRZ_IND       0.997         0.738         0.714         0.704         1.000
+ BHRZ_IND       0.728         0.728         0.674         0.645         0.731
+ CHRZ_IND       0.704         0.671         0.708         0.645         0.708
+ DHRZ_IND       0.704         0.651         0.651         0.704         0.708
+
+
+           Covariance Coverage
+              BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________
+ BHRZ_IND       0.731
+ CHRZ_IND       0.668         0.708
+ DHRZ_IND       0.648         0.648         0.708
+
+
+     PROPORTION OF DATA PRESENT FOR D3
+
+
+           Covariance Coverage
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AHRZ_IND
+              ________      ________      ________      ________      ________
+ ABFAS_NW       0.996
+ BBFAS_NW       0.742         0.747
+ CBFAS_NW       0.712         0.682         0.717
+ DBFAS_NW       0.730         0.700         0.670         0.734
+ AHRZ_IND       0.996         0.747         0.717         0.734         1.000
+ BHRZ_IND       0.742         0.747         0.682         0.700         0.747
+ CHRZ_IND       0.644         0.614         0.648         0.605         0.648
+ DHRZ_IND       0.730         0.700         0.670         0.734         0.734
+
+
+           Covariance Coverage
+              BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________
+ BHRZ_IND       0.747
+ CHRZ_IND       0.614         0.648
+ DHRZ_IND       0.700         0.605         0.734
+
+
+     PROPORTION OF DATA PRESENT FOR D4
+
+
+           Covariance Coverage
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AHRZ_IND
+              ________      ________      ________      ________      ________
+ ABFAS_NW       0.990
+ BBFAS_NW       0.717         0.727
+ CBFAS_NW       0.672         0.626         0.682
+ DBFAS_NW       0.616         0.576         0.571         0.626
+ AHRZ_IND       0.990         0.727         0.682         0.626         1.000
+ BHRZ_IND       0.712         0.717         0.626         0.576         0.722
+ CHRZ_IND       0.662         0.616         0.672         0.566         0.672
+ DHRZ_IND       0.621         0.581         0.576         0.626         0.631
+
+
+           Covariance Coverage
+              BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________
+ BHRZ_IND       0.722
+ CHRZ_IND       0.616         0.672
+ DHRZ_IND       0.581         0.571         0.631
+
+
+     PROPORTION OF DATA PRESENT FOR D5
+
+
+           Covariance Coverage
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AHRZ_IND
+              ________      ________      ________      ________      ________
+ ABFAS_NW       1.000
+ BBFAS_NW       0.697         0.697
+ CBFAS_NW       0.614         0.576         0.614
+ DBFAS_NW       0.621         0.568         0.538         0.621
+ AHRZ_IND       1.000         0.697         0.614         0.621         1.000
+ BHRZ_IND       0.697         0.697         0.576         0.568         0.697
+ CHRZ_IND       0.538         0.500         0.538         0.462         0.538
+ DHRZ_IND       0.621         0.568         0.538         0.621         0.621
+
+
+           Covariance Coverage
+              BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________
+ BHRZ_IND       0.697
+ CHRZ_IND       0.500         0.538
+ DHRZ_IND       0.568         0.462         0.621
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D2
+
+
+           Means
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AHRZ_IND
+              ________      ________      ________      ________      ________
+               50.305        50.535        50.394        50.880        75.415
+
+
+           Means
+              BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________
+               75.055        74.275        74.093
+
+
+           Covariances
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AHRZ_IND
+              ________      ________      ________      ________      ________
+ ABFAS_NW     445.981
+ BBFAS_NW     369.167       444.498
+ CBFAS_NW     353.342       373.546       481.138
+ DBFAS_NW     353.806       370.318       395.751       453.001
+ AHRZ_IND     -27.614        -9.600         0.332         0.527       236.885
+ BHRZ_IND     -37.801       -15.169       -25.442        -9.751       136.193
+ CHRZ_IND     -35.133       -16.404       -27.971       -27.114       110.097
+ DHRZ_IND     -26.263       -10.974        -3.046       -15.610       106.004
+
+
+           Covariances
+              BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________
+ BHRZ_IND     236.664
+ CHRZ_IND     122.310       255.290
+ DHRZ_IND     124.024       148.685       249.797
+
+
+           Correlations
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AHRZ_IND
+              ________      ________      ________      ________      ________
+ ABFAS_NW       1.000
+ BBFAS_NW       0.829         1.000
+ CBFAS_NW       0.763         0.808         1.000
+ DBFAS_NW       0.787         0.825         0.848         1.000
+ AHRZ_IND      -0.085        -0.030         0.001         0.002         1.000
+ BHRZ_IND      -0.116        -0.047        -0.075        -0.030         0.575
+ CHRZ_IND      -0.104        -0.049        -0.080        -0.080         0.448
+ DHRZ_IND      -0.079        -0.033        -0.009        -0.046         0.436
+
+
+           Correlations
+              BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________
+ BHRZ_IND       1.000
+ CHRZ_IND       0.498         1.000
+ DHRZ_IND       0.510         0.589         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D3
+
+
+           Means
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AHRZ_IND
+              ________      ________      ________      ________      ________
+               43.704        42.936        44.175        43.836        74.580
+
+
+           Means
+              BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________
+               74.133        75.565        74.222
+
+
+           Covariances
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AHRZ_IND
+              ________      ________      ________      ________      ________
+ ABFAS_NW     411.837
+ BBFAS_NW     300.154       351.283
+ CBFAS_NW     295.215       277.339       356.280
+ DBFAS_NW     301.849       283.033       311.832       380.145
+ AHRZ_IND       2.848        -0.376        29.913        24.343       271.771
+ BHRZ_IND     -43.410       -27.429       -36.558       -44.346       153.479
+ CHRZ_IND     -13.235       -15.476       -18.369        -0.180       169.272
+ DHRZ_IND     -38.009        -8.304       -17.210       -18.487       162.780
+
+
+           Covariances
+              BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________
+ BHRZ_IND     280.534
+ CHRZ_IND     159.762       256.517
+ DHRZ_IND     186.223       182.049       266.100
+
+
+           Correlations
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AHRZ_IND
+              ________      ________      ________      ________      ________
+ ABFAS_NW       1.000
+ BBFAS_NW       0.789         1.000
+ CBFAS_NW       0.771         0.784         1.000
+ DBFAS_NW       0.763         0.775         0.847         1.000
+ AHRZ_IND       0.009        -0.001         0.096         0.076         1.000
+ BHRZ_IND      -0.128        -0.087        -0.116        -0.136         0.556
+ CHRZ_IND      -0.041        -0.052        -0.061        -0.001         0.641
+ DHRZ_IND      -0.115        -0.027        -0.056        -0.058         0.605
+
+
+           Correlations
+              BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________
+ BHRZ_IND       1.000
+ CHRZ_IND       0.596         1.000
+ DHRZ_IND       0.682         0.697         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D4
+
+
+           Means
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AHRZ_IND
+              ________      ________      ________      ________      ________
+               43.566        45.267        44.161        43.924        72.832
+
+
+           Means
+              BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________
+               75.033        73.277        73.452
+
+
+           Covariances
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AHRZ_IND
+              ________      ________      ________      ________      ________
+ ABFAS_NW     395.442
+ BBFAS_NW     308.957       362.052
+ CBFAS_NW     314.947       351.340       417.219
+ DBFAS_NW     327.049       342.030       366.734       432.149
+ AHRZ_IND      -1.784        -7.167       -16.587        -8.532       259.528
+ BHRZ_IND      -5.484        -6.273       -13.037         7.519       128.358
+ CHRZ_IND      -5.587       -29.702       -30.840       -25.447       123.718
+ DHRZ_IND      -2.561       -10.615       -21.370       -13.071       134.751
+
+
+           Covariances
+              BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________
+ BHRZ_IND     214.411
+ CHRZ_IND     126.530       216.340
+ DHRZ_IND     130.888       128.954       215.234
+
+
+           Correlations
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AHRZ_IND
+              ________      ________      ________      ________      ________
+ ABFAS_NW       1.000
+ BBFAS_NW       0.817         1.000
+ CBFAS_NW       0.775         0.904         1.000
+ DBFAS_NW       0.791         0.865         0.864         1.000
+ AHRZ_IND      -0.006        -0.023        -0.050        -0.025         1.000
+ BHRZ_IND      -0.019        -0.023        -0.044         0.025         0.544
+ CHRZ_IND      -0.019        -0.106        -0.103        -0.083         0.522
+ DHRZ_IND      -0.009        -0.038        -0.071        -0.043         0.570
+
+
+           Correlations
+              BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________
+ BHRZ_IND       1.000
+ CHRZ_IND       0.587         1.000
+ DHRZ_IND       0.609         0.598         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D5
+
+
+           Means
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AHRZ_IND
+              ________      ________      ________      ________      ________
+               43.760        42.044        43.254        41.930        74.495
+
+
+           Means
+              BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________
+               72.721        74.719        71.669
+
+
+           Covariances
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AHRZ_IND
+              ________      ________      ________      ________      ________
+ ABFAS_NW     421.977
+ BBFAS_NW     349.410       418.258
+ CBFAS_NW     325.220       339.318       397.059
+ DBFAS_NW     343.145       380.422       387.570       451.119
+ AHRZ_IND      -8.573       -15.567       -14.924        -6.654       226.952
+ BHRZ_IND       3.303       -17.605         0.144        -1.925       148.199
+ CHRZ_IND      33.739        38.556        19.729        28.402       124.859
+ DHRZ_IND      28.319        25.277        39.145        47.303       131.517
+
+
+           Covariances
+              BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________
+ BHRZ_IND     278.473
+ CHRZ_IND     150.106       211.740
+ DHRZ_IND     162.720       150.113       229.097
+
+
+           Correlations
+              ABFAS_NW      BBFAS_NW      CBFAS_NW      DBFAS_NW      AHRZ_IND
+              ________      ________      ________      ________      ________
+ ABFAS_NW       1.000
+ BBFAS_NW       0.832         1.000
+ CBFAS_NW       0.795         0.833         1.000
+ DBFAS_NW       0.786         0.876         0.916         1.000
+ AHRZ_IND      -0.028        -0.051        -0.050        -0.021         1.000
+ BHRZ_IND       0.010        -0.052         0.000        -0.005         0.590
+ CHRZ_IND       0.113         0.130         0.068         0.092         0.570
+ DHRZ_IND       0.091         0.082         0.130         0.147         0.577
+
+
+           Correlations
+              BHRZ_IND      CHRZ_IND      DHRZ_IND
+              ________      ________      ________
+ BHRZ_IND       1.000
+ CHRZ_IND       0.618         1.000
+ DHRZ_IND       0.644         0.682         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -21061.770
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D2
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_NW             50.250       0.069       0.000    0.33%      30.000     42.500     50.000
+             300.000     446.164      -0.500     100.000    0.33%      57.500     67.500
+     BBFAS_NW             51.471      -0.152       5.000    0.90%      32.500     50.000     52.500
+             222.000     449.311      -0.614      97.500    0.45%      57.500     70.000
+     CBFAS_NW             50.634      -0.042       0.000    0.93%      30.000     45.000     50.000
+             215.000     500.110      -0.470      97.500    1.86%      55.000     72.500
+     DBFAS_NW             51.619      -0.150       0.000    0.47%      32.500     47.500     52.500
+             212.000     460.651      -0.506      97.500    0.94%      57.500     70.000
+     AHRZ_IND             75.415      -0.373      31.250    0.66%      62.500     75.000     75.000
+             301.000     236.885      -0.408     100.000    7.64%      81.250     87.500
+     BHRZ_IND             74.830      -0.304      31.250    0.91%      62.500     68.750     75.000
+             220.000     238.410      -0.339     100.000    8.64%      81.250     87.500
+     CHRZ_IND             74.697      -0.494      25.000    0.94%      62.500     68.750     75.000
+             213.000     253.132       0.068     100.000    8.45%      81.250     87.500
+     DHRZ_IND             74.736      -0.438      18.750    0.47%      62.500     75.000     75.000
+             213.000     245.492      -0.102     100.000    8.92%      81.250     87.500
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D3
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_NW             43.803       0.229       0.000    1.29%      27.500     40.000     42.500
+             232.000     410.817      -0.199      97.500    0.43%      47.500     60.000
+     BBFAS_NW             42.550       0.177       0.000    0.58%      27.500     35.000     42.500
+             171.000     346.007      -0.300      97.500    0.58%      47.500     57.500
+     CBFAS_NW             44.580      -0.008       2.500    1.24%      27.500     37.500     45.000
+             161.000     352.499      -0.646      87.500    0.62%      50.000     62.500
+     DBFAS_NW             43.985       0.211       0.000    0.63%      27.500     37.500     45.000
+             159.000     368.531      -0.177      97.500    0.63%      50.000     60.000
+     AHRZ_IND             74.580      -0.489      25.000    0.86%      62.500     68.750     75.000
+             233.000     271.771      -0.054     100.000    7.73%      81.250     87.500
+     BHRZ_IND             73.922      -0.187      31.250    0.59%      56.250     68.750     75.000
+             170.000     282.436      -0.638     100.000   12.35%      81.250     87.500
+     CHRZ_IND             75.505      -0.411      25.000    0.62%      62.500     75.000     75.000
+             161.000     256.684      -0.166     100.000   10.56%      81.250     93.750
+     DHRZ_IND             74.130      -0.525      25.000    0.63%      62.500     75.000     75.000
+             158.000     267.241      -0.170     100.000    6.96%      81.250     87.500
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D4
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_NW             43.566       0.052       0.000    1.01%      25.000     37.500     43.750
+             198.000     395.442      -0.511      94.444    0.51%      47.500     60.000
+     BBFAS_NW             44.993       0.054       2.500    1.41%      27.500     40.000     45.000
+             142.000     384.869      -0.529      87.500    1.41%      50.000     62.500
+     CBFAS_NW             43.083       0.030       0.000    2.27%      25.000     37.500     42.500
+             132.000     431.795      -0.374      90.000    0.76%      47.500     60.000
+     DBFAS_NW             41.402       0.125       2.500    2.44%      22.500     35.000     40.000
+             123.000     440.360      -0.713      92.500    0.81%      47.500     60.000
+     AHRZ_IND             72.832      -0.469      18.750    0.51%      62.500     68.750     75.000
+             197.000     259.528      -0.234     100.000    4.06%      75.000     87.500
+     BHRZ_IND             75.719      -0.291      31.250    0.72%      62.500     75.000     75.000
+             139.000     213.624      -0.127     100.000    8.63%      81.250     87.500
+     CHRZ_IND             73.269      -0.318      31.250    0.77%      62.500     68.750     75.000
+             130.000     216.355      -0.318     100.000    3.85%      75.000     87.500
+     DHRZ_IND             73.086      -0.623      25.000    0.81%      62.500     68.750     75.000
+             123.000     225.242       0.141     100.000    3.25%      81.250     87.500
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D5
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_NW             43.831       0.024       0.000    0.76%      27.500     40.000     42.500
+             131.000     423.646      -0.324     100.000    0.76%      50.000     62.500
+     BBFAS_NW             41.505       0.400       0.000    3.45%      22.500     35.000     40.000
+              87.000     429.591       0.147      97.500    1.15%      47.222     58.333
+     CBFAS_NW             42.988       0.219       0.000    1.22%      25.000     37.500     40.000
+              82.000     419.732      -0.370      92.500    1.22%      47.500     60.000
+     DBFAS_NW             39.770       0.440       0.000    2.63%      20.000     35.000     38.750
+              76.000     437.036       0.202     100.000    1.32%      45.000     57.500
+     AHRZ_IND             74.495      -0.336      31.250    0.76%      62.500     75.000     75.000
+             132.000     226.952      -0.130     100.000    9.09%      75.000     87.500
+     BHRZ_IND             72.989      -0.449      31.250    1.15%      62.500     68.750     75.000
+              87.000     277.024      -0.222     100.000    9.20%      75.000     87.500
+     CHRZ_IND             74.466      -0.164      31.250    1.22%      62.500     68.750     75.000
+              82.000     218.370      -0.155     100.000    8.54%      75.000     87.500
+     DHRZ_IND             72.231      -0.253      37.500    2.63%      56.250     68.750     75.000
+              76.000     220.942      -0.539     100.000    5.26%      75.000     87.500
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       96
+
+Loglikelihood
+
+          H0 Value                      -21110.779
+          H0 Scaling Correction Factor      1.1074
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   42413.558
+          Bayesian (BIC)                 42870.669
+          Sample-Size Adjusted BIC       42565.798
+            (n* = (n + 2) / 24)
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ P1       BY
+    ABFAS_NW           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_NW           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_NW           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_NW           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AHRZ_IND           1.000      0.000    999.000    999.000
+
+ V2       BY
+    BHRZ_IND           1.000      0.000    999.000    999.000
+
+ V3       BY
+    CHRZ_IND           1.000      0.000    999.000    999.000
+
+ V4       BY
+    DHRZ_IND           1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.155      0.080      1.923      0.054
+    V3                -0.089      0.055     -1.620      0.105
+
+ P3         ON
+    P2                 0.155      0.080      1.923      0.054
+    V2                -0.089      0.055     -1.620      0.105
+
+ P2         ON
+    P1                 0.155      0.080      1.923      0.054
+    V1                -0.089      0.055     -1.620      0.105
+
+ V4         ON
+    V3                 0.182      0.086      2.127      0.033
+    P3                -0.009      0.078     -0.120      0.905
+
+ V3         ON
+    V2                 0.182      0.086      2.127      0.033
+    P2                -0.009      0.078     -0.120      0.905
+
+ V2         ON
+    V1                 0.182      0.086      2.127      0.033
+    P1                -0.009      0.078     -0.120      0.905
+
+ S_BFAS_N WITH
+    I_BFAS_NW         11.844     19.329      0.613      0.540
+    S_HRZ_IND         -0.048      1.180     -0.041      0.967
+    I_HRZ_IND          6.494     13.003      0.499      0.618
+
+ I_BFAS_N WITH
+    S_HRZ_IND         -0.578     14.576     -0.040      0.968
+    I_HRZ_IND         50.475    149.924      0.337      0.736
+
+ S_HRZ_IN WITH
+    I_HRZ_IND          6.348     12.749      0.498      0.619
+
+ P1       WITH
+    V1                -9.769     13.302     -0.734      0.463
+
+ P2       WITH
+    V2                -7.045      8.700     -0.810      0.418
+
+ P3       WITH
+    V3                -7.045      8.700     -0.810      0.418
+
+ P4       WITH
+    V4                -7.045      8.700     -0.810      0.418
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_NW         50.446      2.755     18.313      0.000
+    S_BFAS_NW         -0.007      0.247     -0.028      0.978
+    I_HRZ_IND         68.500      2.371     28.890      0.000
+    S_HRZ_IND         -0.639      0.221     -2.887      0.004
+
+ Intercepts
+    ABFAS_NW           0.000      0.000    999.000    999.000
+    BBFAS_NW           0.000      0.000    999.000    999.000
+    CBFAS_NW           0.000      0.000    999.000    999.000
+    DBFAS_NW           0.000      0.000    999.000    999.000
+    AHRZ_IND           0.000      0.000    999.000    999.000
+    BHRZ_IND           0.000      0.000    999.000    999.000
+    CHRZ_IND           0.000      0.000    999.000    999.000
+    DHRZ_IND           0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1               104.976     22.575      4.650      0.000
+    V1               129.868     19.778      6.566      0.000
+    I_BFAS_NW        490.534    207.232      2.367      0.018
+    S_BFAS_NW          0.978      1.909      0.512      0.609
+    I_HRZ_IND        188.818    129.150      1.462      0.144
+    S_HRZ_IND          0.432      1.225      0.352      0.725
+
+ Residual Variances
+    ABFAS_NW           0.000      0.000    999.000    999.000
+    BBFAS_NW           0.000      0.000    999.000    999.000
+    CBFAS_NW           0.000      0.000    999.000    999.000
+    DBFAS_NW           0.000      0.000    999.000    999.000
+    AHRZ_IND           0.000      0.000    999.000    999.000
+    BHRZ_IND           0.000      0.000    999.000    999.000
+    CHRZ_IND           0.000      0.000    999.000    999.000
+    DHRZ_IND           0.000      0.000    999.000    999.000
+    P2                86.650     10.087      8.590      0.000
+    P3                86.650     10.087      8.590      0.000
+    P4                86.650     10.087      8.590      0.000
+    V2               129.066     13.585      9.501      0.000
+    V3               129.066     13.585      9.501      0.000
+    V4               129.066     13.585      9.501      0.000
+
+Group D3
+
+ P1       BY
+    ABFAS_NW           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_NW           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_NW           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_NW           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AHRZ_IND           1.000      0.000    999.000    999.000
+
+ V2       BY
+    BHRZ_IND           1.000      0.000    999.000    999.000
+
+ V3       BY
+    CHRZ_IND           1.000      0.000    999.000    999.000
+
+ V4       BY
+    DHRZ_IND           1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.166      0.099      1.677      0.094
+    V3                -0.048      0.066     -0.718      0.473
+
+ P3         ON
+    P2                 0.166      0.099      1.677      0.094
+    V2                -0.048      0.066     -0.718      0.473
+
+ P2         ON
+    P1                 0.166      0.099      1.677      0.094
+    V1                -0.048      0.066     -0.718      0.473
+
+ V4         ON
+    V3                -0.140      0.084     -1.659      0.097
+    P3                -0.052      0.077     -0.674      0.501
+
+ V3         ON
+    V2                -0.140      0.084     -1.659      0.097
+    P2                -0.052      0.077     -0.674      0.501
+
+ V2         ON
+    V1                -0.140      0.084     -1.659      0.097
+    P1                -0.052      0.077     -0.674      0.501
+
+ S_BFAS_N WITH
+    I_BFAS_NW         -8.830      4.721     -1.870      0.061
+    S_HRZ_IND          0.101      0.974      0.104      0.917
+    I_HRZ_IND          4.318      4.941      0.874      0.382
+
+ I_BFAS_N WITH
+    S_HRZ_IND         -4.846      4.426     -1.095      0.274
+    I_HRZ_IND        -15.696     18.533     -0.847      0.397
+
+ S_HRZ_IN WITH
+    I_HRZ_IND          1.599      2.856      0.560      0.576
+
+ P1       WITH
+    V1                -2.035     12.879     -0.158      0.874
+
+ P2       WITH
+    V2                -3.981      7.483     -0.532      0.595
+
+ P3       WITH
+    V3                -3.981      7.483     -0.532      0.595
+
+ P4       WITH
+    V4                -3.981      7.483     -0.532      0.595
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_NW         43.280      1.186     36.485      0.000
+    S_BFAS_NW         -0.448      0.249     -1.803      0.071
+    I_HRZ_IND         74.513      0.950     78.413      0.000
+    S_HRZ_IND         -0.305      0.253     -1.207      0.227
+
+ Intercepts
+    ABFAS_NW           0.000      0.000    999.000    999.000
+    BBFAS_NW           0.000      0.000    999.000    999.000
+    CBFAS_NW           0.000      0.000    999.000    999.000
+    DBFAS_NW           0.000      0.000    999.000    999.000
+    AHRZ_IND           0.000      0.000    999.000    999.000
+    BHRZ_IND           0.000      0.000    999.000    999.000
+    CHRZ_IND           0.000      0.000    999.000    999.000
+    DHRZ_IND           0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1               105.015     18.462      5.688      0.000
+    V1               109.234     21.846      5.000      0.000
+    I_BFAS_NW        260.735     29.726      8.771      0.000
+    S_BFAS_NW          0.547      1.592      0.344      0.731
+    I_HRZ_IND        151.449     21.008      7.209      0.000
+    S_HRZ_IND          2.553      1.357      1.882      0.060
+
+ Residual Variances
+    ABFAS_NW           0.000      0.000    999.000    999.000
+    BBFAS_NW           0.000      0.000    999.000    999.000
+    CBFAS_NW           0.000      0.000    999.000    999.000
+    DBFAS_NW           0.000      0.000    999.000    999.000
+    AHRZ_IND           0.000      0.000    999.000    999.000
+    BHRZ_IND           0.000      0.000    999.000    999.000
+    CHRZ_IND           0.000      0.000    999.000    999.000
+    DHRZ_IND           0.000      0.000    999.000    999.000
+    P2                81.192     11.442      7.096      0.000
+    P3                81.192     11.442      7.096      0.000
+    P4                81.192     11.442      7.096      0.000
+    V2                81.793      9.889      8.271      0.000
+    V3                81.793      9.889      8.271      0.000
+    V4                81.793      9.889      8.271      0.000
+
+Group D4
+
+ P1       BY
+    ABFAS_NW           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_NW           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_NW           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_NW           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AHRZ_IND           1.000      0.000    999.000    999.000
+
+ V2       BY
+    BHRZ_IND           1.000      0.000    999.000    999.000
+
+ V3       BY
+    CHRZ_IND           1.000      0.000    999.000    999.000
+
+ V4       BY
+    DHRZ_IND           1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.131      0.079      1.663      0.096
+    V3                -0.048      0.051     -0.933      0.351
+
+ P3         ON
+    P2                 0.131      0.079      1.663      0.096
+    V2                -0.048      0.051     -0.933      0.351
+
+ P2         ON
+    P1                 0.131      0.079      1.663      0.096
+    V1                -0.048      0.051     -0.933      0.351
+
+ V4         ON
+    V3                -0.017      0.076     -0.219      0.827
+    P3                -0.175      0.070     -2.484      0.013
+
+ V3         ON
+    V2                -0.017      0.076     -0.219      0.827
+    P2                -0.175      0.070     -2.484      0.013
+
+ V2         ON
+    V1                -0.017      0.076     -0.219      0.827
+    P1                -0.175      0.070     -2.484      0.013
+
+ S_BFAS_N WITH
+    I_BFAS_NW          1.648     19.643      0.084      0.933
+    S_HRZ_IND          0.227      0.992      0.229      0.819
+    I_HRZ_IND         -5.029     10.605     -0.474      0.635
+
+ I_BFAS_N WITH
+    S_HRZ_IND         -3.158     10.540     -0.300      0.764
+    I_HRZ_IND         49.548     96.405      0.514      0.607
+
+ S_HRZ_IN WITH
+    I_HRZ_IND         -5.689     11.666     -0.488      0.626
+
+ P1       WITH
+    V1                -3.063     13.870     -0.221      0.825
+
+ P2       WITH
+    V2                -5.395      5.541     -0.974      0.330
+
+ P3       WITH
+    V3                -5.395      5.541     -0.974      0.330
+
+ P4       WITH
+    V4                -5.395      5.541     -0.974      0.330
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_NW         50.096      2.808     17.838      0.000
+    S_BFAS_NW         -0.598      0.276     -2.167      0.030
+    I_HRZ_IND         73.529      2.589     28.396      0.000
+    S_HRZ_IND          0.002      0.248      0.007      0.995
+
+ Intercepts
+    ABFAS_NW           0.000      0.000    999.000    999.000
+    BBFAS_NW           0.000      0.000    999.000    999.000
+    CBFAS_NW           0.000      0.000    999.000    999.000
+    DBFAS_NW           0.000      0.000    999.000    999.000
+    AHRZ_IND           0.000      0.000    999.000    999.000
+    BHRZ_IND           0.000      0.000    999.000    999.000
+    CHRZ_IND           0.000      0.000    999.000    999.000
+    DHRZ_IND           0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1               117.509     19.898      5.906      0.000
+    V1               127.529     24.587      5.187      0.000
+    I_BFAS_NW        231.764    193.164      1.200      0.230
+    S_BFAS_NW          0.580      1.951      0.297      0.766
+    I_HRZ_IND        180.068    109.537      1.644      0.100
+    S_HRZ_IND          0.590      1.226      0.481      0.630
+
+ Residual Variances
+    ABFAS_NW           0.000      0.000    999.000    999.000
+    BBFAS_NW           0.000      0.000    999.000    999.000
+    CBFAS_NW           0.000      0.000    999.000    999.000
+    DBFAS_NW           0.000      0.000    999.000    999.000
+    AHRZ_IND           0.000      0.000    999.000    999.000
+    BHRZ_IND           0.000      0.000    999.000    999.000
+    CHRZ_IND           0.000      0.000    999.000    999.000
+    DHRZ_IND           0.000      0.000    999.000    999.000
+    P2                54.518      7.441      7.327      0.000
+    P3                54.518      7.441      7.327      0.000
+    P4                54.518      7.441      7.327      0.000
+    V2                85.043     10.224      8.318      0.000
+    V3                85.043     10.224      8.318      0.000
+    V4                85.043     10.224      8.318      0.000
+
+Group D5
+
+ P1       BY
+    ABFAS_NW           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_NW           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_NW           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_NW           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AHRZ_IND           1.000      0.000    999.000    999.000
+
+ V2       BY
+    BHRZ_IND           1.000      0.000    999.000    999.000
+
+ V3       BY
+    CHRZ_IND           1.000      0.000    999.000    999.000
+
+ V4       BY
+    DHRZ_IND           1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.089      0.155      0.575      0.565
+    V3                 0.024      0.068      0.350      0.727
+
+ P3         ON
+    P2                 0.089      0.155      0.575      0.565
+    V2                 0.024      0.068      0.350      0.727
+
+ P2         ON
+    P1                 0.089      0.155      0.575      0.565
+    V1                 0.024      0.068      0.350      0.727
+
+ V4         ON
+    V3                -0.014      0.114     -0.127      0.899
+    P3                 0.154      0.111      1.393      0.164
+
+ V3         ON
+    V2                -0.014      0.114     -0.127      0.899
+    P2                 0.154      0.111      1.393      0.164
+
+ V2         ON
+    V1                -0.014      0.114     -0.127      0.899
+    P1                 0.154      0.111      1.393      0.164
+
+ S_BFAS_N WITH
+    I_BFAS_NW        -45.367     66.112     -0.686      0.493
+    S_HRZ_IND         -0.701      1.091     -0.642      0.521
+    I_HRZ_IND         15.201     24.181      0.629      0.530
+
+ I_BFAS_N WITH
+    S_HRZ_IND         23.812     21.487      1.108      0.268
+    I_HRZ_IND       -454.358    461.049     -0.985      0.324
+
+ S_HRZ_IN WITH
+    I_HRZ_IND        -13.525     12.475     -1.084      0.278
+
+ P1       WITH
+    V1                 7.482     16.473      0.454      0.650
+
+ P2       WITH
+    V2                -2.324      7.674     -0.303      0.762
+
+ P3       WITH
+    V3                -2.324      7.674     -0.303      0.762
+
+ P4       WITH
+    V4                -2.324      7.674     -0.303      0.762
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_NW         51.040      7.663      6.661      0.000
+    S_BFAS_NW         -0.461      0.418     -1.103      0.270
+    I_HRZ_IND         79.801      6.082     13.122      0.000
+    S_HRZ_IND         -0.347      0.336     -1.033      0.302
+
+ Intercepts
+    ABFAS_NW           0.000      0.000    999.000    999.000
+    BBFAS_NW           0.000      0.000    999.000    999.000
+    CBFAS_NW           0.000      0.000    999.000    999.000
+    DBFAS_NW           0.000      0.000    999.000    999.000
+    AHRZ_IND           0.000      0.000    999.000    999.000
+    BHRZ_IND           0.000      0.000    999.000    999.000
+    CHRZ_IND           0.000      0.000    999.000    999.000
+    DHRZ_IND           0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                95.637     29.115      3.285      0.001
+    V1               100.243     22.057      4.545      0.000
+    I_BFAS_NW       1140.627   1248.287      0.914      0.361
+    S_BFAS_NW          2.570      3.548      0.724      0.469
+    I_HRZ_IND        385.020    262.371      1.467      0.142
+    S_HRZ_IND          0.746      0.621      1.202      0.229
+
+ Residual Variances
+    ABFAS_NW           0.000      0.000    999.000    999.000
+    BBFAS_NW           0.000      0.000    999.000    999.000
+    CBFAS_NW           0.000      0.000    999.000    999.000
+    DBFAS_NW           0.000      0.000    999.000    999.000
+    AHRZ_IND           0.000      0.000    999.000    999.000
+    BHRZ_IND           0.000      0.000    999.000    999.000
+    CHRZ_IND           0.000      0.000    999.000    999.000
+    DHRZ_IND           0.000      0.000    999.000    999.000
+    P2                56.937     11.862      4.800      0.000
+    P3                56.937     11.862      4.800      0.000
+    P4                56.937     11.862      4.800      0.000
+    V2                87.983     11.706      7.516      0.000
+    V3                87.983     11.706      7.516      0.000
+    V4                87.983     11.706      7.516      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.727E-06
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  12:26:44
+        Ending Time:  12:27:07
+       Elapsed Time:  00:00:23
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

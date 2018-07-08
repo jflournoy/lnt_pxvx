@@ -1,0 +1,1525 @@
+Mplus VERSION 8 (Linux)
+MUTHEN & MUTHEN
+07/08/2018  12:51 PM
+
+INPUT INSTRUCTIONS
+
+
+  title: PxVx Bivariate LCM-SR - decadegroup - Linear bfi_c with Linear usi_d;
+  data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
+
+  variable:
+  names =
+  subjid
+  aage
+  aaspfin
+  aaspfin_d
+  abfa_mt
+  abfa_mt_d
+  abfas_ac
+  abfas_ap
+  abfas_ci
+  abfas_co
+  abfas_ea
+  abfas_ee
+  abfas_nv
+  abfas_nv9
+  abfas_nw
+  abfas_oi
+  abfas_oo
+  abfi_a
+  abfi_a6
+  abfi_c
+  abfi_d_scale
+  abfi_e
+  abfi_hp8
+  abfi_n
+  abfi_o
+  abfi_s_scale
+  ahrz_col
+  ahrz_col_d
+  ahrz_ind
+  ahrz_ind_d
+  amvi
+  ausi
+  ausi_d
+  avrt_col
+  avrt_col_d
+  avrt_ind
+  avrt_ind_d
+  bage
+  baspfin
+  baspfin_d
+  bbfa_mt
+  bbfa_mt_d
+  bbfas_ac
+  bbfas_ap
+  bbfas_ci
+  bbfas_co
+  bbfas_ea
+  bbfas_ee
+  bbfas_nv
+  bbfas_nv9
+  bbfas_nw
+  bbfas_oi
+  bbfas_oo
+  bbfi_a
+  bbfi_a6
+  bbfi_c
+  bbfi_d_scale
+  bbfi_e
+  bbfi_hp8
+  bbfi_n
+  bbfi_o
+  bbfi_s_scale
+  bhrz_col
+  bhrz_col_d
+  bhrz_ind
+  bhrz_ind_d
+  bmvi
+  busi
+  busi_d
+  bvrt_col
+  bvrt_col_d
+  bvrt_ind
+  bvrt_ind_d
+  cage
+  caspfin
+  caspfin_d
+  cbfa_mt
+  cbfa_mt_d
+  cbfas_ac
+  cbfas_ap
+  cbfas_ci
+  cbfas_co
+  cbfas_ea
+  cbfas_ee
+  cbfas_nv
+  cbfas_nv9
+  cbfas_nw
+  cbfas_oi
+  cbfas_oo
+  cbfi_a
+  cbfi_a6
+  cbfi_c
+  cbfi_d_scale
+  cbfi_e
+  cbfi_hp8
+  cbfi_n
+  cbfi_o
+  cbfi_s_scale
+  chrz_col
+  chrz_col_d
+  chrz_ind
+  chrz_ind_d
+  cmvi
+  cusi
+  cusi_d
+  cvrt_col
+  cvrt_col_d
+  cvrt_ind
+  cvrt_ind_d
+  dage
+  daspfin
+  daspfin_d
+  dbfa_mt
+  dbfa_mt_d
+  dbfas_ac
+  dbfas_ap
+  dbfas_ci
+  dbfas_co
+  dbfas_ea
+  dbfas_ee
+  dbfas_nv
+  dbfas_nv9
+  dbfas_nw
+  dbfas_oi
+  dbfas_oo
+  dbfi_a
+  dbfi_a6
+  dbfi_c
+  dbfi_d_scale
+  dbfi_e
+  dbfi_hp8
+  dbfi_n
+  dbfi_o
+  dbfi_s_scale
+  dhrz_col
+  dhrz_col_d
+  dhrz_ind
+  dhrz_ind_d
+  dmvi
+  dusi
+  dusi_d
+  dvrt_col
+  dvrt_col_d
+  dvrt_ind
+  dvrt_ind_d;
+
+  USEVARIABLES =
+  abfi_c
+  bbfi_c
+  cbfi_c
+  dbfi_c
+  ausi_d
+  busi_d
+  cusi_d
+  dusi_d
+  a1
+  a2
+  a3
+  a4
+  aagegrp
+  ;
+
+  missing = all (-9999);
+
+  tscores = a1 a2 a3 a4;
+
+  grouping = aagegrp (0=d2, 1=d3, 2=d4, 3=d5);
+
+  DEFINE:
+
+  aagegrp = aage;
+
+  cut aagegrp (29 39 49);
+
+  a1 = aage + 0 - 36;
+  a2 = aage + 1 - 36;
+  a3 = aage + 2 - 36;
+  a4 = aage + 3 - 36;
+
+  ANALYSIS:
+  TYPE=RANDOM;
+  PROCESSORS = 6;
+  model=nocovariances; ! supresses default estimation of certain covs in model;
+
+  MODEL:
+
+  i_bfi_c s_bfi_c | abfi_c bbfi_c cbfi_c dbfi_c AT a1 a2 a3 a4;
+  i_usi_d s_usi_d | ausi_d busi_d cusi_d dusi_d AT a1 a2 a3 a4;
+
+  ! freeing factor covs because of "nocovariances"
+  s_bfi_c WITH i_bfi_c s_usi_d i_usi_d;
+  i_bfi_c WITH s_usi_d i_usi_d;
+  s_usi_d WITH i_usi_d;
+
+  p1 BY abfi_c@1; ! Residual "factors";
+  p2 BY bbfi_c@1;
+  p3 BY cbfi_c@1;
+  p4 BY dbfi_c@1;
+
+  v1 BY ausi_d@1; ! Residual "factors";
+  v2 BY busi_d@1;
+  v3 BY cusi_d@1;
+  v4 BY dusi_d@1;
+
+  !residual variances on observed/manifest vars set to 0
+  abfi_c@0;
+  bbfi_c@0;
+  cbfi_c@0;
+  dbfi_c@0;
+
+  !residual variances on observed/manifest vars set to 0
+  ausi_d@0;
+  busi_d@0;
+  cusi_d@0;
+  dusi_d@0;
+
+  ! means of observed/manifest vars set to 0
+  [abfi_c@0];
+  [bbfi_c@0];
+  [cbfi_c@0];
+  [dbfi_c@0];
+
+  ! means of observed/manifest vars set to 0
+  [ausi_d@0];
+  [busi_d@0];
+  [cusi_d@0];
+  [dusi_d@0];
+
+  [p1@0]; ! means of residual "factors" set to 0
+  [p2@0];
+  [p3@0];
+  [p4@0];
+
+  [v1@0]; ! means of residual "factors" set to 0
+  [v2@0];
+  [v3@0];
+  [v4@0];
+
+  p4 on p3 (a); ! Autoregressive paths constrained to equality
+  p3 on p2 (a);
+  p2 on p1 (a);
+
+  v4 on v3 (b); ! Autoregressive paths constrained to equality
+  v3 on v2 (b);
+  v2 on v1 (b);
+
+  p4 on v3 (c); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c);
+  p2 on v1 (c);
+
+  v4 on p3 (d); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d);
+  v2 on p1 (d);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e); ! Within-wave correlations constrained to equality
+  p3 with v3 (e);
+  p4 with v4 (e);
+
+  p2 p3 p4 (f); ! estimate variances of residual "factors"
+  v2 v3 v4 (g); ! estimate variances of residual "factors"
+
+  MODEL d2:
+
+  p4 on p3 (a2); ! Autoregressive paths constrained to equality
+  p3 on p2 (a2);
+  p2 on p1 (a2);
+
+  v4 on v3 (b2); ! Autoregressive paths constrained to equality
+  v3 on v2 (b2);
+  v2 on v1 (b2);
+
+  p4 on v3 (c2); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c2);
+  p2 on v1 (c2);
+
+  v4 on p3 (d2); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d2);
+  v2 on p1 (d2);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e2); ! Within-wave correlations constrained to equality
+  p3 with v3 (e2);
+  p4 with v4 (e2);
+
+  p2 p3 p4 (f2); ! estimate variances of residual "factors"
+  v2 v3 v4 (g2); ! estimate variances of residual "factors"
+
+  MODEL d3:
+
+  p4 on p3 (a3); ! Autoregressive paths constrained to equality
+  p3 on p2 (a3);
+  p2 on p1 (a3);
+
+  v4 on v3 (b3); ! Autoregressive paths constrained to equality
+  v3 on v2 (b3);
+  v2 on v1 (b3);
+
+  p4 on v3 (c3); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c3);
+  p2 on v1 (c3);
+
+  v4 on p3 (d3); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d3);
+  v2 on p1 (d3);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e3); ! Within-wave correlations constrained to equality
+  p3 with v3 (e3);
+  p4 with v4 (e3);
+
+  p2 p3 p4 (f3); ! estimate variances of residual "factors"
+  v2 v3 v4 (g3); ! estimate variances of residual "factors"
+
+  MODEL d4:
+
+  p4 on p3 (a4); ! Autoregressive paths constrained to equality
+  p3 on p2 (a4);
+  p2 on p1 (a4);
+
+  v4 on v3 (b4); ! Autoregressive paths constrained to equality
+  v3 on v2 (b4);
+  v2 on v1 (b4);
+
+  p4 on v3 (c4); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c4);
+  p2 on v1 (c4);
+
+  v4 on p3 (d4); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d4);
+  v2 on p1 (d4);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e4); ! Within-wave correlations constrained to equality
+  p3 with v3 (e4);
+  p4 with v4 (e4);
+
+  p2 p3 p4 (f4); ! estimate variances of residual "factors"
+  v2 v3 v4 (g4); ! estimate variances of residual "factors"
+
+  MODEL d5:
+
+  p4 on p3 (a5); ! Autoregressive paths constrained to equality
+  p3 on p2 (a5);
+  p2 on p1 (a5);
+
+  v4 on v3 (b5); ! Autoregressive paths constrained to equality
+  v3 on v2 (b5);
+  v2 on v1 (b5);
+
+  p4 on v3 (c5); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c5);
+  p2 on v1 (c5);
+
+  v4 on p3 (d5); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d5);
+  v2 on p1 (d5);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e5); ! Within-wave correlations constrained to equality
+  p3 with v3 (e5);
+  p4 with v4 (e5);
+
+  p2 p3 p4 (f5); ! estimate variances of residual "factors"
+  v2 v3 v4 (g5); ! estimate variances of residual "factors"
+
+  OUTPUT: SAMPSTAT PATTERNS;
+
+
+
+*** WARNING
+  Data set contains unknown or missing values for GROUPING,
+  PATTERN, COHORT, CLUSTER and/or STRATIFICATION variables.
+  Number of cases with unknown or missing values:  5
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+PxVx Bivariate LCM-SR - decadegroup - Linear bfi_c with Linear usi_d;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 4
+Number of observations
+   Group D2                                                    301
+   Group D3                                                    233
+   Group D4                                                    198
+   Group D5                                                    132
+   Total sample size                                           864
+
+Number of dependent variables                                    8
+Number of independent variables                                  0
+Number of continuous latent variables                           12
+
+Observed dependent variables
+
+  Continuous
+   ABFI_C      BBFI_C      CBFI_C      DBFI_C      AUSI_D      BUSI_D
+   CUSI_D      DUSI_D
+
+Continuous latent variables
+   P1          P2          P3          P4          V1          V2
+   V3          V4          I_BFI_C     S_BFI_C     I_USI_D     S_USI_D
+
+Variables with special functions
+
+  Grouping variable     AAGEGRP
+
+  Time scores
+   A1          A2          A3          A4
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                   100
+Convergence criterion                                    0.100D-05
+Maximum number of EM iterations                                500
+Convergence criteria for the EM algorithm
+  Loglikelihood change                                   0.100D-02
+  Relative loglikelihood change                          0.100D-05
+  Derivative                                             0.100D-03
+Minimum variance                                         0.100D-03
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+
+Input data file(s)
+  /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group D2
+     Number of missing data patterns            14
+
+   Group D3
+     Number of missing data patterns            11
+
+   Group D4
+     Number of missing data patterns            15
+
+   Group D5
+     Number of missing data patterns             9
+
+
+SUMMARY OF MISSING DATA PATTERNS
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D2
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14
+ ABFI_C    x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ BBFI_C    x     x  x  x  x           x  x  x     x
+ CBFI_C    x        x     x     x  x  x  x  x  x
+ DBFI_C    x     x  x        x     x     x     x
+ AUSI_D    x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ BUSI_D    x     x  x  x  x           x     x
+ CUSI_D    x              x     x  x     x  x  x
+ DUSI_D    x     x  x        x     x     x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D2
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         187           6          13          11           2
+          2          57           7          11          12           1
+          3           6           8           4          13           1
+          4           1           9           5          14           1
+          5          11          10           1
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D3
+
+           1  2  3  4  5  6  7  8  9 10 11
+ ABFI_C    x  x  x  x  x  x  x  x  x  x  x
+ BBFI_C    x     x  x  x           x  x
+ CBFI_C    x           x     x  x     x
+ DBFI_C    x     x        x     x     x  x
+ AUSI_D    x  x  x  x  x  x  x  x  x  x  x
+ BUSI_D    x     x  x  x              x
+ CUSI_D    x           x     x  x     x
+ DUSI_D    x     x        x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D3
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         140           5           6           9           1
+          2          43           6           3          10           1
+          3           8           7           7          11           2
+          4          15           8           7
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D4
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+ ABFI_C    x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ BBFI_C    x     x  x  x  x           x     x     x
+ CBFI_C    x        x     x     x  x  x  x           x
+ DBFI_C    x     x  x        x     x  x  x        x
+ AUSI_D    x  x  x  x  x  x  x  x  x  x  x  x     x  x
+ BUSI_D    x     x  x  x  x
+ CUSI_D    x              x     x  x  x  x
+ DUSI_D    x     x  x        x     x  x           x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D4
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         104           6          15          11           1
+          2          39           7           4          12           3
+          3           7           8           4          13           1
+          4           1           9           5          14           1
+          5          11          10           1          15           1
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D5
+
+           1  2  3  4  5  6  7  8  9
+ ABFI_C    x  x  x  x  x  x  x  x
+ BBFI_C    x     x  x  x
+ CBFI_C    x           x     x  x
+ DBFI_C    x     x        x     x  x
+ AUSI_D    x  x  x  x  x  x  x  x  x
+ BUSI_D    x     x  x  x
+ CUSI_D    x           x     x  x
+ DUSI_D    x     x        x     x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D5
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1          61           4          10           7           6
+          2          29           5          11           8           4
+          3           5           6           5           9           1
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR D2
+
+
+           Covariance Coverage
+              ABFI_C        BBFI_C        CBFI_C        DBFI_C        AUSI_D
+              ________      ________      ________      ________      ________
+ ABFI_C         1.000
+ BBFI_C         0.741         0.741
+ CBFI_C         0.714         0.681         0.714
+ DBFI_C         0.708         0.651         0.651         0.708
+ AUSI_D         1.000         0.741         0.714         0.708         1.000
+ BUSI_D         0.731         0.731         0.674         0.645         0.731
+ CUSI_D         0.708         0.674         0.708         0.648         0.708
+ DUSI_D         0.708         0.654         0.651         0.704         0.708
+
+
+           Covariance Coverage
+              BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________
+ BUSI_D         0.731
+ CUSI_D         0.668         0.708
+ DUSI_D         0.648         0.648         0.708
+
+
+     PROPORTION OF DATA PRESENT FOR D3
+
+
+           Covariance Coverage
+              ABFI_C        BBFI_C        CBFI_C        DBFI_C        AUSI_D
+              ________      ________      ________      ________      ________
+ ABFI_C         1.000
+ BBFI_C         0.751         0.751
+ CBFI_C         0.725         0.691         0.725
+ DBFI_C         0.742         0.708         0.678         0.742
+ AUSI_D         1.000         0.751         0.725         0.742         1.000
+ BUSI_D         0.742         0.742         0.682         0.700         0.742
+ CUSI_D         0.657         0.622         0.657         0.614         0.657
+ DUSI_D         0.742         0.708         0.678         0.742         0.742
+
+
+           Covariance Coverage
+              BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________
+ BUSI_D         0.742
+ CUSI_D         0.614         0.657
+ DUSI_D         0.700         0.614         0.742
+
+
+     PROPORTION OF DATA PRESENT FOR D4
+
+
+           Covariance Coverage
+              ABFI_C        BBFI_C        CBFI_C        DBFI_C        AUSI_D
+              ________      ________      ________      ________      ________
+ ABFI_C         1.000
+ BBFI_C         0.732         0.732
+ CBFI_C         0.687         0.636         0.687
+ DBFI_C         0.626         0.576         0.571         0.626
+ AUSI_D         1.000         0.732         0.687         0.626         1.000
+ BUSI_D         0.722         0.722         0.631         0.571         0.722
+ CUSI_D         0.677         0.626         0.677         0.566         0.677
+ DUSI_D         0.631         0.586         0.576         0.616         0.631
+
+
+           Covariance Coverage
+              BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________
+ BUSI_D         0.722
+ CUSI_D         0.621         0.677
+ DUSI_D         0.581         0.571         0.631
+
+
+     PROPORTION OF DATA PRESENT FOR D5
+
+
+           Covariance Coverage
+              ABFI_C        BBFI_C        CBFI_C        DBFI_C        AUSI_D
+              ________      ________      ________      ________      ________
+ ABFI_C         1.000
+ BBFI_C         0.697         0.697
+ CBFI_C         0.614         0.576         0.614
+ DBFI_C         0.629         0.576         0.545         0.629
+ AUSI_D         1.000         0.697         0.614         0.629         1.000
+ BUSI_D         0.697         0.697         0.576         0.576         0.697
+ CUSI_D         0.538         0.500         0.538         0.470         0.538
+ DUSI_D         0.629         0.576         0.545         0.629         0.629
+
+
+           Covariance Coverage
+              BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________
+ BUSI_D         0.697
+ CUSI_D         0.500         0.538
+ DUSI_D         0.576         0.470         0.629
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D2
+
+
+           Means
+              ABFI_C        BBFI_C        CBFI_C        DBFI_C        AUSI_D
+              ________      ________      ________      ________      ________
+               65.171        63.862        64.054        64.779        34.095
+
+
+           Means
+              BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________
+               33.242        33.080        33.946
+
+
+           Covariances
+              ABFI_C        BBFI_C        CBFI_C        DBFI_C        AUSI_D
+              ________      ________      ________      ________      ________
+ ABFI_C       289.331
+ BBFI_C       219.357       259.974
+ CBFI_C       192.859       198.440       268.448
+ DBFI_C       205.162       198.563       214.561       281.361
+ AUSI_D        17.969        16.312        29.338        15.542       351.891
+ BUSI_D        18.706        16.906         5.841        17.833       240.907
+ CUSI_D        26.767        13.985        20.680         1.920       183.714
+ DUSI_D        22.395        17.430         4.130         0.661       195.158
+
+
+           Covariances
+              BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________
+ BUSI_D       355.139
+ CUSI_D       216.099       313.459
+ DUSI_D       212.514       227.626       328.697
+
+
+           Correlations
+              ABFI_C        BBFI_C        CBFI_C        DBFI_C        AUSI_D
+              ________      ________      ________      ________      ________
+ ABFI_C         1.000
+ BBFI_C         0.800         1.000
+ CBFI_C         0.692         0.751         1.000
+ DBFI_C         0.719         0.734         0.781         1.000
+ AUSI_D         0.056         0.054         0.095         0.049         1.000
+ BUSI_D         0.058         0.056         0.019         0.056         0.681
+ CUSI_D         0.089         0.049         0.071         0.006         0.553
+ DUSI_D         0.073         0.060         0.014         0.002         0.574
+
+
+           Correlations
+              BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________
+ BUSI_D         1.000
+ CUSI_D         0.648         1.000
+ DUSI_D         0.622         0.709         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D3
+
+
+           Means
+              ABFI_C        BBFI_C        CBFI_C        DBFI_C        AUSI_D
+              ________      ________      ________      ________      ________
+               70.547        70.629        71.189        71.173        29.614
+
+
+           Means
+              BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________
+               31.354        30.429        28.936
+
+
+           Covariances
+              ABFI_C        BBFI_C        CBFI_C        DBFI_C        AUSI_D
+              ________      ________      ________      ________      ________
+ ABFI_C       317.896
+ BBFI_C       241.248       281.977
+ CBFI_C       236.701       228.269       282.875
+ DBFI_C       214.457       228.104       229.043       283.140
+ AUSI_D       -31.862       -40.019       -28.608       -27.968       326.979
+ BUSI_D         1.865       -11.567        16.001         9.585       202.543
+ CUSI_D       -17.533       -11.276        -5.932        22.371       184.387
+ DUSI_D       -15.140         6.959       -10.343       -10.094       154.269
+
+
+           Covariances
+              BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________
+ BUSI_D       308.081
+ CUSI_D       191.986       348.007
+ DUSI_D       149.358       195.359       298.194
+
+
+           Correlations
+              ABFI_C        BBFI_C        CBFI_C        DBFI_C        AUSI_D
+              ________      ________      ________      ________      ________
+ ABFI_C         1.000
+ BBFI_C         0.806         1.000
+ CBFI_C         0.789         0.808         1.000
+ DBFI_C         0.715         0.807         0.809         1.000
+ AUSI_D        -0.099        -0.132        -0.094        -0.092         1.000
+ BUSI_D         0.006        -0.039         0.054         0.032         0.638
+ CUSI_D        -0.053        -0.036        -0.019         0.071         0.547
+ DUSI_D        -0.049         0.024        -0.036        -0.035         0.494
+
+
+           Correlations
+              BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________
+ BUSI_D         1.000
+ CUSI_D         0.586         1.000
+ DUSI_D         0.493         0.606         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D4
+
+
+           Means
+              ABFI_C        BBFI_C        CBFI_C        DBFI_C        AUSI_D
+              ________      ________      ________      ________      ________
+               70.134        70.869        71.069        70.288        28.334
+
+
+           Means
+              BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________
+               27.233        27.318        27.915
+
+
+           Covariances
+              ABFI_C        BBFI_C        CBFI_C        DBFI_C        AUSI_D
+              ________      ________      ________      ________      ________
+ ABFI_C       283.161
+ BBFI_C       221.386       273.918
+ CBFI_C       237.510       237.770       299.571
+ DBFI_C       213.199       215.099       244.668       284.211
+ AUSI_D        24.598        -3.014        -8.013         2.540       377.652
+ BUSI_D        24.778         1.326         7.229        18.216       284.583
+ CUSI_D        15.148       -14.770        -1.381         7.847       271.546
+ DUSI_D        16.574        14.904         4.743         7.206       215.502
+
+
+           Covariances
+              BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________
+ BUSI_D       400.561
+ CUSI_D       275.497       384.841
+ DUSI_D       205.115       247.337       327.787
+
+
+           Correlations
+              ABFI_C        BBFI_C        CBFI_C        DBFI_C        AUSI_D
+              ________      ________      ________      ________      ________
+ ABFI_C         1.000
+ BBFI_C         0.795         1.000
+ CBFI_C         0.815         0.830         1.000
+ DBFI_C         0.752         0.771         0.839         1.000
+ AUSI_D         0.075        -0.009        -0.024         0.008         1.000
+ BUSI_D         0.074         0.004         0.021         0.054         0.732
+ CUSI_D         0.046        -0.045        -0.004         0.024         0.712
+ DUSI_D         0.054         0.050         0.015         0.024         0.613
+
+
+           Correlations
+              BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________
+ BUSI_D         1.000
+ CUSI_D         0.702         1.000
+ DUSI_D         0.566         0.696         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D5
+
+
+           Means
+              ABFI_C        BBFI_C        CBFI_C        DBFI_C        AUSI_D
+              ________      ________      ________      ________      ________
+               70.310        72.221        70.954        70.825        25.694
+
+
+           Means
+              BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________
+               23.763        25.099        27.758
+
+
+           Covariances
+              ABFI_C        BBFI_C        CBFI_C        DBFI_C        AUSI_D
+              ________      ________      ________      ________      ________
+ ABFI_C       266.309
+ BBFI_C       220.214       267.476
+ CBFI_C       234.834       219.499       290.481
+ DBFI_C       239.754       221.749       243.387       295.944
+ AUSI_D       -20.970        30.306       -11.440       -12.590       342.005
+ BUSI_D       -50.611       -13.251       -59.862       -78.594       176.758
+ CUSI_D        23.138        51.024        -6.744         0.654       255.885
+ DUSI_D       -35.598        12.540       -23.227       -51.812       229.672
+
+
+           Covariances
+              BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________
+ BUSI_D       304.121
+ CUSI_D       251.889       463.675
+ DUSI_D       252.138       330.101       431.337
+
+
+           Correlations
+              ABFI_C        BBFI_C        CBFI_C        DBFI_C        AUSI_D
+              ________      ________      ________      ________      ________
+ ABFI_C         1.000
+ BBFI_C         0.825         1.000
+ CBFI_C         0.844         0.787         1.000
+ DBFI_C         0.854         0.788         0.830         1.000
+ AUSI_D        -0.069         0.100        -0.036        -0.040         1.000
+ BUSI_D        -0.178        -0.046        -0.201        -0.262         0.548
+ CUSI_D         0.066         0.145        -0.018         0.002         0.643
+ DUSI_D        -0.105         0.037        -0.066        -0.145         0.598
+
+
+           Correlations
+              BUSI_D        CUSI_D        DUSI_D
+              ________      ________      ________
+ BUSI_D         1.000
+ CUSI_D         0.671         1.000
+ DUSI_D         0.696         0.738         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -21046.695
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D2
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_C               65.171      -0.157      19.444    0.33%      50.000     59.375     66.667
+             301.000     289.331      -0.455     100.000    1.00%      69.444     80.556
+     BBFI_C               64.013      -0.234       8.333    0.45%      50.000     61.111     63.889
+             223.000     250.992       0.549     100.000    1.79%      69.444     77.778
+     CBFI_C               64.070      -0.121      19.444    0.47%      52.778     61.111     63.889
+             215.000     257.001      -0.232     100.000    0.93%      69.444     77.778
+     DBFI_C               65.063      -0.221      16.667    0.94%      50.000     61.111     66.667
+             213.000     276.328      -0.051     100.000    2.35%      69.444     77.778
+     AUSI_D               34.095       0.151       0.000    6.98%      16.667     33.333     33.333
+             301.000     351.891      -0.339      91.667    0.33%      41.667     50.000
+     BUSI_D               32.689      -0.008       0.000    7.27%      16.667     25.000     33.333
+             220.000     338.916      -0.600      91.667    0.45%      41.667     50.000
+     CUSI_D               33.099       0.089       0.000    6.57%      16.667     25.000     33.333
+             213.000     305.761      -0.296      83.333    0.47%      33.333     50.000
+     DUSI_D               33.549       0.033       0.000    6.10%      16.667     25.000     33.333
+             213.000     315.959      -0.347      83.333    0.94%      41.667     50.000
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D3
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_C               70.547      -0.514      16.667    0.43%      55.556     66.667     72.222
+             233.000     317.896      -0.303     100.000    3.00%      77.778     86.111
+     BBFI_C               71.171      -0.192      27.778    0.58%      55.556     66.667     72.222
+             171.000     272.221      -0.813     100.000    3.51%      77.778     88.889
+     CBFI_C               71.032      -0.240      30.556    0.62%      55.556     66.667     69.444
+             161.000     279.955      -0.671     100.000    1.86%      77.778     86.111
+     DBFI_C               71.377      -0.289      27.778    0.62%      55.556     69.444     72.222
+             161.000     278.645      -0.538     100.000    3.73%      77.778     86.111
+     AUSI_D               29.614       0.002       0.000   12.88%       8.333     25.000     33.333
+             233.000     326.979      -0.435      91.667    0.43%      33.333     41.667
+     BUSI_D               30.515       0.091       0.000   10.00%      16.667     25.000     33.333
+             170.000     305.066      -0.063      91.667    0.59%      33.333     41.667
+     CUSI_D               30.072       0.264       0.000    9.32%       8.333     25.000     33.333
+             161.000     352.980      -0.551      75.000    1.86%      33.333     41.667
+     DUSI_D               28.191       0.144       0.000   10.76%       8.333     25.000     29.167
+             158.000     299.351      -0.487      75.000    1.27%      33.333     41.667
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D4
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_C               70.134      -0.448      16.667    0.51%      55.556     66.667     72.222
+             198.000     283.161      -0.045     100.000    2.53%      75.000     83.333
+     BBFI_C               71.013      -0.446      11.111    0.70%      58.333     66.667     72.222
+             143.000     283.575       0.276     100.000    5.59%      75.000     86.111
+     CBFI_C               71.507      -0.641       8.333    0.76%      58.333     66.667     72.222
+             132.000     305.324       0.706     100.000    4.55%      77.778     86.111
+     DBFI_C               71.013      -0.521       8.333    0.81%      55.556     69.444     72.222
+             124.000     299.960       0.344     100.000    4.03%      75.000     88.889
+     AUSI_D               28.342       0.258       0.000   11.17%       8.333     16.667     25.000
+             197.000     377.651      -0.783      83.333    0.51%      33.333     50.000
+     BUSI_D               27.597       0.569       0.000   15.22%       8.333     25.000     25.000
+             138.000     395.582       0.559     100.000    0.72%      33.333     41.667
+     CUSI_D               28.141       0.148       0.000   17.69%       8.333     25.000     29.167
+             130.000     391.309      -0.767      83.333    0.77%      33.333     41.667
+     DUSI_D               28.659       0.031       0.000   14.63%       8.333     25.000     33.333
+             123.000     335.531      -0.719      75.000    0.81%      33.333     41.667
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D5
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_C               70.274      -0.795      12.500    0.76%      58.333     66.667     75.000
+             131.000     267.631       0.675      97.222    2.29%      77.778     83.333
+     BBFI_C               74.401      -0.523      33.333    1.15%      61.111     72.222     77.778
+              87.000     231.483      -0.232     100.000    5.75%      80.556     86.111
+     CBFI_C               72.790      -0.607      30.556    2.44%      58.333     69.444     75.000
+              82.000     266.876      -0.114     100.000    3.66%      77.778     86.111
+     DBFI_C               73.721      -0.804      25.000    1.32%      63.889     72.222     75.000
+              76.000     241.724       1.077     100.000    2.63%      77.778     86.111
+     AUSI_D               25.694       0.348       0.000   15.91%       8.333     16.667     25.000
+             132.000     342.005      -0.680      75.000    0.76%      33.333     41.667
+     BUSI_D               22.797       0.355       0.000   20.69%       0.000     16.667     25.000
+              87.000     297.669      -0.593      66.667    2.30%      25.000     41.667
+     CUSI_D               24.797       0.742       0.000   18.29%       8.333     16.667     16.667
+              82.000     438.644       0.000      91.667    1.22%      25.000     41.667
+     DUSI_D               25.768       0.437       0.000   19.74%       0.000     16.667     25.000
+              76.000     427.956      -0.736      83.333    1.32%      33.333     50.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       96
+
+Loglikelihood
+
+          H0 Value                      -21093.298
+          H0 Scaling Correction Factor      1.0710
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   42378.595
+          Bayesian (BIC)                 42835.706
+          Sample-Size Adjusted BIC       42530.835
+            (n* = (n + 2) / 24)
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ P1       BY
+    ABFI_C             1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_C             1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_C             1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_C             1.000      0.000    999.000    999.000
+
+ V1       BY
+    AUSI_D             1.000      0.000    999.000    999.000
+
+ V2       BY
+    BUSI_D             1.000      0.000    999.000    999.000
+
+ V3       BY
+    CUSI_D             1.000      0.000    999.000    999.000
+
+ V4       BY
+    DUSI_D             1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.177      0.086      2.071      0.038
+    V3                -0.110      0.048     -2.310      0.021
+
+ P3         ON
+    P2                 0.177      0.086      2.071      0.038
+    V2                -0.110      0.048     -2.310      0.021
+
+ P2         ON
+    P1                 0.177      0.086      2.071      0.038
+    V1                -0.110      0.048     -2.310      0.021
+
+ V4         ON
+    V3                 0.245      0.068      3.597      0.000
+    P3                -0.173      0.088     -1.975      0.048
+
+ V3         ON
+    V2                 0.245      0.068      3.597      0.000
+    P2                -0.173      0.088     -1.975      0.048
+
+ V2         ON
+    V1                 0.245      0.068      3.597      0.000
+    P1                -0.173      0.088     -1.975      0.048
+
+ S_BFI_C  WITH
+    I_BFI_C           32.108     13.550      2.370      0.018
+    S_USI_D            0.080      1.011      0.079      0.937
+    I_USI_D           -2.081     11.484     -0.181      0.856
+
+ I_BFI_C  WITH
+    S_USI_D            0.479     11.299      0.042      0.966
+    I_USI_D            4.346    116.251      0.037      0.970
+
+ S_USI_D  WITH
+    I_USI_D            4.851     14.239      0.341      0.733
+
+ P1       WITH
+    V1               -20.378     12.001     -1.698      0.089
+
+ P2       WITH
+    V2                -3.604      5.316     -0.678      0.498
+
+ P3       WITH
+    V3                -3.604      5.316     -0.678      0.498
+
+ P4       WITH
+    V4                -3.604      5.316     -0.678      0.498
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_C           64.589      2.483     26.015      0.000
+    S_BFI_C           -0.038      0.230     -0.163      0.870
+    I_USI_D           32.441      2.653     12.229      0.000
+    S_USI_D           -0.128      0.251     -0.510      0.610
+
+ Intercepts
+    ABFI_C             0.000      0.000    999.000    999.000
+    BBFI_C             0.000      0.000    999.000    999.000
+    CBFI_C             0.000      0.000    999.000    999.000
+    DBFI_C             0.000      0.000    999.000    999.000
+    AUSI_D             0.000      0.000    999.000    999.000
+    BUSI_D             0.000      0.000    999.000    999.000
+    CUSI_D             0.000      0.000    999.000    999.000
+    DUSI_D             0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                81.176     15.591      5.207      0.000
+    V1               168.122     25.105      6.697      0.000
+    I_BFI_C          517.651    141.784      3.651      0.000
+    S_BFI_C            2.992      1.335      2.242      0.025
+    I_USI_D          248.353    155.094      1.601      0.109
+    S_USI_D            0.333      1.363      0.244      0.807
+
+ Residual Variances
+    ABFI_C             0.000      0.000    999.000    999.000
+    BBFI_C             0.000      0.000    999.000    999.000
+    CBFI_C             0.000      0.000    999.000    999.000
+    DBFI_C             0.000      0.000    999.000    999.000
+    AUSI_D             0.000      0.000    999.000    999.000
+    BUSI_D             0.000      0.000    999.000    999.000
+    CUSI_D             0.000      0.000    999.000    999.000
+    DUSI_D             0.000      0.000    999.000    999.000
+    P2                67.603      7.937      8.518      0.000
+    P3                67.603      7.937      8.518      0.000
+    P4                67.603      7.937      8.518      0.000
+    V2               130.407     11.826     11.027      0.000
+    V3               130.407     11.826     11.027      0.000
+    V4               130.407     11.826     11.027      0.000
+
+Group D3
+
+ P1       BY
+    ABFI_C             1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_C             1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_C             1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_C             1.000      0.000    999.000    999.000
+
+ V1       BY
+    AUSI_D             1.000      0.000    999.000    999.000
+
+ V2       BY
+    BUSI_D             1.000      0.000    999.000    999.000
+
+ V3       BY
+    CUSI_D             1.000      0.000    999.000    999.000
+
+ V4       BY
+    DUSI_D             1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.072      0.157      0.455      0.649
+    V3                 0.053      0.041      1.295      0.195
+
+ P3         ON
+    P2                 0.072      0.157      0.455      0.649
+    V2                 0.053      0.041      1.295      0.195
+
+ P2         ON
+    P1                 0.072      0.157      0.455      0.649
+    V1                 0.053      0.041      1.295      0.195
+
+ V4         ON
+    V3                 0.196      0.090      2.180      0.029
+    P3                -0.035      0.123     -0.287      0.774
+
+ V3         ON
+    V2                 0.196      0.090      2.180      0.029
+    P2                -0.035      0.123     -0.287      0.774
+
+ V2         ON
+    V1                 0.196      0.090      2.180      0.029
+    P1                -0.035      0.123     -0.287      0.774
+
+ S_BFI_C  WITH
+    I_BFI_C           -0.990      3.040     -0.326      0.745
+    S_USI_D           -0.840      0.924     -0.908      0.364
+    I_USI_D            2.999      3.929      0.763      0.445
+
+ I_BFI_C  WITH
+    S_USI_D            3.903      5.826      0.670      0.503
+    I_USI_D           -5.312     19.318     -0.275      0.783
+
+ S_USI_D  WITH
+    I_USI_D           -0.772      3.167     -0.244      0.808
+
+ P1       WITH
+    V1                14.157     15.349      0.922      0.356
+
+ P2       WITH
+    V2               -11.776      6.541     -1.800      0.072
+
+ P3       WITH
+    V3               -11.776      6.541     -1.800      0.072
+
+ P4       WITH
+    V4               -11.776      6.541     -1.800      0.072
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_C           71.052      1.067     66.607      0.000
+    S_BFI_C            0.219      0.236      0.928      0.353
+    I_USI_D           29.843      1.022     29.197      0.000
+    S_USI_D           -0.145      0.279     -0.520      0.603
+
+ Intercepts
+    ABFI_C             0.000      0.000    999.000    999.000
+    BBFI_C             0.000      0.000    999.000    999.000
+    CBFI_C             0.000      0.000    999.000    999.000
+    DBFI_C             0.000      0.000    999.000    999.000
+    AUSI_D             0.000      0.000    999.000    999.000
+    BUSI_D             0.000      0.000    999.000    999.000
+    CUSI_D             0.000      0.000    999.000    999.000
+    DUSI_D             0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                81.260     13.097      6.204      0.000
+    V1               148.206     22.865      6.482      0.000
+    I_BFI_C          221.665     23.123      9.586      0.000
+    S_BFI_C            1.283      1.293      0.992      0.321
+    I_USI_D          156.420     24.207      6.462      0.000
+    S_USI_D            1.029      0.976      1.054      0.292
+
+ Residual Variances
+    ABFI_C             0.000      0.000    999.000    999.000
+    BBFI_C             0.000      0.000    999.000    999.000
+    CBFI_C             0.000      0.000    999.000    999.000
+    DBFI_C             0.000      0.000    999.000    999.000
+    AUSI_D             0.000      0.000    999.000    999.000
+    BUSI_D             0.000      0.000    999.000    999.000
+    CUSI_D             0.000      0.000    999.000    999.000
+    DUSI_D             0.000      0.000    999.000    999.000
+    P2                53.515      7.485      7.150      0.000
+    P3                53.515      7.485      7.150      0.000
+    P4                53.515      7.485      7.150      0.000
+    V2               151.939     16.125      9.423      0.000
+    V3               151.939     16.125      9.423      0.000
+    V4               151.939     16.125      9.423      0.000
+
+Group D4
+
+ P1       BY
+    ABFI_C             1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_C             1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_C             1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_C             1.000      0.000    999.000    999.000
+
+ V1       BY
+    AUSI_D             1.000      0.000    999.000    999.000
+
+ V2       BY
+    BUSI_D             1.000      0.000    999.000    999.000
+
+ V3       BY
+    CUSI_D             1.000      0.000    999.000    999.000
+
+ V4       BY
+    DUSI_D             1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.094      0.126      0.742      0.458
+    V3                -0.029      0.058     -0.497      0.619
+
+ P3         ON
+    P2                 0.094      0.126      0.742      0.458
+    V2                -0.029      0.058     -0.497      0.619
+
+ P2         ON
+    P1                 0.094      0.126      0.742      0.458
+    V1                -0.029      0.058     -0.497      0.619
+
+ V4         ON
+    V3                 0.255      0.097      2.625      0.009
+    P3                -0.134      0.123     -1.096      0.273
+
+ V3         ON
+    V2                 0.255      0.097      2.625      0.009
+    P2                -0.134      0.123     -1.096      0.273
+
+ V2         ON
+    V1                 0.255      0.097      2.625      0.009
+    P1                -0.134      0.123     -1.096      0.273
+
+ S_BFI_C  WITH
+    I_BFI_C           -8.433     12.226     -0.690      0.490
+    S_USI_D            0.994      0.867      1.147      0.252
+    I_USI_D          -14.206     10.573     -1.344      0.179
+
+ I_BFI_C  WITH
+    S_USI_D           -8.248      8.939     -0.923      0.356
+    I_USI_D          127.845     94.836      1.348      0.178
+
+ S_USI_D  WITH
+    I_USI_D          -12.943      9.837     -1.316      0.188
+
+ P1       WITH
+    V1                 9.653     13.178      0.733      0.464
+
+ P2       WITH
+    V2                -8.070      6.606     -1.222      0.222
+
+ P3       WITH
+    V3                -8.070      6.606     -1.222      0.222
+
+ P4       WITH
+    V4                -8.070      6.606     -1.222      0.222
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_C           68.994      2.464     27.998      0.000
+    S_BFI_C            0.164      0.247      0.663      0.507
+    I_USI_D           31.425      3.099     10.141      0.000
+    S_USI_D           -0.371      0.301     -1.232      0.218
+
+ Intercepts
+    ABFI_C             0.000      0.000    999.000    999.000
+    BBFI_C             0.000      0.000    999.000    999.000
+    CBFI_C             0.000      0.000    999.000    999.000
+    DBFI_C             0.000      0.000    999.000    999.000
+    AUSI_D             0.000      0.000    999.000    999.000
+    BUSI_D             0.000      0.000    999.000    999.000
+    CUSI_D             0.000      0.000    999.000    999.000
+    DUSI_D             0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                62.378     12.343      5.054      0.000
+    V1               113.516     30.777      3.688      0.000
+    I_BFI_C          239.255    135.911      1.760      0.078
+    S_BFI_C            1.461      1.175      1.243      0.214
+    I_USI_D          373.555    119.342      3.130      0.002
+    S_USI_D            1.115      0.946      1.179      0.239
+
+ Residual Variances
+    ABFI_C             0.000      0.000    999.000    999.000
+    BBFI_C             0.000      0.000    999.000    999.000
+    CBFI_C             0.000      0.000    999.000    999.000
+    DBFI_C             0.000      0.000    999.000    999.000
+    AUSI_D             0.000      0.000    999.000    999.000
+    BUSI_D             0.000      0.000    999.000    999.000
+    CUSI_D             0.000      0.000    999.000    999.000
+    DUSI_D             0.000      0.000    999.000    999.000
+    P2                55.307      6.577      8.410      0.000
+    P3                55.307      6.577      8.410      0.000
+    P4                55.307      6.577      8.410      0.000
+    V2               141.073     15.975      8.831      0.000
+    V3               141.073     15.975      8.831      0.000
+    V4               141.073     15.975      8.831      0.000
+
+Group D5
+
+ P1       BY
+    ABFI_C             1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_C             1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_C             1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_C             1.000      0.000    999.000    999.000
+
+ V1       BY
+    AUSI_D             1.000      0.000    999.000    999.000
+
+ V2       BY
+    BUSI_D             1.000      0.000    999.000    999.000
+
+ V3       BY
+    CUSI_D             1.000      0.000    999.000    999.000
+
+ V4       BY
+    DUSI_D             1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.007      0.184      0.041      0.968
+    V3                 0.051      0.059      0.876      0.381
+
+ P3         ON
+    P2                 0.007      0.184      0.041      0.968
+    V2                 0.051      0.059      0.876      0.381
+
+ P2         ON
+    P1                 0.007      0.184      0.041      0.968
+    V1                 0.051      0.059      0.876      0.381
+
+ V4         ON
+    V3                 0.043      0.161      0.265      0.791
+    P3                 0.200      0.263      0.760      0.447
+
+ V3         ON
+    V2                 0.043      0.161      0.265      0.791
+    P2                 0.200      0.263      0.760      0.447
+
+ V2         ON
+    V1                 0.043      0.161      0.265      0.791
+    P1                 0.200      0.263      0.760      0.447
+
+ S_BFI_C  WITH
+    I_BFI_C          -38.210     37.892     -1.008      0.313
+    S_USI_D           -0.629      1.682     -0.374      0.708
+    I_USI_D            3.178     28.336      0.112      0.911
+
+ I_BFI_C  WITH
+    S_USI_D           11.352     37.160      0.305      0.760
+    I_USI_D          -77.623    613.429     -0.127      0.899
+
+ S_USI_D  WITH
+    I_USI_D          -11.844     70.674     -0.168      0.867
+
+ P1       WITH
+    V1               -22.575     13.051     -1.730      0.084
+
+ P2       WITH
+    V2                 3.339     11.120      0.300      0.764
+
+ P3       WITH
+    V3                 3.339     11.120      0.300      0.764
+
+ P4       WITH
+    V4                 3.339     11.120      0.300      0.764
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_C           71.472      5.585     12.797      0.000
+    S_BFI_C           -0.045      0.303     -0.149      0.881
+    I_USI_D           31.025      7.723      4.017      0.000
+    S_USI_D           -0.324      0.449     -0.723      0.470
+
+ Intercepts
+    ABFI_C             0.000      0.000    999.000    999.000
+    BBFI_C             0.000      0.000    999.000    999.000
+    CBFI_C             0.000      0.000    999.000    999.000
+    DBFI_C             0.000      0.000    999.000    999.000
+    AUSI_D             0.000      0.000    999.000    999.000
+    BUSI_D             0.000      0.000    999.000    999.000
+    CUSI_D             0.000      0.000    999.000    999.000
+    DUSI_D             0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                25.052     11.400      2.197      0.028
+    V1               165.376     31.109      5.316      0.000
+    I_BFI_C          990.230    744.369      1.330      0.183
+    S_BFI_C            1.852      1.902      0.973      0.330
+    I_USI_D          166.436   1147.987      0.145      0.885
+    S_USI_D            1.524      4.371      0.349      0.727
+
+ Residual Variances
+    ABFI_C             0.000      0.000    999.000    999.000
+    BBFI_C             0.000      0.000    999.000    999.000
+    CBFI_C             0.000      0.000    999.000    999.000
+    DBFI_C             0.000      0.000    999.000    999.000
+    AUSI_D             0.000      0.000    999.000    999.000
+    BUSI_D             0.000      0.000    999.000    999.000
+    CUSI_D             0.000      0.000    999.000    999.000
+    DUSI_D             0.000      0.000    999.000    999.000
+    P2                55.935     15.007      3.727      0.000
+    P3                55.935     15.007      3.727      0.000
+    P4                55.935     15.007      3.727      0.000
+    V2               126.904     27.822      4.561      0.000
+    V3               126.904     27.822      4.561      0.000
+    V4               126.904     27.822      4.561      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.170E-06
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  12:51:19
+        Ending Time:  12:51:40
+       Elapsed Time:  00:00:21
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

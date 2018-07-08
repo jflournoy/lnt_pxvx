@@ -1,0 +1,1522 @@
+Mplus VERSION 8 (Linux)
+MUTHEN & MUTHEN
+07/07/2018   6:28 PM
+
+INPUT INSTRUCTIONS
+
+
+  title: PxVx Bivariate LCM-SR - decadegroup - Linear bfas_ap with Linear aspfin;
+  data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
+
+  variable:
+  names =
+  subjid
+  aage
+  aaspfin
+  aaspfin_d
+  abfa_mt
+  abfa_mt_d
+  abfas_ac
+  abfas_ap
+  abfas_ci
+  abfas_co
+  abfas_ea
+  abfas_ee
+  abfas_nv
+  abfas_nv9
+  abfas_nw
+  abfas_oi
+  abfas_oo
+  abfi_a
+  abfi_a6
+  abfi_c
+  abfi_d_scale
+  abfi_e
+  abfi_hp8
+  abfi_n
+  abfi_o
+  abfi_s_scale
+  ahrz_col
+  ahrz_col_d
+  ahrz_ind
+  ahrz_ind_d
+  amvi
+  ausi
+  ausi_d
+  avrt_col
+  avrt_col_d
+  avrt_ind
+  avrt_ind_d
+  bage
+  baspfin
+  baspfin_d
+  bbfa_mt
+  bbfa_mt_d
+  bbfas_ac
+  bbfas_ap
+  bbfas_ci
+  bbfas_co
+  bbfas_ea
+  bbfas_ee
+  bbfas_nv
+  bbfas_nv9
+  bbfas_nw
+  bbfas_oi
+  bbfas_oo
+  bbfi_a
+  bbfi_a6
+  bbfi_c
+  bbfi_d_scale
+  bbfi_e
+  bbfi_hp8
+  bbfi_n
+  bbfi_o
+  bbfi_s_scale
+  bhrz_col
+  bhrz_col_d
+  bhrz_ind
+  bhrz_ind_d
+  bmvi
+  busi
+  busi_d
+  bvrt_col
+  bvrt_col_d
+  bvrt_ind
+  bvrt_ind_d
+  cage
+  caspfin
+  caspfin_d
+  cbfa_mt
+  cbfa_mt_d
+  cbfas_ac
+  cbfas_ap
+  cbfas_ci
+  cbfas_co
+  cbfas_ea
+  cbfas_ee
+  cbfas_nv
+  cbfas_nv9
+  cbfas_nw
+  cbfas_oi
+  cbfas_oo
+  cbfi_a
+  cbfi_a6
+  cbfi_c
+  cbfi_d_scale
+  cbfi_e
+  cbfi_hp8
+  cbfi_n
+  cbfi_o
+  cbfi_s_scale
+  chrz_col
+  chrz_col_d
+  chrz_ind
+  chrz_ind_d
+  cmvi
+  cusi
+  cusi_d
+  cvrt_col
+  cvrt_col_d
+  cvrt_ind
+  cvrt_ind_d
+  dage
+  daspfin
+  daspfin_d
+  dbfa_mt
+  dbfa_mt_d
+  dbfas_ac
+  dbfas_ap
+  dbfas_ci
+  dbfas_co
+  dbfas_ea
+  dbfas_ee
+  dbfas_nv
+  dbfas_nv9
+  dbfas_nw
+  dbfas_oi
+  dbfas_oo
+  dbfi_a
+  dbfi_a6
+  dbfi_c
+  dbfi_d_scale
+  dbfi_e
+  dbfi_hp8
+  dbfi_n
+  dbfi_o
+  dbfi_s_scale
+  dhrz_col
+  dhrz_col_d
+  dhrz_ind
+  dhrz_ind_d
+  dmvi
+  dusi
+  dusi_d
+  dvrt_col
+  dvrt_col_d
+  dvrt_ind
+  dvrt_ind_d;
+
+  USEVARIABLES =
+  abfas_ap
+  bbfas_ap
+  cbfas_ap
+  dbfas_ap
+  aaspfin
+  baspfin
+  caspfin
+  daspfin
+  a1
+  a2
+  a3
+  a4
+  ;
+
+  missing = all (-9999);
+
+  tscores = a1 a2 a3 a4;
+
+  grouping = aage (0=d2, 1=d3, 2=d4, 3=d5);
+
+  DEFINE:
+
+  cut aage (29 39 49);
+
+  a1 = aage + 0 - 36;
+  a2 = aage + 1 - 36;
+  a3 = aage + 2 - 36;
+  a4 = aage + 3 - 36;
+
+  ANALYSIS:
+  TYPE=RANDOM;
+  PROCESSORS = 6;
+  model=nocovariances; ! supresses default estimation of certain covs in model;
+
+  MODEL:
+
+  i_bfas_ap s_bfas_ap | abfas_ap bbfas_ap cbfas_ap dbfas_ap AT a1 a2 a3 a4;
+  i_aspfin s_aspfin | aaspfin baspfin caspfin daspfin AT a1 a2 a3 a4;
+
+  ! freeing factor covs because of "nocovariances"
+  s_bfas_ap WITH i_bfas_ap s_aspfin i_aspfin;
+  i_bfas_ap WITH s_aspfin i_aspfin;
+  s_aspfin WITH i_aspfin;
+
+  p1 BY abfas_ap@1; ! Residual "factors";
+  p2 BY bbfas_ap@1;
+  p3 BY cbfas_ap@1;
+  p4 BY dbfas_ap@1;
+
+  v1 BY aaspfin@1; ! Residual "factors";
+  v2 BY baspfin@1;
+  v3 BY caspfin@1;
+  v4 BY daspfin@1;
+
+  !residual variances on observed/manifest vars set to 0
+  abfas_ap@0;
+  bbfas_ap@0;
+  cbfas_ap@0;
+  dbfas_ap@0;
+
+  !residual variances on observed/manifest vars set to 0
+  aaspfin@0;
+  baspfin@0;
+  caspfin@0;
+  daspfin@0;
+
+  ! means of observed/manifest vars set to 0
+  [abfas_ap@0];
+  [bbfas_ap@0];
+  [cbfas_ap@0];
+  [dbfas_ap@0];
+
+  ! means of observed/manifest vars set to 0
+  [aaspfin@0];
+  [baspfin@0];
+  [caspfin@0];
+  [daspfin@0];
+
+  [p1@0]; ! means of residual "factors" set to 0
+  [p2@0];
+  [p3@0];
+  [p4@0];
+
+  [v1@0]; ! means of residual "factors" set to 0
+  [v2@0];
+  [v3@0];
+  [v4@0];
+
+  p4 on p3 (a); ! Autoregressive paths constrained to equality
+  p3 on p2 (a);
+  p2 on p1 (a);
+
+  v4 on v3 (b); ! Autoregressive paths constrained to equality
+  v3 on v2 (b);
+  v2 on v1 (b);
+
+  p4 on v3 (c); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c);
+  p2 on v1 (c);
+
+  v4 on p3 (d); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d);
+  v2 on p1 (d);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e); ! Within-wave correlations constrained to equality
+  p3 with v3 (e);
+  p4 with v4 (e);
+
+  p2 p3 p4 (f); ! estimate variances of residual "factors"
+  v2 v3 v4 (g); ! estimate variances of residual "factors"
+
+  MODEL d2:
+
+  p4 on p3 (a2); ! Autoregressive paths constrained to equality
+  p3 on p2 (a2);
+  p2 on p1 (a2);
+
+  v4 on v3 (b2); ! Autoregressive paths constrained to equality
+  v3 on v2 (b2);
+  v2 on v1 (b2);
+
+  p4 on v3 (c2); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c2);
+  p2 on v1 (c2);
+
+  v4 on p3 (d2); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d2);
+  v2 on p1 (d2);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e2); ! Within-wave correlations constrained to equality
+  p3 with v3 (e2);
+  p4 with v4 (e2);
+
+  p2 p3 p4 (f2); ! estimate variances of residual "factors"
+  v2 v3 v4 (g2); ! estimate variances of residual "factors"
+
+  MODEL d3:
+
+  p4 on p3 (a3); ! Autoregressive paths constrained to equality
+  p3 on p2 (a3);
+  p2 on p1 (a3);
+
+  v4 on v3 (b3); ! Autoregressive paths constrained to equality
+  v3 on v2 (b3);
+  v2 on v1 (b3);
+
+  p4 on v3 (c3); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c3);
+  p2 on v1 (c3);
+
+  v4 on p3 (d3); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d3);
+  v2 on p1 (d3);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e3); ! Within-wave correlations constrained to equality
+  p3 with v3 (e3);
+  p4 with v4 (e3);
+
+  p2 p3 p4 (f3); ! estimate variances of residual "factors"
+  v2 v3 v4 (g3); ! estimate variances of residual "factors"
+
+  MODEL d4:
+
+  p4 on p3 (a4); ! Autoregressive paths constrained to equality
+  p3 on p2 (a4);
+  p2 on p1 (a4);
+
+  v4 on v3 (b4); ! Autoregressive paths constrained to equality
+  v3 on v2 (b4);
+  v2 on v1 (b4);
+
+  p4 on v3 (c4); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c4);
+  p2 on v1 (c4);
+
+  v4 on p3 (d4); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d4);
+  v2 on p1 (d4);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e4); ! Within-wave correlations constrained to equality
+  p3 with v3 (e4);
+  p4 with v4 (e4);
+
+  p2 p3 p4 (f4); ! estimate variances of residual "factors"
+  v2 v3 v4 (g4); ! estimate variances of residual "factors"
+
+  MODEL d5:
+
+  p4 on p3 (a5); ! Autoregressive paths constrained to equality
+  p3 on p2 (a5);
+  p2 on p1 (a5);
+
+  v4 on v3 (b5); ! Autoregressive paths constrained to equality
+  v3 on v2 (b5);
+  v2 on v1 (b5);
+
+  p4 on v3 (c5); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c5);
+  p2 on v1 (c5);
+
+  v4 on p3 (d5); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d5);
+  v2 on p1 (d5);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e5); ! Within-wave correlations constrained to equality
+  p3 with v3 (e5);
+  p4 with v4 (e5);
+
+  p2 p3 p4 (f5); ! estimate variances of residual "factors"
+  v2 v3 v4 (g5); ! estimate variances of residual "factors"
+
+  OUTPUT: SAMPSTAT PATTERNS;
+
+
+
+*** WARNING
+  Data set contains unknown or missing values for GROUPING,
+  PATTERN, COHORT, CLUSTER and/or STRATIFICATION variables.
+  Number of cases with unknown or missing values:  5
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+PxVx Bivariate LCM-SR - decadegroup - Linear bfas_ap with Linear aspfin;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 4
+Number of observations
+   Group D2                                                    301
+   Group D3                                                    233
+   Group D4                                                    198
+   Group D5                                                    132
+   Total sample size                                           864
+
+Number of dependent variables                                    8
+Number of independent variables                                  0
+Number of continuous latent variables                           12
+
+Observed dependent variables
+
+  Continuous
+   ABFAS_AP    BBFAS_AP    CBFAS_AP    DBFAS_AP    AASPFIN     BASPFIN
+   CASPFIN     DASPFIN
+
+Continuous latent variables
+   P1          P2          P3          P4          V1          V2
+   V3          V4          I_BFAS_A    S_BFAS_A    I_ASPFIN    S_ASPFIN
+
+Variables with special functions
+
+  Grouping variable     AAGE
+
+  Time scores
+   A1          A2          A3          A4
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                   100
+Convergence criterion                                    0.100D-05
+Maximum number of EM iterations                                500
+Convergence criteria for the EM algorithm
+  Loglikelihood change                                   0.100D-02
+  Relative loglikelihood change                          0.100D-05
+  Derivative                                             0.100D-03
+Minimum variance                                         0.100D-03
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+
+Input data file(s)
+  /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group D2
+     Number of missing data patterns            13
+
+   Group D3
+     Number of missing data patterns            11
+
+   Group D4
+     Number of missing data patterns            13
+
+   Group D5
+     Number of missing data patterns             9
+
+
+SUMMARY OF MISSING DATA PATTERNS
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D2
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13
+ ABFAS_AP  x  x  x  x  x  x  x  x  x     x  x  x
+ BBFAS_AP  x     x  x  x     x        x  x     x
+ CBFAS_AP  x           x        x  x  x  x  x  x
+ DBFAS_AP  x     x        x        x  x     x  x
+ AASPFIN   x  x  x  x  x  x     x  x  x  x  x  x
+ BASPFIN   x     x  x  x     x        x  x  x
+ CASPFIN   x           x        x  x  x  x  x  x
+ DASPFIN   x     x        x        x  x  x  x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D2
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         187           6          11          11           1
+          2          57           7           1          12           1
+          3           6           8           5          13           1
+          4          11           9           5
+          5          14          10           1
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D3
+
+           1  2  3  4  5  6  7  8  9 10 11
+ ABFAS_AP  x  x  x  x  x  x  x  x     x  x
+ BBFAS_AP  x     x  x  x           x  x
+ CBFAS_AP  x           x     x  x  x
+ DBFAS_AP  x     x        x     x  x     x
+ AASPFIN   x  x  x  x  x  x  x  x  x  x  x
+ BASPFIN   x     x  x  x           x
+ CASPFIN   x           x     x  x  x
+ DASPFIN   x     x        x     x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D3
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         139           5           7           9           1
+          2          44           6           3          10           1
+          3           8           7           7          11           1
+          4          15           8           7
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D4
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13
+ ABFAS_AP  x  x  x  x  x  x  x  x  x  x  x  x  x
+ BBFAS_AP  x     x  x  x           x  x  x     x
+ CBFAS_AP  x           x     x  x  x     x
+ DBFAS_AP  x     x        x     x  x     x     x
+ AASPFIN   x  x  x  x  x  x  x  x  x  x  x     x
+ BASPFIN   x     x  x  x                 x
+ CASPFIN   x           x     x  x  x
+ DASPFIN   x     x        x     x  x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D4
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         104           6           4          11           1
+          2          39           7           6          12           1
+          3           7           8           5          13           1
+          4          12           9           1
+          5          15          10           2
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D5
+
+           1  2  3  4  5  6  7  8  9
+ ABFAS_AP  x  x  x  x  x  x  x  x
+ BBFAS_AP  x     x  x  x           x
+ CBFAS_AP  x           x     x  x  x
+ DBFAS_AP  x     x        x     x  x
+ AASPFIN   x  x  x  x  x  x  x  x  x
+ BASPFIN   x     x  x  x           x
+ CASPFIN   x           x     x  x  x
+ DASPFIN   x     x        x     x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D5
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1          60           4          10           7           6
+          2          29           5          11           8           4
+          3           5           6           6           9           1
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR D2
+
+
+           Covariance Coverage
+              ABFAS_AP      BBFAS_AP      CBFAS_AP      DBFAS_AP      AASPFIN
+              ________      ________      ________      ________      ________
+ ABFAS_AP       0.997
+ BBFAS_AP       0.734         0.738
+ CBFAS_AP       0.711         0.678         0.714
+ DBFAS_AP       0.701         0.648         0.648         0.704
+ AASPFIN        0.993         0.734         0.714         0.704         0.997
+ BASPFIN        0.734         0.734         0.678         0.648         0.734
+ CASPFIN        0.711         0.678         0.714         0.648         0.714
+ DASPFIN        0.704         0.651         0.651         0.704         0.708
+
+
+           Covariance Coverage
+              BASPFIN       CASPFIN       DASPFIN
+              ________      ________      ________
+ BASPFIN        0.738
+ CASPFIN        0.678         0.714
+ DASPFIN        0.651         0.651         0.708
+
+
+     PROPORTION OF DATA PRESENT FOR D3
+
+
+           Covariance Coverage
+              ABFAS_AP      BBFAS_AP      CBFAS_AP      DBFAS_AP      AASPFIN
+              ________      ________      ________      ________      ________
+ ABFAS_AP       0.996
+ BBFAS_AP       0.760         0.764
+ CBFAS_AP       0.665         0.635         0.670
+ DBFAS_AP       0.648         0.635         0.605         0.652
+ AASPFIN        0.966         0.734         0.670         0.652         0.970
+ BASPFIN        0.760         0.764         0.635         0.635         0.734
+ CASPFIN        0.665         0.635         0.670         0.605         0.670
+ DASPFIN        0.652         0.639         0.609         0.652         0.657
+
+
+           Covariance Coverage
+              BASPFIN       CASPFIN       DASPFIN
+              ________      ________      ________
+ BASPFIN        0.764
+ CASPFIN        0.635         0.670
+ DASPFIN        0.639         0.609         0.657
+
+
+     PROPORTION OF DATA PRESENT FOR D4
+
+
+           Covariance Coverage
+              ABFAS_AP      BBFAS_AP      CBFAS_AP      DBFAS_AP      AASPFIN
+              ________      ________      ________      ________      ________
+ ABFAS_AP       0.990
+ BBFAS_AP       0.737         0.747
+ CBFAS_AP       0.646         0.621         0.657
+ DBFAS_AP       0.596         0.576         0.551         0.606
+ AASPFIN        0.960         0.717         0.657         0.606         0.970
+ BASPFIN        0.737         0.742         0.621         0.576         0.717
+ CASPFIN        0.646         0.621         0.657         0.551         0.657
+ DASPFIN        0.601         0.581         0.556         0.606         0.611
+
+
+           Covariance Coverage
+              BASPFIN       CASPFIN       DASPFIN
+              ________      ________      ________
+ BASPFIN        0.747
+ CASPFIN        0.621         0.657
+ DASPFIN        0.581         0.556         0.611
+
+
+     PROPORTION OF DATA PRESENT FOR D5
+
+
+           Covariance Coverage
+              ABFAS_AP      BBFAS_AP      CBFAS_AP      DBFAS_AP      AASPFIN
+              ________      ________      ________      ________      ________
+ ABFAS_AP       1.000
+ BBFAS_AP       0.697         0.697
+ CBFAS_AP       0.576         0.538         0.576
+ DBFAS_AP       0.545         0.492         0.462         0.545
+ AASPFIN        0.955         0.652         0.576         0.545         0.955
+ BASPFIN        0.697         0.697         0.538         0.492         0.652
+ CASPFIN        0.576         0.538         0.576         0.462         0.576
+ DASPFIN        0.545         0.492         0.462         0.545         0.545
+
+
+           Covariance Coverage
+              BASPFIN       CASPFIN       DASPFIN
+              ________      ________      ________
+ BASPFIN        0.697
+ CASPFIN        0.538         0.576
+ DASPFIN        0.492         0.462         0.545
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D2
+
+
+           Means
+              ABFAS_AP      BBFAS_AP      CBFAS_AP      DBFAS_AP      AASPFIN
+              ________      ________      ________      ________      ________
+               66.042        65.726        67.409        67.821        49.951
+
+
+           Means
+              BASPFIN       CASPFIN       DASPFIN
+              ________      ________      ________
+               50.044        49.696        48.141
+
+
+           Covariances
+              ABFAS_AP      BBFAS_AP      CBFAS_AP      DBFAS_AP      AASPFIN
+              ________      ________      ________      ________      ________
+ ABFAS_AP     269.267
+ BBFAS_AP     208.064       259.861
+ CBFAS_AP     179.220       198.872       239.785
+ DBFAS_AP     175.162       183.909       194.939       232.806
+ AASPFIN      -77.229       -68.790       -77.696       -50.749       543.466
+ BASPFIN      -77.765       -92.351       -95.861       -72.219       398.868
+ CASPFIN      -84.949       -88.762      -106.027       -74.624       412.755
+ DASPFIN      -65.879       -51.764       -73.919       -58.881       388.410
+
+
+           Covariances
+              BASPFIN       CASPFIN       DASPFIN
+              ________      ________      ________
+ BASPFIN      518.643
+ CASPFIN      436.372       578.986
+ DASPFIN      417.780       452.715       607.727
+
+
+           Correlations
+              ABFAS_AP      BBFAS_AP      CBFAS_AP      DBFAS_AP      AASPFIN
+              ________      ________      ________      ________      ________
+ ABFAS_AP       1.000
+ BBFAS_AP       0.787         1.000
+ CBFAS_AP       0.705         0.797         1.000
+ DBFAS_AP       0.700         0.748         0.825         1.000
+ AASPFIN       -0.202        -0.183        -0.215        -0.143         1.000
+ BASPFIN       -0.208        -0.252        -0.272        -0.208         0.751
+ CASPFIN       -0.215        -0.229        -0.285        -0.203         0.736
+ DASPFIN       -0.163        -0.130        -0.194        -0.157         0.676
+
+
+           Correlations
+              BASPFIN       CASPFIN       DASPFIN
+              ________      ________      ________
+ BASPFIN        1.000
+ CASPFIN        0.796         1.000
+ DASPFIN        0.744         0.763         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D3
+
+
+           Means
+              ABFAS_AP      BBFAS_AP      CBFAS_AP      DBFAS_AP      AASPFIN
+              ________      ________      ________      ________      ________
+               70.299        71.847        71.193        71.414        48.677
+
+
+           Means
+              BASPFIN       CASPFIN       DASPFIN
+              ________      ________      ________
+               48.562        49.172        49.024
+
+
+           Covariances
+              ABFAS_AP      BBFAS_AP      CBFAS_AP      DBFAS_AP      AASPFIN
+              ________      ________      ________      ________      ________
+ ABFAS_AP     249.445
+ BBFAS_AP     205.511       265.688
+ CBFAS_AP     195.271       205.628       252.985
+ DBFAS_AP     195.763       202.022       211.703       262.465
+ AASPFIN      -85.631       -64.242       -71.935       -84.359       503.648
+ BASPFIN      -67.972       -50.739       -50.406       -66.390       445.248
+ CASPFIN      -78.128       -59.928       -81.205      -100.666       414.446
+ DASPFIN      -85.090       -85.294       -84.178       -99.770       427.755
+
+
+           Covariances
+              BASPFIN       CASPFIN       DASPFIN
+              ________      ________      ________
+ BASPFIN      600.636
+ CASPFIN      490.472       589.366
+ DASPFIN      473.541       450.234       556.236
+
+
+           Correlations
+              ABFAS_AP      BBFAS_AP      CBFAS_AP      DBFAS_AP      AASPFIN
+              ________      ________      ________      ________      ________
+ ABFAS_AP       1.000
+ BBFAS_AP       0.798         1.000
+ CBFAS_AP       0.777         0.793         1.000
+ DBFAS_AP       0.765         0.765         0.822         1.000
+ AASPFIN       -0.242        -0.176        -0.202        -0.232         1.000
+ BASPFIN       -0.176        -0.127        -0.129        -0.167         0.810
+ CASPFIN       -0.204        -0.151        -0.210        -0.256         0.761
+ DASPFIN       -0.228        -0.222        -0.224        -0.261         0.808
+
+
+           Correlations
+              BASPFIN       CASPFIN       DASPFIN
+              ________      ________      ________
+ BASPFIN        1.000
+ CASPFIN        0.824         1.000
+ DASPFIN        0.819         0.786         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D4
+
+
+           Means
+              ABFAS_AP      BBFAS_AP      CBFAS_AP      DBFAS_AP      AASPFIN
+              ________      ________      ________      ________      ________
+               71.373        72.355        72.214        72.645        46.896
+
+
+           Means
+              BASPFIN       CASPFIN       DASPFIN
+              ________      ________      ________
+               46.218        47.773        48.627
+
+
+           Covariances
+              ABFAS_AP      BBFAS_AP      CBFAS_AP      DBFAS_AP      AASPFIN
+              ________      ________      ________      ________      ________
+ ABFAS_AP     237.077
+ BBFAS_AP     176.924       220.978
+ CBFAS_AP     193.490       189.592       239.170
+ DBFAS_AP     193.330       184.131       201.689       236.652
+ AASPFIN      -96.672       -58.711       -49.579       -31.853       466.298
+ BASPFIN      -65.931       -47.371       -38.678       -17.302       357.642
+ CASPFIN      -45.197        -8.693       -25.280       -14.350       315.715
+ DASPFIN      -53.827       -22.628       -16.148       -17.779       324.185
+
+
+           Covariances
+              BASPFIN       CASPFIN       DASPFIN
+              ________      ________      ________
+ BASPFIN      467.567
+ CASPFIN      338.029       414.461
+ DASPFIN      342.110       342.170       442.635
+
+
+           Correlations
+              ABFAS_AP      BBFAS_AP      CBFAS_AP      DBFAS_AP      AASPFIN
+              ________      ________      ________      ________      ________
+ ABFAS_AP       1.000
+ BBFAS_AP       0.773         1.000
+ CBFAS_AP       0.813         0.825         1.000
+ DBFAS_AP       0.816         0.805         0.848         1.000
+ AASPFIN       -0.291        -0.183        -0.148        -0.096         1.000
+ BASPFIN       -0.198        -0.147        -0.116        -0.052         0.766
+ CASPFIN       -0.144        -0.029        -0.080        -0.046         0.718
+ DASPFIN       -0.166        -0.072        -0.050        -0.055         0.714
+
+
+           Correlations
+              BASPFIN       CASPFIN       DASPFIN
+              ________      ________      ________
+ BASPFIN        1.000
+ CASPFIN        0.768         1.000
+ DASPFIN        0.752         0.799         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D5
+
+
+           Means
+              ABFAS_AP      BBFAS_AP      CBFAS_AP      DBFAS_AP      AASPFIN
+              ________      ________      ________      ________      ________
+               74.983        78.632        75.796        75.218        47.112
+
+
+           Means
+              BASPFIN       CASPFIN       DASPFIN
+              ________      ________      ________
+               47.584        47.701        48.477
+
+
+           Covariances
+              ABFAS_AP      BBFAS_AP      CBFAS_AP      DBFAS_AP      AASPFIN
+              ________      ________      ________      ________      ________
+ ABFAS_AP     260.037
+ BBFAS_AP     153.731       167.933
+ CBFAS_AP     176.614       119.321       202.205
+ DBFAS_AP     206.966       159.066       166.911       236.683
+ AASPFIN       -8.534       -55.112        -8.269       -47.057       395.410
+ BASPFIN      -10.563       -51.872       -29.422       -61.164       303.260
+ CASPFIN      -43.402       -64.625       -28.342       -83.458       309.363
+ DASPFIN      -13.344       -56.457       -31.650       -54.655       290.768
+
+
+           Covariances
+              BASPFIN       CASPFIN       DASPFIN
+              ________      ________      ________
+ BASPFIN      414.833
+ CASPFIN      339.804       447.557
+ DASPFIN      329.950       339.862       430.910
+
+
+           Correlations
+              ABFAS_AP      BBFAS_AP      CBFAS_AP      DBFAS_AP      AASPFIN
+              ________      ________      ________      ________      ________
+ ABFAS_AP       1.000
+ BBFAS_AP       0.736         1.000
+ CBFAS_AP       0.770         0.648         1.000
+ DBFAS_AP       0.834         0.798         0.763         1.000
+ AASPFIN       -0.027        -0.214        -0.029        -0.154         1.000
+ BASPFIN       -0.032        -0.197        -0.102        -0.195         0.749
+ CASPFIN       -0.127        -0.236        -0.094        -0.256         0.735
+ DASPFIN       -0.040        -0.210        -0.107        -0.171         0.704
+
+
+           Correlations
+              BASPFIN       CASPFIN       DASPFIN
+              ________      ________      ________
+ BASPFIN        1.000
+ CASPFIN        0.789         1.000
+ DASPFIN        0.780         0.774         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -20992.945
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D2
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_AP             66.040      -0.398       5.000    0.33%      52.500     62.500     67.500
+             300.000     269.856       0.032     100.000    1.00%      72.500     80.000
+     BBFAS_AP             66.083      -0.127      20.000    0.45%      52.500     62.500     65.000
+             222.000     243.213      -0.526     100.000    0.90%      70.000     80.000
+     CBFAS_AP             67.261      -0.275      22.500    0.47%      55.000     62.500     67.500
+             215.000     234.842      -0.109     100.000    0.47%      72.500     80.000
+     DBFAS_AP             68.325      -0.298      30.000    0.47%      57.500     65.000     70.000
+             212.000     220.309      -0.389      97.500    0.94%      72.500     80.000
+     AASPFIN              50.022       0.093       0.000    2.00%      30.000     45.000     50.000
+             300.000     542.967      -0.569     100.000    2.33%      55.000     70.000
+     BASPFIN              49.510       0.182       0.000    0.90%      30.000     40.000     50.000
+             222.000     518.770      -0.686     100.000    2.25%      55.000     70.000
+     CASPFIN              49.953       0.245       0.000    0.47%      25.000     40.000     50.000
+             215.000     571.161      -0.808     100.000    2.79%      55.000     70.000
+     DASPFIN              47.958       0.215       0.000    0.94%      25.000     40.000     45.000
+             213.000     612.144      -0.854     100.000    2.82%      55.000     70.000
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D3
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_AP             70.356      -0.331      32.500    1.72%      57.500     67.500     70.000
+             232.000     249.450      -0.507     100.000    0.43%      75.000     85.000
+     BBFAS_AP             71.333      -0.501      25.000    0.58%      57.500     70.000     72.500
+             171.000     273.686      -0.395     100.000    1.17%      77.500     87.500
+     CBFAS_AP             70.785      -0.406      27.500    0.62%      55.000     67.500     72.500
+             161.000     258.160      -0.436     100.000    1.86%      77.500     85.000
+     DBFAS_AP             71.053      -0.399      32.500    0.63%      57.500     67.500     72.500
+             159.000     264.102      -0.485     100.000    0.63%      75.000     85.000
+     AASPFIN              48.677       0.286       0.000    1.29%      30.000     40.000     45.000
+             233.000     503.648      -0.457     100.000    2.58%      50.000     70.000
+     BASPFIN              48.493       0.297       0.000    1.18%      25.000     40.000     45.000
+             170.000     621.009      -0.678     100.000    4.71%      55.000     70.000
+     CASPFIN              48.665       0.321       0.000    0.62%      25.000     40.000     45.000
+             161.000     609.552      -0.724     100.000    3.11%      50.000     70.000
+     DASPFIN              48.679       0.221       5.000    1.27%      25.000     40.000     45.000
+             158.000     581.650      -0.853     100.000    3.80%      55.000     70.000
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D4
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_AP             71.373      -0.713      15.000    0.51%      57.500     70.000     72.500
+             198.000     237.077       0.477     100.000    0.51%      75.000     85.000
+     BBFAS_AP             71.442      -0.462      30.000    0.70%      57.500     67.500     72.500
+             143.000     227.169      -0.255     100.000    2.10%      77.500     85.000
+     CBFAS_AP             71.951      -0.962      15.000    0.76%      60.000     70.000     72.500
+             132.000     249.935       1.243     100.000    1.52%      77.500     85.000
+     DBFAS_AP             71.579      -0.705      17.500    0.81%      60.000     67.500     72.500
+             123.000     242.974       0.608     100.000    0.81%      77.500     85.000
+     AASPFIN              46.846       0.347       0.000    1.02%      25.000     40.000     45.000
+             197.000     466.015      -0.307     100.000    1.52%      50.000     65.000
+     BASPFIN              45.902       0.447       5.000    0.72%      25.000     40.000     45.000
+             139.000     457.670      -0.142     100.000    2.16%      45.000     60.000
+     CASPFIN              48.330       0.228       0.000    1.53%      30.000     40.000     50.000
+             131.000     415.926      -0.373     100.000    0.76%      50.000     65.000
+     DASPFIN              48.333       0.233       0.000    0.81%      30.000     40.000     45.000
+             123.000     439.702      -0.438      95.000    4.07%      55.000     65.000
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D5
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_AP             74.918      -0.793      15.000    0.76%      62.500     72.500     77.500
+             131.000     261.007       0.703     100.000    3.82%      80.000     87.500
+     BBFAS_AP             79.562      -0.794      42.500    1.15%      70.000     80.000     80.556
+              87.000     165.978       0.242     100.000    2.30%      82.500     90.000
+     CBFAS_AP             76.951      -0.783      37.500    1.22%      65.000     75.000     80.000
+              82.000     200.918      -0.040     100.000    1.22%      82.500     90.000
+     DBFAS_AP             77.072      -1.023      30.000    1.32%      67.500     75.000     80.000
+              76.000     200.886       1.057     100.000    2.63%      82.500     87.500
+     AASPFIN              47.112       0.407       0.000    0.76%      30.000     40.000     45.000
+             132.000     395.410       0.099     100.000    1.52%      50.000     60.000
+     BASPFIN              47.874       0.483      10.000    1.15%      30.000     40.000     45.000
+              87.000     418.323      -0.313     100.000    2.30%      50.000     65.000
+     CASPFIN              46.768       0.356       5.000    1.22%      25.000     40.000     45.000
+              82.000     458.763      -0.244     100.000    2.44%      50.000     65.000
+     DASPFIN              48.783       0.545      15.000    1.32%      30.000     40.000     45.000
+              76.000     447.943      -0.500     100.000    2.63%      50.000     70.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       96
+
+Loglikelihood
+
+          H0 Value                      -21042.631
+          H0 Scaling Correction Factor      0.9776
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   42277.261
+          Bayesian (BIC)                 42734.372
+          Sample-Size Adjusted BIC       42429.501
+            (n* = (n + 2) / 24)
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ P1       BY
+    ABFAS_AP           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_AP           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_AP           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_AP           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AASPFIN            1.000      0.000    999.000    999.000
+
+ V2       BY
+    BASPFIN            1.000      0.000    999.000    999.000
+
+ V3       BY
+    CASPFIN            1.000      0.000    999.000    999.000
+
+ V4       BY
+    DASPFIN            1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.267      0.084      3.173      0.002
+    V3                -0.028      0.045     -0.617      0.537
+
+ P3         ON
+    P2                 0.267      0.084      3.173      0.002
+    V2                -0.028      0.045     -0.617      0.537
+
+ P2         ON
+    P1                 0.267      0.084      3.173      0.002
+    V1                -0.028      0.045     -0.617      0.537
+
+ V4         ON
+    V3                -0.004      0.089     -0.046      0.964
+    P3                -0.104      0.102     -1.018      0.309
+
+ V3         ON
+    V2                -0.004      0.089     -0.046      0.964
+    P2                -0.104      0.102     -1.018      0.309
+
+ V2         ON
+    V1                -0.004      0.089     -0.046      0.964
+    P1                -0.104      0.102     -1.018      0.309
+
+ S_BFAS_A WITH
+    I_BFAS_AP         41.812     43.598      0.959      0.338
+    S_ASPFIN           1.652      1.856      0.890      0.374
+    I_ASPFIN          59.721     66.570      0.897      0.370
+
+ I_BFAS_A WITH
+    S_ASPFIN          57.421     64.068      0.896      0.370
+    I_ASPFIN        2009.610   2303.167      0.873      0.383
+
+ S_ASPFIN WITH
+    I_ASPFIN         385.450    148.175      2.601      0.009
+
+ P1       WITH
+    V1               -18.546     12.456     -1.489      0.136
+
+ P2       WITH
+    V2               -15.362      6.340     -2.423      0.015
+
+ P3       WITH
+    V3               -15.362      6.340     -2.423      0.015
+
+ P4       WITH
+    V4               -15.362      6.340     -2.423      0.015
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_AP         89.611      9.408      9.525      0.000
+    S_BFAS_AP          0.661      0.271      2.438      0.015
+    I_ASPFIN          31.194     14.138      2.206      0.027
+    S_ASPFIN          -0.528      0.402     -1.314      0.189
+
+ Intercepts
+    ABFAS_AP           0.000      0.000    999.000    999.000
+    BBFAS_AP           0.000      0.000    999.000    999.000
+    CBFAS_AP           0.000      0.000    999.000    999.000
+    DBFAS_AP           0.000      0.000    999.000    999.000
+    AASPFIN            0.000      0.000    999.000    999.000
+    BASPFIN            0.000      0.000    999.000    999.000
+    CASPFIN            0.000      0.000    999.000    999.000
+    DASPFIN            0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                88.475     13.280      6.662      0.000
+    V1               140.396     20.919      6.711      0.000
+    I_BFAS_AP       1553.310   1534.292      1.012      0.311
+    S_BFAS_AP          1.267      1.247      1.016      0.310
+    I_ASPFIN       14172.454   5182.495      2.735      0.006
+    S_ASPFIN          10.790      4.246      2.541      0.011
+
+ Residual Variances
+    ABFAS_AP           0.000      0.000    999.000    999.000
+    BBFAS_AP           0.000      0.000    999.000    999.000
+    CBFAS_AP           0.000      0.000    999.000    999.000
+    DBFAS_AP           0.000      0.000    999.000    999.000
+    AASPFIN            0.000      0.000    999.000    999.000
+    BASPFIN            0.000      0.000    999.000    999.000
+    CASPFIN            0.000      0.000    999.000    999.000
+    DASPFIN            0.000      0.000    999.000    999.000
+    P2                59.625      6.478      9.204      0.000
+    P3                59.625      6.478      9.204      0.000
+    P4                59.625      6.478      9.204      0.000
+    V2               122.228     14.757      8.283      0.000
+    V3               122.228     14.757      8.283      0.000
+    V4               122.228     14.757      8.283      0.000
+
+Group D3
+
+ P1       BY
+    ABFAS_AP           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_AP           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_AP           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_AP           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AASPFIN            1.000      0.000    999.000    999.000
+
+ V2       BY
+    BASPFIN            1.000      0.000    999.000    999.000
+
+ V3       BY
+    CASPFIN            1.000      0.000    999.000    999.000
+
+ V4       BY
+    DASPFIN            1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.127      0.128      0.995      0.320
+    V3                 0.036      0.059      0.606      0.545
+
+ P3         ON
+    P2                 0.127      0.128      0.995      0.320
+    V2                 0.036      0.059      0.606      0.545
+
+ P2         ON
+    P1                 0.127      0.128      0.995      0.320
+    V1                 0.036      0.059      0.606      0.545
+
+ V4         ON
+    V3                 0.076      0.122      0.622      0.534
+    P3                 0.109      0.140      0.776      0.437
+
+ V3         ON
+    V2                 0.076      0.122      0.622      0.534
+    P2                 0.109      0.140      0.776      0.437
+
+ V2         ON
+    V1                 0.076      0.122      0.622      0.534
+    P1                 0.109      0.140      0.776      0.437
+
+ S_BFAS_A WITH
+    I_BFAS_AP         71.723     80.732      0.888      0.374
+    S_ASPFIN          -0.982      1.190     -0.825      0.409
+    I_ASPFIN         -35.511     42.884     -0.828      0.408
+
+ I_BFAS_A WITH
+    S_ASPFIN         -39.374     41.220     -0.955      0.339
+    I_ASPFIN       -1488.129   1483.905     -1.003      0.316
+
+ S_ASPFIN WITH
+    I_ASPFIN          46.703     32.007      1.459      0.145
+
+ P1       WITH
+    V1               -10.446     10.037     -1.041      0.298
+
+ P2       WITH
+    V2                 3.227      6.561      0.492      0.623
+
+ P3       WITH
+    V3                 3.227      6.561      0.492      0.623
+
+ P4       WITH
+    V4                 3.227      6.561      0.492      0.623
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_AP         82.440      9.450      8.724      0.000
+    S_BFAS_AP          0.339      0.277      1.223      0.221
+    I_ASPFIN          55.691     12.628      4.410      0.000
+    S_ASPFIN           0.204      0.367      0.556      0.579
+
+ Intercepts
+    ABFAS_AP           0.000      0.000    999.000    999.000
+    BBFAS_AP           0.000      0.000    999.000    999.000
+    CBFAS_AP           0.000      0.000    999.000    999.000
+    DBFAS_AP           0.000      0.000    999.000    999.000
+    AASPFIN            0.000      0.000    999.000    999.000
+    BASPFIN            0.000      0.000    999.000    999.000
+    CASPFIN            0.000      0.000    999.000    999.000
+    DASPFIN            0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                49.953     13.100      3.813      0.000
+    V1               102.859     17.518      5.872      0.000
+    I_BFAS_AP       2638.183   2735.025      0.965      0.335
+    S_BFAS_AP          2.107      2.390      0.882      0.378
+    I_ASPFIN        2282.372   1222.624      1.867      0.062
+    S_ASPFIN           1.147      0.848      1.352      0.176
+
+ Residual Variances
+    ABFAS_AP           0.000      0.000    999.000    999.000
+    BBFAS_AP           0.000      0.000    999.000    999.000
+    CBFAS_AP           0.000      0.000    999.000    999.000
+    DBFAS_AP           0.000      0.000    999.000    999.000
+    AASPFIN            0.000      0.000    999.000    999.000
+    BASPFIN            0.000      0.000    999.000    999.000
+    CASPFIN            0.000      0.000    999.000    999.000
+    DASPFIN            0.000      0.000    999.000    999.000
+    P2                57.104      8.955      6.377      0.000
+    P3                57.104      8.955      6.377      0.000
+    P4                57.104      8.955      6.377      0.000
+    V2               118.972     18.262      6.515      0.000
+    V3               118.972     18.262      6.515      0.000
+    V4               118.972     18.262      6.515      0.000
+
+Group D4
+
+ P1       BY
+    ABFAS_AP           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_AP           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_AP           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_AP           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AASPFIN            1.000      0.000    999.000    999.000
+
+ V2       BY
+    BASPFIN            1.000      0.000    999.000    999.000
+
+ V3       BY
+    CASPFIN            1.000      0.000    999.000    999.000
+
+ V4       BY
+    DASPFIN            1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                -0.088      0.071     -1.245      0.213
+    V3                -0.084      0.044     -1.905      0.057
+
+ P3         ON
+    P2                -0.088      0.071     -1.245      0.213
+    V2                -0.084      0.044     -1.905      0.057
+
+ P2         ON
+    P1                -0.088      0.071     -1.245      0.213
+    V1                -0.084      0.044     -1.905      0.057
+
+ V4         ON
+    V3                 0.106      0.117      0.901      0.368
+    P3                 0.124      0.139      0.893      0.372
+
+ V3         ON
+    V2                 0.106      0.117      0.901      0.368
+    P2                 0.124      0.139      0.893      0.372
+
+ V2         ON
+    V1                 0.106      0.117      0.901      0.368
+    P1                 0.124      0.139      0.893      0.372
+
+ S_BFAS_A WITH
+    I_BFAS_AP         38.117     12.609      3.023      0.003
+    S_ASPFIN          -0.435      1.161     -0.375      0.708
+    I_ASPFIN          -0.651     36.792     -0.018      0.986
+
+ I_BFAS_A WITH
+    S_ASPFIN          -3.849     37.793     -0.102      0.919
+    I_ASPFIN         278.291   1202.833      0.231      0.817
+
+ S_ASPFIN WITH
+    I_ASPFIN         136.140    161.652      0.842      0.400
+
+ P1       WITH
+    V1               -17.318     12.059     -1.436      0.151
+
+ P2       WITH
+    V2                -9.098      4.166     -2.184      0.029
+
+ P3       WITH
+    V3                -9.098      4.166     -2.184      0.029
+
+ P4       WITH
+    V4                -9.098      4.166     -2.184      0.029
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_AP         83.584      8.324     10.042      0.000
+    S_BFAS_AP          0.353      0.250      1.412      0.158
+    I_ASPFIN          68.379     14.629      4.674      0.000
+    S_ASPFIN           0.644      0.445      1.448      0.148
+
+ Intercepts
+    ABFAS_AP           0.000      0.000    999.000    999.000
+    BBFAS_AP           0.000      0.000    999.000    999.000
+    CBFAS_AP           0.000      0.000    999.000    999.000
+    DBFAS_AP           0.000      0.000    999.000    999.000
+    AASPFIN            0.000      0.000    999.000    999.000
+    BASPFIN            0.000      0.000    999.000    999.000
+    CASPFIN            0.000      0.000    999.000    999.000
+    DASPFIN            0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                49.726      9.011      5.519      0.000
+    V1               125.336     29.366      4.268      0.000
+    I_BFAS_AP       1552.776    456.499      3.401      0.001
+    S_BFAS_AP          1.057      0.365      2.896      0.004
+    I_ASPFIN        4696.398   5214.907      0.901      0.368
+    S_ASPFIN           4.247      5.027      0.845      0.398
+
+ Residual Variances
+    ABFAS_AP           0.000      0.000    999.000    999.000
+    BBFAS_AP           0.000      0.000    999.000    999.000
+    CBFAS_AP           0.000      0.000    999.000    999.000
+    DBFAS_AP           0.000      0.000    999.000    999.000
+    AASPFIN            0.000      0.000    999.000    999.000
+    BASPFIN            0.000      0.000    999.000    999.000
+    CASPFIN            0.000      0.000    999.000    999.000
+    DASPFIN            0.000      0.000    999.000    999.000
+    P2                36.952      4.266      8.663      0.000
+    P3                36.952      4.266      8.663      0.000
+    P4                36.952      4.266      8.663      0.000
+    V2               102.674     15.803      6.497      0.000
+    V3               102.674     15.803      6.497      0.000
+    V4               102.674     15.803      6.497      0.000
+
+Group D5
+
+ P1       BY
+    ABFAS_AP           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_AP           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_AP           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_AP           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AASPFIN            1.000      0.000    999.000    999.000
+
+ V2       BY
+    BASPFIN            1.000      0.000    999.000    999.000
+
+ V3       BY
+    CASPFIN            1.000      0.000    999.000    999.000
+
+ V4       BY
+    DASPFIN            1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                -0.208      0.104     -1.989      0.047
+    V3                -0.051      0.053     -0.952      0.341
+
+ P3         ON
+    P2                -0.208      0.104     -1.989      0.047
+    V2                -0.051      0.053     -0.952      0.341
+
+ P2         ON
+    P1                -0.208      0.104     -1.989      0.047
+    V1                -0.051      0.053     -0.952      0.341
+
+ V4         ON
+    V3                -0.031      0.141     -0.222      0.824
+    P3                 0.113      0.108      1.045      0.296
+
+ V3         ON
+    V2                -0.031      0.141     -0.222      0.824
+    P2                 0.113      0.108      1.045      0.296
+
+ V2         ON
+    V1                -0.031      0.141     -0.222      0.824
+    P1                 0.113      0.108      1.045      0.296
+
+ S_BFAS_A WITH
+    I_BFAS_AP         14.142     27.141      0.521      0.602
+    S_ASPFIN          -0.751      1.038     -0.723      0.469
+    I_ASPFIN         -29.045     36.666     -0.792      0.428
+
+ I_BFAS_A WITH
+    S_ASPFIN         -29.836     31.902     -0.935      0.350
+    I_ASPFIN       -1149.087   1137.251     -1.010      0.312
+
+ S_ASPFIN WITH
+    I_ASPFIN         164.429    158.863      1.035      0.301
+
+ P1       WITH
+    V1                 3.420     10.108      0.338      0.735
+
+ P2       WITH
+    V2                 9.133      5.934      1.539      0.124
+
+ P3       WITH
+    V3                 9.133      5.934      1.539      0.124
+
+ P4       WITH
+    V4                 9.133      5.934      1.539      0.124
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_AP         70.329     10.545      6.669      0.000
+    S_BFAS_AP         -0.178      0.327     -0.545      0.586
+    I_ASPFIN          59.283     17.476      3.392      0.001
+    S_ASPFIN           0.368      0.543      0.678      0.498
+
+ Intercepts
+    ABFAS_AP           0.000      0.000    999.000    999.000
+    BBFAS_AP           0.000      0.000    999.000    999.000
+    CBFAS_AP           0.000      0.000    999.000    999.000
+    DBFAS_AP           0.000      0.000    999.000    999.000
+    AASPFIN            0.000      0.000    999.000    999.000
+    BASPFIN            0.000      0.000    999.000    999.000
+    CASPFIN            0.000      0.000    999.000    999.000
+    DASPFIN            0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                58.829     14.910      3.946      0.000
+    V1               104.526     25.587      4.085      0.000
+    I_BFAS_AP        565.317    879.904      0.642      0.521
+    S_BFAS_AP          0.499      0.858      0.581      0.561
+    I_ASPFIN        5843.034   5103.062      1.145      0.252
+    S_ASPFIN           4.877      4.961      0.983      0.326
+
+ Residual Variances
+    ABFAS_AP           0.000      0.000    999.000    999.000
+    BBFAS_AP           0.000      0.000    999.000    999.000
+    CBFAS_AP           0.000      0.000    999.000    999.000
+    DBFAS_AP           0.000      0.000    999.000    999.000
+    AASPFIN            0.000      0.000    999.000    999.000
+    BASPFIN            0.000      0.000    999.000    999.000
+    CASPFIN            0.000      0.000    999.000    999.000
+    DASPFIN            0.000      0.000    999.000    999.000
+    P2                43.894      7.887      5.565      0.000
+    P3                43.894      7.887      5.565      0.000
+    P4                43.894      7.887      5.565      0.000
+    V2                88.999     14.631      6.083      0.000
+    V3                88.999     14.631      6.083      0.000
+    V4                88.999     14.631      6.083      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.294E-09
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  18:28:50
+        Ending Time:  18:29:12
+       Elapsed Time:  00:00:22
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

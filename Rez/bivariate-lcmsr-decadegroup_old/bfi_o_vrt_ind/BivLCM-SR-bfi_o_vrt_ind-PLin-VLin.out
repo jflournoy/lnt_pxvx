@@ -1,0 +1,1522 @@
+Mplus VERSION 8 (Linux)
+MUTHEN & MUTHEN
+07/07/2018   7:47 PM
+
+INPUT INSTRUCTIONS
+
+
+  title: PxVx Bivariate LCM-SR - decadegroup - Linear bfi_o with Linear vrt_ind;
+  data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
+
+  variable:
+  names =
+  subjid
+  aage
+  aaspfin
+  aaspfin_d
+  abfa_mt
+  abfa_mt_d
+  abfas_ac
+  abfas_ap
+  abfas_ci
+  abfas_co
+  abfas_ea
+  abfas_ee
+  abfas_nv
+  abfas_nv9
+  abfas_nw
+  abfas_oi
+  abfas_oo
+  abfi_a
+  abfi_a6
+  abfi_c
+  abfi_d_scale
+  abfi_e
+  abfi_hp8
+  abfi_n
+  abfi_o
+  abfi_s_scale
+  ahrz_col
+  ahrz_col_d
+  ahrz_ind
+  ahrz_ind_d
+  amvi
+  ausi
+  ausi_d
+  avrt_col
+  avrt_col_d
+  avrt_ind
+  avrt_ind_d
+  bage
+  baspfin
+  baspfin_d
+  bbfa_mt
+  bbfa_mt_d
+  bbfas_ac
+  bbfas_ap
+  bbfas_ci
+  bbfas_co
+  bbfas_ea
+  bbfas_ee
+  bbfas_nv
+  bbfas_nv9
+  bbfas_nw
+  bbfas_oi
+  bbfas_oo
+  bbfi_a
+  bbfi_a6
+  bbfi_c
+  bbfi_d_scale
+  bbfi_e
+  bbfi_hp8
+  bbfi_n
+  bbfi_o
+  bbfi_s_scale
+  bhrz_col
+  bhrz_col_d
+  bhrz_ind
+  bhrz_ind_d
+  bmvi
+  busi
+  busi_d
+  bvrt_col
+  bvrt_col_d
+  bvrt_ind
+  bvrt_ind_d
+  cage
+  caspfin
+  caspfin_d
+  cbfa_mt
+  cbfa_mt_d
+  cbfas_ac
+  cbfas_ap
+  cbfas_ci
+  cbfas_co
+  cbfas_ea
+  cbfas_ee
+  cbfas_nv
+  cbfas_nv9
+  cbfas_nw
+  cbfas_oi
+  cbfas_oo
+  cbfi_a
+  cbfi_a6
+  cbfi_c
+  cbfi_d_scale
+  cbfi_e
+  cbfi_hp8
+  cbfi_n
+  cbfi_o
+  cbfi_s_scale
+  chrz_col
+  chrz_col_d
+  chrz_ind
+  chrz_ind_d
+  cmvi
+  cusi
+  cusi_d
+  cvrt_col
+  cvrt_col_d
+  cvrt_ind
+  cvrt_ind_d
+  dage
+  daspfin
+  daspfin_d
+  dbfa_mt
+  dbfa_mt_d
+  dbfas_ac
+  dbfas_ap
+  dbfas_ci
+  dbfas_co
+  dbfas_ea
+  dbfas_ee
+  dbfas_nv
+  dbfas_nv9
+  dbfas_nw
+  dbfas_oi
+  dbfas_oo
+  dbfi_a
+  dbfi_a6
+  dbfi_c
+  dbfi_d_scale
+  dbfi_e
+  dbfi_hp8
+  dbfi_n
+  dbfi_o
+  dbfi_s_scale
+  dhrz_col
+  dhrz_col_d
+  dhrz_ind
+  dhrz_ind_d
+  dmvi
+  dusi
+  dusi_d
+  dvrt_col
+  dvrt_col_d
+  dvrt_ind
+  dvrt_ind_d;
+
+  USEVARIABLES =
+  abfi_o
+  bbfi_o
+  cbfi_o
+  dbfi_o
+  avrt_ind
+  bvrt_ind
+  cvrt_ind
+  dvrt_ind
+  a1
+  a2
+  a3
+  a4
+  ;
+
+  missing = all (-9999);
+
+  tscores = a1 a2 a3 a4;
+
+  grouping = aage (0=d2, 1=d3, 2=d4, 3=d5);
+
+  DEFINE:
+
+  cut aage (29 39 49);
+
+  a1 = aage + 0 - 36;
+  a2 = aage + 1 - 36;
+  a3 = aage + 2 - 36;
+  a4 = aage + 3 - 36;
+
+  ANALYSIS:
+  TYPE=RANDOM;
+  PROCESSORS = 6;
+  model=nocovariances; ! supresses default estimation of certain covs in model;
+
+  MODEL:
+
+  i_bfi_o s_bfi_o | abfi_o bbfi_o cbfi_o dbfi_o AT a1 a2 a3 a4;
+  i_vrt_ind s_vrt_ind | avrt_ind bvrt_ind cvrt_ind dvrt_ind AT a1 a2 a3 a4;
+
+  ! freeing factor covs because of "nocovariances"
+  s_bfi_o WITH i_bfi_o s_vrt_ind i_vrt_ind;
+  i_bfi_o WITH s_vrt_ind i_vrt_ind;
+  s_vrt_ind WITH i_vrt_ind;
+
+  p1 BY abfi_o@1; ! Residual "factors";
+  p2 BY bbfi_o@1;
+  p3 BY cbfi_o@1;
+  p4 BY dbfi_o@1;
+
+  v1 BY avrt_ind@1; ! Residual "factors";
+  v2 BY bvrt_ind@1;
+  v3 BY cvrt_ind@1;
+  v4 BY dvrt_ind@1;
+
+  !residual variances on observed/manifest vars set to 0
+  abfi_o@0;
+  bbfi_o@0;
+  cbfi_o@0;
+  dbfi_o@0;
+
+  !residual variances on observed/manifest vars set to 0
+  avrt_ind@0;
+  bvrt_ind@0;
+  cvrt_ind@0;
+  dvrt_ind@0;
+
+  ! means of observed/manifest vars set to 0
+  [abfi_o@0];
+  [bbfi_o@0];
+  [cbfi_o@0];
+  [dbfi_o@0];
+
+  ! means of observed/manifest vars set to 0
+  [avrt_ind@0];
+  [bvrt_ind@0];
+  [cvrt_ind@0];
+  [dvrt_ind@0];
+
+  [p1@0]; ! means of residual "factors" set to 0
+  [p2@0];
+  [p3@0];
+  [p4@0];
+
+  [v1@0]; ! means of residual "factors" set to 0
+  [v2@0];
+  [v3@0];
+  [v4@0];
+
+  p4 on p3 (a); ! Autoregressive paths constrained to equality
+  p3 on p2 (a);
+  p2 on p1 (a);
+
+  v4 on v3 (b); ! Autoregressive paths constrained to equality
+  v3 on v2 (b);
+  v2 on v1 (b);
+
+  p4 on v3 (c); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c);
+  p2 on v1 (c);
+
+  v4 on p3 (d); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d);
+  v2 on p1 (d);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e); ! Within-wave correlations constrained to equality
+  p3 with v3 (e);
+  p4 with v4 (e);
+
+  p2 p3 p4 (f); ! estimate variances of residual "factors"
+  v2 v3 v4 (g); ! estimate variances of residual "factors"
+
+  MODEL d2:
+
+  p4 on p3 (a2); ! Autoregressive paths constrained to equality
+  p3 on p2 (a2);
+  p2 on p1 (a2);
+
+  v4 on v3 (b2); ! Autoregressive paths constrained to equality
+  v3 on v2 (b2);
+  v2 on v1 (b2);
+
+  p4 on v3 (c2); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c2);
+  p2 on v1 (c2);
+
+  v4 on p3 (d2); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d2);
+  v2 on p1 (d2);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e2); ! Within-wave correlations constrained to equality
+  p3 with v3 (e2);
+  p4 with v4 (e2);
+
+  p2 p3 p4 (f2); ! estimate variances of residual "factors"
+  v2 v3 v4 (g2); ! estimate variances of residual "factors"
+
+  MODEL d3:
+
+  p4 on p3 (a3); ! Autoregressive paths constrained to equality
+  p3 on p2 (a3);
+  p2 on p1 (a3);
+
+  v4 on v3 (b3); ! Autoregressive paths constrained to equality
+  v3 on v2 (b3);
+  v2 on v1 (b3);
+
+  p4 on v3 (c3); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c3);
+  p2 on v1 (c3);
+
+  v4 on p3 (d3); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d3);
+  v2 on p1 (d3);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e3); ! Within-wave correlations constrained to equality
+  p3 with v3 (e3);
+  p4 with v4 (e3);
+
+  p2 p3 p4 (f3); ! estimate variances of residual "factors"
+  v2 v3 v4 (g3); ! estimate variances of residual "factors"
+
+  MODEL d4:
+
+  p4 on p3 (a4); ! Autoregressive paths constrained to equality
+  p3 on p2 (a4);
+  p2 on p1 (a4);
+
+  v4 on v3 (b4); ! Autoregressive paths constrained to equality
+  v3 on v2 (b4);
+  v2 on v1 (b4);
+
+  p4 on v3 (c4); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c4);
+  p2 on v1 (c4);
+
+  v4 on p3 (d4); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d4);
+  v2 on p1 (d4);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e4); ! Within-wave correlations constrained to equality
+  p3 with v3 (e4);
+  p4 with v4 (e4);
+
+  p2 p3 p4 (f4); ! estimate variances of residual "factors"
+  v2 v3 v4 (g4); ! estimate variances of residual "factors"
+
+  MODEL d5:
+
+  p4 on p3 (a5); ! Autoregressive paths constrained to equality
+  p3 on p2 (a5);
+  p2 on p1 (a5);
+
+  v4 on v3 (b5); ! Autoregressive paths constrained to equality
+  v3 on v2 (b5);
+  v2 on v1 (b5);
+
+  p4 on v3 (c5); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c5);
+  p2 on v1 (c5);
+
+  v4 on p3 (d5); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d5);
+  v2 on p1 (d5);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e5); ! Within-wave correlations constrained to equality
+  p3 with v3 (e5);
+  p4 with v4 (e5);
+
+  p2 p3 p4 (f5); ! estimate variances of residual "factors"
+  v2 v3 v4 (g5); ! estimate variances of residual "factors"
+
+  OUTPUT: SAMPSTAT PATTERNS;
+
+
+
+*** WARNING
+  Data set contains unknown or missing values for GROUPING,
+  PATTERN, COHORT, CLUSTER and/or STRATIFICATION variables.
+  Number of cases with unknown or missing values:  5
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+PxVx Bivariate LCM-SR - decadegroup - Linear bfi_o with Linear vrt_ind;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 4
+Number of observations
+   Group D2                                                    301
+   Group D3                                                    233
+   Group D4                                                    198
+   Group D5                                                    132
+   Total sample size                                           864
+
+Number of dependent variables                                    8
+Number of independent variables                                  0
+Number of continuous latent variables                           12
+
+Observed dependent variables
+
+  Continuous
+   ABFI_O      BBFI_O      CBFI_O      DBFI_O      AVRT_IND    BVRT_IND
+   CVRT_IND    DVRT_IND
+
+Continuous latent variables
+   P1          P2          P3          P4          V1          V2
+   V3          V4          I_BFI_O     S_BFI_O     I_VRT_IN    S_VRT_IN
+
+Variables with special functions
+
+  Grouping variable     AAGE
+
+  Time scores
+   A1          A2          A3          A4
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                   100
+Convergence criterion                                    0.100D-05
+Maximum number of EM iterations                                500
+Convergence criteria for the EM algorithm
+  Loglikelihood change                                   0.100D-02
+  Relative loglikelihood change                          0.100D-05
+  Derivative                                             0.100D-03
+Minimum variance                                         0.100D-03
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+
+Input data file(s)
+  /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group D2
+     Number of missing data patterns            14
+
+   Group D3
+     Number of missing data patterns            11
+
+   Group D4
+     Number of missing data patterns            15
+
+   Group D5
+     Number of missing data patterns             9
+
+
+SUMMARY OF MISSING DATA PATTERNS
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D2
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14
+ ABFI_O    x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ BBFI_O    x     x  x  x  x           x  x  x     x
+ CBFI_O    x        x     x     x  x  x  x  x  x
+ DBFI_O    x     x  x        x     x     x     x
+ AVRT_IND  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ BVRT_IND  x     x  x  x  x           x     x
+ CVRT_IND  x              x     x  x     x  x  x
+ DVRT_IND  x     x  x        x     x     x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D2
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         187           6          13          11           2
+          2          57           7          11          12           1
+          3           6           8           4          13           1
+          4           1           9           5          14           1
+          5          11          10           1
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D3
+
+           1  2  3  4  5  6  7  8  9 10 11
+ ABFI_O    x  x  x  x  x  x  x  x  x  x  x
+ BBFI_O    x     x  x  x           x  x
+ CBFI_O    x           x     x  x     x
+ DBFI_O    x     x        x     x     x  x
+ AVRT_IND  x  x  x  x  x  x  x  x  x  x  x
+ BVRT_IND  x     x  x  x              x
+ CVRT_IND  x           x     x  x     x
+ DVRT_IND  x     x        x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D3
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         140           5           6           9           1
+          2          43           6           3          10           1
+          3           8           7           7          11           2
+          4          15           8           7
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D4
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+ ABFI_O    x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ BBFI_O    x     x  x  x  x           x     x     x
+ CBFI_O    x        x     x     x  x  x  x           x
+ DBFI_O    x     x  x        x     x  x  x        x
+ AVRT_IND  x  x  x  x  x  x  x  x  x  x  x  x     x  x
+ BVRT_IND  x     x  x  x  x
+ CVRT_IND  x              x     x  x  x  x
+ DVRT_IND  x     x  x        x     x  x           x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D4
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         104           6          15          11           1
+          2          39           7           4          12           2
+          3           7           8           4          13           1
+          4           1           9           5          14           1
+          5          12          10           1          15           1
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D5
+
+           1  2  3  4  5  6  7  8  9
+ ABFI_O    x  x  x  x  x  x  x  x
+ BBFI_O    x     x  x  x
+ CBFI_O    x           x     x  x
+ DBFI_O    x     x        x     x  x
+ AVRT_IND  x  x  x  x  x  x  x  x  x
+ BVRT_IND  x     x  x  x
+ CVRT_IND  x           x     x  x
+ DVRT_IND  x     x        x     x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D5
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1          61           4          10           7           6
+          2          29           5          11           8           4
+          3           5           6           5           9           1
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR D2
+
+
+           Covariance Coverage
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AVRT_IND
+              ________      ________      ________      ________      ________
+ ABFI_O         1.000
+ BBFI_O         0.741         0.741
+ CBFI_O         0.714         0.681         0.714
+ DBFI_O         0.708         0.651         0.651         0.708
+ AVRT_IND       1.000         0.741         0.714         0.708         1.000
+ BVRT_IND       0.731         0.731         0.674         0.645         0.731
+ CVRT_IND       0.708         0.674         0.708         0.648         0.708
+ DVRT_IND       0.708         0.654         0.651         0.704         0.708
+
+
+           Covariance Coverage
+              BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________
+ BVRT_IND       0.731
+ CVRT_IND       0.668         0.708
+ DVRT_IND       0.648         0.648         0.708
+
+
+     PROPORTION OF DATA PRESENT FOR D3
+
+
+           Covariance Coverage
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AVRT_IND
+              ________      ________      ________      ________      ________
+ ABFI_O         1.000
+ BBFI_O         0.751         0.751
+ CBFI_O         0.725         0.691         0.725
+ DBFI_O         0.742         0.708         0.678         0.742
+ AVRT_IND       1.000         0.751         0.725         0.742         1.000
+ BVRT_IND       0.742         0.742         0.682         0.700         0.742
+ CVRT_IND       0.657         0.622         0.657         0.614         0.657
+ DVRT_IND       0.742         0.708         0.678         0.742         0.742
+
+
+           Covariance Coverage
+              BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________
+ BVRT_IND       0.742
+ CVRT_IND       0.614         0.657
+ DVRT_IND       0.700         0.614         0.742
+
+
+     PROPORTION OF DATA PRESENT FOR D4
+
+
+           Covariance Coverage
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AVRT_IND
+              ________      ________      ________      ________      ________
+ ABFI_O         1.000
+ BBFI_O         0.732         0.732
+ CBFI_O         0.682         0.631         0.682
+ DBFI_O         0.626         0.576         0.571         0.626
+ AVRT_IND       1.000         0.732         0.682         0.626         1.000
+ BVRT_IND       0.722         0.722         0.626         0.571         0.722
+ CVRT_IND       0.672         0.621         0.672         0.566         0.672
+ DVRT_IND       0.626         0.581         0.571         0.616         0.626
+
+
+           Covariance Coverage
+              BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________
+ BVRT_IND       0.722
+ CVRT_IND       0.616         0.672
+ DVRT_IND       0.576         0.566         0.626
+
+
+     PROPORTION OF DATA PRESENT FOR D5
+
+
+           Covariance Coverage
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AVRT_IND
+              ________      ________      ________      ________      ________
+ ABFI_O         1.000
+ BBFI_O         0.697         0.697
+ CBFI_O         0.614         0.576         0.614
+ DBFI_O         0.629         0.576         0.545         0.629
+ AVRT_IND       1.000         0.697         0.614         0.629         1.000
+ BVRT_IND       0.697         0.697         0.576         0.576         0.697
+ CVRT_IND       0.538         0.500         0.538         0.470         0.538
+ DVRT_IND       0.629         0.576         0.545         0.629         0.629
+
+
+           Covariance Coverage
+              BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________
+ BVRT_IND       0.697
+ CVRT_IND       0.500         0.538
+ DVRT_IND       0.576         0.470         0.629
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D2
+
+
+           Means
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AVRT_IND
+              ________      ________      ________      ________      ________
+               74.525        74.081        72.893        72.086        50.623
+
+
+           Means
+              BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________
+               51.943        50.083        49.247
+
+
+           Covariances
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AVRT_IND
+              ________      ________      ________      ________      ________
+ ABFI_O       225.158
+ BBFI_O       178.836       218.747
+ CBFI_O       193.271       182.544       252.218
+ DBFI_O       169.990       172.731       209.679       250.526
+ AVRT_IND     -22.850       -30.767        -8.193        -6.025       438.773
+ BVRT_IND     -26.953       -24.163       -38.201       -28.574       287.681
+ CVRT_IND      -3.814        -0.148        -1.830       -12.194       265.367
+ DVRT_IND      -6.465        -4.886       -26.027       -20.389       280.042
+
+
+           Covariances
+              BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________
+ BVRT_IND     393.444
+ CVRT_IND     307.867       403.858
+ DVRT_IND     297.009       337.167       455.386
+
+
+           Correlations
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AVRT_IND
+              ________      ________      ________      ________      ________
+ ABFI_O         1.000
+ BBFI_O         0.806         1.000
+ CBFI_O         0.811         0.777         1.000
+ DBFI_O         0.716         0.738         0.834         1.000
+ AVRT_IND      -0.073        -0.099        -0.025        -0.018         1.000
+ BVRT_IND      -0.091        -0.082        -0.121        -0.091         0.692
+ CVRT_IND      -0.013         0.000        -0.006        -0.038         0.630
+ DVRT_IND      -0.020        -0.015        -0.077        -0.060         0.626
+
+
+           Correlations
+              BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________
+ BVRT_IND       1.000
+ CVRT_IND       0.772         1.000
+ DVRT_IND       0.702         0.786         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D3
+
+
+           Means
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AVRT_IND
+              ________      ________      ________      ________      ________
+               75.123        73.762        72.941        72.956        47.166
+
+
+           Means
+              BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________
+               46.925        46.745        47.060
+
+
+           Covariances
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AVRT_IND
+              ________      ________      ________      ________      ________
+ ABFI_O       202.548
+ BBFI_O       163.591       207.626
+ CBFI_O       164.050       178.285       238.150
+ DBFI_O       155.384       165.928       184.472       213.142
+ AVRT_IND     -21.860       -13.434       -49.801       -41.420       337.642
+ BVRT_IND     -22.809       -17.804       -54.169       -38.188       239.641
+ CVRT_IND     -57.366       -54.428       -79.080       -70.948       243.551
+ DVRT_IND     -21.225        -0.880       -21.441       -17.385       223.148
+
+
+           Covariances
+              BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________
+ BVRT_IND     351.589
+ CVRT_IND     234.123       403.791
+ DVRT_IND     244.731       250.675       359.866
+
+
+           Correlations
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AVRT_IND
+              ________      ________      ________      ________      ________
+ ABFI_O         1.000
+ BBFI_O         0.798         1.000
+ CBFI_O         0.747         0.802         1.000
+ DBFI_O         0.748         0.789         0.819         1.000
+ AVRT_IND      -0.084        -0.051        -0.176        -0.154         1.000
+ BVRT_IND      -0.085        -0.066        -0.187        -0.140         0.696
+ CVRT_IND      -0.201        -0.188        -0.255        -0.242         0.660
+ DVRT_IND      -0.079        -0.003        -0.073        -0.063         0.640
+
+
+           Correlations
+              BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________
+ BVRT_IND       1.000
+ CVRT_IND       0.621         1.000
+ DVRT_IND       0.688         0.658         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D4
+
+
+           Means
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AVRT_IND
+              ________      ________      ________      ________      ________
+               73.194        72.481        71.125        73.306        45.315
+
+
+           Means
+              BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________
+               43.121        43.199        45.235
+
+
+           Covariances
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AVRT_IND
+              ________      ________      ________      ________      ________
+ ABFI_O       222.470
+ BBFI_O       200.393       249.776
+ CBFI_O       213.493       227.501       276.252
+ DBFI_O       202.378       211.797       230.739       256.484
+ AVRT_IND       0.257        -5.912       -12.627       -16.653       288.415
+ BVRT_IND     -17.356       -18.441       -28.017       -38.049       178.516
+ CVRT_IND       6.204         9.459        12.084       -14.864       177.214
+ DVRT_IND       0.480        -3.051        -1.894       -16.793       161.203
+
+
+           Covariances
+              BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________
+ BVRT_IND     269.842
+ CVRT_IND     197.028       303.524
+ DVRT_IND     188.916       207.344       244.902
+
+
+           Correlations
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AVRT_IND
+              ________      ________      ________      ________      ________
+ ABFI_O         1.000
+ BBFI_O         0.850         1.000
+ CBFI_O         0.861         0.866         1.000
+ DBFI_O         0.847         0.837         0.867         1.000
+ AVRT_IND       0.001        -0.022        -0.045        -0.061         1.000
+ BVRT_IND      -0.071        -0.071        -0.103        -0.145         0.640
+ CVRT_IND       0.024         0.034         0.042        -0.053         0.599
+ DVRT_IND       0.002        -0.012        -0.007        -0.067         0.607
+
+
+           Correlations
+              BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________
+ BVRT_IND       1.000
+ CVRT_IND       0.688         1.000
+ DVRT_IND       0.735         0.760         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D5
+
+
+           Means
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AVRT_IND
+              ________      ________      ________      ________      ________
+               74.353        74.352        72.170        71.028        42.424
+
+
+           Means
+              BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________
+               42.057        42.180        40.366
+
+
+           Covariances
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AVRT_IND
+              ________      ________      ________      ________      ________
+ ABFI_O       254.368
+ BBFI_O       212.618       235.158
+ CBFI_O       222.392       220.694       285.040
+ DBFI_O       248.866       237.256       267.678       310.382
+ AVRT_IND      -6.555        -6.349       -20.936       -24.557       343.886
+ BVRT_IND     -42.524       -27.028       -49.251       -54.683       199.491
+ CVRT_IND     -11.740       -18.821       -35.759       -22.222       241.630
+ DVRT_IND     -67.577       -44.119       -62.838       -72.372       244.610
+
+
+           Covariances
+              BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________
+ BVRT_IND     248.390
+ CVRT_IND     187.335       346.603
+ DVRT_IND     210.013       232.867       346.802
+
+
+           Correlations
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AVRT_IND
+              ________      ________      ________      ________      ________
+ ABFI_O         1.000
+ BBFI_O         0.869         1.000
+ CBFI_O         0.826         0.852         1.000
+ DBFI_O         0.886         0.878         0.900         1.000
+ AVRT_IND      -0.022        -0.022        -0.067        -0.075         1.000
+ BVRT_IND      -0.169        -0.112        -0.185        -0.197         0.683
+ CVRT_IND      -0.040        -0.066        -0.114        -0.068         0.700
+ DVRT_IND      -0.228        -0.154        -0.200        -0.221         0.708
+
+
+           Correlations
+              BVRT_IND      CVRT_IND      DVRT_IND
+              ________      ________      ________
+ BVRT_IND       1.000
+ CVRT_IND       0.638         1.000
+ DVRT_IND       0.716         0.672         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -20588.624
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D2
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_O               74.525      -0.610      30.000    0.33%      62.500     72.500     75.000
+             301.000     225.158      -0.073     100.000    1.66%      80.000     87.500
+     BBFI_O               74.096      -0.620      22.500    0.45%      62.500     72.500     75.000
+             223.000     212.981       0.140     100.000    2.24%      80.000     87.500
+     CBFI_O               73.111      -0.519      35.000    1.86%      60.000     70.000     75.000
+             215.000     243.143      -0.442     100.000    0.47%      80.000     87.500
+     DBFI_O               72.666      -0.512      22.500    0.47%      60.000     70.000     75.000
+             213.000     240.244      -0.215     100.000    1.41%      77.500     85.000
+     AVRT_IND             50.623      -0.020       0.000    0.66%      31.250     43.750     50.000
+             301.000     438.773      -0.546     100.000    0.66%      56.250     68.750
+     BVRT_IND             52.140      -0.132       6.250    0.45%      31.250     50.000     50.000
+             220.000     384.743      -0.569     100.000    0.45%      56.250     68.750
+     CVRT_IND             50.675       0.046       6.250    0.47%      31.250     43.750     50.000
+             213.000     400.990      -0.524     100.000    0.47%      56.250     68.750
+     DVRT_IND             49.560       0.024       0.000    0.47%      31.250     37.500     50.000
+             213.000     454.802      -0.771     100.000    0.47%      56.250     68.750
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D3
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_O               75.123      -0.393      27.500    0.86%      62.500     70.000     75.000
+             233.000     202.548      -0.091     100.000    2.58%      80.000     87.500
+     BBFI_O               73.894      -0.282      37.500    2.92%      60.000     70.000     75.000
+             171.000     201.247      -0.423     100.000    0.58%      77.500     87.500
+     CBFI_O               72.492      -0.452      30.000    0.62%      60.000     70.000     72.500
+             161.000     232.735      -0.127     100.000    0.62%      77.500     87.500
+     DBFI_O               72.900      -0.636      30.000    0.62%      62.500     70.000     75.000
+             161.000     214.516       0.031      97.500    1.24%      77.500     85.000
+     AVRT_IND             47.166       0.059       0.000    0.43%      31.250     43.750     43.750
+             233.000     337.642      -0.083     100.000    0.86%      50.000     62.500
+     BVRT_IND             47.328       0.347       6.250    1.18%      31.250     43.750     43.750
+             170.000     354.076       0.192     100.000    2.35%      50.000     62.500
+     CVRT_IND             46.946       0.286       6.250    0.62%      25.000     37.500     43.750
+             161.000     401.949      -0.502     100.000    1.24%      50.000     62.500
+     DVRT_IND             47.191       0.263      12.500    5.06%      31.250     43.750     50.000
+             158.000     358.756      -0.006     100.000    1.27%      50.000     62.500
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D4
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_O               73.194      -0.276      35.000    0.51%      60.000     70.000     73.750
+             198.000     222.470      -0.617     100.000    1.01%      77.500     87.500
+     BBFI_O               73.364      -0.392      32.500    0.70%      60.000     70.000     75.000
+             143.000     255.207      -0.580     100.000    0.70%      80.000     90.000
+     CBFI_O               72.367      -0.451      27.500    0.76%      60.000     70.000     75.000
+             132.000     280.049      -0.333     100.000    3.03%      77.500     87.500
+     DBFI_O               73.936      -0.698      30.000    0.81%      60.000     70.000     75.000
+             124.000     274.369      -0.176      97.500    4.84%      80.000     90.000
+     AVRT_IND             45.315       0.315       6.250    0.51%      31.250     43.750     43.750
+             197.000     288.415       0.030     100.000    0.51%      50.000     62.500
+     BVRT_IND             43.076       0.335       6.250    1.44%      25.000     37.500     43.750
+             139.000     276.917      -0.224      87.500    0.72%      43.750     56.250
+     CVRT_IND             43.125       0.344       6.250    0.77%      31.250     37.500     43.750
+             130.000     297.386      -0.130      87.500    2.31%      43.750     56.250
+     DVRT_IND             44.732       0.053       6.250    0.81%      31.250     37.500     43.750
+             123.000     243.079      -0.215      87.500    0.81%      50.000     56.250
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D5
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_O               74.470      -0.319      30.000    0.76%      60.000     70.000     75.000
+             131.000     254.085      -0.473     100.000    5.34%      80.556     87.500
+     BBFI_O               74.638      -0.522      30.556    1.15%      62.500     70.000     75.000
+              87.000     233.340       0.054     100.000    2.30%      80.000     87.500
+     CBFI_O               72.652      -0.822      12.500    1.22%      60.000     70.000     75.000
+              82.000     284.657       1.122     100.000    2.44%      77.500     87.500
+     DBFI_O               74.112      -0.762      15.000    1.32%      57.500     72.500     76.250
+              76.000     293.043       0.548     100.000    1.32%      82.500     90.000
+     AVRT_IND             42.424       0.085       0.000    0.76%      25.000     37.500     43.750
+             132.000     343.886      -0.542      87.500    1.52%      50.000     62.500
+     BVRT_IND             41.379      -0.083       0.000    1.15%      25.000     37.500     43.750
+              87.000     248.461      -0.518      75.000    1.15%      43.750     56.250
+     CVRT_IND             40.244       0.556       6.250    3.66%      25.000     37.500     37.500
+              82.000     339.270       0.603     100.000    1.22%      43.750     56.250
+     DVRT_IND             39.062       0.435      12.500   10.53%      25.000     31.250     37.500
+              76.000     319.824      -0.399      87.500    1.32%      43.750     56.250
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       96
+
+Loglikelihood
+
+          H0 Value                      -20644.086
+          H0 Scaling Correction Factor      0.9484
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   41480.172
+          Bayesian (BIC)                 41937.283
+          Sample-Size Adjusted BIC       41632.412
+            (n* = (n + 2) / 24)
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ P1       BY
+    ABFI_O             1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_O             1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_O             1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_O             1.000      0.000    999.000    999.000
+
+ V1       BY
+    AVRT_IND           1.000      0.000    999.000    999.000
+
+ V2       BY
+    BVRT_IND           1.000      0.000    999.000    999.000
+
+ V3       BY
+    CVRT_IND           1.000      0.000    999.000    999.000
+
+ V4       BY
+    DVRT_IND           1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                -0.114      0.069     -1.651      0.099
+    V3                -0.092      0.034     -2.746      0.006
+
+ P3         ON
+    P2                -0.114      0.069     -1.651      0.099
+    V2                -0.092      0.034     -2.746      0.006
+
+ P2         ON
+    P1                -0.114      0.069     -1.651      0.099
+    V1                -0.092      0.034     -2.746      0.006
+
+ V4         ON
+    V3                 0.195      0.073      2.663      0.008
+    P3                -0.070      0.094     -0.744      0.457
+
+ V3         ON
+    V2                 0.195      0.073      2.663      0.008
+    P2                -0.070      0.094     -0.744      0.457
+
+ V2         ON
+    V1                 0.195      0.073      2.663      0.008
+    P1                -0.070      0.094     -0.744      0.457
+
+ S_BFI_O  WITH
+    I_BFI_O          281.131     57.249      4.911      0.000
+    S_VRT_IND         -2.861      0.981     -2.916      0.004
+    I_VRT_IND        -99.806     35.386     -2.820      0.005
+
+ I_BFI_O  WITH
+    S_VRT_IND        -97.266     34.554     -2.815      0.005
+    I_VRT_IND      -3406.877   1245.881     -2.735      0.006
+
+ S_VRT_IN WITH
+    I_VRT_IND        142.148     42.045      3.381      0.001
+
+ P1       WITH
+    V1                -5.696      5.955     -0.957      0.339
+
+ P2       WITH
+    V2                 3.695      3.979      0.929      0.353
+
+ P3       WITH
+    V3                 3.695      3.979      0.929      0.353
+
+ P4       WITH
+    V4                 3.695      3.979      0.929      0.353
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_O           45.152      8.760      5.154      0.000
+    S_BFI_O           -0.818      0.249     -3.286      0.001
+    I_VRT_IND         28.947     13.691      2.114      0.034
+    S_VRT_IND         -0.623      0.391     -1.595      0.111
+
+ Intercepts
+    ABFI_O             0.000      0.000    999.000    999.000
+    BBFI_O             0.000      0.000    999.000    999.000
+    CBFI_O             0.000      0.000    999.000    999.000
+    DBFI_O             0.000      0.000    999.000    999.000
+    AVRT_IND           0.000      0.000    999.000    999.000
+    BVRT_IND           0.000      0.000    999.000    999.000
+    CVRT_IND           0.000      0.000    999.000    999.000
+    DVRT_IND           0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                27.742      3.506      7.912      0.000
+    V1               199.376     23.689      8.416      0.000
+    I_BFI_O        10027.068   2009.048      4.991      0.000
+    S_BFI_O            8.033      1.634      4.917      0.000
+    I_VRT_IND       5734.580   1612.919      3.555      0.000
+    S_VRT_IND          3.659      1.093      3.347      0.001
+
+ Residual Variances
+    ABFI_O             0.000      0.000    999.000    999.000
+    BBFI_O             0.000      0.000    999.000    999.000
+    CBFI_O             0.000      0.000    999.000    999.000
+    DBFI_O             0.000      0.000    999.000    999.000
+    AVRT_IND           0.000      0.000    999.000    999.000
+    BVRT_IND           0.000      0.000    999.000    999.000
+    CVRT_IND           0.000      0.000    999.000    999.000
+    DVRT_IND           0.000      0.000    999.000    999.000
+    P2                38.219      3.411     11.205      0.000
+    P3                38.219      3.411     11.205      0.000
+    P4                38.219      3.411     11.205      0.000
+    V2               112.121     11.838      9.472      0.000
+    V3               112.121     11.838      9.472      0.000
+    V4               112.121     11.838      9.472      0.000
+
+Group D3
+
+ P1       BY
+    ABFI_O             1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_O             1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_O             1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_O             1.000      0.000    999.000    999.000
+
+ V1       BY
+    AVRT_IND           1.000      0.000    999.000    999.000
+
+ V2       BY
+    BVRT_IND           1.000      0.000    999.000    999.000
+
+ V3       BY
+    CVRT_IND           1.000      0.000    999.000    999.000
+
+ V4       BY
+    DVRT_IND           1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.077      0.090      0.859      0.390
+    V3                -0.045      0.060     -0.752      0.452
+
+ P3         ON
+    P2                 0.077      0.090      0.859      0.390
+    V2                -0.045      0.060     -0.752      0.452
+
+ P2         ON
+    P1                 0.077      0.090      0.859      0.390
+    V1                -0.045      0.060     -0.752      0.452
+
+ V4         ON
+    V3                -0.154      0.122     -1.270      0.204
+    P3                -0.042      0.121     -0.350      0.726
+
+ V3         ON
+    V2                -0.154      0.122     -1.270      0.204
+    P2                -0.042      0.121     -0.350      0.726
+
+ V2         ON
+    V1                -0.154      0.122     -1.270      0.204
+    P1                -0.042      0.121     -0.350      0.726
+
+ S_BFI_O  WITH
+    I_BFI_O           80.401     29.735      2.704      0.007
+    S_VRT_IND          3.700      1.650      2.242      0.025
+    I_VRT_IND        118.460     55.151      2.148      0.032
+
+ I_BFI_O  WITH
+    S_VRT_IND        123.431     55.513      2.223      0.026
+    I_VRT_IND       3917.926   1853.777      2.113      0.035
+
+ S_VRT_IN WITH
+    I_VRT_IND        304.644    123.168      2.473      0.013
+
+ P1       WITH
+    V1                -7.056      6.862     -1.028      0.304
+
+ P2       WITH
+    V2                -3.941      5.077     -0.776      0.438
+
+ P3       WITH
+    V3                -3.941      5.077     -0.776      0.438
+
+ P4       WITH
+    V4                -3.941      5.077     -0.776      0.438
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_O           48.537      8.865      5.475      0.000
+    S_BFI_O           -0.753      0.259     -2.902      0.004
+    I_VRT_IND         44.450     13.290      3.345      0.001
+    S_VRT_IND         -0.076      0.390     -0.195      0.845
+
+ Intercepts
+    ABFI_O             0.000      0.000    999.000    999.000
+    BBFI_O             0.000      0.000    999.000    999.000
+    CBFI_O             0.000      0.000    999.000    999.000
+    DBFI_O             0.000      0.000    999.000    999.000
+    AVRT_IND           0.000      0.000    999.000    999.000
+    BVRT_IND           0.000      0.000    999.000    999.000
+    CVRT_IND           0.000      0.000    999.000    999.000
+    DVRT_IND           0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                46.258      7.060      6.552      0.000
+    V1                76.845     12.656      6.072      0.000
+    I_BFI_O         2971.413   1040.152      2.857      0.004
+    S_BFI_O            2.300      0.857      2.684      0.007
+    I_VRT_IND      10539.647   4179.477      2.522      0.012
+    S_VRT_IND          9.018      3.641      2.477      0.013
+
+ Residual Variances
+    ABFI_O             0.000      0.000    999.000    999.000
+    BBFI_O             0.000      0.000    999.000    999.000
+    CBFI_O             0.000      0.000    999.000    999.000
+    DBFI_O             0.000      0.000    999.000    999.000
+    AVRT_IND           0.000      0.000    999.000    999.000
+    BVRT_IND           0.000      0.000    999.000    999.000
+    CVRT_IND           0.000      0.000    999.000    999.000
+    DVRT_IND           0.000      0.000    999.000    999.000
+    P2                44.205      4.635      9.537      0.000
+    P3                44.205      4.635      9.537      0.000
+    P4                44.205      4.635      9.537      0.000
+    V2               108.527      9.850     11.017      0.000
+    V3               108.527      9.850     11.017      0.000
+    V4               108.527      9.850     11.017      0.000
+
+Group D4
+
+ P1       BY
+    ABFI_O             1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_O             1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_O             1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_O             1.000      0.000    999.000    999.000
+
+ V1       BY
+    AVRT_IND           1.000      0.000    999.000    999.000
+
+ V2       BY
+    BVRT_IND           1.000      0.000    999.000    999.000
+
+ V3       BY
+    CVRT_IND           1.000      0.000    999.000    999.000
+
+ V4       BY
+    DVRT_IND           1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.049      0.113      0.433      0.665
+    V3                 0.004      0.046      0.081      0.936
+
+ P3         ON
+    P2                 0.049      0.113      0.433      0.665
+    V2                 0.004      0.046      0.081      0.936
+
+ P2         ON
+    P1                 0.049      0.113      0.433      0.665
+    V1                 0.004      0.046      0.081      0.936
+
+ V4         ON
+    V3                 0.002      0.098      0.021      0.984
+    P3                 0.126      0.121      1.036      0.300
+
+ V3         ON
+    V2                 0.002      0.098      0.021      0.984
+    P2                 0.126      0.121      1.036      0.300
+
+ V2         ON
+    V1                 0.002      0.098      0.021      0.984
+    P1                 0.126      0.121      1.036      0.300
+
+ S_BFI_O  WITH
+    I_BFI_O           37.831     26.033      1.453      0.146
+    S_VRT_IND         -0.843      0.783     -1.078      0.281
+    I_VRT_IND        -32.939     25.754     -1.279      0.201
+
+ I_BFI_O  WITH
+    S_VRT_IND        -23.832     26.642     -0.895      0.371
+    I_VRT_IND       -967.951    876.736     -1.104      0.270
+
+ S_VRT_IN WITH
+    I_VRT_IND         74.259     73.536      1.010      0.313
+
+ P1       WITH
+    V1                 7.307      7.132      1.024      0.306
+
+ P2       WITH
+    V2                 8.859      4.987      1.776      0.076
+
+ P3       WITH
+    V3                 8.859      4.987      1.776      0.076
+
+ P4       WITH
+    V4                 8.859      4.987      1.776      0.076
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_O           66.307      8.443      7.853      0.000
+    S_BFI_O           -0.195      0.250     -0.781      0.435
+    I_VRT_IND         46.729     13.165      3.549      0.000
+    S_VRT_IND          0.074      0.400      0.184      0.854
+
+ Intercepts
+    ABFI_O             0.000      0.000    999.000    999.000
+    BBFI_O             0.000      0.000    999.000    999.000
+    CBFI_O             0.000      0.000    999.000    999.000
+    DBFI_O             0.000      0.000    999.000    999.000
+    AVRT_IND           0.000      0.000    999.000    999.000
+    BVRT_IND           0.000      0.000    999.000    999.000
+    CVRT_IND           0.000      0.000    999.000    999.000
+    DVRT_IND           0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                30.220      5.437      5.558      0.000
+    V1               128.642     18.781      6.850      0.000
+    I_BFI_O         1623.865    931.899      1.743      0.081
+    S_BFI_O            0.990      0.742      1.334      0.182
+    I_VRT_IND       2722.796   2465.140      1.105      0.269
+    S_VRT_IND          2.166      2.201      0.984      0.325
+
+ Residual Variances
+    ABFI_O             0.000      0.000    999.000    999.000
+    BBFI_O             0.000      0.000    999.000    999.000
+    CBFI_O             0.000      0.000    999.000    999.000
+    DBFI_O             0.000      0.000    999.000    999.000
+    AVRT_IND           0.000      0.000    999.000    999.000
+    BVRT_IND           0.000      0.000    999.000    999.000
+    CVRT_IND           0.000      0.000    999.000    999.000
+    DVRT_IND           0.000      0.000    999.000    999.000
+    P2                39.634      5.807      6.825      0.000
+    P3                39.634      5.807      6.825      0.000
+    P4                39.634      5.807      6.825      0.000
+    V2                76.744     11.888      6.456      0.000
+    V3                76.744     11.888      6.456      0.000
+    V4                76.744     11.888      6.456      0.000
+
+Group D5
+
+ P1       BY
+    ABFI_O             1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_O             1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_O             1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_O             1.000      0.000    999.000    999.000
+
+ V1       BY
+    AVRT_IND           1.000      0.000    999.000    999.000
+
+ V2       BY
+    BVRT_IND           1.000      0.000    999.000    999.000
+
+ V3       BY
+    CVRT_IND           1.000      0.000    999.000    999.000
+
+ V4       BY
+    DVRT_IND           1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.084      0.085      0.985      0.324
+    V3                 0.011      0.054      0.200      0.841
+
+ P3         ON
+    P2                 0.084      0.085      0.985      0.324
+    V2                 0.011      0.054      0.200      0.841
+
+ P2         ON
+    P1                 0.084      0.085      0.985      0.324
+    V1                 0.011      0.054      0.200      0.841
+
+ V4         ON
+    V3                -0.167      0.108     -1.548      0.122
+    P3                -0.162      0.142     -1.145      0.252
+
+ V3         ON
+    V2                -0.167      0.108     -1.548      0.122
+    P2                -0.162      0.142     -1.145      0.252
+
+ V2         ON
+    V1                -0.167      0.108     -1.548      0.122
+    P1                -0.162      0.142     -1.145      0.252
+
+ S_BFI_O  WITH
+    I_BFI_O           50.272     22.533      2.231      0.026
+    S_VRT_IND          0.625      1.387      0.450      0.653
+    I_VRT_IND         15.275     43.577      0.351      0.726
+
+ I_BFI_O  WITH
+    S_VRT_IND          9.172     45.878      0.200      0.842
+    I_VRT_IND        115.486   1449.270      0.080      0.936
+
+ S_VRT_IN WITH
+    I_VRT_IND        133.501    110.742      1.206      0.228
+
+ P1       WITH
+    V1                 3.822      9.988      0.383      0.702
+
+ P2       WITH
+    V2                -2.910      4.746     -0.613      0.540
+
+ P3       WITH
+    V3                -2.910      4.746     -0.613      0.540
+
+ P4       WITH
+    V4                -2.910      4.746     -0.613      0.540
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_O           35.560     10.714      3.319      0.001
+    S_BFI_O           -1.186      0.324     -3.659      0.000
+    I_VRT_IND         21.882     16.138      1.356      0.175
+    S_VRT_IND         -0.629      0.501     -1.256      0.209
+
+ Intercepts
+    ABFI_O             0.000      0.000    999.000    999.000
+    BBFI_O             0.000      0.000    999.000    999.000
+    CBFI_O             0.000      0.000    999.000    999.000
+    DBFI_O             0.000      0.000    999.000    999.000
+    AVRT_IND           0.000      0.000    999.000    999.000
+    BVRT_IND           0.000      0.000    999.000    999.000
+    CVRT_IND           0.000      0.000    999.000    999.000
+    DVRT_IND           0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                42.245     12.036      3.510      0.000
+    V1                91.815     31.279      2.935      0.003
+    I_BFI_O         2171.523    811.484      2.676      0.007
+    S_BFI_O            1.239      0.640      1.934      0.053
+    I_VRT_IND       4531.867   3496.464      1.296      0.195
+    S_VRT_IND          4.139      3.525      1.174      0.240
+
+ Residual Variances
+    ABFI_O             0.000      0.000    999.000    999.000
+    BBFI_O             0.000      0.000    999.000    999.000
+    CBFI_O             0.000      0.000    999.000    999.000
+    DBFI_O             0.000      0.000    999.000    999.000
+    AVRT_IND           0.000      0.000    999.000    999.000
+    BVRT_IND           0.000      0.000    999.000    999.000
+    CVRT_IND           0.000      0.000    999.000    999.000
+    DVRT_IND           0.000      0.000    999.000    999.000
+    P2                34.310      5.569      6.161      0.000
+    P3                34.310      5.569      6.161      0.000
+    P4                34.310      5.569      6.161      0.000
+    V2                84.253     14.298      5.893      0.000
+    V3                84.253     14.298      5.893      0.000
+    V4                84.253     14.298      5.893      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.316E-09
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  19:47:02
+        Ending Time:  19:47:24
+       Elapsed Time:  00:00:22
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

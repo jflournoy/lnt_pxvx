@@ -1,0 +1,1528 @@
+Mplus VERSION 8 (Linux)
+MUTHEN & MUTHEN
+07/08/2018   1:11 PM
+
+INPUT INSTRUCTIONS
+
+
+  title: PxVx Bivariate LCM-SR - decadegroup - Linear bfi_o with Linear hrz_col_d;
+  data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
+
+  variable:
+  names =
+  subjid
+  aage
+  aaspfin
+  aaspfin_d
+  abfa_mt
+  abfa_mt_d
+  abfas_ac
+  abfas_ap
+  abfas_ci
+  abfas_co
+  abfas_ea
+  abfas_ee
+  abfas_nv
+  abfas_nv9
+  abfas_nw
+  abfas_oi
+  abfas_oo
+  abfi_a
+  abfi_a6
+  abfi_c
+  abfi_d_scale
+  abfi_e
+  abfi_hp8
+  abfi_n
+  abfi_o
+  abfi_s_scale
+  ahrz_col
+  ahrz_col_d
+  ahrz_ind
+  ahrz_ind_d
+  amvi
+  ausi
+  ausi_d
+  avrt_col
+  avrt_col_d
+  avrt_ind
+  avrt_ind_d
+  bage
+  baspfin
+  baspfin_d
+  bbfa_mt
+  bbfa_mt_d
+  bbfas_ac
+  bbfas_ap
+  bbfas_ci
+  bbfas_co
+  bbfas_ea
+  bbfas_ee
+  bbfas_nv
+  bbfas_nv9
+  bbfas_nw
+  bbfas_oi
+  bbfas_oo
+  bbfi_a
+  bbfi_a6
+  bbfi_c
+  bbfi_d_scale
+  bbfi_e
+  bbfi_hp8
+  bbfi_n
+  bbfi_o
+  bbfi_s_scale
+  bhrz_col
+  bhrz_col_d
+  bhrz_ind
+  bhrz_ind_d
+  bmvi
+  busi
+  busi_d
+  bvrt_col
+  bvrt_col_d
+  bvrt_ind
+  bvrt_ind_d
+  cage
+  caspfin
+  caspfin_d
+  cbfa_mt
+  cbfa_mt_d
+  cbfas_ac
+  cbfas_ap
+  cbfas_ci
+  cbfas_co
+  cbfas_ea
+  cbfas_ee
+  cbfas_nv
+  cbfas_nv9
+  cbfas_nw
+  cbfas_oi
+  cbfas_oo
+  cbfi_a
+  cbfi_a6
+  cbfi_c
+  cbfi_d_scale
+  cbfi_e
+  cbfi_hp8
+  cbfi_n
+  cbfi_o
+  cbfi_s_scale
+  chrz_col
+  chrz_col_d
+  chrz_ind
+  chrz_ind_d
+  cmvi
+  cusi
+  cusi_d
+  cvrt_col
+  cvrt_col_d
+  cvrt_ind
+  cvrt_ind_d
+  dage
+  daspfin
+  daspfin_d
+  dbfa_mt
+  dbfa_mt_d
+  dbfas_ac
+  dbfas_ap
+  dbfas_ci
+  dbfas_co
+  dbfas_ea
+  dbfas_ee
+  dbfas_nv
+  dbfas_nv9
+  dbfas_nw
+  dbfas_oi
+  dbfas_oo
+  dbfi_a
+  dbfi_a6
+  dbfi_c
+  dbfi_d_scale
+  dbfi_e
+  dbfi_hp8
+  dbfi_n
+  dbfi_o
+  dbfi_s_scale
+  dhrz_col
+  dhrz_col_d
+  dhrz_ind
+  dhrz_ind_d
+  dmvi
+  dusi
+  dusi_d
+  dvrt_col
+  dvrt_col_d
+  dvrt_ind
+  dvrt_ind_d;
+
+  USEVARIABLES =
+  abfi_o
+  bbfi_o
+  cbfi_o
+  dbfi_o
+  ahrz_col_d
+  bhrz_col_d
+  chrz_col_d
+  dhrz_col_d
+  a1
+  a2
+  a3
+  a4
+  aagegrp
+  ;
+
+  missing = all (-9999);
+
+  tscores = a1 a2 a3 a4;
+
+  grouping = aagegrp (0=d2, 1=d3, 2=d4, 3=d5);
+
+  DEFINE:
+
+  aagegrp = aage;
+
+  cut aagegrp (29 39 49);
+
+  a1 = aage + 0 - 36;
+  a2 = aage + 1 - 36;
+  a3 = aage + 2 - 36;
+  a4 = aage + 3 - 36;
+
+  ANALYSIS:
+  TYPE=RANDOM;
+  PROCESSORS = 6;
+  model=nocovariances; ! supresses default estimation of certain covs in model;
+
+  MODEL:
+
+  i_bfi_o s_bfi_o | abfi_o bbfi_o cbfi_o dbfi_o AT a1 a2 a3 a4;
+  i_hrz_col_d s_hrz_col_d | ahrz_col_d bhrz_col_d chrz_col_d dhrz_col_d AT a1 a2 a3 a4;
+
+  ! freeing factor covs because of "nocovariances"
+  s_bfi_o WITH i_bfi_o s_hrz_col_d i_hrz_col_d;
+  i_bfi_o WITH s_hrz_col_d i_hrz_col_d;
+  s_hrz_col_d WITH i_hrz_col_d;
+
+  p1 BY abfi_o@1; ! Residual "factors";
+  p2 BY bbfi_o@1;
+  p3 BY cbfi_o@1;
+  p4 BY dbfi_o@1;
+
+  v1 BY ahrz_col_d@1; ! Residual "factors";
+  v2 BY bhrz_col_d@1;
+  v3 BY chrz_col_d@1;
+  v4 BY dhrz_col_d@1;
+
+  !residual variances on observed/manifest vars set to 0
+  abfi_o@0;
+  bbfi_o@0;
+  cbfi_o@0;
+  dbfi_o@0;
+
+  !residual variances on observed/manifest vars set to 0
+  ahrz_col_d@0;
+  bhrz_col_d@0;
+  chrz_col_d@0;
+  dhrz_col_d@0;
+
+  ! means of observed/manifest vars set to 0
+  [abfi_o@0];
+  [bbfi_o@0];
+  [cbfi_o@0];
+  [dbfi_o@0];
+
+  ! means of observed/manifest vars set to 0
+  [ahrz_col_d@0];
+  [bhrz_col_d@0];
+  [chrz_col_d@0];
+  [dhrz_col_d@0];
+
+  [p1@0]; ! means of residual "factors" set to 0
+  [p2@0];
+  [p3@0];
+  [p4@0];
+
+  [v1@0]; ! means of residual "factors" set to 0
+  [v2@0];
+  [v3@0];
+  [v4@0];
+
+  p4 on p3 (a); ! Autoregressive paths constrained to equality
+  p3 on p2 (a);
+  p2 on p1 (a);
+
+  v4 on v3 (b); ! Autoregressive paths constrained to equality
+  v3 on v2 (b);
+  v2 on v1 (b);
+
+  p4 on v3 (c); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c);
+  p2 on v1 (c);
+
+  v4 on p3 (d); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d);
+  v2 on p1 (d);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e); ! Within-wave correlations constrained to equality
+  p3 with v3 (e);
+  p4 with v4 (e);
+
+  p2 p3 p4 (f); ! estimate variances of residual "factors"
+  v2 v3 v4 (g); ! estimate variances of residual "factors"
+
+  MODEL d2:
+
+  p4 on p3 (a2); ! Autoregressive paths constrained to equality
+  p3 on p2 (a2);
+  p2 on p1 (a2);
+
+  v4 on v3 (b2); ! Autoregressive paths constrained to equality
+  v3 on v2 (b2);
+  v2 on v1 (b2);
+
+  p4 on v3 (c2); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c2);
+  p2 on v1 (c2);
+
+  v4 on p3 (d2); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d2);
+  v2 on p1 (d2);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e2); ! Within-wave correlations constrained to equality
+  p3 with v3 (e2);
+  p4 with v4 (e2);
+
+  p2 p3 p4 (f2); ! estimate variances of residual "factors"
+  v2 v3 v4 (g2); ! estimate variances of residual "factors"
+
+  MODEL d3:
+
+  p4 on p3 (a3); ! Autoregressive paths constrained to equality
+  p3 on p2 (a3);
+  p2 on p1 (a3);
+
+  v4 on v3 (b3); ! Autoregressive paths constrained to equality
+  v3 on v2 (b3);
+  v2 on v1 (b3);
+
+  p4 on v3 (c3); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c3);
+  p2 on v1 (c3);
+
+  v4 on p3 (d3); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d3);
+  v2 on p1 (d3);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e3); ! Within-wave correlations constrained to equality
+  p3 with v3 (e3);
+  p4 with v4 (e3);
+
+  p2 p3 p4 (f3); ! estimate variances of residual "factors"
+  v2 v3 v4 (g3); ! estimate variances of residual "factors"
+
+  MODEL d4:
+
+  p4 on p3 (a4); ! Autoregressive paths constrained to equality
+  p3 on p2 (a4);
+  p2 on p1 (a4);
+
+  v4 on v3 (b4); ! Autoregressive paths constrained to equality
+  v3 on v2 (b4);
+  v2 on v1 (b4);
+
+  p4 on v3 (c4); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c4);
+  p2 on v1 (c4);
+
+  v4 on p3 (d4); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d4);
+  v2 on p1 (d4);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e4); ! Within-wave correlations constrained to equality
+  p3 with v3 (e4);
+  p4 with v4 (e4);
+
+  p2 p3 p4 (f4); ! estimate variances of residual "factors"
+  v2 v3 v4 (g4); ! estimate variances of residual "factors"
+
+  MODEL d5:
+
+  p4 on p3 (a5); ! Autoregressive paths constrained to equality
+  p3 on p2 (a5);
+  p2 on p1 (a5);
+
+  v4 on v3 (b5); ! Autoregressive paths constrained to equality
+  v3 on v2 (b5);
+  v2 on v1 (b5);
+
+  p4 on v3 (c5); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c5);
+  p2 on v1 (c5);
+
+  v4 on p3 (d5); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d5);
+  v2 on p1 (d5);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e5); ! Within-wave correlations constrained to equality
+  p3 with v3 (e5);
+  p4 with v4 (e5);
+
+  p2 p3 p4 (f5); ! estimate variances of residual "factors"
+  v2 v3 v4 (g5); ! estimate variances of residual "factors"
+
+  OUTPUT: SAMPSTAT PATTERNS;
+
+
+
+*** WARNING in VARIABLE command
+  Note that only the first 8 characters of variable names are used in the output.
+  Shorten variable names to avoid any confusion.
+*** WARNING
+  Data set contains unknown or missing values for GROUPING,
+  PATTERN, COHORT, CLUSTER and/or STRATIFICATION variables.
+  Number of cases with unknown or missing values:  5
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+PxVx Bivariate LCM-SR - decadegroup - Linear bfi_o with Linear hrz_col_d;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 4
+Number of observations
+   Group D2                                                    301
+   Group D3                                                    233
+   Group D4                                                    198
+   Group D5                                                    132
+   Total sample size                                           864
+
+Number of dependent variables                                    8
+Number of independent variables                                  0
+Number of continuous latent variables                           12
+
+Observed dependent variables
+
+  Continuous
+   ABFI_O      BBFI_O      CBFI_O      DBFI_O      AHRZ_COL_D  BHRZ_COL_D
+   CHRZ_COL_D  DHRZ_COL_D
+
+Continuous latent variables
+   P1          P2          P3          P4          V1          V2
+   V3          V4          I_BFI_O     S_BFI_O     I_HRZ_CO    S_HRZ_CO
+
+Variables with special functions
+
+  Grouping variable     AAGEGRP
+
+  Time scores
+   A1          A2          A3          A4
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                   100
+Convergence criterion                                    0.100D-05
+Maximum number of EM iterations                                500
+Convergence criteria for the EM algorithm
+  Loglikelihood change                                   0.100D-02
+  Relative loglikelihood change                          0.100D-05
+  Derivative                                             0.100D-03
+Minimum variance                                         0.100D-03
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+
+Input data file(s)
+  /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group D2
+     Number of missing data patterns            14
+
+   Group D3
+     Number of missing data patterns            11
+
+   Group D4
+     Number of missing data patterns            15
+
+   Group D5
+     Number of missing data patterns             9
+
+
+SUMMARY OF MISSING DATA PATTERNS
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D2
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14
+ ABFI_O    x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ BBFI_O    x     x  x  x  x           x  x  x     x
+ CBFI_O    x        x     x     x  x  x  x  x  x
+ DBFI_O    x     x  x        x     x     x     x
+ AHRZ_COL  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ BHRZ_COL  x     x  x  x  x           x     x
+ CHRZ_COL  x              x     x  x     x  x  x
+ DHRZ_COL  x     x  x        x     x     x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D2
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         187           6          13          11           2
+          2          57           7          11          12           1
+          3           6           8           4          13           1
+          4           1           9           5          14           1
+          5          11          10           1
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D3
+
+           1  2  3  4  5  6  7  8  9 10 11
+ ABFI_O    x  x  x  x  x  x  x  x  x  x  x
+ BBFI_O    x     x  x  x           x  x
+ CBFI_O    x           x     x  x     x
+ DBFI_O    x     x        x     x     x  x
+ AHRZ_COL  x  x  x  x  x  x  x  x  x  x  x
+ BHRZ_COL  x     x  x  x              x
+ CHRZ_COL  x           x     x  x     x
+ DHRZ_COL  x     x        x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D3
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         140           5           6           9           1
+          2          43           6           3          10           1
+          3           8           7           7          11           2
+          4          15           8           7
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D4
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+ ABFI_O    x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ BBFI_O    x     x  x  x  x           x     x     x
+ CBFI_O    x        x     x     x  x  x  x           x
+ DBFI_O    x     x  x        x     x  x  x        x
+ AHRZ_COL  x  x  x  x  x  x  x  x  x  x  x  x     x  x
+ BHRZ_COL  x     x  x  x  x
+ CHRZ_COL  x              x     x  x  x  x
+ DHRZ_COL  x     x  x        x     x  x           x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D4
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         104           6          15          11           1
+          2          39           7           4          12           2
+          3           7           8           4          13           1
+          4           1           9           5          14           1
+          5          12          10           1          15           1
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D5
+
+           1  2  3  4  5  6  7  8  9
+ ABFI_O    x  x  x  x  x  x  x  x
+ BBFI_O    x     x  x  x
+ CBFI_O    x           x     x  x
+ DBFI_O    x     x        x     x  x
+ AHRZ_COL  x  x  x  x  x  x  x  x  x
+ BHRZ_COL  x     x  x  x
+ CHRZ_COL  x           x     x  x
+ DHRZ_COL  x     x        x     x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D5
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1          61           4          10           7           6
+          2          29           5          11           8           4
+          3           5           6           5           9           1
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR D2
+
+
+           Covariance Coverage
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFI_O         1.000
+ BBFI_O         0.741         0.741
+ CBFI_O         0.714         0.681         0.714
+ DBFI_O         0.708         0.651         0.651         0.708
+ AHRZ_COL       1.000         0.741         0.714         0.708         1.000
+ BHRZ_COL       0.731         0.731         0.674         0.645         0.731
+ CHRZ_COL       0.708         0.674         0.708         0.648         0.708
+ DHRZ_COL       0.708         0.654         0.651         0.704         0.708
+
+
+           Covariance Coverage
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       0.731
+ CHRZ_COL       0.668         0.708
+ DHRZ_COL       0.648         0.648         0.708
+
+
+     PROPORTION OF DATA PRESENT FOR D3
+
+
+           Covariance Coverage
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFI_O         1.000
+ BBFI_O         0.751         0.751
+ CBFI_O         0.725         0.691         0.725
+ DBFI_O         0.742         0.708         0.678         0.742
+ AHRZ_COL       1.000         0.751         0.725         0.742         1.000
+ BHRZ_COL       0.742         0.742         0.682         0.700         0.742
+ CHRZ_COL       0.657         0.622         0.657         0.614         0.657
+ DHRZ_COL       0.742         0.708         0.678         0.742         0.742
+
+
+           Covariance Coverage
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       0.742
+ CHRZ_COL       0.614         0.657
+ DHRZ_COL       0.700         0.614         0.742
+
+
+     PROPORTION OF DATA PRESENT FOR D4
+
+
+           Covariance Coverage
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFI_O         1.000
+ BBFI_O         0.732         0.732
+ CBFI_O         0.682         0.631         0.682
+ DBFI_O         0.626         0.576         0.571         0.626
+ AHRZ_COL       1.000         0.732         0.682         0.626         1.000
+ BHRZ_COL       0.722         0.722         0.626         0.571         0.722
+ CHRZ_COL       0.672         0.621         0.672         0.566         0.672
+ DHRZ_COL       0.626         0.581         0.571         0.616         0.626
+
+
+           Covariance Coverage
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       0.722
+ CHRZ_COL       0.616         0.672
+ DHRZ_COL       0.576         0.566         0.626
+
+
+     PROPORTION OF DATA PRESENT FOR D5
+
+
+           Covariance Coverage
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFI_O         1.000
+ BBFI_O         0.697         0.697
+ CBFI_O         0.614         0.576         0.614
+ DBFI_O         0.629         0.576         0.545         0.629
+ AHRZ_COL       1.000         0.697         0.614         0.629         1.000
+ BHRZ_COL       0.697         0.697         0.576         0.576         0.697
+ CHRZ_COL       0.538         0.500         0.538         0.470         0.538
+ DHRZ_COL       0.629         0.576         0.545         0.629         0.629
+
+
+           Covariance Coverage
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       0.697
+ CHRZ_COL       0.500         0.538
+ DHRZ_COL       0.576         0.470         0.629
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D2
+
+
+           Means
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AHRZ_COL
+              ________      ________      ________      ________      ________
+               74.525        74.054        72.930        72.081        70.460
+
+
+           Means
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+               69.084        68.585        68.047
+
+
+           Covariances
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFI_O       225.158
+ BBFI_O       179.426       219.826
+ CBFI_O       191.663       181.764       249.345
+ DBFI_O       169.669       173.377       208.117       250.151
+ AHRZ_COL      27.282        42.026        23.641        16.278       328.222
+ BHRZ_COL      24.517        48.360        28.216        23.954       212.002
+ CHRZ_COL      57.715        75.341        73.196        64.687       206.777
+ DHRZ_COL      29.035        51.202        24.351        34.975       217.664
+
+
+           Covariances
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL     333.392
+ CHRZ_COL     223.767       369.243
+ DHRZ_COL     222.087       253.667       367.333
+
+
+           Correlations
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFI_O         1.000
+ BBFI_O         0.806         1.000
+ CBFI_O         0.809         0.776         1.000
+ DBFI_O         0.715         0.739         0.833         1.000
+ AHRZ_COL       0.100         0.156         0.083         0.057         1.000
+ BHRZ_COL       0.089         0.179         0.098         0.083         0.641
+ CHRZ_COL       0.200         0.264         0.241         0.213         0.594
+ DHRZ_COL       0.101         0.180         0.080         0.115         0.627
+
+
+           Correlations
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       1.000
+ CHRZ_COL       0.638         1.000
+ DHRZ_COL       0.635         0.689         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D3
+
+
+           Means
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AHRZ_COL
+              ________      ________      ________      ________      ________
+               75.123        73.783        72.938        72.938        72.979
+
+
+           Means
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+               72.843        73.482        73.444
+
+
+           Covariances
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFI_O       202.548
+ BBFI_O       163.635       208.005
+ CBFI_O       162.978       177.622       236.575
+ DBFI_O       153.413       163.577       181.527       208.851
+ AHRZ_COL      52.294        39.069        38.155        15.861       292.844
+ BHRZ_COL      31.368        17.858        19.366        11.184       209.654
+ CHRZ_COL      16.947        11.683        20.319        -0.623       203.845
+ DHRZ_COL      29.169        21.073        16.531        16.319       186.616
+
+
+           Covariances
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL     318.564
+ CHRZ_COL     233.718       329.623
+ DHRZ_COL     222.255       210.884       295.685
+
+
+           Correlations
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFI_O         1.000
+ BBFI_O         0.797         1.000
+ CBFI_O         0.745         0.801         1.000
+ DBFI_O         0.746         0.785         0.817         1.000
+ AHRZ_COL       0.215         0.158         0.145         0.064         1.000
+ BHRZ_COL       0.123         0.069         0.071         0.043         0.686
+ CHRZ_COL       0.066         0.045         0.073        -0.002         0.656
+ DHRZ_COL       0.119         0.085         0.063         0.066         0.634
+
+
+           Correlations
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       1.000
+ CHRZ_COL       0.721         1.000
+ DHRZ_COL       0.724         0.675         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D4
+
+
+           Means
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AHRZ_COL
+              ________      ________      ________      ________      ________
+               73.194        72.422        71.055        73.333        72.894
+
+
+           Means
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+               71.714        72.910        71.741
+
+
+           Covariances
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFI_O       222.470
+ BBFI_O       200.257       249.265
+ CBFI_O       215.118       228.187       279.048
+ DBFI_O       202.337       211.152       231.707       255.950
+ AHRZ_COL      48.072        37.486        34.093        40.670       257.593
+ BHRZ_COL      43.067        37.940        40.164        40.347       161.968
+ CHRZ_COL      51.653        40.156        53.741        55.340       150.723
+ DHRZ_COL      32.672        35.341        35.038        41.905       154.603
+
+
+           Covariances
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL     250.279
+ CHRZ_COL     160.575       224.417
+ DHRZ_COL     162.206       158.584       251.659
+
+
+           Correlations
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFI_O         1.000
+ BBFI_O         0.850         1.000
+ CBFI_O         0.863         0.865         1.000
+ DBFI_O         0.848         0.836         0.867         1.000
+ AHRZ_COL       0.201         0.148         0.127         0.158         1.000
+ BHRZ_COL       0.183         0.152         0.152         0.159         0.638
+ CHRZ_COL       0.231         0.170         0.215         0.231         0.627
+ DHRZ_COL       0.138         0.141         0.132         0.165         0.607
+
+
+           Correlations
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       1.000
+ CHRZ_COL       0.678         1.000
+ DHRZ_COL       0.646         0.667         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D5
+
+
+           Means
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AHRZ_COL
+              ________      ________      ________      ________      ________
+               74.352        74.394        72.118        71.035        78.314
+
+
+           Means
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+               75.313        74.579        74.615
+
+
+           Covariances
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFI_O       254.357
+ BBFI_O       212.603       235.525
+ CBFI_O       223.466       221.605       286.319
+ DBFI_O       249.703       238.024       267.438       310.666
+ AHRZ_COL      63.476        51.231        50.489        66.353       230.624
+ BHRZ_COL      41.662        52.502        50.024        62.226       202.431
+ CHRZ_COL      53.329        63.224        83.583        72.559       157.216
+ DHRZ_COL      42.881        45.772        79.213        82.958       157.786
+
+
+           Covariances
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL     287.910
+ CHRZ_COL     206.108       268.753
+ DHRZ_COL     202.810       206.822       298.423
+
+
+           Correlations
+              ABFI_O        BBFI_O        CBFI_O        DBFI_O        AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFI_O         1.000
+ BBFI_O         0.869         1.000
+ CBFI_O         0.828         0.853         1.000
+ DBFI_O         0.888         0.880         0.897         1.000
+ AHRZ_COL       0.262         0.220         0.196         0.248         1.000
+ BHRZ_COL       0.154         0.202         0.174         0.208         0.786
+ CHRZ_COL       0.204         0.251         0.301         0.251         0.631
+ DHRZ_COL       0.156         0.173         0.271         0.272         0.601
+
+
+           Correlations
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       1.000
+ CHRZ_COL       0.741         1.000
+ DHRZ_COL       0.692         0.730         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -20417.932
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D2
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_O               74.525      -0.610      30.000    0.33%      62.500     72.500     75.000
+             301.000     225.158      -0.073     100.000    1.66%      80.000     87.500
+     BBFI_O               74.096      -0.620      22.500    0.45%      62.500     72.500     75.000
+             223.000     212.981       0.140     100.000    2.24%      80.000     87.500
+     CBFI_O               73.111      -0.519      35.000    1.86%      60.000     70.000     75.000
+             215.000     243.143      -0.442     100.000    0.47%      80.000     87.500
+     DBFI_O               72.666      -0.512      22.500    0.47%      60.000     70.000     75.000
+             213.000     240.244      -0.215     100.000    1.41%      77.500     85.000
+     AHRZ_COL_D           70.460      -0.737       8.333    0.33%      58.333     66.667     75.000
+             301.000     328.222       0.603     100.000    6.64%      75.000     83.333
+     BHRZ_COL_D           69.508      -0.819      16.667    1.82%      58.333     66.667     75.000
+             220.000     326.841       0.565     100.000    4.55%      75.000     83.333
+     CHRZ_COL_D           68.818      -0.706       8.333    1.41%      58.333     66.667     75.000
+             213.000     370.631       0.581     100.000    6.10%      75.000     83.333
+     DHRZ_COL_D           68.545      -0.716       0.000    0.47%      50.000     66.667     75.000
+             213.000     369.452       0.673     100.000    6.10%      75.000     83.333
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D3
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_O               75.123      -0.393      27.500    0.86%      62.500     70.000     75.000
+             233.000     202.548      -0.091     100.000    2.58%      80.000     87.500
+     BBFI_O               73.894      -0.282      37.500    2.92%      60.000     70.000     75.000
+             171.000     201.247      -0.423     100.000    0.58%      77.500     87.500
+     CBFI_O               72.492      -0.452      30.000    0.62%      60.000     70.000     72.500
+             161.000     232.735      -0.127     100.000    0.62%      77.500     87.500
+     DBFI_O               72.900      -0.636      30.000    0.62%      62.500     70.000     75.000
+             161.000     214.516       0.031      97.500    1.24%      77.500     85.000
+     AHRZ_COL_D           72.979      -0.581      25.000    1.29%      58.333     75.000     75.000
+             233.000     292.844      -0.001     100.000    8.15%      75.000     83.333
+     BHRZ_COL_D           72.451      -0.674      16.667    1.18%      58.333     75.000     75.000
+             170.000     312.743       0.242     100.000    7.06%      75.000     91.667
+     CHRZ_COL_D           73.292      -0.616      16.667    0.62%      58.333     75.000     75.000
+             161.000     323.601      -0.003     100.000    9.32%      75.000     91.667
+     DHRZ_COL_D           73.049      -1.005       0.000    0.63%      66.667     66.667     75.000
+             158.000     298.143       1.975     100.000    7.59%      75.000     83.333
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D4
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_O               73.194      -0.276      35.000    0.51%      60.000     70.000     73.750
+             198.000     222.470      -0.617     100.000    1.01%      77.500     87.500
+     BBFI_O               73.364      -0.392      32.500    0.70%      60.000     70.000     75.000
+             143.000     255.207      -0.580     100.000    0.70%      80.000     90.000
+     CBFI_O               72.367      -0.451      27.500    0.76%      60.000     70.000     75.000
+             132.000     280.049      -0.333     100.000    3.03%      77.500     87.500
+     DBFI_O               73.936      -0.698      30.000    0.81%      60.000     70.000     75.000
+             124.000     274.369      -0.176      97.500    4.84%      80.000     90.000
+     AHRZ_COL_D           72.906      -0.450      16.667    0.51%      58.333     75.000     75.000
+             197.000     257.619       0.470     100.000   10.15%      75.000     83.333
+     BHRZ_COL_D           70.923      -0.496      16.667    0.72%      58.333     66.667     75.000
+             139.000     261.158       0.224     100.000    5.04%      75.000     83.333
+     CHRZ_COL_D           73.077      -0.153      25.000    0.77%      58.333     66.667     75.000
+             130.000     230.276      -0.240     100.000    7.69%      75.000     83.333
+     DHRZ_COL_D           71.816      -0.512      25.000    1.63%      58.333     66.667     75.000
+             123.000     247.878       0.275     100.000    4.88%      75.000     83.333
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D5
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_O               74.470      -0.319      30.000    0.76%      60.000     70.000     75.000
+             131.000     254.085      -0.473     100.000    5.34%      80.556     87.500
+     BBFI_O               74.638      -0.522      30.556    1.15%      62.500     70.000     75.000
+              87.000     233.340       0.054     100.000    2.30%      80.000     87.500
+     CBFI_O               72.652      -0.822      12.500    1.22%      60.000     70.000     75.000
+              82.000     284.657       1.122     100.000    2.44%      77.500     87.500
+     DBFI_O               74.112      -0.762      15.000    1.32%      57.500     72.500     76.250
+              76.000     293.043       0.548     100.000    1.32%      82.500     90.000
+     AHRZ_COL_D           78.314      -0.627      41.667    3.79%      66.667     75.000     83.333
+             132.000     230.624      -0.165     100.000   12.12%      83.333     91.667
+     BHRZ_COL_D           75.718      -0.963      16.667    1.15%      66.667     75.000     75.000
+              87.000     279.058       1.070     100.000    8.05%      83.333     91.667
+     CHRZ_COL_D           74.695      -0.720      16.667    1.22%      58.333     75.000     75.000
+              82.000     275.144       1.141     100.000   10.98%      75.000     91.667
+     DHRZ_COL_D           75.987      -1.306       0.000    1.32%      66.667     75.000     75.000
+              76.000     288.683       3.856     100.000   10.53%      83.333     91.667
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       96
+
+Loglikelihood
+
+          H0 Value                      -20472.341
+          H0 Scaling Correction Factor      1.1575
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   41136.682
+          Bayesian (BIC)                 41593.793
+          Sample-Size Adjusted BIC       41288.922
+            (n* = (n + 2) / 24)
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ P1       BY
+    ABFI_O             1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_O             1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_O             1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_O             1.000      0.000    999.000    999.000
+
+ V1       BY
+    AHRZ_COL_D         1.000      0.000    999.000    999.000
+
+ V2       BY
+    BHRZ_COL_D         1.000      0.000    999.000    999.000
+
+ V3       BY
+    CHRZ_COL_D         1.000      0.000    999.000    999.000
+
+ V4       BY
+    DHRZ_COL_D         1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.185      0.107      1.732      0.083
+    V3                 0.040      0.055      0.726      0.468
+
+ P3         ON
+    P2                 0.185      0.107      1.732      0.083
+    V2                 0.040      0.055      0.726      0.468
+
+ P2         ON
+    P1                 0.185      0.107      1.732      0.083
+    V1                 0.040      0.055      0.726      0.468
+
+ V4         ON
+    V3                 0.120      0.082      1.464      0.143
+    P3                -0.020      0.134     -0.152      0.879
+
+ V3         ON
+    V2                 0.120      0.082      1.464      0.143
+    P2                -0.020      0.134     -0.152      0.879
+
+ V2         ON
+    V1                 0.120      0.082      1.464      0.143
+    P1                -0.020      0.134     -0.152      0.879
+
+ S_BFI_O  WITH
+    I_BFI_O           17.821      8.128      2.192      0.028
+    S_HRZ_COL_        -0.414      0.656     -0.630      0.528
+    I_HRZ_COL_        -5.870      6.523     -0.900      0.368
+
+ I_BFI_O  WITH
+    S_HRZ_COL_         1.101      8.279      0.133      0.894
+    I_HRZ_COL_        30.309     78.183      0.388      0.698
+
+ S_HRZ_CO WITH
+    I_HRZ_COL_        10.910     11.012      0.991      0.322
+
+ P1       WITH
+    V1                 4.452      8.571      0.519      0.604
+
+ P2       WITH
+    V2                12.494      7.147      1.748      0.080
+
+ P3       WITH
+    V3                12.494      7.147      1.748      0.080
+
+ P4       WITH
+    V4                12.494      7.147      1.748      0.080
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_O           66.113      2.260     29.249      0.000
+    S_BFI_O           -0.742      0.197     -3.766      0.000
+    I_HRZ_COL_        66.708      2.652     25.154      0.000
+    S_HRZ_COL_        -0.272      0.247     -1.101      0.271
+
+ Intercepts
+    ABFI_O             0.000      0.000    999.000    999.000
+    BBFI_O             0.000      0.000    999.000    999.000
+    CBFI_O             0.000      0.000    999.000    999.000
+    DBFI_O             0.000      0.000    999.000    999.000
+    AHRZ_COL_D         0.000      0.000    999.000    999.000
+    BHRZ_COL_D         0.000      0.000    999.000    999.000
+    CHRZ_COL_D         0.000      0.000    999.000    999.000
+    DHRZ_COL_D         0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                51.467     10.898      4.723      0.000
+    V1               127.471     26.042      4.895      0.000
+    I_BFI_O          395.889     96.699      4.094      0.000
+    S_BFI_O            1.300      0.754      1.724      0.085
+    I_HRZ_COL_       306.004    129.336      2.366      0.018
+    S_HRZ_COL_         1.155      1.117      1.034      0.301
+
+ Residual Variances
+    ABFI_O             0.000      0.000    999.000    999.000
+    BBFI_O             0.000      0.000    999.000    999.000
+    CBFI_O             0.000      0.000    999.000    999.000
+    DBFI_O             0.000      0.000    999.000    999.000
+    AHRZ_COL_D         0.000      0.000    999.000    999.000
+    BHRZ_COL_D         0.000      0.000    999.000    999.000
+    CHRZ_COL_D         0.000      0.000    999.000    999.000
+    DHRZ_COL_D         0.000      0.000    999.000    999.000
+    P2                54.572      6.123      8.913      0.000
+    P3                54.572      6.123      8.913      0.000
+    P4                54.572      6.123      8.913      0.000
+    V2               134.950     13.332     10.122      0.000
+    V3               134.950     13.332     10.122      0.000
+    V4               134.950     13.332     10.122      0.000
+
+Group D3
+
+ P1       BY
+    ABFI_O             1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_O             1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_O             1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_O             1.000      0.000    999.000    999.000
+
+ V1       BY
+    AHRZ_COL_D         1.000      0.000    999.000    999.000
+
+ V2       BY
+    BHRZ_COL_D         1.000      0.000    999.000    999.000
+
+ V3       BY
+    CHRZ_COL_D         1.000      0.000    999.000    999.000
+
+ V4       BY
+    DHRZ_COL_D         1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.204      0.144      1.414      0.157
+    V3                -0.001      0.064     -0.009      0.993
+
+ P3         ON
+    P2                 0.204      0.144      1.414      0.157
+    V2                -0.001      0.064     -0.009      0.993
+
+ P2         ON
+    P1                 0.204      0.144      1.414      0.157
+    V1                -0.001      0.064     -0.009      0.993
+
+ V4         ON
+    V3                 0.033      0.107      0.308      0.758
+    P3                -0.044      0.128     -0.346      0.729
+
+ V3         ON
+    V2                 0.033      0.107      0.308      0.758
+    P2                -0.044      0.128     -0.346      0.729
+
+ V2         ON
+    V1                 0.033      0.107      0.308      0.758
+    P1                -0.044      0.128     -0.346      0.729
+
+ S_BFI_O  WITH
+    I_BFI_O            0.938      2.294      0.409      0.683
+    S_HRZ_COL_         0.062      0.827      0.075      0.940
+    I_HRZ_COL_        -4.614      3.485     -1.324      0.186
+
+ I_BFI_O  WITH
+    S_HRZ_COL_        -2.006      3.467     -0.579      0.563
+    I_HRZ_COL_        19.135     14.190      1.348      0.178
+
+ S_HRZ_CO WITH
+    I_HRZ_COL_        -4.952      3.987     -1.242      0.214
+
+ P1       WITH
+    V1                16.466     10.164      1.620      0.105
+
+ P2       WITH
+    V2                 2.244      6.901      0.325      0.745
+
+ P3       WITH
+    V3                 2.244      6.901      0.325      0.745
+
+ P4       WITH
+    V4                 2.244      6.901      0.325      0.745
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_O           73.735      0.908     81.191      0.000
+    S_BFI_O           -0.470      0.198     -2.377      0.017
+    I_HRZ_COL_        73.372      1.027     71.449      0.000
+    S_HRZ_COL_         0.291      0.235      1.239      0.215
+
+ Intercepts
+    ABFI_O             0.000      0.000    999.000    999.000
+    BBFI_O             0.000      0.000    999.000    999.000
+    CBFI_O             0.000      0.000    999.000    999.000
+    DBFI_O             0.000      0.000    999.000    999.000
+    AHRZ_COL_D         0.000      0.000    999.000    999.000
+    BHRZ_COL_D         0.000      0.000    999.000    999.000
+    CHRZ_COL_D         0.000      0.000    999.000    999.000
+    DHRZ_COL_D         0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                53.626      9.756      5.496      0.000
+    V1               104.907     26.163      4.010      0.000
+    I_BFI_O          157.191     18.870      8.330      0.000
+    S_BFI_O            0.346      1.081      0.320      0.749
+    I_HRZ_COL_       191.071     26.729      7.148      0.000
+    S_HRZ_COL_         0.371      1.990      0.187      0.852
+
+ Residual Variances
+    ABFI_O             0.000      0.000    999.000    999.000
+    BBFI_O             0.000      0.000    999.000    999.000
+    CBFI_O             0.000      0.000    999.000    999.000
+    DBFI_O             0.000      0.000    999.000    999.000
+    AHRZ_COL_D         0.000      0.000    999.000    999.000
+    BHRZ_COL_D         0.000      0.000    999.000    999.000
+    CHRZ_COL_D         0.000      0.000    999.000    999.000
+    DHRZ_COL_D         0.000      0.000    999.000    999.000
+    P2                50.668      8.248      6.143      0.000
+    P3                50.668      8.248      6.143      0.000
+    P4                50.668      8.248      6.143      0.000
+    V2                98.119     14.456      6.788      0.000
+    V3                98.119     14.456      6.788      0.000
+    V4                98.119     14.456      6.788      0.000
+
+Group D4
+
+ P1       BY
+    ABFI_O             1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_O             1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_O             1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_O             1.000      0.000    999.000    999.000
+
+ V1       BY
+    AHRZ_COL_D         1.000      0.000    999.000    999.000
+
+ V2       BY
+    BHRZ_COL_D         1.000      0.000    999.000    999.000
+
+ V3       BY
+    CHRZ_COL_D         1.000      0.000    999.000    999.000
+
+ V4       BY
+    DHRZ_COL_D         1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.084      0.143      0.587      0.557
+    V3                 0.041      0.064      0.643      0.520
+
+ P3         ON
+    P2                 0.084      0.143      0.587      0.557
+    V2                 0.041      0.064      0.643      0.520
+
+ P2         ON
+    P1                 0.084      0.143      0.587      0.557
+    V1                 0.041      0.064      0.643      0.520
+
+ V4         ON
+    V3                 0.050      0.106      0.470      0.639
+    P3                -0.031      0.119     -0.262      0.793
+
+ V3         ON
+    V2                 0.050      0.106      0.470      0.639
+    P2                -0.031      0.119     -0.262      0.793
+
+ V2         ON
+    V1                 0.050      0.106      0.470      0.639
+    P1                -0.031      0.119     -0.262      0.793
+
+ S_BFI_O  WITH
+    I_BFI_O           -3.237     11.937     -0.271      0.786
+    S_HRZ_COL_        -0.232      1.034     -0.225      0.822
+    I_HRZ_COL_         3.717     11.322      0.328      0.743
+
+ I_BFI_O  WITH
+    S_HRZ_COL_         5.097      9.662      0.528      0.598
+    I_HRZ_COL_       -20.711     97.393     -0.213      0.832
+
+ S_HRZ_CO WITH
+    I_HRZ_COL_        -2.851     15.008     -0.190      0.849
+
+ P1       WITH
+    V1                12.946      7.643      1.694      0.090
+
+ P2       WITH
+    V2                 3.029      4.873      0.622      0.534
+
+ P3       WITH
+    V3                 3.029      4.873      0.622      0.534
+
+ P4       WITH
+    V4                 3.029      4.873      0.622      0.534
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_O           72.457      2.113     34.293      0.000
+    S_BFI_O            0.038      0.203      0.187      0.852
+    I_HRZ_COL_        73.380      2.593     28.303      0.000
+    S_HRZ_COL_        -0.117      0.258     -0.452      0.651
+
+ Intercepts
+    ABFI_O             0.000      0.000    999.000    999.000
+    BBFI_O             0.000      0.000    999.000    999.000
+    CBFI_O             0.000      0.000    999.000    999.000
+    DBFI_O             0.000      0.000    999.000    999.000
+    AHRZ_COL_D         0.000      0.000    999.000    999.000
+    BHRZ_COL_D         0.000      0.000    999.000    999.000
+    CHRZ_COL_D         0.000      0.000    999.000    999.000
+    DHRZ_COL_D         0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                30.759      9.079      3.388      0.001
+    V1               105.390     15.949      6.608      0.000
+    I_BFI_O          213.017    117.304      1.816      0.069
+    S_BFI_O            0.536      1.164      0.460      0.645
+    I_HRZ_COL_       152.156    157.373      0.967      0.334
+    S_HRZ_COL_         0.589      1.498      0.393      0.694
+
+ Residual Variances
+    ABFI_O             0.000      0.000    999.000    999.000
+    BBFI_O             0.000      0.000    999.000    999.000
+    CBFI_O             0.000      0.000    999.000    999.000
+    DBFI_O             0.000      0.000    999.000    999.000
+    AHRZ_COL_D         0.000      0.000    999.000    999.000
+    BHRZ_COL_D         0.000      0.000    999.000    999.000
+    CHRZ_COL_D         0.000      0.000    999.000    999.000
+    DHRZ_COL_D         0.000      0.000    999.000    999.000
+    P2                41.587      7.421      5.604      0.000
+    P3                41.587      7.421      5.604      0.000
+    P4                41.587      7.421      5.604      0.000
+    V2                83.990      9.435      8.902      0.000
+    V3                83.990      9.435      8.902      0.000
+    V4                83.990      9.435      8.902      0.000
+
+Group D5
+
+ P1       BY
+    ABFI_O             1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_O             1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_O             1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_O             1.000      0.000    999.000    999.000
+
+ V1       BY
+    AHRZ_COL_D         1.000      0.000    999.000    999.000
+
+ V2       BY
+    BHRZ_COL_D         1.000      0.000    999.000    999.000
+
+ V3       BY
+    CHRZ_COL_D         1.000      0.000    999.000    999.000
+
+ V4       BY
+    DHRZ_COL_D         1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.166      0.151      1.101      0.271
+    V3                 0.131      0.114      1.150      0.250
+
+ P3         ON
+    P2                 0.166      0.151      1.101      0.271
+    V2                 0.131      0.114      1.150      0.250
+
+ P2         ON
+    P1                 0.166      0.151      1.101      0.271
+    V1                 0.131      0.114      1.150      0.250
+
+ V4         ON
+    V3                 0.508      0.125      4.068      0.000
+    P3                 0.278      0.274      1.017      0.309
+
+ V3         ON
+    V2                 0.508      0.125      4.068      0.000
+    P2                 0.278      0.274      1.017      0.309
+
+ V2         ON
+    V1                 0.508      0.125      4.068      0.000
+    P1                 0.278      0.274      1.017      0.309
+
+ S_BFI_O  WITH
+    I_BFI_O           -0.863     18.003     -0.048      0.962
+    S_HRZ_COL_        -0.351      1.020     -0.344      0.731
+    I_HRZ_COL_         8.058     22.555      0.357      0.721
+
+ I_BFI_O  WITH
+    S_HRZ_COL_        -6.610     20.729     -0.319      0.750
+    I_HRZ_COL_       123.668    440.068      0.281      0.779
+
+ S_HRZ_CO WITH
+    I_HRZ_COL_       -85.748     38.402     -2.233      0.026
+
+ P1       WITH
+    V1                21.764     16.093      1.352      0.176
+
+ P2       WITH
+    V2                24.572     11.809      2.081      0.037
+
+ P3       WITH
+    V3                24.572     11.809      2.081      0.037
+
+ P4       WITH
+    V4                24.572     11.809      2.081      0.037
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_O           85.799      5.732     14.968      0.000
+    S_BFI_O           -0.690      0.330     -2.093      0.036
+    I_HRZ_COL_        87.146      7.737     11.264      0.000
+    S_HRZ_COL_        -0.549      0.433     -1.268      0.205
+
+ Intercepts
+    ABFI_O             0.000      0.000    999.000    999.000
+    BBFI_O             0.000      0.000    999.000    999.000
+    CBFI_O             0.000      0.000    999.000    999.000
+    DBFI_O             0.000      0.000    999.000    999.000
+    AHRZ_COL_D         0.000      0.000    999.000    999.000
+    BHRZ_COL_D         0.000      0.000    999.000    999.000
+    CHRZ_COL_D         0.000      0.000    999.000    999.000
+    DHRZ_COL_D         0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                41.970     13.630      3.079      0.002
+    V1                54.978     28.809      1.908      0.056
+    I_BFI_O          185.419    309.233      0.600      0.549
+    S_BFI_O            0.222      1.140      0.195      0.846
+    I_HRZ_COL_      1844.237    759.294      2.429      0.015
+    S_HRZ_COL_         4.173      1.903      2.193      0.028
+
+ Residual Variances
+    ABFI_O             0.000      0.000    999.000    999.000
+    BBFI_O             0.000      0.000    999.000    999.000
+    CBFI_O             0.000      0.000    999.000    999.000
+    DBFI_O             0.000      0.000    999.000    999.000
+    AHRZ_COL_D         0.000      0.000    999.000    999.000
+    BHRZ_COL_D         0.000      0.000    999.000    999.000
+    CHRZ_COL_D         0.000      0.000    999.000    999.000
+    DHRZ_COL_D         0.000      0.000    999.000    999.000
+    P2                40.922     10.436      3.921      0.000
+    P3                40.922     10.436      3.921      0.000
+    P4                40.922     10.436      3.921      0.000
+    V2               114.757     15.018      7.641      0.000
+    V3               114.757     15.018      7.641      0.000
+    V4               114.757     15.018      7.641      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.313E-07
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  13:11:47
+        Ending Time:  13:12:10
+       Elapsed Time:  00:00:23
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

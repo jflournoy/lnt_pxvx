@@ -1,0 +1,2972 @@
+Mplus VERSION 8 (Linux)
+MUTHEN & MUTHEN
+07/07/2018   6:50 PM
+
+INPUT INSTRUCTIONS
+
+
+  title: PxVx Bivariate LCM-SR - decadegroup - Linear bfas_ee with Linear hrz_col;
+  data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
+
+  variable:
+  names =
+  subjid
+  aage
+  aaspfin
+  aaspfin_d
+  abfa_mt
+  abfa_mt_d
+  abfas_ac
+  abfas_ap
+  abfas_ci
+  abfas_co
+  abfas_ea
+  abfas_ee
+  abfas_nv
+  abfas_nv9
+  abfas_nw
+  abfas_oi
+  abfas_oo
+  abfi_a
+  abfi_a6
+  abfi_c
+  abfi_d_scale
+  abfi_e
+  abfi_hp8
+  abfi_n
+  abfi_o
+  abfi_s_scale
+  ahrz_col
+  ahrz_col_d
+  ahrz_ind
+  ahrz_ind_d
+  amvi
+  ausi
+  ausi_d
+  avrt_col
+  avrt_col_d
+  avrt_ind
+  avrt_ind_d
+  bage
+  baspfin
+  baspfin_d
+  bbfa_mt
+  bbfa_mt_d
+  bbfas_ac
+  bbfas_ap
+  bbfas_ci
+  bbfas_co
+  bbfas_ea
+  bbfas_ee
+  bbfas_nv
+  bbfas_nv9
+  bbfas_nw
+  bbfas_oi
+  bbfas_oo
+  bbfi_a
+  bbfi_a6
+  bbfi_c
+  bbfi_d_scale
+  bbfi_e
+  bbfi_hp8
+  bbfi_n
+  bbfi_o
+  bbfi_s_scale
+  bhrz_col
+  bhrz_col_d
+  bhrz_ind
+  bhrz_ind_d
+  bmvi
+  busi
+  busi_d
+  bvrt_col
+  bvrt_col_d
+  bvrt_ind
+  bvrt_ind_d
+  cage
+  caspfin
+  caspfin_d
+  cbfa_mt
+  cbfa_mt_d
+  cbfas_ac
+  cbfas_ap
+  cbfas_ci
+  cbfas_co
+  cbfas_ea
+  cbfas_ee
+  cbfas_nv
+  cbfas_nv9
+  cbfas_nw
+  cbfas_oi
+  cbfas_oo
+  cbfi_a
+  cbfi_a6
+  cbfi_c
+  cbfi_d_scale
+  cbfi_e
+  cbfi_hp8
+  cbfi_n
+  cbfi_o
+  cbfi_s_scale
+  chrz_col
+  chrz_col_d
+  chrz_ind
+  chrz_ind_d
+  cmvi
+  cusi
+  cusi_d
+  cvrt_col
+  cvrt_col_d
+  cvrt_ind
+  cvrt_ind_d
+  dage
+  daspfin
+  daspfin_d
+  dbfa_mt
+  dbfa_mt_d
+  dbfas_ac
+  dbfas_ap
+  dbfas_ci
+  dbfas_co
+  dbfas_ea
+  dbfas_ee
+  dbfas_nv
+  dbfas_nv9
+  dbfas_nw
+  dbfas_oi
+  dbfas_oo
+  dbfi_a
+  dbfi_a6
+  dbfi_c
+  dbfi_d_scale
+  dbfi_e
+  dbfi_hp8
+  dbfi_n
+  dbfi_o
+  dbfi_s_scale
+  dhrz_col
+  dhrz_col_d
+  dhrz_ind
+  dhrz_ind_d
+  dmvi
+  dusi
+  dusi_d
+  dvrt_col
+  dvrt_col_d
+  dvrt_ind
+  dvrt_ind_d;
+
+  USEVARIABLES =
+  abfas_ee
+  bbfas_ee
+  cbfas_ee
+  dbfas_ee
+  ahrz_col
+  bhrz_col
+  chrz_col
+  dhrz_col
+  a1
+  a2
+  a3
+  a4
+  ;
+
+  missing = all (-9999);
+
+  tscores = a1 a2 a3 a4;
+
+  grouping = aage (0=d2, 1=d3, 2=d4, 3=d5);
+
+  DEFINE:
+
+  cut aage (29 39 49);
+
+  a1 = aage + 0 - 36;
+  a2 = aage + 1 - 36;
+  a3 = aage + 2 - 36;
+  a4 = aage + 3 - 36;
+
+  ANALYSIS:
+  TYPE=RANDOM;
+  PROCESSORS = 6;
+  model=nocovariances; ! supresses default estimation of certain covs in model;
+
+  MODEL:
+
+  i_bfas_ee s_bfas_ee | abfas_ee bbfas_ee cbfas_ee dbfas_ee AT a1 a2 a3 a4;
+  i_hrz_col s_hrz_col | ahrz_col bhrz_col chrz_col dhrz_col AT a1 a2 a3 a4;
+
+  ! freeing factor covs because of "nocovariances"
+  s_bfas_ee WITH i_bfas_ee s_hrz_col i_hrz_col;
+  i_bfas_ee WITH s_hrz_col i_hrz_col;
+  s_hrz_col WITH i_hrz_col;
+
+  p1 BY abfas_ee@1; ! Residual "factors";
+  p2 BY bbfas_ee@1;
+  p3 BY cbfas_ee@1;
+  p4 BY dbfas_ee@1;
+
+  v1 BY ahrz_col@1; ! Residual "factors";
+  v2 BY bhrz_col@1;
+  v3 BY chrz_col@1;
+  v4 BY dhrz_col@1;
+
+  !residual variances on observed/manifest vars set to 0
+  abfas_ee@0;
+  bbfas_ee@0;
+  cbfas_ee@0;
+  dbfas_ee@0;
+
+  !residual variances on observed/manifest vars set to 0
+  ahrz_col@0;
+  bhrz_col@0;
+  chrz_col@0;
+  dhrz_col@0;
+
+  ! means of observed/manifest vars set to 0
+  [abfas_ee@0];
+  [bbfas_ee@0];
+  [cbfas_ee@0];
+  [dbfas_ee@0];
+
+  ! means of observed/manifest vars set to 0
+  [ahrz_col@0];
+  [bhrz_col@0];
+  [chrz_col@0];
+  [dhrz_col@0];
+
+  [p1@0]; ! means of residual "factors" set to 0
+  [p2@0];
+  [p3@0];
+  [p4@0];
+
+  [v1@0]; ! means of residual "factors" set to 0
+  [v2@0];
+  [v3@0];
+  [v4@0];
+
+  p4 on p3 (a); ! Autoregressive paths constrained to equality
+  p3 on p2 (a);
+  p2 on p1 (a);
+
+  v4 on v3 (b); ! Autoregressive paths constrained to equality
+  v3 on v2 (b);
+  v2 on v1 (b);
+
+  p4 on v3 (c); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c);
+  p2 on v1 (c);
+
+  v4 on p3 (d); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d);
+  v2 on p1 (d);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e); ! Within-wave correlations constrained to equality
+  p3 with v3 (e);
+  p4 with v4 (e);
+
+  p2 p3 p4 (f); ! estimate variances of residual "factors"
+  v2 v3 v4 (g); ! estimate variances of residual "factors"
+
+  MODEL d2:
+
+  p4 on p3 (a2); ! Autoregressive paths constrained to equality
+  p3 on p2 (a2);
+  p2 on p1 (a2);
+
+  v4 on v3 (b2); ! Autoregressive paths constrained to equality
+  v3 on v2 (b2);
+  v2 on v1 (b2);
+
+  p4 on v3 (c2); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c2);
+  p2 on v1 (c2);
+
+  v4 on p3 (d2); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d2);
+  v2 on p1 (d2);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e2); ! Within-wave correlations constrained to equality
+  p3 with v3 (e2);
+  p4 with v4 (e2);
+
+  p2 p3 p4 (f2); ! estimate variances of residual "factors"
+  v2 v3 v4 (g2); ! estimate variances of residual "factors"
+
+  MODEL d3:
+
+  p4 on p3 (a3); ! Autoregressive paths constrained to equality
+  p3 on p2 (a3);
+  p2 on p1 (a3);
+
+  v4 on v3 (b3); ! Autoregressive paths constrained to equality
+  v3 on v2 (b3);
+  v2 on v1 (b3);
+
+  p4 on v3 (c3); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c3);
+  p2 on v1 (c3);
+
+  v4 on p3 (d3); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d3);
+  v2 on p1 (d3);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e3); ! Within-wave correlations constrained to equality
+  p3 with v3 (e3);
+  p4 with v4 (e3);
+
+  p2 p3 p4 (f3); ! estimate variances of residual "factors"
+  v2 v3 v4 (g3); ! estimate variances of residual "factors"
+
+  MODEL d4:
+
+  p4 on p3 (a4); ! Autoregressive paths constrained to equality
+  p3 on p2 (a4);
+  p2 on p1 (a4);
+
+  v4 on v3 (b4); ! Autoregressive paths constrained to equality
+  v3 on v2 (b4);
+  v2 on v1 (b4);
+
+  p4 on v3 (c4); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c4);
+  p2 on v1 (c4);
+
+  v4 on p3 (d4); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d4);
+  v2 on p1 (d4);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e4); ! Within-wave correlations constrained to equality
+  p3 with v3 (e4);
+  p4 with v4 (e4);
+
+  p2 p3 p4 (f4); ! estimate variances of residual "factors"
+  v2 v3 v4 (g4); ! estimate variances of residual "factors"
+
+  MODEL d5:
+
+  p4 on p3 (a5); ! Autoregressive paths constrained to equality
+  p3 on p2 (a5);
+  p2 on p1 (a5);
+
+  v4 on v3 (b5); ! Autoregressive paths constrained to equality
+  v3 on v2 (b5);
+  v2 on v1 (b5);
+
+  p4 on v3 (c5); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c5);
+  p2 on v1 (c5);
+
+  v4 on p3 (d5); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d5);
+  v2 on p1 (d5);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e5); ! Within-wave correlations constrained to equality
+  p3 with v3 (e5);
+  p4 with v4 (e5);
+
+  p2 p3 p4 (f5); ! estimate variances of residual "factors"
+  v2 v3 v4 (g5); ! estimate variances of residual "factors"
+
+  OUTPUT: SAMPSTAT PATTERNS;
+
+
+
+*** WARNING
+  Data set contains unknown or missing values for GROUPING,
+  PATTERN, COHORT, CLUSTER and/or STRATIFICATION variables.
+  Number of cases with unknown or missing values:  5
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+PxVx Bivariate LCM-SR - decadegroup - Linear bfas_ee with Linear hrz_col;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 4
+Number of observations
+   Group D2                                                    301
+   Group D3                                                    233
+   Group D4                                                    198
+   Group D5                                                    132
+   Total sample size                                           864
+
+Number of dependent variables                                    8
+Number of independent variables                                  0
+Number of continuous latent variables                           12
+
+Observed dependent variables
+
+  Continuous
+   ABFAS_EE    BBFAS_EE    CBFAS_EE    DBFAS_EE    AHRZ_COL    BHRZ_COL
+   CHRZ_COL    DHRZ_COL
+
+Continuous latent variables
+   P1          P2          P3          P4          V1          V2
+   V3          V4          I_BFAS_E    S_BFAS_E    I_HRZ_CO    S_HRZ_CO
+
+Variables with special functions
+
+  Grouping variable     AAGE
+
+  Time scores
+   A1          A2          A3          A4
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                   100
+Convergence criterion                                    0.100D-05
+Maximum number of EM iterations                                500
+Convergence criteria for the EM algorithm
+  Loglikelihood change                                   0.100D-02
+  Relative loglikelihood change                          0.100D-05
+  Derivative                                             0.100D-03
+Minimum variance                                         0.100D-03
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+
+Input data file(s)
+  /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group D2
+     Number of missing data patterns            15
+
+   Group D3
+     Number of missing data patterns            10
+
+   Group D4
+     Number of missing data patterns            14
+
+   Group D5
+     Number of missing data patterns             9
+
+
+SUMMARY OF MISSING DATA PATTERNS
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D2
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+ ABFAS_EE  x  x  x  x  x  x  x  x  x  x     x  x  x  x
+ BBFAS_EE  x     x  x  x  x           x  x  x  x  x
+ CBFAS_EE  x        x     x     x  x  x  x  x  x     x
+ DBFAS_EE  x     x  x        x     x     x  x        x
+ AHRZ_COL  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ BHRZ_COL  x     x  x  x  x           x  x     x     x
+ CHRZ_COL  x              x     x  x     x  x  x     x
+ DHRZ_COL  x     x  x        x     x     x  x  x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D2
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         185           6          13          11           1
+          2          57           7          11          12           2
+          3           6           8           5          13           1
+          4           1           9           5          14           1
+          5          11          10           1          15           1
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D3
+
+           1  2  3  4  5  6  7  8  9 10
+ ABFAS_EE  x  x  x  x  x  x  x  x  x  x
+ BBFAS_EE  x     x  x  x           x
+ CBFAS_EE  x           x     x  x
+ DBFAS_EE  x     x        x     x     x
+ AHRZ_COL  x  x  x  x  x  x  x  x  x  x
+ BHRZ_COL  x     x  x  x
+ CHRZ_COL  x           x     x  x
+ DHRZ_COL  x     x        x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D3
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         140           5           7           9           1
+          2          44           6           3          10           1
+          3           8           7           7
+          4          15           8           7
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D4
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14
+ ABFAS_EE  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ BBFAS_EE  x     x  x  x  x           x  x     x
+ CBFAS_EE  x        x     x     x  x  x           x
+ DBFAS_EE  x     x  x        x     x  x        x
+ AHRZ_COL  x  x  x  x  x  x  x  x  x  x  x     x  x
+ BHRZ_COL  x     x  x  x  x
+ CHRZ_COL  x              x     x  x  x
+ DHRZ_COL  x     x  x        x     x  x        x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D4
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         104           6          15          11           2
+          2          39           7           4          12           1
+          3           7           8           5          13           1
+          4           1           9           5          14           1
+          5          12          10           1
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D5
+
+           1  2  3  4  5  6  7  8  9
+ ABFAS_EE  x  x  x  x  x  x  x  x
+ BBFAS_EE  x     x  x  x           x
+ CBFAS_EE  x           x     x  x  x
+ DBFAS_EE  x     x        x     x  x
+ AHRZ_COL  x  x  x  x  x  x  x  x  x
+ BHRZ_COL  x     x  x  x           x
+ CHRZ_COL  x           x     x  x  x
+ DHRZ_COL  x     x        x     x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D5
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1          60           4          10           7           6
+          2          29           5          11           8           4
+          3           5           6           6           9           1
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR D2
+
+
+           Covariance Coverage
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE       0.997
+ BBFAS_EE       0.734         0.738
+ CBFAS_EE       0.711         0.678         0.714
+ DBFAS_EE       0.701         0.648         0.648         0.704
+ AHRZ_COL       0.997         0.738         0.714         0.704         1.000
+ BHRZ_COL       0.728         0.728         0.674         0.645         0.731
+ CHRZ_COL       0.704         0.671         0.708         0.645         0.708
+ DHRZ_COL       0.704         0.651         0.651         0.704         0.708
+
+
+           Covariance Coverage
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       0.731
+ CHRZ_COL       0.668         0.708
+ DHRZ_COL       0.648         0.648         0.708
+
+
+     PROPORTION OF DATA PRESENT FOR D3
+
+
+           Covariance Coverage
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE       1.000
+ BBFAS_EE       0.747         0.747
+ CBFAS_EE       0.717         0.682         0.717
+ DBFAS_EE       0.734         0.700         0.670         0.734
+ AHRZ_COL       1.000         0.747         0.717         0.734         1.000
+ BHRZ_COL       0.747         0.747         0.682         0.700         0.747
+ CHRZ_COL       0.648         0.614         0.648         0.605         0.648
+ DHRZ_COL       0.734         0.700         0.670         0.734         0.734
+
+
+           Covariance Coverage
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       0.747
+ CHRZ_COL       0.614         0.648
+ DHRZ_COL       0.700         0.605         0.734
+
+
+     PROPORTION OF DATA PRESENT FOR D4
+
+
+           Covariance Coverage
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE       0.990
+ BBFAS_EE       0.722         0.732
+ CBFAS_EE       0.672         0.631         0.682
+ DBFAS_EE       0.616         0.581         0.571         0.626
+ AHRZ_COL       0.990         0.732         0.682         0.626         1.000
+ BHRZ_COL       0.712         0.722         0.626         0.576         0.722
+ CHRZ_COL       0.662         0.621         0.672         0.566         0.672
+ DHRZ_COL       0.621         0.586         0.576         0.626         0.631
+
+
+           Covariance Coverage
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       0.722
+ CHRZ_COL       0.616         0.672
+ DHRZ_COL       0.581         0.571         0.631
+
+
+     PROPORTION OF DATA PRESENT FOR D5
+
+
+           Covariance Coverage
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE       1.000
+ BBFAS_EE       0.697         0.697
+ CBFAS_EE       0.614         0.576         0.614
+ DBFAS_EE       0.621         0.568         0.538         0.621
+ AHRZ_COL       1.000         0.697         0.614         0.621         1.000
+ BHRZ_COL       0.697         0.697         0.576         0.568         0.697
+ CHRZ_COL       0.538         0.500         0.538         0.462         0.538
+ DHRZ_COL       0.621         0.568         0.538         0.621         0.621
+
+
+           Covariance Coverage
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       0.697
+ CHRZ_COL       0.500         0.538
+ DHRZ_COL       0.568         0.462         0.621
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D2
+
+
+           Means
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+               60.738        60.587        59.253        58.266        68.314
+
+
+           Means
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+               67.403        67.816        67.654
+
+
+           Covariances
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE     355.722
+ BBFAS_EE     277.528       325.767
+ CBFAS_EE     279.189       277.517       366.795
+ DBFAS_EE     284.845       282.943       305.970       385.322
+ AHRZ_COL     155.818       128.110       141.432       140.821       322.043
+ BHRZ_COL     156.767       144.485       155.269       140.242       209.596
+ CHRZ_COL     145.487       149.269       192.910       163.550       202.813
+ DHRZ_COL     152.958       137.227       158.658       176.225       221.553
+
+
+           Covariances
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL     305.216
+ CHRZ_COL     218.431       346.298
+ DHRZ_COL     204.950       244.760       329.297
+
+
+           Correlations
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE       1.000
+ BBFAS_EE       0.815         1.000
+ CBFAS_EE       0.773         0.803         1.000
+ DBFAS_EE       0.769         0.799         0.814         1.000
+ AHRZ_COL       0.460         0.396         0.412         0.400         1.000
+ BHRZ_COL       0.476         0.458         0.464         0.409         0.669
+ CHRZ_COL       0.415         0.444         0.541         0.448         0.607
+ DHRZ_COL       0.447         0.419         0.457         0.495         0.680
+
+
+           Correlations
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       1.000
+ CHRZ_COL       0.672         1.000
+ DHRZ_COL       0.646         0.725         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D3
+
+
+           Means
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+               62.302        62.246        60.465        60.303        72.711
+
+
+           Means
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+               73.266        74.090        73.713
+
+
+           Covariances
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE     364.446
+ BBFAS_EE     304.187       328.749
+ CBFAS_EE     308.436       298.258       365.890
+ DBFAS_EE     301.563       295.275       310.414       372.463
+ AHRZ_COL     146.795       139.797       142.781       116.568       298.804
+ BHRZ_COL     135.701       142.002       138.798       119.469       223.421
+ CHRZ_COL     121.833       117.825       130.714       108.985       219.400
+ DHRZ_COL     114.156       119.065       121.924       110.247       200.308
+
+
+           Covariances
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL     306.184
+ CHRZ_COL     236.472       307.726
+ DHRZ_COL     231.601       217.890       286.856
+
+
+           Correlations
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE       1.000
+ BBFAS_EE       0.879         1.000
+ CBFAS_EE       0.845         0.860         1.000
+ DBFAS_EE       0.819         0.844         0.841         1.000
+ AHRZ_COL       0.445         0.446         0.432         0.349         1.000
+ BHRZ_COL       0.406         0.448         0.415         0.354         0.739
+ CHRZ_COL       0.364         0.370         0.390         0.322         0.724
+ DHRZ_COL       0.353         0.388         0.376         0.337         0.684
+
+
+           Correlations
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       1.000
+ CHRZ_COL       0.770         1.000
+ DHRZ_COL       0.781         0.733         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D4
+
+
+           Means
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+               61.272        60.873        61.265        60.292        73.249
+
+
+           Means
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+               72.610        74.256        72.927
+
+
+           Covariances
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE     327.511
+ BBFAS_EE     291.060       374.426
+ CBFAS_EE     261.773       291.118       319.822
+ DBFAS_EE     275.415       296.798       292.438       352.686
+ AHRZ_COL     130.199       123.845       117.202       109.178       236.529
+ BHRZ_COL      95.671       113.199        96.730        98.676       163.740
+ CHRZ_COL      89.558        89.246       106.219        97.935       158.608
+ DHRZ_COL     107.056       104.516       112.917       125.323       143.866
+
+
+           Covariances
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL     232.109
+ CHRZ_COL     171.933       217.772
+ DHRZ_COL     155.188       153.807       216.279
+
+
+           Correlations
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE       1.000
+ BBFAS_EE       0.831         1.000
+ CBFAS_EE       0.809         0.841         1.000
+ DBFAS_EE       0.810         0.817         0.871         1.000
+ AHRZ_COL       0.468         0.416         0.426         0.378         1.000
+ BHRZ_COL       0.347         0.384         0.355         0.345         0.699
+ CHRZ_COL       0.335         0.313         0.402         0.353         0.699
+ DHRZ_COL       0.402         0.367         0.429         0.454         0.636
+
+
+           Correlations
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       1.000
+ CHRZ_COL       0.765         1.000
+ DHRZ_COL       0.693         0.709         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D5
+
+
+           Means
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+               66.273        65.930        65.823        64.253        78.362
+
+
+           Means
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+               76.398        77.065        75.861
+
+
+           Covariances
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE     344.344
+ BBFAS_EE     307.738       403.285
+ CBFAS_EE     300.008       343.071       356.789
+ DBFAS_EE     299.209       347.952       346.260       410.271
+ AHRZ_COL     115.505       147.310       131.774       142.057       212.979
+ BHRZ_COL      93.701       141.804       113.336       130.055       169.482
+ CHRZ_COL     101.481       143.995       133.755       143.881       136.884
+ DHRZ_COL     134.081       169.254       143.297       176.291       152.277
+
+
+           Covariances
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL     223.878
+ CHRZ_COL     154.554       206.524
+ DHRZ_COL     169.261       164.728       244.109
+
+
+           Correlations
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE       1.000
+ BBFAS_EE       0.826         1.000
+ CBFAS_EE       0.856         0.904         1.000
+ DBFAS_EE       0.796         0.855         0.905         1.000
+ AHRZ_COL       0.427         0.503         0.478         0.481         1.000
+ BHRZ_COL       0.337         0.472         0.401         0.429         0.776
+ CHRZ_COL       0.381         0.499         0.493         0.494         0.653
+ DHRZ_COL       0.462         0.539         0.486         0.557         0.668
+
+
+           Correlations
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       1.000
+ CHRZ_COL       0.719         1.000
+ DHRZ_COL       0.724         0.734         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -20555.160
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D2
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_EE             60.717      -0.183       7.500    0.33%      45.000     57.500     60.000
+             300.000     356.472      -0.422     100.000    1.00%      65.000     77.500
+     BBFAS_EE             60.126       0.035      20.000    0.90%      45.000     55.000     60.000
+             222.000     319.133      -0.566     100.000    0.90%      65.000     77.500
+     CBFAS_EE             59.085      -0.013       7.500    0.47%      40.000     52.500     60.000
+             215.000     364.932      -0.571     100.000    1.40%      65.000     77.500
+     DBFAS_EE             58.432      -0.030      10.000    0.47%      42.500     52.500     57.500
+             212.000     377.935      -0.566     100.000    1.42%      62.500     77.500
+     AHRZ_COL             68.314      -0.710       6.250    0.33%      56.250     68.750     68.750
+             301.000     322.043       0.674     100.000    4.32%      75.000     81.250
+     BHRZ_COL             67.557      -0.740      12.500    0.91%      56.250     62.500     68.750
+             220.000     297.148       0.793     100.000    2.73%      75.000     81.250
+     CHRZ_COL             67.928      -0.621       6.250    0.47%      56.250     62.500     68.750
+             213.000     348.137       0.409     100.000    3.76%      75.000     81.250
+     DHRZ_COL             68.016      -0.534       6.250    0.47%      50.000     62.500     68.750
+             213.000     327.183       0.112     100.000    3.29%      75.000     81.250
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D3
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_EE             62.302      -0.213      11.111    0.43%      45.000     57.500     60.000
+             233.000     364.446      -0.407     100.000    0.86%      67.500     80.000
+     BBFAS_EE             62.217      -0.192      15.000    0.58%      47.500     57.500     62.500
+             171.000     341.011      -0.663      95.000    1.75%      67.500     80.000
+     CBFAS_EE             59.984      -0.147       7.500    0.62%      45.000     55.000     60.000
+             161.000     379.619      -0.250      95.000    4.35%      62.500     80.000
+     DBFAS_EE             60.456      -0.199       7.500    0.63%      42.500     55.000     60.000
+             159.000     391.219      -0.353      97.500    2.52%      65.000     77.500
+     AHRZ_COL             72.711      -0.598      18.750    0.86%      56.250     68.750     75.000
+             233.000     298.804       0.115     100.000    6.87%      75.000     87.500
+     BHRZ_COL             72.806      -0.623      25.000    2.35%      56.250     68.750     75.000
+             170.000     303.884       0.017     100.000    6.47%      81.250     87.500
+     CHRZ_COL             73.758      -0.803      18.750    0.62%      56.250     75.000     75.000
+             161.000     304.649       0.366     100.000    6.83%      81.250     87.500
+     DHRZ_COL             73.141      -0.862       6.250    0.63%      62.500     68.750     75.000
+             158.000     294.457       1.151     100.000    6.33%      75.000     87.500
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D4
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_EE             61.272      -0.226      10.000    0.51%      45.000     57.500     61.806
+             198.000     327.511      -0.263     100.000    0.51%      67.500     77.500
+     BBFAS_EE             60.293      -0.234       5.000    0.70%      42.500     55.000     60.000
+             143.000     397.168      -0.496     100.000    1.40%      66.667     77.500
+     CBFAS_EE             61.686      -0.329      12.500    0.76%      45.000     57.500     62.500
+             132.000     335.748      -0.392     100.000    0.76%      67.500     80.000
+     DBFAS_EE             61.536      -0.138       7.500    0.81%      45.000     55.000     60.000
+             123.000     376.683      -0.475     100.000    1.63%      67.500     77.500
+     AHRZ_COL             73.287      -0.492      12.500    0.51%      62.500     68.750     75.000
+             197.000     236.507       0.729     100.000    8.12%      75.000     81.250
+     BHRZ_COL             71.868      -0.365      25.000    1.44%      56.250     68.750     75.000
+             139.000     241.081      -0.021     100.000    5.04%      75.000     87.500
+     CHRZ_COL             74.423      -0.205      31.250    0.77%      62.500     68.750     75.000
+             130.000     212.408      -0.182     100.000    7.69%      75.000     87.500
+     DHRZ_COL             72.984      -0.320      31.250    0.81%      62.500     68.750     75.000
+             123.000     218.491      -0.210     100.000    4.88%      75.000     83.333
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D5
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_EE             66.137      -0.563       0.000    0.76%      50.000     62.500     70.000
+             131.000     343.891       0.400     100.000    0.76%      72.500     82.500
+     BBFAS_EE             65.125      -0.678       5.000    1.15%      50.000     62.500     67.500
+              87.000     432.357       0.281     100.000    3.45%      72.500     85.000
+     CBFAS_EE             65.732      -0.619      10.000    1.22%      52.500     60.000     67.500
+              82.000     410.440       0.197     100.000    1.22%      72.500     82.500
+     DBFAS_EE             64.145      -0.302       2.500    1.32%      45.000     60.000     65.000
+              76.000     413.084      -0.039     100.000    5.26%      67.500     80.000
+     AHRZ_COL             78.362      -0.590      37.500    1.52%      68.750     75.000     81.250
+             132.000     212.979      -0.074     100.000    8.33%      81.250     93.750
+     BHRZ_COL             77.059      -0.556      37.500    2.30%      62.500     75.000     75.000
+              87.000     227.939      -0.055     100.000    8.05%      81.250     93.750
+     CHRZ_COL             77.134      -0.387      31.250    1.22%      62.500     75.000     78.125
+              82.000     211.718      -0.049     100.000    9.76%      81.250     93.750
+     DHRZ_COL             76.974      -0.987      12.500    1.32%      62.500     75.000     78.125
+              76.000     240.759       2.412     100.000    7.89%      81.250     93.750
+
+     THE STANDARD ERRORS OF THE MODEL PARAMETER ESTIMATES MAY NOT BE
+     TRUSTWORTHY FOR SOME PARAMETERS DUE TO A NON-POSITIVE DEFINITE
+     FIRST-ORDER DERIVATIVE PRODUCT MATRIX.  THIS MAY BE DUE TO THE STARTING
+     VALUES BUT MAY ALSO BE AN INDICATION OF MODEL NONIDENTIFICATION.  THE
+     CONDITION NUMBER IS       0.449D-10.  PROBLEM INVOLVING THE FOLLOWING PARAMETER:
+     Parameter 35, Group D3: V1 WITH P1
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       96
+
+Loglikelihood
+
+          H0 Value                      -20598.729
+          H0 Scaling Correction Factor      1.0618
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   41389.459
+          Bayesian (BIC)                 41846.570
+          Sample-Size Adjusted BIC       41541.698
+            (n* = (n + 2) / 24)
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ P1       BY
+    ABFAS_EE           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_EE           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_EE           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_EE           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AHRZ_COL           1.000      0.000    999.000    999.000
+
+ V2       BY
+    BHRZ_COL           1.000      0.000    999.000    999.000
+
+ V3       BY
+    CHRZ_COL           1.000      0.000    999.000    999.000
+
+ V4       BY
+    DHRZ_COL           1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.020      0.074      0.274      0.784
+    V3                 0.077      0.050      1.528      0.126
+
+ P3         ON
+    P2                 0.020      0.074      0.274      0.784
+    V2                 0.077      0.050      1.528      0.126
+
+ P2         ON
+    P1                 0.020      0.074      0.274      0.784
+    V1                 0.077      0.050      1.528      0.126
+
+ V4         ON
+    V3                 0.108      0.071      1.524      0.127
+    P3                 0.139      0.093      1.493      0.135
+
+ V3         ON
+    V2                 0.108      0.071      1.524      0.127
+    P2                 0.139      0.093      1.493      0.135
+
+ V2         ON
+    V1                 0.108      0.071      1.524      0.127
+    P1                 0.139      0.093      1.493      0.135
+
+ S_BFAS_E WITH
+    I_BFAS_EE        149.485     79.930      1.870      0.061
+    S_HRZ_COL         -0.298      1.258     -0.237      0.813
+    I_HRZ_COL         -7.960     44.073     -0.181      0.857
+
+ I_BFAS_E WITH
+    S_HRZ_COL         -5.750     45.106     -0.127      0.899
+    I_HRZ_COL         24.742   1585.778      0.016      0.988
+
+ S_HRZ_CO WITH
+    I_HRZ_COL         40.476     33.014      1.226      0.220
+
+ P1       WITH
+    V1                20.883      9.617      2.171      0.030
+
+ P2       WITH
+    V2                26.363      5.429      4.856      0.000
+
+ P3       WITH
+    V3                26.363      5.429      4.856      0.000
+
+ P4       WITH
+    V4                26.363      5.429      4.856      0.000
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_EE         29.728     10.043      2.960      0.003
+    S_BFAS_EE         -0.868      0.285     -3.046      0.002
+    I_HRZ_COL         62.999     11.402      5.525      0.000
+    S_HRZ_COL         -0.141      0.326     -0.432      0.666
+
+ Intercepts
+    ABFAS_EE           0.000      0.000    999.000    999.000
+    BBFAS_EE           0.000      0.000    999.000    999.000
+    CBFAS_EE           0.000      0.000    999.000    999.000
+    DBFAS_EE           0.000      0.000    999.000    999.000
+    AHRZ_COL           0.000      0.000    999.000    999.000
+    BHRZ_COL           0.000      0.000    999.000    999.000
+    CHRZ_COL           0.000      0.000    999.000    999.000
+    DHRZ_COL           0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                71.321     11.385      6.264      0.000
+    V1               120.610     27.556      4.377      0.000
+    I_BFAS_EE       5654.713   2805.710      2.015      0.044
+    S_BFAS_EE          4.155      2.281      1.822      0.069
+    I_HRZ_COL       1749.034   1268.878      1.378      0.168
+    S_HRZ_COL          1.053      0.863      1.219      0.223
+
+ Residual Variances
+    ABFAS_EE           0.000      0.000    999.000    999.000
+    BBFAS_EE           0.000      0.000    999.000    999.000
+    CBFAS_EE           0.000      0.000    999.000    999.000
+    DBFAS_EE           0.000      0.000    999.000    999.000
+    AHRZ_COL           0.000      0.000    999.000    999.000
+    BHRZ_COL           0.000      0.000    999.000    999.000
+    CHRZ_COL           0.000      0.000    999.000    999.000
+    DHRZ_COL           0.000      0.000    999.000    999.000
+    P2                67.383      5.759     11.700      0.000
+    P3                67.383      5.759     11.700      0.000
+    P4                67.383      5.759     11.700      0.000
+    V2               111.439      9.826     11.341      0.000
+    V3               111.439      9.826     11.341      0.000
+    V4               111.439      9.826     11.341      0.000
+
+Group D3
+
+ P1       BY
+    ABFAS_EE           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_EE           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_EE           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_EE           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AHRZ_COL           1.000      0.000    999.000    999.000
+
+ V2       BY
+    BHRZ_COL           1.000      0.000    999.000    999.000
+
+ V3       BY
+    CHRZ_COL           1.000      0.000    999.000    999.000
+
+ V4       BY
+    DHRZ_COL           1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                -0.048      0.086     -0.563      0.574
+    V3                -0.004      0.053     -0.073      0.941
+
+ P3         ON
+    P2                -0.048      0.086     -0.563      0.574
+    V2                -0.004      0.053     -0.073      0.941
+
+ P2         ON
+    P1                -0.048      0.086     -0.563      0.574
+    V1                -0.004      0.053     -0.073      0.941
+
+ V4         ON
+    V3                -0.096      0.090     -1.071      0.284
+    P3                -0.077      0.068     -1.125      0.261
+
+ V3         ON
+    V2                -0.096      0.090     -1.071      0.284
+    P2                -0.077      0.068     -1.125      0.261
+
+ V2         ON
+    V1                -0.096      0.090     -1.071      0.284
+    P1                -0.077      0.068     -1.125      0.261
+
+ S_BFAS_E WITH
+    I_BFAS_EE        176.061     72.672      2.423      0.015
+    S_HRZ_COL          2.419      1.397      1.732      0.083
+    I_HRZ_COL         76.643     47.356      1.618      0.106
+
+ I_BFAS_E WITH
+    S_HRZ_COL         73.282     46.418      1.579      0.114
+    I_HRZ_COL       2433.575   1580.441      1.540      0.124
+
+ S_HRZ_CO WITH
+    I_HRZ_COL        136.134     62.329      2.184      0.029
+
+ P1       WITH
+    V1                 0.749      5.995      0.125      0.901
+
+ P2       WITH
+    V2                 3.255      4.151      0.784      0.433
+
+ P3       WITH
+    V3                 3.255      4.151      0.784      0.433
+
+ P4       WITH
+    V4                 3.255      4.151      0.784      0.433
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_EE         36.227      9.581      3.781      0.000
+    S_BFAS_EE         -0.749      0.281     -2.668      0.008
+    I_HRZ_COL         87.007     10.683      8.145      0.000
+    S_HRZ_COL          0.405      0.315      1.288      0.198
+
+ Intercepts
+    ABFAS_EE           0.000      0.000    999.000    999.000
+    BBFAS_EE           0.000      0.000    999.000    999.000
+    CBFAS_EE           0.000      0.000    999.000    999.000
+    DBFAS_EE           0.000      0.000    999.000    999.000
+    AHRZ_COL           0.000      0.000    999.000    999.000
+    BHRZ_COL           0.000      0.000    999.000    999.000
+    CHRZ_COL           0.000      0.000    999.000    999.000
+    DHRZ_COL           0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                39.400      7.350      5.360      0.000
+    V1                77.606     17.453      4.447      0.000
+    I_BFAS_EE       6220.227   2480.234      2.508      0.012
+    S_BFAS_EE          5.242      2.137      2.453      0.014
+    I_HRZ_COL       4793.276   2138.594      2.241      0.025
+    S_HRZ_COL          4.057      1.828      2.219      0.026
+
+ Residual Variances
+    ABFAS_EE           0.000      0.000    999.000    999.000
+    BBFAS_EE           0.000      0.000    999.000    999.000
+    CBFAS_EE           0.000      0.000    999.000    999.000
+    DBFAS_EE           0.000      0.000    999.000    999.000
+    AHRZ_COL           0.000      0.000    999.000    999.000
+    BHRZ_COL           0.000      0.000    999.000    999.000
+    CHRZ_COL           0.000      0.000    999.000    999.000
+    DHRZ_COL           0.000      0.000    999.000    999.000
+    P2                47.013      5.129      9.166      0.000
+    P3                47.013      5.129      9.166      0.000
+    P4                47.013      5.129      9.166      0.000
+    V2                64.358      7.046      9.134      0.000
+    V3                64.358      7.046      9.134      0.000
+    V4                64.358      7.046      9.134      0.000
+
+Group D4
+
+ P1       BY
+    ABFAS_EE           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_EE           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_EE           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_EE           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AHRZ_COL           1.000      0.000    999.000    999.000
+
+ V2       BY
+    BHRZ_COL           1.000      0.000    999.000    999.000
+
+ V3       BY
+    CHRZ_COL           1.000      0.000    999.000    999.000
+
+ V4       BY
+    DHRZ_COL           1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.158      0.090      1.749      0.080
+    V3                 0.021      0.113      0.190      0.849
+
+ P3         ON
+    P2                 0.158      0.090      1.749      0.080
+    V2                 0.021      0.113      0.190      0.849
+
+ P2         ON
+    P1                 0.158      0.090      1.749      0.080
+    V1                 0.021      0.113      0.190      0.849
+
+ V4         ON
+    V3                 0.020      0.137      0.147      0.883
+    P3                -0.018      0.085     -0.207      0.836
+
+ V3         ON
+    V2                 0.020      0.137      0.147      0.883
+    P2                -0.018      0.085     -0.207      0.836
+
+ V2         ON
+    V1                 0.020      0.137      0.147      0.883
+    P1                -0.018      0.085     -0.207      0.836
+
+ S_BFAS_E WITH
+    I_BFAS_EE         51.578     44.259      1.165      0.244
+    S_HRZ_COL          1.270      1.622      0.783      0.434
+    I_HRZ_COL         41.691     52.890      0.788      0.431
+
+ I_BFAS_E WITH
+    S_HRZ_COL         38.769     52.896      0.733      0.464
+    I_HRZ_COL       1377.717   1724.168      0.799      0.424
+
+ S_HRZ_CO WITH
+    I_HRZ_COL         82.681     87.090      0.949      0.342
+
+ P1       WITH
+    V1                14.787      9.096      1.626      0.104
+
+ P2       WITH
+    V2                14.030      6.811      2.060      0.039
+
+ P3       WITH
+    V3                14.030      6.811      2.060      0.039
+
+ P4       WITH
+    V4                14.030      6.811      2.060      0.039
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_EE         51.975     10.768      4.827      0.000
+    S_BFAS_EE         -0.274      0.323     -0.848      0.397
+    I_HRZ_COL         75.814     10.957      6.920      0.000
+    S_HRZ_COL          0.079      0.335      0.235      0.814
+
+ Intercepts
+    ABFAS_EE           0.000      0.000    999.000    999.000
+    BBFAS_EE           0.000      0.000    999.000    999.000
+    CBFAS_EE           0.000      0.000    999.000    999.000
+    DBFAS_EE           0.000      0.000    999.000    999.000
+    AHRZ_COL           0.000      0.000    999.000    999.000
+    BHRZ_COL           0.000      0.000    999.000    999.000
+    CHRZ_COL           0.000      0.000    999.000    999.000
+    DHRZ_COL           0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                62.434     11.385      5.484      0.000
+    V1                72.846     14.954      4.871      0.000
+    I_BFAS_EE       2071.469   1517.047      1.365      0.172
+    S_BFAS_EE          1.477      1.301      1.135      0.256
+    I_HRZ_COL       2791.500   2835.759      0.984      0.325
+    S_HRZ_COL          2.595      2.681      0.968      0.333
+
+ Residual Variances
+    ABFAS_EE           0.000      0.000    999.000    999.000
+    BBFAS_EE           0.000      0.000    999.000    999.000
+    CBFAS_EE           0.000      0.000    999.000    999.000
+    DBFAS_EE           0.000      0.000    999.000    999.000
+    AHRZ_COL           0.000      0.000    999.000    999.000
+    BHRZ_COL           0.000      0.000    999.000    999.000
+    CHRZ_COL           0.000      0.000    999.000    999.000
+    DHRZ_COL           0.000      0.000    999.000    999.000
+    P2                61.278      8.876      6.904      0.000
+    P3                61.278      8.876      6.904      0.000
+    P4                61.278      8.876      6.904      0.000
+    V2                61.382      7.235      8.484      0.000
+    V3                61.382      7.235      8.484      0.000
+    V4                61.382      7.235      8.484      0.000
+
+Group D5
+
+ P1       BY
+    ABFAS_EE           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_EE           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_EE           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_EE           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AHRZ_COL           1.000      0.000    999.000    999.000
+
+ V2       BY
+    BHRZ_COL           1.000      0.000    999.000    999.000
+
+ V3       BY
+    CHRZ_COL           1.000      0.000    999.000    999.000
+
+ V4       BY
+    DHRZ_COL           1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                -0.147      0.090     -1.629      0.103
+    V3                -0.046      0.119     -0.382      0.702
+
+ P3         ON
+    P2                -0.147      0.090     -1.629      0.103
+    V2                -0.046      0.119     -0.382      0.702
+
+ P2         ON
+    P1                -0.147      0.090     -1.629      0.103
+    V1                -0.046      0.119     -0.382      0.702
+
+ V4         ON
+    V3                 0.228      0.194      1.179      0.238
+    P3                -0.168      0.114     -1.473      0.141
+
+ V3         ON
+    V2                 0.228      0.194      1.179      0.238
+    P2                -0.168      0.114     -1.473      0.141
+
+ V2         ON
+    V1                 0.228      0.194      1.179      0.238
+    P1                -0.168      0.114     -1.473      0.141
+
+ S_BFAS_E WITH
+    I_BFAS_EE        252.551    165.501      1.526      0.127
+    S_HRZ_COL          1.348      3.007      0.448      0.654
+    I_HRZ_COL         49.915     95.277      0.524      0.600
+
+ I_BFAS_E WITH
+    S_HRZ_COL         47.000     95.059      0.494      0.621
+    I_HRZ_COL       1851.687   3010.196      0.615      0.538
+
+ S_HRZ_CO WITH
+    I_HRZ_COL        109.230    127.099      0.859      0.390
+
+ P1       WITH
+    V1                -2.736      9.855     -0.278      0.781
+
+ P2       WITH
+    V2                 5.703      5.591      1.020      0.308
+
+ P3       WITH
+    V3                 5.703      5.591      1.020      0.308
+
+ P4       WITH
+    V4                 5.703      5.591      1.020      0.308
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_EE         46.445     12.886      3.604      0.000
+    S_BFAS_EE         -0.608      0.396     -1.535      0.125
+    I_HRZ_COL         53.057     14.298      3.711      0.000
+    S_HRZ_COL         -0.761      0.445     -1.709      0.087
+
+ Intercepts
+    ABFAS_EE           0.000      0.000    999.000    999.000
+    BBFAS_EE           0.000      0.000    999.000    999.000
+    CBFAS_EE           0.000      0.000    999.000    999.000
+    DBFAS_EE           0.000      0.000    999.000    999.000
+    AHRZ_COL           0.000      0.000    999.000    999.000
+    BHRZ_COL           0.000      0.000    999.000    999.000
+    CHRZ_COL           0.000      0.000    999.000    999.000
+    DHRZ_COL           0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                57.571     12.313      4.676      0.000
+    V1                56.117     19.816      2.832      0.005
+    I_BFAS_EE       8595.919   5283.356      1.627      0.104
+    S_BFAS_EE          7.704      5.180      1.487      0.137
+    I_HRZ_COL       3625.837   4039.899      0.898      0.369
+    S_HRZ_COL          3.432      4.016      0.855      0.393
+
+ Residual Variances
+    ABFAS_EE           0.000      0.000    999.000    999.000
+    BBFAS_EE           0.000      0.000    999.000    999.000
+    CBFAS_EE           0.000      0.000    999.000    999.000
+    DBFAS_EE           0.000      0.000    999.000    999.000
+    AHRZ_COL           0.000      0.000    999.000    999.000
+    BHRZ_COL           0.000      0.000    999.000    999.000
+    CHRZ_COL           0.000      0.000    999.000    999.000
+    DHRZ_COL           0.000      0.000    999.000    999.000
+    P2                32.189      5.399      5.963      0.000
+    P3                32.189      5.399      5.963      0.000
+    P4                32.189      5.399      5.963      0.000
+    V2                67.203     11.867      5.663      0.000
+    V3                67.203     11.867      5.663      0.000
+    V4                67.203     11.867      5.663      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.449E-10
+       (ratio of smallest to largest eigenvalue)
+
+
+TECHNICAL 1 OUTPUT
+
+
+     PARAMETER SPECIFICATION FOR D2
+
+
+           NU
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           NU
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+                    0             0             0
+
+
+           LAMBDA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ ABFAS_EE           0             0             0             0             0
+ BBFAS_EE           0             0             0             0             0
+ CBFAS_EE           0             0             0             0             0
+ DBFAS_EE           0             0             0             0             0
+ AHRZ_COL           0             0             0             0             0
+ BHRZ_COL           0             0             0             0             0
+ CHRZ_COL           0             0             0             0             0
+ DHRZ_COL           0             0             0             0             0
+
+
+           LAMBDA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ ABFAS_EE           0             0             0             0             0
+ BBFAS_EE           0             0             0             0             0
+ CBFAS_EE           0             0             0             0             0
+ DBFAS_EE           0             0             0             0             0
+ AHRZ_COL           0             0             0             0             0
+ BHRZ_COL           0             0             0             0             0
+ CHRZ_COL           0             0             0             0             0
+ DHRZ_COL           0             0             0             0             0
+
+
+           LAMBDA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ ABFAS_EE           0             0
+ BBFAS_EE           0             0
+ CBFAS_EE           0             0
+ DBFAS_EE           0             0
+ AHRZ_COL           0             0
+ BHRZ_COL           0             0
+ CHRZ_COL           0             0
+ DHRZ_COL           0             0
+
+
+           THETA
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE           0
+ BBFAS_EE           0             0
+ CBFAS_EE           0             0             0
+ DBFAS_EE           0             0             0             0
+ AHRZ_COL           0             0             0             0             0
+ BHRZ_COL           0             0             0             0             0
+ CHRZ_COL           0             0             0             0             0
+ DHRZ_COL           0             0             0             0             0
+
+
+           THETA
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL           0
+ CHRZ_COL           0             0
+ DHRZ_COL           0             0             0
+
+
+           ALPHA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           ALPHA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+                    0             0             0             1             2
+
+
+           ALPHA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+                    3             4
+
+
+           BETA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1                 0             0             0             0             0
+ P2                 5             0             0             0             6
+ P3                 0             5             0             0             0
+ P4                 0             0             5             0             0
+ V1                 0             0             0             0             0
+ V2                 7             0             0             0             8
+ V3                 0             7             0             0             0
+ V4                 0             0             7             0             0
+ I_BFAS_E           0             0             0             0             0
+ S_BFAS_E           0             0             0             0             0
+ I_HRZ_CO           0             0             0             0             0
+ S_HRZ_CO           0             0             0             0             0
+
+
+           BETA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ P1                 0             0             0             0             0
+ P2                 0             0             0             0             0
+ P3                 6             0             0             0             0
+ P4                 0             6             0             0             0
+ V1                 0             0             0             0             0
+ V2                 0             0             0             0             0
+ V3                 8             0             0             0             0
+ V4                 0             8             0             0             0
+ I_BFAS_E           0             0             0             0             0
+ S_BFAS_E           0             0             0             0             0
+ I_HRZ_CO           0             0             0             0             0
+ S_HRZ_CO           0             0             0             0             0
+
+
+           BETA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ P1                 0             0
+ P2                 0             0
+ P3                 0             0
+ P4                 0             0
+ V1                 0             0
+ V2                 0             0
+ V3                 0             0
+ V4                 0             0
+ I_BFAS_E           0             0
+ S_BFAS_E           0             0
+ I_HRZ_CO           0             0
+ S_HRZ_CO           0             0
+
+
+           PSI
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1                 9
+ P2                 0            10
+ P3                 0             0            10
+ P4                 0             0             0            10
+ V1                11             0             0             0            12
+ V2                 0            13             0             0             0
+ V3                 0             0            13             0             0
+ V4                 0             0             0            13             0
+ I_BFAS_E           0             0             0             0             0
+ S_BFAS_E           0             0             0             0             0
+ I_HRZ_CO           0             0             0             0             0
+ S_HRZ_CO           0             0             0             0             0
+
+
+           PSI
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ V2                14
+ V3                 0            14
+ V4                 0             0            14
+ I_BFAS_E           0             0             0            15
+ S_BFAS_E           0             0             0            16            17
+ I_HRZ_CO           0             0             0            18            19
+ S_HRZ_CO           0             0             0            21            22
+
+
+           PSI
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ I_HRZ_CO          20
+ S_HRZ_CO          23            24
+
+
+     PARAMETER SPECIFICATION FOR D3
+
+
+           NU
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           NU
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+                    0             0             0
+
+
+           LAMBDA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ ABFAS_EE           0             0             0             0             0
+ BBFAS_EE           0             0             0             0             0
+ CBFAS_EE           0             0             0             0             0
+ DBFAS_EE           0             0             0             0             0
+ AHRZ_COL           0             0             0             0             0
+ BHRZ_COL           0             0             0             0             0
+ CHRZ_COL           0             0             0             0             0
+ DHRZ_COL           0             0             0             0             0
+
+
+           LAMBDA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ ABFAS_EE           0             0             0             0             0
+ BBFAS_EE           0             0             0             0             0
+ CBFAS_EE           0             0             0             0             0
+ DBFAS_EE           0             0             0             0             0
+ AHRZ_COL           0             0             0             0             0
+ BHRZ_COL           0             0             0             0             0
+ CHRZ_COL           0             0             0             0             0
+ DHRZ_COL           0             0             0             0             0
+
+
+           LAMBDA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ ABFAS_EE           0             0
+ BBFAS_EE           0             0
+ CBFAS_EE           0             0
+ DBFAS_EE           0             0
+ AHRZ_COL           0             0
+ BHRZ_COL           0             0
+ CHRZ_COL           0             0
+ DHRZ_COL           0             0
+
+
+           THETA
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE           0
+ BBFAS_EE           0             0
+ CBFAS_EE           0             0             0
+ DBFAS_EE           0             0             0             0
+ AHRZ_COL           0             0             0             0             0
+ BHRZ_COL           0             0             0             0             0
+ CHRZ_COL           0             0             0             0             0
+ DHRZ_COL           0             0             0             0             0
+
+
+           THETA
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL           0
+ CHRZ_COL           0             0
+ DHRZ_COL           0             0             0
+
+
+           ALPHA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           ALPHA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+                    0             0             0            25            26
+
+
+           ALPHA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+                   27            28
+
+
+           BETA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1                 0             0             0             0             0
+ P2                29             0             0             0            30
+ P3                 0            29             0             0             0
+ P4                 0             0            29             0             0
+ V1                 0             0             0             0             0
+ V2                31             0             0             0            32
+ V3                 0            31             0             0             0
+ V4                 0             0            31             0             0
+ I_BFAS_E           0             0             0             0             0
+ S_BFAS_E           0             0             0             0             0
+ I_HRZ_CO           0             0             0             0             0
+ S_HRZ_CO           0             0             0             0             0
+
+
+           BETA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ P1                 0             0             0             0             0
+ P2                 0             0             0             0             0
+ P3                30             0             0             0             0
+ P4                 0            30             0             0             0
+ V1                 0             0             0             0             0
+ V2                 0             0             0             0             0
+ V3                32             0             0             0             0
+ V4                 0            32             0             0             0
+ I_BFAS_E           0             0             0             0             0
+ S_BFAS_E           0             0             0             0             0
+ I_HRZ_CO           0             0             0             0             0
+ S_HRZ_CO           0             0             0             0             0
+
+
+           BETA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ P1                 0             0
+ P2                 0             0
+ P3                 0             0
+ P4                 0             0
+ V1                 0             0
+ V2                 0             0
+ V3                 0             0
+ V4                 0             0
+ I_BFAS_E           0             0
+ S_BFAS_E           0             0
+ I_HRZ_CO           0             0
+ S_HRZ_CO           0             0
+
+
+           PSI
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1                33
+ P2                 0            34
+ P3                 0             0            34
+ P4                 0             0             0            34
+ V1                35             0             0             0            36
+ V2                 0            37             0             0             0
+ V3                 0             0            37             0             0
+ V4                 0             0             0            37             0
+ I_BFAS_E           0             0             0             0             0
+ S_BFAS_E           0             0             0             0             0
+ I_HRZ_CO           0             0             0             0             0
+ S_HRZ_CO           0             0             0             0             0
+
+
+           PSI
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ V2                38
+ V3                 0            38
+ V4                 0             0            38
+ I_BFAS_E           0             0             0            39
+ S_BFAS_E           0             0             0            40            41
+ I_HRZ_CO           0             0             0            42            43
+ S_HRZ_CO           0             0             0            45            46
+
+
+           PSI
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ I_HRZ_CO          44
+ S_HRZ_CO          47            48
+
+
+     PARAMETER SPECIFICATION FOR D4
+
+
+           NU
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           NU
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+                    0             0             0
+
+
+           LAMBDA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ ABFAS_EE           0             0             0             0             0
+ BBFAS_EE           0             0             0             0             0
+ CBFAS_EE           0             0             0             0             0
+ DBFAS_EE           0             0             0             0             0
+ AHRZ_COL           0             0             0             0             0
+ BHRZ_COL           0             0             0             0             0
+ CHRZ_COL           0             0             0             0             0
+ DHRZ_COL           0             0             0             0             0
+
+
+           LAMBDA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ ABFAS_EE           0             0             0             0             0
+ BBFAS_EE           0             0             0             0             0
+ CBFAS_EE           0             0             0             0             0
+ DBFAS_EE           0             0             0             0             0
+ AHRZ_COL           0             0             0             0             0
+ BHRZ_COL           0             0             0             0             0
+ CHRZ_COL           0             0             0             0             0
+ DHRZ_COL           0             0             0             0             0
+
+
+           LAMBDA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ ABFAS_EE           0             0
+ BBFAS_EE           0             0
+ CBFAS_EE           0             0
+ DBFAS_EE           0             0
+ AHRZ_COL           0             0
+ BHRZ_COL           0             0
+ CHRZ_COL           0             0
+ DHRZ_COL           0             0
+
+
+           THETA
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE           0
+ BBFAS_EE           0             0
+ CBFAS_EE           0             0             0
+ DBFAS_EE           0             0             0             0
+ AHRZ_COL           0             0             0             0             0
+ BHRZ_COL           0             0             0             0             0
+ CHRZ_COL           0             0             0             0             0
+ DHRZ_COL           0             0             0             0             0
+
+
+           THETA
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL           0
+ CHRZ_COL           0             0
+ DHRZ_COL           0             0             0
+
+
+           ALPHA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           ALPHA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+                    0             0             0            49            50
+
+
+           ALPHA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+                   51            52
+
+
+           BETA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1                 0             0             0             0             0
+ P2                53             0             0             0            54
+ P3                 0            53             0             0             0
+ P4                 0             0            53             0             0
+ V1                 0             0             0             0             0
+ V2                55             0             0             0            56
+ V3                 0            55             0             0             0
+ V4                 0             0            55             0             0
+ I_BFAS_E           0             0             0             0             0
+ S_BFAS_E           0             0             0             0             0
+ I_HRZ_CO           0             0             0             0             0
+ S_HRZ_CO           0             0             0             0             0
+
+
+           BETA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ P1                 0             0             0             0             0
+ P2                 0             0             0             0             0
+ P3                54             0             0             0             0
+ P4                 0            54             0             0             0
+ V1                 0             0             0             0             0
+ V2                 0             0             0             0             0
+ V3                56             0             0             0             0
+ V4                 0            56             0             0             0
+ I_BFAS_E           0             0             0             0             0
+ S_BFAS_E           0             0             0             0             0
+ I_HRZ_CO           0             0             0             0             0
+ S_HRZ_CO           0             0             0             0             0
+
+
+           BETA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ P1                 0             0
+ P2                 0             0
+ P3                 0             0
+ P4                 0             0
+ V1                 0             0
+ V2                 0             0
+ V3                 0             0
+ V4                 0             0
+ I_BFAS_E           0             0
+ S_BFAS_E           0             0
+ I_HRZ_CO           0             0
+ S_HRZ_CO           0             0
+
+
+           PSI
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1                57
+ P2                 0            58
+ P3                 0             0            58
+ P4                 0             0             0            58
+ V1                59             0             0             0            60
+ V2                 0            61             0             0             0
+ V3                 0             0            61             0             0
+ V4                 0             0             0            61             0
+ I_BFAS_E           0             0             0             0             0
+ S_BFAS_E           0             0             0             0             0
+ I_HRZ_CO           0             0             0             0             0
+ S_HRZ_CO           0             0             0             0             0
+
+
+           PSI
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ V2                62
+ V3                 0            62
+ V4                 0             0            62
+ I_BFAS_E           0             0             0            63
+ S_BFAS_E           0             0             0            64            65
+ I_HRZ_CO           0             0             0            66            67
+ S_HRZ_CO           0             0             0            69            70
+
+
+           PSI
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ I_HRZ_CO          68
+ S_HRZ_CO          71            72
+
+
+     PARAMETER SPECIFICATION FOR D5
+
+
+           NU
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           NU
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+                    0             0             0
+
+
+           LAMBDA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ ABFAS_EE           0             0             0             0             0
+ BBFAS_EE           0             0             0             0             0
+ CBFAS_EE           0             0             0             0             0
+ DBFAS_EE           0             0             0             0             0
+ AHRZ_COL           0             0             0             0             0
+ BHRZ_COL           0             0             0             0             0
+ CHRZ_COL           0             0             0             0             0
+ DHRZ_COL           0             0             0             0             0
+
+
+           LAMBDA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ ABFAS_EE           0             0             0             0             0
+ BBFAS_EE           0             0             0             0             0
+ CBFAS_EE           0             0             0             0             0
+ DBFAS_EE           0             0             0             0             0
+ AHRZ_COL           0             0             0             0             0
+ BHRZ_COL           0             0             0             0             0
+ CHRZ_COL           0             0             0             0             0
+ DHRZ_COL           0             0             0             0             0
+
+
+           LAMBDA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ ABFAS_EE           0             0
+ BBFAS_EE           0             0
+ CBFAS_EE           0             0
+ DBFAS_EE           0             0
+ AHRZ_COL           0             0
+ BHRZ_COL           0             0
+ CHRZ_COL           0             0
+ DHRZ_COL           0             0
+
+
+           THETA
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE           0
+ BBFAS_EE           0             0
+ CBFAS_EE           0             0             0
+ DBFAS_EE           0             0             0             0
+ AHRZ_COL           0             0             0             0             0
+ BHRZ_COL           0             0             0             0             0
+ CHRZ_COL           0             0             0             0             0
+ DHRZ_COL           0             0             0             0             0
+
+
+           THETA
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL           0
+ CHRZ_COL           0             0
+ DHRZ_COL           0             0             0
+
+
+           ALPHA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+                    0             0             0             0             0
+
+
+           ALPHA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+                    0             0             0            73            74
+
+
+           ALPHA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+                   75            76
+
+
+           BETA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1                 0             0             0             0             0
+ P2                77             0             0             0            78
+ P3                 0            77             0             0             0
+ P4                 0             0            77             0             0
+ V1                 0             0             0             0             0
+ V2                79             0             0             0            80
+ V3                 0            79             0             0             0
+ V4                 0             0            79             0             0
+ I_BFAS_E           0             0             0             0             0
+ S_BFAS_E           0             0             0             0             0
+ I_HRZ_CO           0             0             0             0             0
+ S_HRZ_CO           0             0             0             0             0
+
+
+           BETA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ P1                 0             0             0             0             0
+ P2                 0             0             0             0             0
+ P3                78             0             0             0             0
+ P4                 0            78             0             0             0
+ V1                 0             0             0             0             0
+ V2                 0             0             0             0             0
+ V3                80             0             0             0             0
+ V4                 0            80             0             0             0
+ I_BFAS_E           0             0             0             0             0
+ S_BFAS_E           0             0             0             0             0
+ I_HRZ_CO           0             0             0             0             0
+ S_HRZ_CO           0             0             0             0             0
+
+
+           BETA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ P1                 0             0
+ P2                 0             0
+ P3                 0             0
+ P4                 0             0
+ V1                 0             0
+ V2                 0             0
+ V3                 0             0
+ V4                 0             0
+ I_BFAS_E           0             0
+ S_BFAS_E           0             0
+ I_HRZ_CO           0             0
+ S_HRZ_CO           0             0
+
+
+           PSI
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1                81
+ P2                 0            82
+ P3                 0             0            82
+ P4                 0             0             0            82
+ V1                83             0             0             0            84
+ V2                 0            85             0             0             0
+ V3                 0             0            85             0             0
+ V4                 0             0             0            85             0
+ I_BFAS_E           0             0             0             0             0
+ S_BFAS_E           0             0             0             0             0
+ I_HRZ_CO           0             0             0             0             0
+ S_HRZ_CO           0             0             0             0             0
+
+
+           PSI
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ V2                86
+ V3                 0            86
+ V4                 0             0            86
+ I_BFAS_E           0             0             0            87
+ S_BFAS_E           0             0             0            88            89
+ I_HRZ_CO           0             0             0            90            91
+ S_HRZ_CO           0             0             0            93            94
+
+
+           PSI
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ I_HRZ_CO          92
+ S_HRZ_CO          95            96
+
+
+     STARTING VALUES FOR D2
+
+
+           NU
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           LAMBDA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ ABFAS_EE       1.000         0.000         0.000         0.000         0.000
+ BBFAS_EE       0.000         1.000         0.000         0.000         0.000
+ CBFAS_EE       0.000         0.000         1.000         0.000         0.000
+ DBFAS_EE       0.000         0.000         0.000         1.000         0.000
+ AHRZ_COL       0.000         0.000         0.000         0.000         1.000
+ BHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ CHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ DHRZ_COL       0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ ABFAS_EE       0.000         0.000         0.000         0.000         0.000
+ BBFAS_EE       0.000         0.000         0.000         0.000         0.000
+ CBFAS_EE       0.000         0.000         0.000         0.000         0.000
+ DBFAS_EE       0.000         0.000         0.000         0.000         0.000
+ AHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ BHRZ_COL       1.000         0.000         0.000         0.000         0.000
+ CHRZ_COL       0.000         1.000         0.000         0.000         0.000
+ DHRZ_COL       0.000         0.000         1.000         0.000         0.000
+
+
+           LAMBDA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ ABFAS_EE       0.000         0.000
+ BBFAS_EE       0.000         0.000
+ CBFAS_EE       0.000         0.000
+ DBFAS_EE       0.000         0.000
+ AHRZ_COL       0.000         0.000
+ BHRZ_COL       0.000         0.000
+ CHRZ_COL       0.000         0.000
+ DHRZ_COL       0.000         0.000
+
+
+           THETA
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE       0.000
+ BBFAS_EE       0.000         0.000
+ CBFAS_EE       0.000         0.000         0.000
+ DBFAS_EE       0.000         0.000         0.000         0.000
+ AHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ BHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ CHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ DHRZ_COL       0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       0.000
+ CHRZ_COL       0.000         0.000
+ DHRZ_COL       0.000         0.000         0.000
+
+
+           ALPHA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000        33.010        -0.782
+
+
+           ALPHA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+               59.666        -0.244
+
+
+           BETA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1             0.000         0.000         0.000         0.000         0.000
+ P2             0.000         0.000         0.000         0.000         0.000
+ P3             0.000         0.000         0.000         0.000         0.000
+ P4             0.000         0.000         0.000         0.000         0.000
+ V1             0.000         0.000         0.000         0.000         0.000
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ I_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ P1             0.000         0.000         0.000         0.000         0.000
+ P2             0.000         0.000         0.000         0.000         0.000
+ P3             0.000         0.000         0.000         0.000         0.000
+ P4             0.000         0.000         0.000         0.000         0.000
+ V1             0.000         0.000         0.000         0.000         0.000
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ I_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ P1             0.000         0.000
+ P2             0.000         0.000
+ P3             0.000         0.000
+ P4             0.000         0.000
+ V1             0.000         0.000
+ V2             0.000         0.000
+ V3             0.000         0.000
+ V4             0.000         0.000
+ I_BFAS_E       0.000         0.000
+ S_BFAS_E       0.000         0.000
+ I_HRZ_CO       0.000         0.000
+ S_HRZ_CO       0.000         0.000
+
+
+           PSI
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1             0.050
+ P2             0.000         0.050
+ P3             0.000         0.000         0.050
+ P4             0.000         0.000         0.000         0.050
+ V1             0.000         0.000         0.000         0.000         0.050
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ I_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ V2             0.050
+ V3             0.000         0.050
+ V4             0.000         0.000         0.050
+ I_BFAS_E       0.000         0.000         0.000     25603.463
+ S_BFAS_E       0.000         0.000         0.000         0.000        20.740
+ I_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ I_HRZ_CO   32006.648
+ S_HRZ_CO       0.000        26.134
+
+
+     STARTING VALUES FOR D3
+
+
+           NU
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           LAMBDA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ ABFAS_EE       1.000         0.000         0.000         0.000         0.000
+ BBFAS_EE       0.000         1.000         0.000         0.000         0.000
+ CBFAS_EE       0.000         0.000         1.000         0.000         0.000
+ DBFAS_EE       0.000         0.000         0.000         1.000         0.000
+ AHRZ_COL       0.000         0.000         0.000         0.000         1.000
+ BHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ CHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ DHRZ_COL       0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ ABFAS_EE       0.000         0.000         0.000         0.000         0.000
+ BBFAS_EE       0.000         0.000         0.000         0.000         0.000
+ CBFAS_EE       0.000         0.000         0.000         0.000         0.000
+ DBFAS_EE       0.000         0.000         0.000         0.000         0.000
+ AHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ BHRZ_COL       1.000         0.000         0.000         0.000         0.000
+ CHRZ_COL       0.000         1.000         0.000         0.000         0.000
+ DHRZ_COL       0.000         0.000         1.000         0.000         0.000
+
+
+           LAMBDA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ ABFAS_EE       0.000         0.000
+ BBFAS_EE       0.000         0.000
+ CBFAS_EE       0.000         0.000
+ DBFAS_EE       0.000         0.000
+ AHRZ_COL       0.000         0.000
+ BHRZ_COL       0.000         0.000
+ CHRZ_COL       0.000         0.000
+ DHRZ_COL       0.000         0.000
+
+
+           THETA
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE       0.000
+ BBFAS_EE       0.000         0.000
+ CBFAS_EE       0.000         0.000         0.000
+ DBFAS_EE       0.000         0.000         0.000         0.000
+ AHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ BHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ CHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ DHRZ_COL       0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       0.000
+ CHRZ_COL       0.000         0.000
+ DHRZ_COL       0.000         0.000         0.000
+
+
+           ALPHA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000        33.010        -0.782
+
+
+           ALPHA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+               59.666        -0.244
+
+
+           BETA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1             0.000         0.000         0.000         0.000         0.000
+ P2             0.000         0.000         0.000         0.000         0.000
+ P3             0.000         0.000         0.000         0.000         0.000
+ P4             0.000         0.000         0.000         0.000         0.000
+ V1             0.000         0.000         0.000         0.000         0.000
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ I_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ P1             0.000         0.000         0.000         0.000         0.000
+ P2             0.000         0.000         0.000         0.000         0.000
+ P3             0.000         0.000         0.000         0.000         0.000
+ P4             0.000         0.000         0.000         0.000         0.000
+ V1             0.000         0.000         0.000         0.000         0.000
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ I_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ P1             0.000         0.000
+ P2             0.000         0.000
+ P3             0.000         0.000
+ P4             0.000         0.000
+ V1             0.000         0.000
+ V2             0.000         0.000
+ V3             0.000         0.000
+ V4             0.000         0.000
+ I_BFAS_E       0.000         0.000
+ S_BFAS_E       0.000         0.000
+ I_HRZ_CO       0.000         0.000
+ S_HRZ_CO       0.000         0.000
+
+
+           PSI
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1             0.050
+ P2             0.000         0.050
+ P3             0.000         0.000         0.050
+ P4             0.000         0.000         0.000         0.050
+ V1             0.000         0.000         0.000         0.000         0.050
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ I_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ V2             0.050
+ V3             0.000         0.050
+ V4             0.000         0.000         0.050
+ I_BFAS_E       0.000         0.000         0.000     25603.463
+ S_BFAS_E       0.000         0.000         0.000         0.000        20.740
+ I_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ I_HRZ_CO   32006.648
+ S_HRZ_CO       0.000        26.134
+
+
+     STARTING VALUES FOR D4
+
+
+           NU
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           LAMBDA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ ABFAS_EE       1.000         0.000         0.000         0.000         0.000
+ BBFAS_EE       0.000         1.000         0.000         0.000         0.000
+ CBFAS_EE       0.000         0.000         1.000         0.000         0.000
+ DBFAS_EE       0.000         0.000         0.000         1.000         0.000
+ AHRZ_COL       0.000         0.000         0.000         0.000         1.000
+ BHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ CHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ DHRZ_COL       0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ ABFAS_EE       0.000         0.000         0.000         0.000         0.000
+ BBFAS_EE       0.000         0.000         0.000         0.000         0.000
+ CBFAS_EE       0.000         0.000         0.000         0.000         0.000
+ DBFAS_EE       0.000         0.000         0.000         0.000         0.000
+ AHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ BHRZ_COL       1.000         0.000         0.000         0.000         0.000
+ CHRZ_COL       0.000         1.000         0.000         0.000         0.000
+ DHRZ_COL       0.000         0.000         1.000         0.000         0.000
+
+
+           LAMBDA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ ABFAS_EE       0.000         0.000
+ BBFAS_EE       0.000         0.000
+ CBFAS_EE       0.000         0.000
+ DBFAS_EE       0.000         0.000
+ AHRZ_COL       0.000         0.000
+ BHRZ_COL       0.000         0.000
+ CHRZ_COL       0.000         0.000
+ DHRZ_COL       0.000         0.000
+
+
+           THETA
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE       0.000
+ BBFAS_EE       0.000         0.000
+ CBFAS_EE       0.000         0.000         0.000
+ DBFAS_EE       0.000         0.000         0.000         0.000
+ AHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ BHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ CHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ DHRZ_COL       0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       0.000
+ CHRZ_COL       0.000         0.000
+ DHRZ_COL       0.000         0.000         0.000
+
+
+           ALPHA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000        33.010        -0.782
+
+
+           ALPHA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+               59.666        -0.244
+
+
+           BETA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1             0.000         0.000         0.000         0.000         0.000
+ P2             0.000         0.000         0.000         0.000         0.000
+ P3             0.000         0.000         0.000         0.000         0.000
+ P4             0.000         0.000         0.000         0.000         0.000
+ V1             0.000         0.000         0.000         0.000         0.000
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ I_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ P1             0.000         0.000         0.000         0.000         0.000
+ P2             0.000         0.000         0.000         0.000         0.000
+ P3             0.000         0.000         0.000         0.000         0.000
+ P4             0.000         0.000         0.000         0.000         0.000
+ V1             0.000         0.000         0.000         0.000         0.000
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ I_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ P1             0.000         0.000
+ P2             0.000         0.000
+ P3             0.000         0.000
+ P4             0.000         0.000
+ V1             0.000         0.000
+ V2             0.000         0.000
+ V3             0.000         0.000
+ V4             0.000         0.000
+ I_BFAS_E       0.000         0.000
+ S_BFAS_E       0.000         0.000
+ I_HRZ_CO       0.000         0.000
+ S_HRZ_CO       0.000         0.000
+
+
+           PSI
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1             0.050
+ P2             0.000         0.050
+ P3             0.000         0.000         0.050
+ P4             0.000         0.000         0.000         0.050
+ V1             0.000         0.000         0.000         0.000         0.050
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ I_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ V2             0.050
+ V3             0.000         0.050
+ V4             0.000         0.000         0.050
+ I_BFAS_E       0.000         0.000         0.000     25603.463
+ S_BFAS_E       0.000         0.000         0.000         0.000        20.740
+ I_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ I_HRZ_CO   32006.648
+ S_HRZ_CO       0.000        26.134
+
+
+     STARTING VALUES FOR D5
+
+
+           NU
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           NU
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+                0.000         0.000         0.000
+
+
+           LAMBDA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ ABFAS_EE       1.000         0.000         0.000         0.000         0.000
+ BBFAS_EE       0.000         1.000         0.000         0.000         0.000
+ CBFAS_EE       0.000         0.000         1.000         0.000         0.000
+ DBFAS_EE       0.000         0.000         0.000         1.000         0.000
+ AHRZ_COL       0.000         0.000         0.000         0.000         1.000
+ BHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ CHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ DHRZ_COL       0.000         0.000         0.000         0.000         0.000
+
+
+           LAMBDA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ ABFAS_EE       0.000         0.000         0.000         0.000         0.000
+ BBFAS_EE       0.000         0.000         0.000         0.000         0.000
+ CBFAS_EE       0.000         0.000         0.000         0.000         0.000
+ DBFAS_EE       0.000         0.000         0.000         0.000         0.000
+ AHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ BHRZ_COL       1.000         0.000         0.000         0.000         0.000
+ CHRZ_COL       0.000         1.000         0.000         0.000         0.000
+ DHRZ_COL       0.000         0.000         1.000         0.000         0.000
+
+
+           LAMBDA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ ABFAS_EE       0.000         0.000
+ BBFAS_EE       0.000         0.000
+ CBFAS_EE       0.000         0.000
+ DBFAS_EE       0.000         0.000
+ AHRZ_COL       0.000         0.000
+ BHRZ_COL       0.000         0.000
+ CHRZ_COL       0.000         0.000
+ DHRZ_COL       0.000         0.000
+
+
+           THETA
+              ABFAS_EE      BBFAS_EE      CBFAS_EE      DBFAS_EE      AHRZ_COL
+              ________      ________      ________      ________      ________
+ ABFAS_EE       0.000
+ BBFAS_EE       0.000         0.000
+ CBFAS_EE       0.000         0.000         0.000
+ DBFAS_EE       0.000         0.000         0.000         0.000
+ AHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ BHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ CHRZ_COL       0.000         0.000         0.000         0.000         0.000
+ DHRZ_COL       0.000         0.000         0.000         0.000         0.000
+
+
+           THETA
+              BHRZ_COL      CHRZ_COL      DHRZ_COL
+              ________      ________      ________
+ BHRZ_COL       0.000
+ CHRZ_COL       0.000         0.000
+ DHRZ_COL       0.000         0.000         0.000
+
+
+           ALPHA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000         0.000         0.000
+
+
+           ALPHA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+                0.000         0.000         0.000        33.010        -0.782
+
+
+           ALPHA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+               59.666        -0.244
+
+
+           BETA
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1             0.000         0.000         0.000         0.000         0.000
+ P2             0.000         0.000         0.000         0.000         0.000
+ P3             0.000         0.000         0.000         0.000         0.000
+ P4             0.000         0.000         0.000         0.000         0.000
+ V1             0.000         0.000         0.000         0.000         0.000
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ I_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ P1             0.000         0.000         0.000         0.000         0.000
+ P2             0.000         0.000         0.000         0.000         0.000
+ P3             0.000         0.000         0.000         0.000         0.000
+ P4             0.000         0.000         0.000         0.000         0.000
+ V1             0.000         0.000         0.000         0.000         0.000
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ I_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+
+
+           BETA
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ P1             0.000         0.000
+ P2             0.000         0.000
+ P3             0.000         0.000
+ P4             0.000         0.000
+ V1             0.000         0.000
+ V2             0.000         0.000
+ V3             0.000         0.000
+ V4             0.000         0.000
+ I_BFAS_E       0.000         0.000
+ S_BFAS_E       0.000         0.000
+ I_HRZ_CO       0.000         0.000
+ S_HRZ_CO       0.000         0.000
+
+
+           PSI
+              P1            P2            P3            P4            V1
+              ________      ________      ________      ________      ________
+ P1             0.050
+ P2             0.000         0.050
+ P3             0.000         0.000         0.050
+ P4             0.000         0.000         0.000         0.050
+ V1             0.000         0.000         0.000         0.000         0.050
+ V2             0.000         0.000         0.000         0.000         0.000
+ V3             0.000         0.000         0.000         0.000         0.000
+ V4             0.000         0.000         0.000         0.000         0.000
+ I_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ S_BFAS_E       0.000         0.000         0.000         0.000         0.000
+ I_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              V2            V3            V4            I_BFAS_E      S_BFAS_E
+              ________      ________      ________      ________      ________
+ V2             0.050
+ V3             0.000         0.050
+ V4             0.000         0.000         0.050
+ I_BFAS_E       0.000         0.000         0.000     25603.463
+ S_BFAS_E       0.000         0.000         0.000         0.000        20.740
+ I_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+ S_HRZ_CO       0.000         0.000         0.000         0.000         0.000
+
+
+           PSI
+              I_HRZ_CO      S_HRZ_CO
+              ________      ________
+ I_HRZ_CO   32006.648
+ S_HRZ_CO       0.000        26.134
+
+
+     Beginning Time:  18:50:56
+        Ending Time:  18:51:16
+       Elapsed Time:  00:00:20
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen
