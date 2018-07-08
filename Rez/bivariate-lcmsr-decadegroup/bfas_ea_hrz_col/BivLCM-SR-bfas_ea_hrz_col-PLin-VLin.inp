@@ -194,9 +194,25 @@ i_bfas_ea s_bfas_ea | abfas_ea bbfas_ea cbfas_ea dbfas_ea AT a1 a2 a3 a4;
 i_hrz_col s_hrz_col | ahrz_col bhrz_col chrz_col dhrz_col AT a1 a2 a3 a4;
 
 ! freeing factor covs because of "nocovariances"
-s_bfas_ea WITH i_bfas_ea s_hrz_col i_hrz_col; 
-i_bfas_ea WITH s_hrz_col i_hrz_col;
-s_hrz_col WITH i_hrz_col;
+! But ensure they are constrained across groups
+s_bfas_ea WITH i_bfas_ea (p)
+s_hrz_col (q)
+i_hrz_col (r); 
+i_bfas_ea WITH s_hrz_col (s)
+i_hrz_col (t);
+s_hrz_col WITH i_hrz_col (u);
+
+!constrain latent growth means across groups
+[i_bfas_ea] (v); 
+[s_bfas_ea] (w);
+[i_hrz_col] (x); 
+[s_hrz_col] (y);
+
+!constrain latent growth variances across groups
+i_bfas_ea (l);
+s_bfas_ea (m);
+i_hrz_col (n);
+s_hrz_col (o);
 
 p1 BY abfas_ea@1; ! Residual "factors";
 p2 BY bbfas_ea@1;

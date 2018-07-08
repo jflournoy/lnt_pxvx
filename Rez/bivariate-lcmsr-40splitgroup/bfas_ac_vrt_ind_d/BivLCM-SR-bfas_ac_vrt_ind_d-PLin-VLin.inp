@@ -194,9 +194,25 @@ i_bfas_ac s_bfas_ac | abfas_ac bbfas_ac cbfas_ac dbfas_ac AT a1 a2 a3 a4;
 i_vrt_ind_d s_vrt_ind_d | avrt_ind_d bvrt_ind_d cvrt_ind_d dvrt_ind_d AT a1 a2 a3 a4;
 
 ! freeing factor covs because of "nocovariances"
-s_bfas_ac WITH i_bfas_ac s_vrt_ind_d i_vrt_ind_d; 
-i_bfas_ac WITH s_vrt_ind_d i_vrt_ind_d;
-s_vrt_ind_d WITH i_vrt_ind_d;
+! But ensure they are constrained across groups
+s_bfas_ac WITH i_bfas_ac (p)
+s_vrt_ind_d (q)
+i_vrt_ind_d (r); 
+i_bfas_ac WITH s_vrt_ind_d (s)
+i_vrt_ind_d (t);
+s_vrt_ind_d WITH i_vrt_ind_d (u);
+
+!constrain latent growth means across groups
+[i_bfas_ac] (v); 
+[s_bfas_ac] (w);
+[i_vrt_ind_d] (x); 
+[s_vrt_ind_d] (y);
+
+!constrain latent growth variances across groups
+i_bfas_ac (l);
+s_bfas_ac (m);
+i_vrt_ind_d (n);
+s_vrt_ind_d (o);
 
 p1 BY abfas_ac@1; ! Residual "factors";
 p2 BY bbfas_ac@1;

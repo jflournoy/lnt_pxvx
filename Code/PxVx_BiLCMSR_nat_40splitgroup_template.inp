@@ -208,9 +208,25 @@ i_[[varP#whichP]] s_[[varP#whichP]] | a[[varP#whichP]] b[[varP#whichP]] c[[varP#
 i_[[varV#whichV]] s_[[varV#whichV]] | a[[varV#whichV]] b[[varV#whichV]] c[[varV#whichV]] d[[varV#whichV]] AT a1 a2 a3 a4;
 
 ! freeing factor covs because of "nocovariances"
-s_[[varP#whichP]] WITH i_[[varP#whichP]] s_[[varV#whichV]] i_[[varV#whichV]]; 
-i_[[varP#whichP]] WITH s_[[varV#whichV]] i_[[varV#whichV]];
-s_[[varV#whichV]] WITH i_[[varV#whichV]];
+! But ensure they are constrained across groups
+s_[[varP#whichP]] WITH i_[[varP#whichP]] (p)
+s_[[varV#whichV]] (q)
+i_[[varV#whichV]] (r); 
+i_[[varP#whichP]] WITH s_[[varV#whichV]] (s)
+i_[[varV#whichV]] (t);
+s_[[varV#whichV]] WITH i_[[varV#whichV]] (u);
+
+!constrain latent growth means across groups
+[i_[[varP#whichP]]] (v); 
+[s_[[varP#whichP]]] (w);
+[i_[[varV#whichV]]] (x); 
+[s_[[varV#whichV]]] (y);
+
+!constrain latent growth variances across groups
+i_[[varP#whichP]] (l);
+s_[[varP#whichP]] (m);
+i_[[varV#whichV]] (n);
+s_[[varV#whichV]] (o);
 
 p1 BY a[[varP#whichP]]@1; ! Residual "factors";
 p2 BY b[[varP#whichP]]@1;

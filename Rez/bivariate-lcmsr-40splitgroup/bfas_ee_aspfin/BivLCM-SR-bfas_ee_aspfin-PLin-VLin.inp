@@ -194,9 +194,25 @@ i_bfas_ee s_bfas_ee | abfas_ee bbfas_ee cbfas_ee dbfas_ee AT a1 a2 a3 a4;
 i_aspfin s_aspfin | aaspfin baspfin caspfin daspfin AT a1 a2 a3 a4;
 
 ! freeing factor covs because of "nocovariances"
-s_bfas_ee WITH i_bfas_ee s_aspfin i_aspfin; 
-i_bfas_ee WITH s_aspfin i_aspfin;
-s_aspfin WITH i_aspfin;
+! But ensure they are constrained across groups
+s_bfas_ee WITH i_bfas_ee (p)
+s_aspfin (q)
+i_aspfin (r); 
+i_bfas_ee WITH s_aspfin (s)
+i_aspfin (t);
+s_aspfin WITH i_aspfin (u);
+
+!constrain latent growth means across groups
+[i_bfas_ee] (v); 
+[s_bfas_ee] (w);
+[i_aspfin] (x); 
+[s_aspfin] (y);
+
+!constrain latent growth variances across groups
+i_bfas_ee (l);
+s_bfas_ee (m);
+i_aspfin (n);
+s_aspfin (o);
 
 p1 BY abfas_ee@1; ! Residual "factors";
 p2 BY bbfas_ee@1;

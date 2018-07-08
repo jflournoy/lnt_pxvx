@@ -194,9 +194,25 @@ i_bfas_nw s_bfas_nw | abfas_nw bbfas_nw cbfas_nw dbfas_nw AT a1 a2 a3 a4;
 i_usi s_usi | ausi busi cusi dusi AT a1 a2 a3 a4;
 
 ! freeing factor covs because of "nocovariances"
-s_bfas_nw WITH i_bfas_nw s_usi i_usi; 
-i_bfas_nw WITH s_usi i_usi;
-s_usi WITH i_usi;
+! But ensure they are constrained across groups
+s_bfas_nw WITH i_bfas_nw (p)
+s_usi (q)
+i_usi (r); 
+i_bfas_nw WITH s_usi (s)
+i_usi (t);
+s_usi WITH i_usi (u);
+
+!constrain latent growth means across groups
+[i_bfas_nw] (v); 
+[s_bfas_nw] (w);
+[i_usi] (x); 
+[s_usi] (y);
+
+!constrain latent growth variances across groups
+i_bfas_nw (l);
+s_bfas_nw (m);
+i_usi (n);
+s_usi (o);
 
 p1 BY abfas_nw@1; ! Residual "factors";
 p2 BY bbfas_nw@1;

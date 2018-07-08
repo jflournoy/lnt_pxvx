@@ -194,9 +194,25 @@ i_bfi_hp8 s_bfi_hp8 | abfi_hp8 bbfi_hp8 cbfi_hp8 dbfi_hp8 AT a1 a2 a3 a4;
 i_bfa_mt s_bfa_mt | abfa_mt bbfa_mt cbfa_mt dbfa_mt AT a1 a2 a3 a4;
 
 ! freeing factor covs because of "nocovariances"
-s_bfi_hp8 WITH i_bfi_hp8 s_bfa_mt i_bfa_mt; 
-i_bfi_hp8 WITH s_bfa_mt i_bfa_mt;
-s_bfa_mt WITH i_bfa_mt;
+! But ensure they are constrained across groups
+s_bfi_hp8 WITH i_bfi_hp8 (p)
+s_bfa_mt (q)
+i_bfa_mt (r); 
+i_bfi_hp8 WITH s_bfa_mt (s)
+i_bfa_mt (t);
+s_bfa_mt WITH i_bfa_mt (u);
+
+!constrain latent growth means across groups
+[i_bfi_hp8] (v); 
+[s_bfi_hp8] (w);
+[i_bfa_mt] (x); 
+[s_bfa_mt] (y);
+
+!constrain latent growth variances across groups
+i_bfi_hp8 (l);
+s_bfi_hp8 (m);
+i_bfa_mt (n);
+s_bfa_mt (o);
 
 p1 BY abfi_hp8@1; ! Residual "factors";
 p2 BY bbfi_hp8@1;
