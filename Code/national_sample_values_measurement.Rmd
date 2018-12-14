@@ -336,6 +336,37 @@ wave4_scored$alpha
 wave4_scored_mvi$alpha
 ```
 
+```{r}
+all_waves_scored_l <- all_waves_scored_w %>%
+  select(-matches('.*_d$')) %>%
+  gather(key, value, -subjid) %>%
+  extract(key, into = c('wave', 'variable'), '([abcd])(.*)') %>%
+  mutate(wave = case_when(wave == 'a' ~ 1, wave == 'b' ~ 2, 
+                          wave == 'c' ~ 3, wave == 'd' ~ 4, TRUE ~ NA_real_))
+
+library(lme4)
+iccs <- lapply(
+  unique(all_waves_scored_l$variable)[-1],
+  function(avar) {
+    adf <- subset(all_waves_scored_l, variable == avar)
+    amod <- lmer(value ~ 1 + wave + (1 + wave | subjid), data = adf)
+    s2 <- sigma(amod)^2
+    revar <- sum(VarCorr(amod)$subjid)
+    icc <- revar / (s2 + revar)
+    # amod_wi <- mutate(group_by(adf, subjid),
+    #                   value = value - mean(value, na.rm = T))
+    # amod_bw <- summarize(group_by(adf, subjid),
+    #                      value = mean(value, na.rm = T))
+    # wi_sd <- sd(amod_wi$value, na.rm = T)
+    # bw_sd <- sd(amod_bw$value, na.rm = T)
+    # icc_rough <- bw_sd^2 / (wi_sd^2 + bw_sd^2)
+    return(data.frame(variable = avar, icc = icc))
+  })
+ 
+iccs_df <- bind_rows(iccs) 
+write_csv(mutate(iccs_df, icc = sprintf('%.2f', icc)), path = '../Rez/iccs.csv')
+```
+
 # Generate lavaan syntax
 
 *Note:* I use the identification strategy recommended by Widman, Ferrer, and Conger (2010) and set the intercept for the Wave 1 latent variable to 0, and the variance of the Wave 1 latent variable to 1 for each group.
