@@ -319,8 +319,22 @@ all_waves_scored_w <- all_waves_scored %>%
 
 all_waves_scored_w[is.na(all_waves_scored_w)] <- NA
 
+aspfinmc_df <- select(lnt_df_nat, subjid, ends_with('asp_fin_mc'))
+min_famc <- min(aspfinmc_df[,-1], na.rm = T)
+max_famc <- max(aspfinmc_df[,-1], na.rm = T)
+
+aspfinmc_df_pomp <- mutate_at(aspfinmc_df, .vars = vars(ends_with('asp_fin_mc')),
+                         .funs = funs(pompit(., min_famc, max_famc)))
+
+all_waves_scored_w_finaspmc <- dplyr::full_join(all_waves_scored_w, 
+                                                aspfinmc_df_pomp,
+                                                by = 'subjid')
+
 readr::write_tsv(all_waves_scored_w, path = '../Data/lnt_nat_recalc.tsv', col_names = F, na = '-9999')
 readr::write_lines(names(all_waves_scored_w), path = '../Data/lnt_nat_recalc_names.txt')
+
+readr::write_tsv(all_waves_scored_w_finaspmc, path = '../Data/lnt_nat_recalc_famc.tsv', col_names = F, na = '-9999')
+readr::write_lines(names(all_waves_scored_w_finaspmc), path = '../Data/lnt_nat_recalc_names_famc.txt')
 
 cat('**Wave 1**\n\n')
 wave1_scored$alpha
