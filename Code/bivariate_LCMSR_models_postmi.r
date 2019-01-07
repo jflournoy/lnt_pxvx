@@ -67,7 +67,8 @@ vVarNames <- c(
   hrz_col ='Horizontal Collectivism',
   hrz_col_d ='Horizontal Collectivism Invariant',
   hrz_ind='Horizontal Individualism',
-  hrz_ind_d='Horizontal Individualism Invariant'
+  hrz_ind_d='Horizontal Individualism Invariant',
+  aspfinc='Financial Aspirations MC'
 )
 periodsToEmSpaces <- function(varname, spacer = '\\.', replace = '&emsp;'){
   return(gsub(paste0(spacer, '(?=[', spacer, '[:alpha:]])'), replace, varname, perl = T))
@@ -79,15 +80,19 @@ periodsToEmSpaces <- function(varname, spacer = '\\.', replace = '&emsp;'){
 # setwd("~/code_new/lnt_pxvx")
 # createModels('Code/PxVx_BiLCMSR_nat_mi_template.inp')
 # runModels(target = '/home/jflournoy/code_new/lnt_pxvx/Rez/bivariate-lcmsr-post_mi/',
-#           recursive = T,
+#           recursive = T, replaceOutfile = 'never',
 #           Mplus_command = '/opt/mplus/8/mplus')
 # createModels('Code/PxVx_BiLCMSR_nat_decadegroup_template.inp')
 # runModels(target = '/home/jflournoy/code_new/lnt_pxvx/Rez/bivariate-lcmsr-decadegroup/',
-#           recursive = T,
+#           recursive = T, replaceOutfile = 'never',
 #           Mplus_command = '/opt/mplus/8/mplus')
 # createModels('Code/PxVx_BiLCMSR_nat_40splitgroup_template.inp')
 # runModels(target = '/home/jflournoy/code_new/lnt_pxvx/Rez/bivariate-lcmsr-40splitgroup/',
-#           recursive = T,
+#           recursive = T, replaceOutfile = 'never',
+#           Mplus_command = '/opt/mplus/8/mplus')
+# createModels('Code/PxVx_BiLCMSR_nat_mi_template_test_famc.inp')
+# runModels(target = '/home/jflournoy/code_new/lnt_pxvx/Rez/bivariate-lcmsr-post_mi_famc/',
+#           recursive = T, replaceOutfile = 'never',
 #           Mplus_command = '/opt/mplus/8/mplus')
 
 # # Read models
