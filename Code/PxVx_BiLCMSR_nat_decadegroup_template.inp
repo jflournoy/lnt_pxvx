@@ -2,19 +2,26 @@
 iterators = whichP whichV;
 
 whichP = 1:16;
-whichV = 1:15;
+whichV = 1:16;
 
 varP#whichP =  bfas_ac  bfas_ap  bfas_ci  bfas_co  bfas_ea  bfas_ee  bfas_nv  bfas_nw  bfas_oi  bfas_oo
 bfi_a6  bfi_c bfi_e bfi_hp8 bfi_n bfi_o;
 
-varV#whichV = aspfin aspfin_d bfa_mt bfa_mt_d hrz_col hrz_col_d hrz_ind hrz_ind_d mvi usi usi_d vrt_col vrt_col_d vrt_ind vrt_ind_d;
+varV#whichV = aspfin aspfin_d bfa_mt bfa_mt_d hrz_col hrz_col_d hrz_ind hrz_ind_d mvi usi usi_d vrt_col vrt_col_d vrt_ind vrt_ind_d aspfinc;
 
 filename="BivLCM-SR-[[varP#whichP]]_[[varV#whichV]]-PLin-VLin.inp";
 outputDirectory="/home/jflournoy/code_new/lnt_pxvx/Rez/bivariate-lcmsr-decadegroup/[[varP#whichP]]_[[varV#whichV]]";
 [[/init]]
 
 title: PxVx Bivariate LCM-SR - decadegroup - Linear [[varP#whichP]] with Linear [[varV#whichV]];
+
+[[whichV != 16]]
 data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
+[[/whichV != 16]]
+
+[[whichV == 16]]
+data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc_famc.tsv;
+[[/whichV == 16]]
 
 variable:
 names =
@@ -162,7 +169,14 @@ dusi_d
 dvrt_col
 dvrt_col_d
 dvrt_ind
-dvrt_ind_d;
+dvrt_ind_d
+[[whichV == 16]]
+aaspfinc
+baspfinc
+caspfinc
+daspfinc
+[[/whichV == 16]]
+;
 
 USEVARIABLES =
 a[[varP#whichP]]
