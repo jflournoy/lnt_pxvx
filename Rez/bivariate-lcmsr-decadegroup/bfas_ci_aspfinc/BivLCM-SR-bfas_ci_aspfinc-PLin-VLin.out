@@ -1,0 +1,1548 @@
+Mplus VERSION 8 (Linux)
+MUTHEN & MUTHEN
+01/07/2019   1:18 PM
+
+INPUT INSTRUCTIONS
+
+
+  title: PxVx Bivariate LCM-SR - decadegroup - Linear bfas_ci with Linear aspfinc;
+
+
+  data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc_famc.tsv;
+
+  variable:
+  names =
+  subjid
+  aage
+  aaspfin
+  aaspfin_d
+  abfa_mt
+  abfa_mt_d
+  abfas_ac
+  abfas_ap
+  abfas_ci
+  abfas_co
+  abfas_ea
+  abfas_ee
+  abfas_nv
+  abfas_nv9
+  abfas_nw
+  abfas_oi
+  abfas_oo
+  abfi_a
+  abfi_a6
+  abfi_c
+  abfi_d_scale
+  abfi_e
+  abfi_hp8
+  abfi_n
+  abfi_o
+  abfi_s_scale
+  ahrz_col
+  ahrz_col_d
+  ahrz_ind
+  ahrz_ind_d
+  amvi
+  ausi
+  ausi_d
+  avrt_col
+  avrt_col_d
+  avrt_ind
+  avrt_ind_d
+  bage
+  baspfin
+  baspfin_d
+  bbfa_mt
+  bbfa_mt_d
+  bbfas_ac
+  bbfas_ap
+  bbfas_ci
+  bbfas_co
+  bbfas_ea
+  bbfas_ee
+  bbfas_nv
+  bbfas_nv9
+  bbfas_nw
+  bbfas_oi
+  bbfas_oo
+  bbfi_a
+  bbfi_a6
+  bbfi_c
+  bbfi_d_scale
+  bbfi_e
+  bbfi_hp8
+  bbfi_n
+  bbfi_o
+  bbfi_s_scale
+  bhrz_col
+  bhrz_col_d
+  bhrz_ind
+  bhrz_ind_d
+  bmvi
+  busi
+  busi_d
+  bvrt_col
+  bvrt_col_d
+  bvrt_ind
+  bvrt_ind_d
+  cage
+  caspfin
+  caspfin_d
+  cbfa_mt
+  cbfa_mt_d
+  cbfas_ac
+  cbfas_ap
+  cbfas_ci
+  cbfas_co
+  cbfas_ea
+  cbfas_ee
+  cbfas_nv
+  cbfas_nv9
+  cbfas_nw
+  cbfas_oi
+  cbfas_oo
+  cbfi_a
+  cbfi_a6
+  cbfi_c
+  cbfi_d_scale
+  cbfi_e
+  cbfi_hp8
+  cbfi_n
+  cbfi_o
+  cbfi_s_scale
+  chrz_col
+  chrz_col_d
+  chrz_ind
+  chrz_ind_d
+  cmvi
+  cusi
+  cusi_d
+  cvrt_col
+  cvrt_col_d
+  cvrt_ind
+  cvrt_ind_d
+  dage
+  daspfin
+  daspfin_d
+  dbfa_mt
+  dbfa_mt_d
+  dbfas_ac
+  dbfas_ap
+  dbfas_ci
+  dbfas_co
+  dbfas_ea
+  dbfas_ee
+  dbfas_nv
+  dbfas_nv9
+  dbfas_nw
+  dbfas_oi
+  dbfas_oo
+  dbfi_a
+  dbfi_a6
+  dbfi_c
+  dbfi_d_scale
+  dbfi_e
+  dbfi_hp8
+  dbfi_n
+  dbfi_o
+  dbfi_s_scale
+  dhrz_col
+  dhrz_col_d
+  dhrz_ind
+  dhrz_ind_d
+  dmvi
+  dusi
+  dusi_d
+  dvrt_col
+  dvrt_col_d
+  dvrt_ind
+  dvrt_ind_d
+  aaspfinc
+  baspfinc
+  caspfinc
+  daspfinc
+  ;
+
+  USEVARIABLES =
+  abfas_ci
+  bbfas_ci
+  cbfas_ci
+  dbfas_ci
+  aaspfinc
+  baspfinc
+  caspfinc
+  daspfinc
+  a1
+  a2
+  a3
+  a4
+  aagegrp
+  ;
+
+  missing = all (-9999);
+
+  tscores = a1 a2 a3 a4;
+
+  grouping = aagegrp (0=d2, 1=d3, 2=d4, 3=d5);
+
+  DEFINE:
+
+  aagegrp = aage;
+
+  cut aagegrp (29 39 49);
+
+  a1 = aage + 0 - 36;
+  a2 = aage + 1 - 36;
+  a3 = aage + 2 - 36;
+  a4 = aage + 3 - 36;
+
+  ANALYSIS:
+  TYPE=RANDOM;
+  PROCESSORS = 6;
+  model=nocovariances; ! supresses default estimation of certain covs in model;
+
+  MODEL:
+
+  i_bfas_ci s_bfas_ci | abfas_ci bbfas_ci cbfas_ci dbfas_ci AT a1 a2 a3 a4;
+  i_aspfinc s_aspfinc | aaspfinc baspfinc caspfinc daspfinc AT a1 a2 a3 a4;
+
+  ! freeing factor covs because of "nocovariances"
+  ! But ensure they are constrained across groups
+  s_bfas_ci WITH i_bfas_ci (p)
+  s_aspfinc (q)
+  i_aspfinc (r);
+  i_bfas_ci WITH s_aspfinc (s)
+  i_aspfinc (t);
+  s_aspfinc WITH i_aspfinc (u);
+
+  !constrain latent growth means across groups
+  [i_bfas_ci] (v);
+  [s_bfas_ci] (w);
+  [i_aspfinc] (x);
+  [s_aspfinc] (y);
+
+  !constrain latent growth variances across groups
+  i_bfas_ci (l);
+  s_bfas_ci (m);
+  i_aspfinc (n);
+  s_aspfinc (o);
+
+  p1 BY abfas_ci@1; ! Residual "factors";
+  p2 BY bbfas_ci@1;
+  p3 BY cbfas_ci@1;
+  p4 BY dbfas_ci@1;
+
+  v1 BY aaspfinc@1; ! Residual "factors";
+  v2 BY baspfinc@1;
+  v3 BY caspfinc@1;
+  v4 BY daspfinc@1;
+
+  !residual variances on observed/manifest vars set to 0
+  abfas_ci@0;
+  bbfas_ci@0;
+  cbfas_ci@0;
+  dbfas_ci@0;
+
+  !residual variances on observed/manifest vars set to 0
+  aaspfinc@0;
+  baspfinc@0;
+  caspfinc@0;
+  daspfinc@0;
+
+  ! means of observed/manifest vars set to 0
+  [abfas_ci@0];
+  [bbfas_ci@0];
+  [cbfas_ci@0];
+  [dbfas_ci@0];
+
+  ! means of observed/manifest vars set to 0
+  [aaspfinc@0];
+  [baspfinc@0];
+  [caspfinc@0];
+  [daspfinc@0];
+
+  [p1@0]; ! means of residual "factors" set to 0
+  [p2@0];
+  [p3@0];
+  [p4@0];
+
+  [v1@0]; ! means of residual "factors" set to 0
+  [v2@0];
+  [v3@0];
+  [v4@0];
+
+  p4 on p3 (a); ! Autoregressive paths constrained to equality
+  p3 on p2 (a);
+  p2 on p1 (a);
+
+  v4 on v3 (b); ! Autoregressive paths constrained to equality
+  v3 on v2 (b);
+  v2 on v1 (b);
+
+  p4 on v3 (c); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c);
+  p2 on v1 (c);
+
+  v4 on p3 (d); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d);
+  v2 on p1 (d);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e); ! Within-wave correlations constrained to equality
+  p3 with v3 (e);
+  p4 with v4 (e);
+
+  p2 p3 p4 (f); ! estimate variances of residual "factors"
+  v2 v3 v4 (g); ! estimate variances of residual "factors"
+
+  MODEL d2:
+
+  p4 on p3 (a2); ! Autoregressive paths constrained to equality
+  p3 on p2 (a2);
+  p2 on p1 (a2);
+
+  v4 on v3 (b2); ! Autoregressive paths constrained to equality
+  v3 on v2 (b2);
+  v2 on v1 (b2);
+
+  p4 on v3 (c2); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c2);
+  p2 on v1 (c2);
+
+  v4 on p3 (d2); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d2);
+  v2 on p1 (d2);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e2); ! Within-wave correlations constrained to equality
+  p3 with v3 (e2);
+  p4 with v4 (e2);
+
+  p2 p3 p4 (f2); ! estimate variances of residual "factors"
+  v2 v3 v4 (g2); ! estimate variances of residual "factors"
+
+  MODEL d3:
+
+  p4 on p3 (a3); ! Autoregressive paths constrained to equality
+  p3 on p2 (a3);
+  p2 on p1 (a3);
+
+  v4 on v3 (b3); ! Autoregressive paths constrained to equality
+  v3 on v2 (b3);
+  v2 on v1 (b3);
+
+  p4 on v3 (c3); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c3);
+  p2 on v1 (c3);
+
+  v4 on p3 (d3); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d3);
+  v2 on p1 (d3);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e3); ! Within-wave correlations constrained to equality
+  p3 with v3 (e3);
+  p4 with v4 (e3);
+
+  p2 p3 p4 (f3); ! estimate variances of residual "factors"
+  v2 v3 v4 (g3); ! estimate variances of residual "factors"
+
+  MODEL d4:
+
+  p4 on p3 (a4); ! Autoregressive paths constrained to equality
+  p3 on p2 (a4);
+  p2 on p1 (a4);
+
+  v4 on v3 (b4); ! Autoregressive paths constrained to equality
+  v3 on v2 (b4);
+  v2 on v1 (b4);
+
+  p4 on v3 (c4); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c4);
+  p2 on v1 (c4);
+
+  v4 on p3 (d4); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d4);
+  v2 on p1 (d4);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e4); ! Within-wave correlations constrained to equality
+  p3 with v3 (e4);
+  p4 with v4 (e4);
+
+  p2 p3 p4 (f4); ! estimate variances of residual "factors"
+  v2 v3 v4 (g4); ! estimate variances of residual "factors"
+
+  MODEL d5:
+
+  p4 on p3 (a5); ! Autoregressive paths constrained to equality
+  p3 on p2 (a5);
+  p2 on p1 (a5);
+
+  v4 on v3 (b5); ! Autoregressive paths constrained to equality
+  v3 on v2 (b5);
+  v2 on v1 (b5);
+
+  p4 on v3 (c5); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c5);
+  p2 on v1 (c5);
+
+  v4 on p3 (d5); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d5);
+  v2 on p1 (d5);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e5); ! Within-wave correlations constrained to equality
+  p3 with v3 (e5);
+  p4 with v4 (e5);
+
+  p2 p3 p4 (f5); ! estimate variances of residual "factors"
+  v2 v3 v4 (g5); ! estimate variances of residual "factors"
+
+  OUTPUT: SAMPSTAT PATTERNS;
+
+
+
+*** WARNING
+  Data set contains unknown or missing values for GROUPING,
+  PATTERN, COHORT, CLUSTER and/or STRATIFICATION variables.
+  Number of cases with unknown or missing values:  5
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+PxVx Bivariate LCM-SR - decadegroup - Linear bfas_ci with Linear aspfinc;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 4
+Number of observations
+   Group D2                                                    301
+   Group D3                                                    233
+   Group D4                                                    198
+   Group D5                                                    132
+   Total sample size                                           864
+
+Number of dependent variables                                    8
+Number of independent variables                                  0
+Number of continuous latent variables                           12
+
+Observed dependent variables
+
+  Continuous
+   ABFAS_CI    BBFAS_CI    CBFAS_CI    DBFAS_CI    AASPFINC    BASPFINC
+   CASPFINC    DASPFINC
+
+Continuous latent variables
+   P1          P2          P3          P4          V1          V2
+   V3          V4          I_BFAS_C    S_BFAS_C    I_ASPFIN    S_ASPFIN
+
+Variables with special functions
+
+  Grouping variable     AAGEGRP
+
+  Time scores
+   A1          A2          A3          A4
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                   100
+Convergence criterion                                    0.100D-05
+Maximum number of EM iterations                                500
+Convergence criteria for the EM algorithm
+  Loglikelihood change                                   0.100D-02
+  Relative loglikelihood change                          0.100D-05
+  Derivative                                             0.100D-03
+Minimum variance                                         0.100D-03
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+
+Input data file(s)
+  /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc_famc.tsv
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+   Group D2
+     Number of missing data patterns            13
+
+   Group D3
+     Number of missing data patterns            10
+
+   Group D4
+     Number of missing data patterns            13
+
+   Group D5
+     Number of missing data patterns             9
+
+
+SUMMARY OF MISSING DATA PATTERNS
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D2
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13
+ ABFAS_CI  x  x  x  x  x  x  x  x  x     x  x  x
+ BBFAS_CI  x     x  x  x     x        x  x     x
+ CBFAS_CI  x           x        x  x  x  x  x  x
+ DBFAS_CI  x     x        x        x  x     x  x
+ AASPFINC  x  x  x  x  x  x     x  x  x  x  x  x
+ BASPFINC  x     x  x  x     x        x  x  x
+ CASPFINC  x           x        x  x  x  x  x  x
+ DASPFINC  x     x        x        x  x  x  x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D2
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         187           6          11          11           1
+          2          57           7           1          12           1
+          3           6           8           5          13           1
+          4          11           9           5
+          5          14          10           1
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D3
+
+           1  2  3  4  5  6  7  8  9 10
+ ABFAS_CI  x  x  x  x  x  x  x  x  x  x
+ BBFAS_CI  x     x  x  x           x
+ CBFAS_CI  x           x     x  x
+ DBFAS_CI  x     x        x     x     x
+ AASPFINC  x  x  x  x  x  x  x  x  x  x
+ BASPFINC  x     x  x  x
+ CASPFINC  x           x     x  x
+ DASPFINC  x     x        x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D3
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         140           5           7           9           1
+          2          44           6           3          10           1
+          3           8           7           7
+          4          15           8           7
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D4
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13
+ ABFAS_CI  x  x  x  x  x  x  x  x  x  x  x  x  x
+ BBFAS_CI  x     x  x  x           x  x  x     x
+ CBFAS_CI  x           x     x  x  x     x
+ DBFAS_CI  x     x        x     x  x     x     x
+ AASPFINC  x  x  x  x  x  x  x  x  x  x  x     x
+ BASPFINC  x     x  x  x                 x
+ CASPFINC  x           x     x  x  x
+ DASPFINC  x     x        x     x  x     x     x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D4
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         104           6           4          11           1
+          2          39           7           6          12           1
+          3           7           8           5          13           1
+          4          12           9           1
+          5          15          10           2
+
+
+     MISSING DATA PATTERNS (x = not missing) FOR D5
+
+           1  2  3  4  5  6  7  8  9
+ ABFAS_CI  x  x  x  x  x  x  x  x
+ BBFAS_CI  x     x  x  x           x
+ CBFAS_CI  x           x     x  x  x
+ DBFAS_CI  x     x        x     x  x
+ AASPFINC  x  x  x  x  x  x  x  x  x
+ BASPFINC  x     x  x  x           x
+ CASPFINC  x           x     x  x  x
+ DASPFINC  x     x        x     x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES FOR D5
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1          60           4          10           7           6
+          2          29           5          11           8           4
+          3           5           6           6           9           1
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR D2
+
+
+           Covariance Coverage
+              ABFAS_CI      BBFAS_CI      CBFAS_CI      DBFAS_CI      AASPFINC
+              ________      ________      ________      ________      ________
+ ABFAS_CI       0.997
+ BBFAS_CI       0.734         0.738
+ CBFAS_CI       0.711         0.678         0.714
+ DBFAS_CI       0.701         0.648         0.648         0.704
+ AASPFINC       0.993         0.734         0.714         0.704         0.997
+ BASPFINC       0.734         0.734         0.678         0.648         0.734
+ CASPFINC       0.711         0.678         0.714         0.648         0.714
+ DASPFINC       0.704         0.651         0.651         0.704         0.708
+
+
+           Covariance Coverage
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+ BASPFINC       0.738
+ CASPFINC       0.678         0.714
+ DASPFINC       0.651         0.651         0.708
+
+
+     PROPORTION OF DATA PRESENT FOR D3
+
+
+           Covariance Coverage
+              ABFAS_CI      BBFAS_CI      CBFAS_CI      DBFAS_CI      AASPFINC
+              ________      ________      ________      ________      ________
+ ABFAS_CI       0.996
+ BBFAS_CI       0.760         0.764
+ CBFAS_CI       0.665         0.635         0.670
+ DBFAS_CI       0.652         0.639         0.609         0.657
+ AASPFINC       0.966         0.734         0.670         0.657         0.970
+ BASPFINC       0.760         0.764         0.635         0.639         0.734
+ CASPFINC       0.665         0.635         0.670         0.609         0.670
+ DASPFINC       0.652         0.639         0.609         0.657         0.657
+
+
+           Covariance Coverage
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+ BASPFINC       0.764
+ CASPFINC       0.635         0.670
+ DASPFINC       0.639         0.609         0.657
+
+
+     PROPORTION OF DATA PRESENT FOR D4
+
+
+           Covariance Coverage
+              ABFAS_CI      BBFAS_CI      CBFAS_CI      DBFAS_CI      AASPFINC
+              ________      ________      ________      ________      ________
+ ABFAS_CI       0.990
+ BBFAS_CI       0.737         0.747
+ CBFAS_CI       0.646         0.621         0.657
+ DBFAS_CI       0.596         0.576         0.551         0.606
+ AASPFINC       0.960         0.717         0.657         0.606         0.970
+ BASPFINC       0.737         0.742         0.621         0.576         0.717
+ CASPFINC       0.646         0.621         0.657         0.551         0.657
+ DASPFINC       0.601         0.581         0.556         0.606         0.611
+
+
+           Covariance Coverage
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+ BASPFINC       0.747
+ CASPFINC       0.621         0.657
+ DASPFINC       0.581         0.556         0.611
+
+
+     PROPORTION OF DATA PRESENT FOR D5
+
+
+           Covariance Coverage
+              ABFAS_CI      BBFAS_CI      CBFAS_CI      DBFAS_CI      AASPFINC
+              ________      ________      ________      ________      ________
+ ABFAS_CI       1.000
+ BBFAS_CI       0.697         0.697
+ CBFAS_CI       0.576         0.538         0.576
+ DBFAS_CI       0.545         0.492         0.462         0.545
+ AASPFINC       0.955         0.652         0.576         0.545         0.955
+ BASPFINC       0.697         0.697         0.538         0.492         0.652
+ CASPFINC       0.576         0.538         0.576         0.462         0.576
+ DASPFINC       0.545         0.492         0.462         0.545         0.545
+
+
+           Covariance Coverage
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+ BASPFINC       0.697
+ CASPFINC       0.538         0.576
+ DASPFINC       0.492         0.462         0.545
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D2
+
+
+           Means
+              ABFAS_CI      BBFAS_CI      CBFAS_CI      DBFAS_CI      AASPFINC
+              ________      ________      ________      ________      ________
+               59.809        59.006        58.193        59.122        38.447
+
+
+           Means
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+               39.458        39.361        39.829
+
+
+           Covariances
+              ABFAS_CI      BBFAS_CI      CBFAS_CI      DBFAS_CI      AASPFINC
+              ________      ________      ________      ________      ________
+ ABFAS_CI     358.055
+ BBFAS_CI     260.330       321.432
+ CBFAS_CI     232.660       239.632       290.750
+ DBFAS_CI     249.356       244.422       245.387       326.288
+ AASPFINC      -6.729       -19.553        -3.365       -11.665       221.712
+ BASPFINC     -14.292       -20.659        -2.169        -2.713       175.021
+ CASPFINC       6.087        -4.363         0.645        -1.517       174.543
+ DASPFINC     -32.884       -24.706        -7.139       -16.551       163.126
+
+
+           Covariances
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+ BASPFINC     229.199
+ CASPFINC     189.938       246.706
+ DASPFINC     181.414       195.157       252.727
+
+
+           Correlations
+              ABFAS_CI      BBFAS_CI      CBFAS_CI      DBFAS_CI      AASPFINC
+              ________      ________      ________      ________      ________
+ ABFAS_CI       1.000
+ BBFAS_CI       0.767         1.000
+ CBFAS_CI       0.721         0.784         1.000
+ DBFAS_CI       0.730         0.755         0.797         1.000
+ AASPFINC      -0.024        -0.073        -0.013        -0.043         1.000
+ BASPFINC      -0.050        -0.076        -0.008        -0.010         0.776
+ CASPFINC       0.020        -0.015         0.002        -0.005         0.746
+ DASPFINC      -0.109        -0.087        -0.026        -0.058         0.689
+
+
+           Correlations
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+ BASPFINC       1.000
+ CASPFINC       0.799         1.000
+ DASPFINC       0.754         0.782         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D3
+
+
+           Means
+              ABFAS_CI      BBFAS_CI      CBFAS_CI      DBFAS_CI      AASPFINC
+              ________      ________      ________      ________      ________
+               65.332        65.572        66.036        65.970        37.797
+
+
+           Means
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+               38.346        38.414        38.864
+
+
+           Covariances
+              ABFAS_CI      BBFAS_CI      CBFAS_CI      DBFAS_CI      AASPFINC
+              ________      ________      ________      ________      ________
+ ABFAS_CI     337.280
+ BBFAS_CI     284.600       344.607
+ CBFAS_CI     248.798       270.053       320.347
+ DBFAS_CI     237.518       261.867       239.565       304.656
+ AASPFINC      20.289         9.634        -8.293         3.676       201.092
+ BASPFINC      25.858         9.719       -11.231         2.748       157.509
+ CASPFINC      11.564         0.027       -25.076       -18.088       162.979
+ DASPFINC      21.356         9.176       -13.962        -4.877       164.912
+
+
+           Covariances
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+ BASPFINC     199.555
+ CASPFINC     171.775       219.779
+ DASPFINC     170.052       175.971       222.563
+
+
+           Correlations
+              ABFAS_CI      BBFAS_CI      CBFAS_CI      DBFAS_CI      AASPFINC
+              ________      ________      ________      ________      ________
+ ABFAS_CI       1.000
+ BBFAS_CI       0.835         1.000
+ CBFAS_CI       0.757         0.813         1.000
+ DBFAS_CI       0.741         0.808         0.767         1.000
+ AASPFINC       0.078         0.037        -0.033         0.015         1.000
+ BASPFINC       0.100         0.037        -0.044         0.011         0.786
+ CASPFINC       0.042         0.000        -0.095        -0.070         0.775
+ DASPFINC       0.078         0.033        -0.052        -0.019         0.780
+
+
+           Correlations
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+ BASPFINC       1.000
+ CASPFINC       0.820         1.000
+ DASPFINC       0.807         0.796         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D4
+
+
+           Means
+              ABFAS_CI      BBFAS_CI      CBFAS_CI      DBFAS_CI      AASPFINC
+              ________      ________      ________      ________      ________
+               64.874        64.388        65.338        63.978        36.655
+
+
+           Means
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+               36.875        38.258        39.630
+
+
+           Covariances
+              ABFAS_CI      BBFAS_CI      CBFAS_CI      DBFAS_CI      AASPFINC
+              ________      ________      ________      ________      ________
+ ABFAS_CI     320.088
+ BBFAS_CI     241.395       276.504
+ CBFAS_CI     258.219       259.410       352.177
+ DBFAS_CI     213.854       228.719       276.963       305.747
+ AASPFINC      -3.878         3.395         3.919        -4.088       170.616
+ BASPFINC       6.941         0.781       -15.109       -21.650       136.748
+ CASPFINC       6.606         7.996         3.274       -14.342       116.509
+ DASPFINC      -3.667        -1.147        -2.108       -12.039       125.296
+
+
+           Covariances
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+ BASPFINC     173.870
+ CASPFINC     121.467       139.990
+ DASPFINC     130.111       116.744       157.483
+
+
+           Correlations
+              ABFAS_CI      BBFAS_CI      CBFAS_CI      DBFAS_CI      AASPFINC
+              ________      ________      ________      ________      ________
+ ABFAS_CI       1.000
+ BBFAS_CI       0.811         1.000
+ CBFAS_CI       0.769         0.831         1.000
+ DBFAS_CI       0.684         0.787         0.844         1.000
+ AASPFINC      -0.017         0.016         0.016        -0.018         1.000
+ BASPFINC       0.029         0.004        -0.061        -0.094         0.794
+ CASPFINC       0.031         0.041         0.015        -0.069         0.754
+ DASPFINC      -0.016        -0.005        -0.009        -0.055         0.764
+
+
+           Correlations
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+ BASPFINC       1.000
+ CASPFINC       0.779         1.000
+ DASPFINC       0.786         0.786         1.000
+
+
+     ESTIMATED SAMPLE STATISTICS FOR D5
+
+
+           Means
+              ABFAS_CI      BBFAS_CI      CBFAS_CI      DBFAS_CI      AASPFINC
+              ________      ________      ________      ________      ________
+               64.640        65.335        65.460        65.187        35.878
+
+
+           Means
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+               36.491        36.886        37.869
+
+
+           Covariances
+              ABFAS_CI      BBFAS_CI      CBFAS_CI      DBFAS_CI      AASPFINC
+              ________      ________      ________      ________      ________
+ ABFAS_CI     304.468
+ BBFAS_CI     238.986       308.960
+ CBFAS_CI     223.834       228.710       276.268
+ DBFAS_CI     240.433       258.464       237.417       316.840
+ AASPFINC     -33.247       -19.335       -24.733       -35.614       166.665
+ BASPFINC      -4.682       -18.990       -21.768       -34.477       124.808
+ CASPFINC      -3.467        -2.100       -15.395       -19.617       131.619
+ DASPFINC      -8.814       -23.897        -1.242       -18.998       104.321
+
+
+           Covariances
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+ BASPFINC     158.477
+ CASPFINC     134.933       184.779
+ DASPFINC     118.445       131.784       151.471
+
+
+           Correlations
+              ABFAS_CI      BBFAS_CI      CBFAS_CI      DBFAS_CI      AASPFINC
+              ________      ________      ________      ________      ________
+ ABFAS_CI       1.000
+ BBFAS_CI       0.779         1.000
+ CBFAS_CI       0.772         0.783         1.000
+ DBFAS_CI       0.774         0.826         0.802         1.000
+ AASPFINC      -0.148        -0.085        -0.115        -0.155         1.000
+ BASPFINC      -0.021        -0.086        -0.104        -0.154         0.768
+ CASPFINC      -0.015        -0.009        -0.068        -0.081         0.750
+ DASPFINC      -0.041        -0.110        -0.006        -0.087         0.657
+
+
+           Correlations
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+ BASPFINC       1.000
+ CASPFINC       0.789         1.000
+ DASPFINC       0.764         0.788         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -20126.653
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D2
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_CI             59.766      -0.230       7.500    0.33%      45.000     55.000     60.000
+             300.000     358.296      -0.261     100.000    0.67%      65.000     77.500
+     BBFAS_CI             59.170      -0.067       2.500    0.45%      44.444     55.000     60.000
+             222.000     302.066      -0.226     100.000    0.45%      62.500     75.000
+     CBFAS_CI             58.339      -0.095      17.500    0.93%      45.000     55.000     57.500
+             215.000     275.273      -0.351      95.000    0.47%      60.000     75.000
+     DBFAS_CI             59.835      -0.120       7.500    0.47%      42.500     55.000     60.000
+             212.000     314.654      -0.317      97.500    1.42%      65.000     75.000
+     AASPFINC             38.466       0.108       2.863    0.33%      25.597     34.691     37.831
+             300.000     222.047       0.081      98.010    0.33%      41.258     52.541
+     BASPFINC             38.989       0.258       2.021    0.45%      24.648     33.680     38.564
+             222.000     221.705      -0.363      84.201    0.45%      43.111     52.205
+     CASPFINC             39.479       0.218       8.083    0.47%      25.260     34.522     38.901
+             215.000     239.814      -0.112      97.168    0.47%      43.784     53.889
+     DASPFINC             39.361       0.121       7.578    0.47%      25.429     35.533     39.406
+             213.000     250.298      -0.395      88.074    0.47%      43.784     53.215
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D3
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_CI             65.332      -0.404      11.111    0.43%      50.000     62.500     67.500
+             233.000     337.280      -0.305     100.000    1.29%      72.500     82.500
+     BBFAS_CI             66.093      -0.309      22.500    1.75%      50.000     60.000     66.667
+             171.000     330.869      -0.559     100.000    0.58%      72.500     82.500
+     CBFAS_CI             66.149      -0.364      17.500    1.24%      52.500     62.500     67.500
+             161.000     321.972      -0.224     100.000    1.24%      70.000     82.500
+     DBFAS_CI             66.441      -0.006      22.500    0.63%      50.000     62.500     65.000
+             159.000     296.093      -0.743     100.000    1.26%      70.000     82.500
+     AASPFINC             37.797       0.389       0.337    0.43%      26.271     33.512     37.048
+             233.000     201.092       1.007     100.000    0.43%      41.021     50.015
+     BASPFINC             38.409       0.116       3.873    0.59%      25.934     34.522     38.143
+             170.000     193.373      -0.060      80.328    0.59%      42.606     50.689
+     CASPFINC             38.176       0.275       6.231    0.62%      24.250     33.007     37.217
+             161.000     220.453      -0.228      80.496    0.62%      42.269     51.026
+     DASPFINC             38.556       0.404       0.000    0.63%      25.260     33.849     38.311
+             158.000     222.666       0.416      87.064    0.63%      42.774     51.363
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D4
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_CI             64.874      -0.297      16.667    0.51%      50.000     60.000     65.000
+             198.000     320.088      -0.193     100.000    2.02%      70.000     80.000
+     BBFAS_CI             64.204      -0.176      15.000    0.70%      50.000     60.000     65.000
+             143.000     279.334      -0.136     100.000    1.40%      67.500     80.000
+     CBFAS_CI             65.985      -0.324      10.000    0.76%      47.500     62.500     67.500
+             132.000     354.522      -0.038     100.000    2.27%      70.000     82.500
+     DBFAS_CI             64.634      -0.160      10.000    0.81%      47.500     57.500     65.000
+             123.000     322.529      -0.222      97.500    3.25%      70.000     80.000
+     AASPFINC             36.653       0.523       4.715    0.51%      24.162     33.512     37.148
+             197.000     170.616       0.927      87.232    0.51%      39.238     46.647
+     BASPFINC             37.244       0.039       9.936    1.44%      26.439     33.512     36.206
+             139.000     166.013      -0.641      68.876    0.72%      39.911     49.153
+     CASPFINC             38.552       0.029       7.915    0.76%      27.955     36.712     38.901
+             131.000     130.110       0.365      72.244    0.76%      41.427     47.321
+     DASPFINC             39.588       0.281      12.967    0.81%      28.123     36.206     38.564
+             123.000     150.990      -0.025      73.760    0.81%      42.100     48.500
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS FOR D5
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFAS_CI             64.574      -0.382      15.000    0.76%      50.000     60.000     65.000
+             131.000     305.581      -0.319      97.500    1.53%      70.000     80.000
+     BBFAS_CI             67.283      -0.230      33.333    1.15%      50.000     62.500     67.500
+              87.000     294.655      -0.749     100.000    1.15%      72.500     82.500
+     CBFAS_CI             66.463      -0.560      17.500    1.22%      52.500     65.000     70.000
+              82.000     271.944       0.189      95.000    3.66%      70.000     80.000
+     DBFAS_CI             66.955      -0.476      17.500    1.32%      50.000     62.500     70.000
+              76.000     300.898      -0.146      95.000    5.26%      72.500     82.500
+     AASPFINC             35.878       0.186       8.588    0.76%      23.576     31.866     34.859
+             132.000     166.665      -0.770      67.254    0.76%      37.257     49.510
+     BASPFINC             36.097       0.046       8.588    1.15%      22.566     32.333     35.196
+              87.000     150.646      -0.609      66.182    1.15%      38.227     47.994
+     CASPFINC             36.184       0.206       9.262    1.22%      22.903     29.639     35.533
+              82.000     191.341      -0.679      75.107    1.22%      41.090     49.173
+     DASPFINC             36.887       0.009      15.156    1.32%      23.576     31.491     37.975
+              76.000     142.059      -0.977      60.288    1.32%      39.743     48.331
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       54
+
+Loglikelihood
+
+          H0 Value                      -20196.413
+          H0 Scaling Correction Factor      1.2776
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   40500.826
+          Bayesian (BIC)                 40757.951
+          Sample-Size Adjusted BIC       40586.461
+            (n* = (n + 2) / 24)
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Group D2
+
+ P1       BY
+    ABFAS_CI           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_CI           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_CI           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_CI           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AASPFINC           1.000      0.000    999.000    999.000
+
+ V2       BY
+    BASPFINC           1.000      0.000    999.000    999.000
+
+ V3       BY
+    CASPFINC           1.000      0.000    999.000    999.000
+
+ V4       BY
+    DASPFINC           1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.155      0.071      2.195      0.028
+    V3                -0.075      0.080     -0.931      0.352
+
+ P3         ON
+    P2                 0.155      0.071      2.195      0.028
+    V2                -0.075      0.080     -0.931      0.352
+
+ P2         ON
+    P1                 0.155      0.071      2.195      0.028
+    V1                -0.075      0.080     -0.931      0.352
+
+ V4         ON
+    V3                 0.245      0.119      2.060      0.039
+    P3                -0.013      0.076     -0.175      0.861
+
+ V3         ON
+    V2                 0.245      0.119      2.060      0.039
+    P2                -0.013      0.076     -0.175      0.861
+
+ V2         ON
+    V1                 0.245      0.119      2.060      0.039
+    P1                -0.013      0.076     -0.175      0.861
+
+ S_BFAS_C WITH
+    I_BFAS_CI         -0.644      0.838     -0.768      0.442
+    S_ASPFINC         -0.023      0.081     -0.287      0.774
+    I_ASPFINC         -0.670      1.622     -0.413      0.680
+
+ I_BFAS_C WITH
+    S_ASPFINC          0.206      1.679      0.123      0.902
+    I_ASPFINC         -0.043     10.615     -0.004      0.997
+
+ S_ASPFIN WITH
+    I_ASPFINC         -1.063      0.546     -1.946      0.052
+
+ P1       WITH
+    V1                 9.150      7.331      1.248      0.212
+
+ P2       WITH
+    V2                -6.902      5.256     -1.313      0.189
+
+ P3       WITH
+    V3                -6.902      5.256     -1.313      0.189
+
+ P4       WITH
+    V4                -6.902      5.256     -1.313      0.189
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_CI         62.836      0.592    106.091      0.000
+    S_BFAS_CI          0.181      0.053      3.403      0.001
+    I_ASPFINC         38.050      0.460     82.670      0.000
+    S_ASPFINC         -0.019      0.040     -0.477      0.633
+
+ Intercepts
+    ABFAS_CI           0.000      0.000    999.000    999.000
+    BBFAS_CI           0.000      0.000    999.000    999.000
+    CBFAS_CI           0.000      0.000    999.000    999.000
+    DBFAS_CI           0.000      0.000    999.000    999.000
+    AASPFINC           0.000      0.000    999.000    999.000
+    BASPFINC           0.000      0.000    999.000    999.000
+    CASPFINC           0.000      0.000    999.000    999.000
+    DASPFINC           0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1               110.024     22.815      4.822      0.000
+    V1                66.062     10.929      6.045      0.000
+    I_BFAS_CI        233.299     17.449     13.370      0.000
+    S_BFAS_CI          0.126      0.140      0.904      0.366
+    I_ASPFINC        146.495     12.348     11.864      0.000
+    S_ASPFINC          0.046      0.090      0.512      0.609
+
+ Residual Variances
+    ABFAS_CI           0.000      0.000    999.000    999.000
+    BBFAS_CI           0.000      0.000    999.000    999.000
+    CBFAS_CI           0.000      0.000    999.000    999.000
+    DBFAS_CI           0.000      0.000    999.000    999.000
+    AASPFINC           0.000      0.000    999.000    999.000
+    BASPFINC           0.000      0.000    999.000    999.000
+    CASPFINC           0.000      0.000    999.000    999.000
+    DASPFINC           0.000      0.000    999.000    999.000
+    P2                76.322      8.007      9.532      0.000
+    P3                76.322      8.007      9.532      0.000
+    P4                76.322      8.007      9.532      0.000
+    V2                64.616      8.067      8.010      0.000
+    V3                64.616      8.067      8.010      0.000
+    V4                64.616      8.067      8.010      0.000
+
+Group D3
+
+ P1       BY
+    ABFAS_CI           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_CI           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_CI           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_CI           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AASPFINC           1.000      0.000    999.000    999.000
+
+ V2       BY
+    BASPFINC           1.000      0.000    999.000    999.000
+
+ V3       BY
+    CASPFINC           1.000      0.000    999.000    999.000
+
+ V4       BY
+    DASPFINC           1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.146      0.102      1.429      0.153
+    V3                -0.142      0.073     -1.929      0.054
+
+ P3         ON
+    P2                 0.146      0.102      1.429      0.153
+    V2                -0.142      0.073     -1.929      0.054
+
+ P2         ON
+    P1                 0.146      0.102      1.429      0.153
+    V1                -0.142      0.073     -1.929      0.054
+
+ V4         ON
+    V3                 0.065      0.094      0.693      0.489
+    P3                -0.016      0.056     -0.293      0.769
+
+ V3         ON
+    V2                 0.065      0.094      0.693      0.489
+    P2                -0.016      0.056     -0.293      0.769
+
+ V2         ON
+    V1                 0.065      0.094      0.693      0.489
+    P1                -0.016      0.056     -0.293      0.769
+
+ S_BFAS_C WITH
+    I_BFAS_CI         -0.644      0.838     -0.768      0.442
+    S_ASPFINC         -0.023      0.081     -0.287      0.774
+    I_ASPFINC         -0.670      1.622     -0.413      0.680
+
+ I_BFAS_C WITH
+    S_ASPFINC          0.206      1.679      0.123      0.902
+    I_ASPFINC         -0.043     10.615     -0.004      0.997
+
+ S_ASPFIN WITH
+    I_ASPFINC         -1.063      0.546     -1.946      0.052
+
+ P1       WITH
+    V1                -2.744      8.545     -0.321      0.748
+
+ P2       WITH
+    V2                -5.406      3.627     -1.491      0.136
+
+ P3       WITH
+    V3                -5.406      3.627     -1.491      0.136
+
+ P4       WITH
+    V4                -5.406      3.627     -1.491      0.136
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_CI         62.836      0.592    106.091      0.000
+    S_BFAS_CI          0.181      0.053      3.403      0.001
+    I_ASPFINC         38.050      0.460     82.670      0.000
+    S_ASPFINC         -0.019      0.040     -0.477      0.633
+
+ Intercepts
+    ABFAS_CI           0.000      0.000    999.000    999.000
+    BBFAS_CI           0.000      0.000    999.000    999.000
+    CBFAS_CI           0.000      0.000    999.000    999.000
+    DBFAS_CI           0.000      0.000    999.000    999.000
+    AASPFINC           0.000      0.000    999.000    999.000
+    BASPFINC           0.000      0.000    999.000    999.000
+    CASPFINC           0.000      0.000    999.000    999.000
+    DASPFINC           0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                81.751     15.818      5.168      0.000
+    V1                48.563      7.913      6.137      0.000
+    I_BFAS_CI        233.299     17.449     13.370      0.000
+    S_BFAS_CI          0.126      0.140      0.904      0.366
+    I_ASPFINC        146.495     12.348     11.864      0.000
+    S_ASPFINC          0.046      0.090      0.512      0.609
+
+ Residual Variances
+    ABFAS_CI           0.000      0.000    999.000    999.000
+    BBFAS_CI           0.000      0.000    999.000    999.000
+    CBFAS_CI           0.000      0.000    999.000    999.000
+    DBFAS_CI           0.000      0.000    999.000    999.000
+    AASPFINC           0.000      0.000    999.000    999.000
+    BASPFINC           0.000      0.000    999.000    999.000
+    CASPFINC           0.000      0.000    999.000    999.000
+    DASPFINC           0.000      0.000    999.000    999.000
+    P2                71.646      9.459      7.575      0.000
+    P3                71.646      9.459      7.575      0.000
+    P4                71.646      9.459      7.575      0.000
+    V2                44.607      6.119      7.290      0.000
+    V3                44.607      6.119      7.290      0.000
+    V4                44.607      6.119      7.290      0.000
+
+Group D4
+
+ P1       BY
+    ABFAS_CI           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_CI           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_CI           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_CI           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AASPFINC           1.000      0.000    999.000    999.000
+
+ V2       BY
+    BASPFINC           1.000      0.000    999.000    999.000
+
+ V3       BY
+    CASPFINC           1.000      0.000    999.000    999.000
+
+ V4       BY
+    DASPFINC           1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.250      0.098      2.537      0.011
+    V3                -0.146      0.100     -1.466      0.143
+
+ P3         ON
+    P2                 0.250      0.098      2.537      0.011
+    V2                -0.146      0.100     -1.466      0.143
+
+ P2         ON
+    P1                 0.250      0.098      2.537      0.011
+    V1                -0.146      0.100     -1.466      0.143
+
+ V4         ON
+    V3                 0.106      0.106      0.998      0.318
+    P3                 0.087      0.059      1.469      0.142
+
+ V3         ON
+    V2                 0.106      0.106      0.998      0.318
+    P2                 0.087      0.059      1.469      0.142
+
+ V2         ON
+    V1                 0.106      0.106      0.998      0.318
+    P1                 0.087      0.059      1.469      0.142
+
+ S_BFAS_C WITH
+    I_BFAS_CI         -0.644      0.838     -0.768      0.442
+    S_ASPFINC         -0.023      0.081     -0.287      0.774
+    I_ASPFINC         -0.670      1.622     -0.413      0.680
+
+ I_BFAS_C WITH
+    S_ASPFINC          0.206      1.679      0.123      0.902
+    I_ASPFINC         -0.043     10.615     -0.004      0.997
+
+ S_ASPFIN WITH
+    I_ASPFINC         -1.063      0.546     -1.946      0.052
+
+ P1       WITH
+    V1               -14.580      9.267     -1.573      0.116
+
+ P2       WITH
+    V2                 3.064      4.155      0.737      0.461
+
+ P3       WITH
+    V3                 3.064      4.155      0.737      0.461
+
+ P4       WITH
+    V4                 3.064      4.155      0.737      0.461
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_CI         62.836      0.592    106.091      0.000
+    S_BFAS_CI          0.181      0.053      3.403      0.001
+    I_ASPFINC         38.050      0.460     82.670      0.000
+    S_ASPFINC         -0.019      0.040     -0.477      0.633
+
+ Intercepts
+    ABFAS_CI           0.000      0.000    999.000    999.000
+    BBFAS_CI           0.000      0.000    999.000    999.000
+    CBFAS_CI           0.000      0.000    999.000    999.000
+    DBFAS_CI           0.000      0.000    999.000    999.000
+    AASPFINC           0.000      0.000    999.000    999.000
+    BASPFINC           0.000      0.000    999.000    999.000
+    CASPFINC           0.000      0.000    999.000    999.000
+    DASPFINC           0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1               108.002     19.500      5.539      0.000
+    V1                42.084      7.291      5.772      0.000
+    I_BFAS_CI        233.299     17.449     13.370      0.000
+    S_BFAS_CI          0.126      0.140      0.904      0.366
+    I_ASPFINC        146.495     12.348     11.864      0.000
+    S_ASPFINC          0.046      0.090      0.512      0.609
+
+ Residual Variances
+    ABFAS_CI           0.000      0.000    999.000    999.000
+    BBFAS_CI           0.000      0.000    999.000    999.000
+    CBFAS_CI           0.000      0.000    999.000    999.000
+    DBFAS_CI           0.000      0.000    999.000    999.000
+    AASPFINC           0.000      0.000    999.000    999.000
+    BASPFINC           0.000      0.000    999.000    999.000
+    CASPFINC           0.000      0.000    999.000    999.000
+    DASPFINC           0.000      0.000    999.000    999.000
+    P2                62.897      7.498      8.388      0.000
+    P3                62.897      7.498      8.388      0.000
+    P4                62.897      7.498      8.388      0.000
+    V2                37.406      4.460      8.387      0.000
+    V3                37.406      4.460      8.387      0.000
+    V4                37.406      4.460      8.387      0.000
+
+Group D5
+
+ P1       BY
+    ABFAS_CI           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFAS_CI           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFAS_CI           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFAS_CI           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AASPFINC           1.000      0.000    999.000    999.000
+
+ V2       BY
+    BASPFINC           1.000      0.000    999.000    999.000
+
+ V3       BY
+    CASPFINC           1.000      0.000    999.000    999.000
+
+ V4       BY
+    DASPFINC           1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                -0.007      0.112     -0.064      0.949
+    V3                 0.142      0.115      1.230      0.219
+
+ P3         ON
+    P2                -0.007      0.112     -0.064      0.949
+    V2                 0.142      0.115      1.230      0.219
+
+ P2         ON
+    P1                -0.007      0.112     -0.064      0.949
+    V1                 0.142      0.115      1.230      0.219
+
+ V4         ON
+    V3                 0.222      0.127      1.751      0.080
+    P3                 0.261      0.082      3.191      0.001
+
+ V3         ON
+    V2                 0.222      0.127      1.751      0.080
+    P2                 0.261      0.082      3.191      0.001
+
+ V2         ON
+    V1                 0.222      0.127      1.751      0.080
+    P1                 0.261      0.082      3.191      0.001
+
+ S_BFAS_C WITH
+    I_BFAS_CI         -0.644      0.838     -0.768      0.442
+    S_ASPFINC         -0.023      0.081     -0.287      0.774
+    I_ASPFINC         -0.670      1.622     -0.413      0.680
+
+ I_BFAS_C WITH
+    S_ASPFINC          0.206      1.679      0.123      0.902
+    I_ASPFINC         -0.043     10.615     -0.004      0.997
+
+ S_ASPFIN WITH
+    I_ASPFINC         -1.063      0.546     -1.946      0.052
+
+ P1       WITH
+    V1               -15.171      8.191     -1.852      0.064
+
+ P2       WITH
+    V2                 5.870      4.260      1.378      0.168
+
+ P3       WITH
+    V3                 5.870      4.260      1.378      0.168
+
+ P4       WITH
+    V4                 5.870      4.260      1.378      0.168
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFAS_CI         62.836      0.592    106.091      0.000
+    S_BFAS_CI          0.181      0.053      3.403      0.001
+    I_ASPFINC         38.050      0.460     82.670      0.000
+    S_ASPFINC         -0.019      0.040     -0.477      0.633
+
+ Intercepts
+    ABFAS_CI           0.000      0.000    999.000    999.000
+    BBFAS_CI           0.000      0.000    999.000    999.000
+    CBFAS_CI           0.000      0.000    999.000    999.000
+    DBFAS_CI           0.000      0.000    999.000    999.000
+    AASPFINC           0.000      0.000    999.000    999.000
+    BASPFINC           0.000      0.000    999.000    999.000
+    CASPFINC           0.000      0.000    999.000    999.000
+    DASPFINC           0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                74.239     21.060      3.525      0.000
+    V1                53.159     12.137      4.380      0.000
+    I_BFAS_CI        233.299     17.449     13.370      0.000
+    S_BFAS_CI          0.126      0.140      0.904      0.366
+    I_ASPFINC        146.495     12.348     11.864      0.000
+    S_ASPFINC          0.046      0.090      0.512      0.609
+
+ Residual Variances
+    ABFAS_CI           0.000      0.000    999.000    999.000
+    BBFAS_CI           0.000      0.000    999.000    999.000
+    CBFAS_CI           0.000      0.000    999.000    999.000
+    DBFAS_CI           0.000      0.000    999.000    999.000
+    AASPFINC           0.000      0.000    999.000    999.000
+    BASPFINC           0.000      0.000    999.000    999.000
+    CASPFINC           0.000      0.000    999.000    999.000
+    DASPFINC           0.000      0.000    999.000    999.000
+    P2                59.523     10.852      5.485      0.000
+    P3                59.523     10.852      5.485      0.000
+    P4                59.523     10.852      5.485      0.000
+    V2                39.531      5.471      7.226      0.000
+    V3                39.531      5.471      7.226      0.000
+    V4                39.531      5.471      7.226      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.300E-05
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  13:18:38
+        Ending Time:  13:18:50
+       Elapsed Time:  00:00:12
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen
