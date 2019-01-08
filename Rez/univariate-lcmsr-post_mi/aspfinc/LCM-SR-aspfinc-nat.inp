@@ -1,8 +1,8 @@
 
-title: PxVx Univariate LCM-SR - post mi - hrz_ind_d;
+title: PxVx Univariate LCM-SR - post mi - aspfinc;
 
-data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
 
+data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc_famc.tsv;
 
 variable:
 names =
@@ -151,13 +151,17 @@ dvrt_col
 dvrt_col_d
 dvrt_ind
 dvrt_ind_d
+aaspfinc
+baspfinc
+caspfinc
+daspfinc
 ;
 
 USEVARIABLES =
-ahrz_ind_d
-bhrz_ind_d
-chrz_ind_d
-dhrz_ind_d
+aaspfinc
+baspfinc
+caspfinc
+daspfinc
 a1
 a2
 a3
@@ -182,26 +186,26 @@ model=nocovariances; ! supresses default estimation of certain covs in model;
 
 MODEL:
 
-i_hrz_ind_d s_hrz_ind_d |  ahrz_ind_d bhrz_ind_d chrz_ind_d dhrz_ind_d AT a1 a2 a3 a4;
+i_aspfinc s_aspfinc |  aaspfinc baspfinc caspfinc daspfinc AT a1 a2 a3 a4;
 
-s_hrz_ind_d WITH i_hrz_ind_d; ! freeing factor covs because of "nocovariances";
+s_aspfinc WITH i_aspfinc; ! freeing factor covs because of "nocovariances";
 
-p1 BY ahrz_ind_d@1; ! Residual "factors";
-p2 BY bhrz_ind_d@1;
-p3 BY chrz_ind_d@1;
-p4 BY dhrz_ind_d@1;
+p1 BY aaspfinc@1; ! Residual "factors";
+p2 BY baspfinc@1;
+p3 BY caspfinc@1;
+p4 BY daspfinc@1;
 
 !residual variances on observed/manifest vars set to 0
-ahrz_ind_d@0;
-bhrz_ind_d@0;
-chrz_ind_d@0;
-dhrz_ind_d@0;
+aaspfinc@0;
+baspfinc@0;
+caspfinc@0;
+daspfinc@0;
 
 ! means of observed/manifest vars set to 0
-[ahrz_ind_d@0];
-[bhrz_ind_d@0];
-[chrz_ind_d@0];
-[dhrz_ind_d@0];
+[aaspfinc@0];
+[baspfinc@0];
+[caspfinc@0];
+[daspfinc@0];
 
 p2 p3 p4 (c); ! estimate variances of residual "factors"
 

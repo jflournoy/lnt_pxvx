@@ -45,8 +45,8 @@ loadUniFN <- '~/code_new/lnt_pxvx/Rez/uniLCMSRMods_postmi.RData'
 # 
 # setwd('E:/Projects/lnt_pxvx/Rez/univariate')
 # setwd("~/Documents/lnt_pxvx/Rez/univariate-lcmsr")
-# runModels(target = '~/code_new/lnt_pxvx/Rez/univariate-lcmsr-post_mi/', 
-#           recursive = T,
+# runModels(target = '~/code_new/lnt_pxvx/Rez/univariate-lcmsr-post_mi/',
+#           recursive = T, replaceOutfile = 'never',
 #           Mplus_command = '/opt/mplus/8/mplus')
 
 # # Read models
@@ -133,6 +133,7 @@ vVarNames <- c(
   bfa_mt_d ='Materialism Invariant',
   aspfin ='Financial Aspirations',
   aspfin_d ='Financial Aspirations Invariant',
+  aspfinc='Financial Aspirations MC',
   mvi ='Mature Values Index',
   vrt_col ='Vertical Collectivism',
   vrt_col_d ='Vertical Collectivism Invariant',
@@ -287,10 +288,14 @@ baseMainDFColNames <- c(
   'dvrt_col',
   'dvrt_col_d',
   'dvrt_ind',
-  'dvrt_ind_d'
+  'dvrt_ind_d',
+  'aaspfinc',
+  'baspfinc',
+  'caspfinc',
+  'daspfinc'
 )
 
-baseMainDF <- read.table('~/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv', sep='\t', header=F,
+baseMainDF <- read.table('~/code_new/lnt_pxvx/Data/lnt_nat_recalc_famc.tsv', sep='\t', header=F,
                          na.strings=-9999,
                          col.names=baseMainDFColNames)
 
@@ -371,7 +376,7 @@ v_plot_mvi <- vDF %>%
   labs(y="Scale Score\n(in POMP units)",x="Age")
 
 v_plot_pub <- vDF %>%
-  filter(wave == 'a', !grepl('Invariant', variable)) %>%
+  filter(wave == 'a', !grepl('Invariant', variable), !grepl('MC$', variable)) %>%
   left_join(summary_data_for_tables_w) %>%
   ggplot(aes(x = half_decade, y = mean)) +
   geom_errorbar(aes(ymin = ci_l, ymax = ci_u),
