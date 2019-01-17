@@ -134,6 +134,7 @@ vVarNames <- c(
   aspfin ='Financial Aspirations',
   aspfin_d ='Financial Aspirations Invariant',
   aspfinc='Financial Aspirations MC',
+  aspfinc_d='Financial Aspirations MC Invariant',
   mvi ='Mature Values Index',
   vrt_col ='Vertical Collectivism',
   vrt_col_d ='Vertical Collectivism Invariant',
@@ -147,6 +148,8 @@ baseMainDFColNames <- c(
   'subjid',
   'aage',
   'aaspfin',
+  'aaspfinc',
+  'aaspfinc_d',
   'aaspfin_d',
   'abfa_mt',
   'abfa_mt_d',
@@ -183,6 +186,8 @@ baseMainDFColNames <- c(
   'avrt_ind_d',
   'bage',
   'baspfin',
+  'baspfinc',
+  'baspfinc_d',
   'baspfin_d',
   'bbfa_mt',
   'bbfa_mt_d',
@@ -219,6 +224,8 @@ baseMainDFColNames <- c(
   'bvrt_ind_d',
   'cage',
   'caspfin',
+  'caspfinc',
+  'caspfinc_d',
   'caspfin_d',
   'cbfa_mt',
   'cbfa_mt_d',
@@ -255,6 +262,8 @@ baseMainDFColNames <- c(
   'cvrt_ind_d',
   'dage',
   'daspfin',
+  'daspfinc',
+  'daspfinc_d',
   'daspfin_d',
   'dbfa_mt',
   'dbfa_mt_d',
@@ -288,14 +297,10 @@ baseMainDFColNames <- c(
   'dvrt_col',
   'dvrt_col_d',
   'dvrt_ind',
-  'dvrt_ind_d',
-  'aaspfinc',
-  'baspfinc',
-  'caspfinc',
-  'daspfinc'
+  'dvrt_ind_d'
 )
 
-baseMainDF <- read.table('~/code_new/lnt_pxvx/Data/lnt_nat_recalc_famc.tsv', sep='\t', header=F,
+baseMainDF <- read.table('~/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv', sep='\t', header=F,
                          na.strings=-9999,
                          col.names=baseMainDFColNames)
 

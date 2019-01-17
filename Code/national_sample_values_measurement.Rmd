@@ -46,7 +46,9 @@ remove_sids <- c(2440,
 suppressMessages(library('tidyverse'))
 lnt_df <- haven::read_sav(file.path(data_dir, 'LT_wideAGT1234.sav'))
 lnt_df_nat <- dplyr::filter(lnt_df, aSubsample == 1)  %>%
-  filter(!subjid %in% remove_sids)
+  filter(!subjid %in% remove_sids) %>%
+  rename_at(.vars = vars(matches('[abcd]asp\\d+_mc')),
+            .funs = funs(gsub('([abcd]asp)(\\d+)(_mc.*)', '\\1\\3\\2', .)))
 
 create_scoring_frame <- function(items, rev_pattern = '.*x$', 
                                  sub_pattern = '^[abcd](.*?)x*$', 
@@ -159,6 +161,12 @@ lnt_scales_list <- list(
   aspfin_d = create_scoring_frame(
     c('basp12', 'basp13', 'basp15'),
     factor_name = 'aspfin_d'),
+  aspfinc = create_scoring_frame(
+    c('basp_mc12', 'basp_mc13', 'basp_mc14', 'basp_mc15', 'basp_mc16'),
+    factor_name = 'aspfinc'),
+  aspfinc_d = create_scoring_frame(
+    c('basp_mc12', 'basp_mc13', 'basp_mc15'),
+    factor_name = 'aspfinc_d'),
   bfa_mt = create_scoring_frame(
     c('abfas113', 'abfas114', 'abfas115', 'abfas116x', 'abfas117x', 'abfas118x'),
     factor_name = 'bfa_mt'),
@@ -201,7 +209,8 @@ lnt_scales_list <- list(
     factor_name = 'vrt_col_d'))
 
 #scales with dropped items: drop_items <- list(
-#   'aspfin' = c('asp14','asp16'), 
+#   'aspfin' = c('asp14','asp16'),
+#   'aspfin' = c('asp_mc14','asp_mc16'),
 #   'bfa_mt' = c('bfas113', 'bfas114'), #118 breaks it
 #   'hrz_col' = c('ind9'),
 #   'hrz_ind' = c('ind4'),
@@ -235,6 +244,7 @@ pVarNames <- c(bfi_s_scale="Social Self-Regulation",
                bfas_oo="..Openness")
 
 vVarNames <- c('aspfin'='Financial Aspirations',
+               'aspfinc'='Financial Aspirations MC',
                'bfa_mt'='Materialism',
                'hrz_col'='Horizontal Collectivism',
                'hrz_ind'='Horizontal Individualism',
@@ -292,14 +302,35 @@ pompit <- function(datas,min,max){
   (datas-min)/(max-min)*100
 }
 
+mins <- bind_rows(lapply(list(wave1_scored, wave2_scored, wave3_scored, wave4_scored),
+                         function(adf){
+                           data.frame(minc = min(adf$scores[,'aspfinc'], na.rm = T),
+                                      maxc = max(adf$scores[,'aspfinc'], na.rm = T),
+                                      minc_d = min(adf$scores[,'aspfinc_d'], na.rm = T),
+                                      maxc_d = max(adf$scores[,'aspfinc_d'], na.rm = T))
+                         }))
+
+min_famc <- min(mins$minc)
+max_famc <- max(mins$maxc)
+min_famc_d <- min(mins$minc_d)
+max_famc_d <- max(mins$maxc_d)
+
 all_waves_scored <- bind_rows(
-  list(`1` = bind_cols(pompit(as_data_frame(wave1_scored$scores), 1, 5), 
+  list(`1` = bind_cols(pompit(select(as_data_frame(wave1_scored$scores), -matches('aspfinc')), 1, 5),
+                       pompit(select(as_data_frame(wave1_scored$scores), aspfinc), min_famc, max_famc),
+                       pompit(select(as_data_frame(wave1_scored$scores), aspfinc_d), min_famc_d, max_famc_d),
                        pompit(as_data_frame(wave1_scored_mvi$scores), 1, 9)),
-       `2` = bind_cols(pompit(as_data_frame(wave2_scored$scores), 1, 5), 
+       `2` = bind_cols(pompit(select(as_data_frame(wave2_scored$scores), -matches('aspfinc')), 1, 5),
+                       pompit(select(as_data_frame(wave2_scored$scores), aspfinc), min_famc, max_famc),
+                       pompit(select(as_data_frame(wave2_scored$scores), aspfinc_d), min_famc_d, max_famc_d),
                        pompit(as_data_frame(wave2_scored_mvi$scores), 1, 9)),
-       `3` = bind_cols(pompit(as_data_frame(wave3_scored$scores), 1, 5), 
+       `3` = bind_cols(pompit(select(as_data_frame(wave3_scored$scores), -matches('aspfinc')), 1, 5),
+                       pompit(select(as_data_frame(wave3_scored$scores), aspfinc), min_famc, max_famc),
+                       pompit(select(as_data_frame(wave3_scored$scores), aspfinc_d), min_famc_d, max_famc_d),
                        pompit(as_data_frame(wave3_scored_mvi$scores), 1, 9)),
-       `4` = bind_cols(pompit(as_data_frame(wave4_scored$scores), 1, 5), 
+       `4` = bind_cols(pompit(select(as_data_frame(wave4_scored$scores), -matches('aspfinc')), 1, 5),
+                       pompit(select(as_data_frame(wave4_scored$scores), aspfinc), min_famc, max_famc),
+                       pompit(select(as_data_frame(wave4_scored$scores), aspfinc_d), min_famc_d, max_famc_d),
                        pompit(as_data_frame(wave4_scored_mvi$scores), 1, 9))),
   .id = 'wave')
 
@@ -572,6 +603,7 @@ keepcols <- c(1,17,7,2,4,10,11,13,14,15,16)
 nothingburger <- do(group_by(invar_tests_and_models_df_w, factor_name),{
   table_df <- select(., -factor_name, -invar_type, -factor_name_c)
   title <- unique(.$factor_name_c)
+  # print(title)
   
   print(knitr::kable(
     table_df[,keepcols],
@@ -652,6 +684,21 @@ knitr::kable(
   digits = 2, row.names = F, caption = 'group_strict_intercepts')
 knitr::kable(
   mi_strict(invar_mods_listenv[['aspfin']][[7]]),
+  digits = 2, row.names = F, caption = 'group_strict_variances')
+```
+
+### Financial aspirations MC
+
+```{r aspfincmi}
+options(minimum.value=2.5)
+knitr::kable(
+  mi_metric(invar_mods_listenv[['aspfinc']][[7]]),
+  digits = 2, row.names = F, caption = 'group_strict_loadings')
+knitr::kable(
+  mi_strong(invar_mods_listenv[['aspfinc']][[7]]),
+  digits = 2, row.names = F, caption = 'group_strict_intercepts')
+knitr::kable(
+  mi_strict(invar_mods_listenv[['aspfinc']][[7]]),
   digits = 2, row.names = F, caption = 'group_strict_variances')
 ```
 
@@ -787,7 +834,7 @@ nullius <- lapply(names(vVarNames), function(var){
     #   stat = 'smooth', method = 'lm', color = 'black', alpha = .8, size = 1, linetype = 1) +
     ggplot2::geom_line(
       stat = 'smooth', method = 'lm', color = 'black', alpha = .5, size = 1) +
-    ggplot2::coord_cartesian(ylim = c(1, ifelse(var == 'mvi', 9, 5))) + 
+    ggplot2::coord_cartesian(ylim = c(ifelse(var == 'aspfinc', -100, 0), 100)) +
     ggplot2::theme_minimal() + 
     labs(title = vVarNames[var]))
 })
@@ -805,6 +852,7 @@ item_labels_to_text <- function(item_col_names, adf){
 }
 drop_items <- list(
   'aspfin' = c('asp14','asp16'), 
+  'aspfinc' = c('asp_mc14', 'asp_mc16'), 
   'bfa_mt' = c('bfas113', 'bfas114'), #118 breaks it
   'hrz_col' = c('ind9'),
   'hrz_ind' = c('ind4'),
