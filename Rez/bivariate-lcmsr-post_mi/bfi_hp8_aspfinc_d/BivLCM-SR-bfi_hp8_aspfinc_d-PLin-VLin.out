@@ -1,0 +1,661 @@
+Mplus VERSION 8 (Linux)
+MUTHEN & MUTHEN
+01/18/2019   2:20 PM
+
+INPUT INSTRUCTIONS
+
+
+  title: PxVx Bivariate LCM-SR - post mi - Linear bfi_hp8 with Linear aspfinc_d;
+
+  data: file = /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv;
+
+  variable:
+  names =
+  subjid
+  aage
+  aaspfin
+  aaspfinc
+  aaspfinc_d
+  aaspfin_d
+  abfa_mt
+  abfa_mt_d
+  abfas_ac
+  abfas_ap
+  abfas_ci
+  abfas_co
+  abfas_ea
+  abfas_ee
+  abfas_nv
+  abfas_nv9
+  abfas_nw
+  abfas_oi
+  abfas_oo
+  abfi_a
+  abfi_a6
+  abfi_c
+  abfi_d_scale
+  abfi_e
+  abfi_hp8
+  abfi_n
+  abfi_o
+  abfi_s_scale
+  ahrz_col
+  ahrz_col_d
+  ahrz_ind
+  ahrz_ind_d
+  amvi
+  ausi
+  ausi_d
+  avrt_col
+  avrt_col_d
+  avrt_ind
+  avrt_ind_d
+  bage
+  baspfin
+  baspfinc
+  baspfinc_d
+  baspfin_d
+  bbfa_mt
+  bbfa_mt_d
+  bbfas_ac
+  bbfas_ap
+  bbfas_ci
+  bbfas_co
+  bbfas_ea
+  bbfas_ee
+  bbfas_nv
+  bbfas_nv9
+  bbfas_nw
+  bbfas_oi
+  bbfas_oo
+  bbfi_a
+  bbfi_a6
+  bbfi_c
+  bbfi_d_scale
+  bbfi_e
+  bbfi_hp8
+  bbfi_n
+  bbfi_o
+  bbfi_s_scale
+  bhrz_col
+  bhrz_col_d
+  bhrz_ind
+  bhrz_ind_d
+  bmvi
+  busi
+  busi_d
+  bvrt_col
+  bvrt_col_d
+  bvrt_ind
+  bvrt_ind_d
+  cage
+  caspfin
+  caspfinc
+  caspfinc_d
+  caspfin_d
+  cbfa_mt
+  cbfa_mt_d
+  cbfas_ac
+  cbfas_ap
+  cbfas_ci
+  cbfas_co
+  cbfas_ea
+  cbfas_ee
+  cbfas_nv
+  cbfas_nv9
+  cbfas_nw
+  cbfas_oi
+  cbfas_oo
+  cbfi_a
+  cbfi_a6
+  cbfi_c
+  cbfi_d_scale
+  cbfi_e
+  cbfi_hp8
+  cbfi_n
+  cbfi_o
+  cbfi_s_scale
+  chrz_col
+  chrz_col_d
+  chrz_ind
+  chrz_ind_d
+  cmvi
+  cusi
+  cusi_d
+  cvrt_col
+  cvrt_col_d
+  cvrt_ind
+  cvrt_ind_d
+  dage
+  daspfin
+  daspfinc
+  daspfinc_d
+  daspfin_d
+  dbfa_mt
+  dbfa_mt_d
+  dbfas_ac
+  dbfas_ap
+  dbfas_ci
+  dbfas_co
+  dbfas_ea
+  dbfas_ee
+  dbfas_nv
+  dbfas_nv9
+  dbfas_nw
+  dbfas_oi
+  dbfas_oo
+  dbfi_a
+  dbfi_a6
+  dbfi_c
+  dbfi_d_scale
+  dbfi_e
+  dbfi_hp8
+  dbfi_n
+  dbfi_o
+  dbfi_s_scale
+  dhrz_col
+  dhrz_col_d
+  dhrz_ind
+  dhrz_ind_d
+  dmvi
+  dusi
+  dusi_d
+  dvrt_col
+  dvrt_col_d
+  dvrt_ind
+  dvrt_ind_d
+  ;
+
+  USEVARIABLES =
+  abfi_hp8
+  bbfi_hp8
+  cbfi_hp8
+  dbfi_hp8
+  aaspfinc_d
+  baspfinc_d
+  caspfinc_d
+  daspfinc_d
+  a1
+  a2
+  a3
+  a4
+  ;
+
+  missing = all (-9999);
+
+  tscores = a1 a2 a3 a4;
+
+  DEFINE:
+  a1 = aage + 0 - 36;
+  a2 = aage + 1 - 36;
+  a3 = aage + 2 - 36;
+  a4 = aage + 3 - 36;
+
+  ANALYSIS:
+  TYPE=RANDOM;
+  PROCESSORS = 6;
+  model=nocovariances; ! supresses default estimation of certain covs in model;
+
+  MODEL:
+
+  i_bfi_hp8 s_bfi_hp8 | abfi_hp8 bbfi_hp8 cbfi_hp8 dbfi_hp8 AT a1 a2 a3 a4;
+  i_aspfinc_d s_aspfinc_d | aaspfinc_d baspfinc_d caspfinc_d daspfinc_d AT a1 a2 a3 a4;
+
+  ! freeing factor covs because of "nocovariances"
+  s_bfi_hp8 WITH i_bfi_hp8 s_aspfinc_d i_aspfinc_d;
+  i_bfi_hp8 WITH s_aspfinc_d i_aspfinc_d;
+  s_aspfinc_d WITH i_aspfinc_d;
+
+  p1 BY abfi_hp8@1; ! Residual "factors";
+  p2 BY bbfi_hp8@1;
+  p3 BY cbfi_hp8@1;
+  p4 BY dbfi_hp8@1;
+
+  v1 BY aaspfinc_d@1; ! Residual "factors";
+  v2 BY baspfinc_d@1;
+  v3 BY caspfinc_d@1;
+  v4 BY daspfinc_d@1;
+
+  !residual variances on observed/manifest vars set to 0
+  abfi_hp8@0;
+  bbfi_hp8@0;
+  cbfi_hp8@0;
+  dbfi_hp8@0;
+
+  !residual variances on observed/manifest vars set to 0
+  aaspfinc_d@0;
+  baspfinc_d@0;
+  caspfinc_d@0;
+  daspfinc_d@0;
+
+  ! means of observed/manifest vars set to 0
+  [abfi_hp8@0];
+  [bbfi_hp8@0];
+  [cbfi_hp8@0];
+  [dbfi_hp8@0];
+
+  ! means of observed/manifest vars set to 0
+  [aaspfinc_d@0];
+  [baspfinc_d@0];
+  [caspfinc_d@0];
+  [daspfinc_d@0];
+
+  [p1@0]; ! means of residual "factors" set to 0
+  [p2@0];
+  [p3@0];
+  [p4@0];
+
+  [v1@0]; ! means of residual "factors" set to 0
+  [v2@0];
+  [v3@0];
+  [v4@0];
+
+  p4 on p3 (a); ! Autoregressive paths constrained to equality
+  p3 on p2 (a);
+  p2 on p1 (a);
+
+  v4 on v3 (b); ! Autoregressive paths constrained to equality
+  v3 on v2 (b);
+  v2 on v1 (b);
+
+  p4 on v3 (c); ! Cross-lagged paths constrained to equality
+  p3 on v2 (c);
+  p2 on v1 (c);
+
+  v4 on p3 (d); ! Cross-lagged paths constrained to equality
+  v3 on p2 (d);
+  v2 on p1 (d);
+
+  p1 with v1; !(this one is not like the others)
+
+  p2 with v2 (e); ! Within-wave correlations constrained to equality
+  p3 with v3 (e);
+  p4 with v4 (e);
+
+  p2 p3 p4 (f); ! estimate variances of residual "factors"
+  v2 v3 v4 (g); ! estimate variances of residual "factors"
+
+  OUTPUT: SAMPSTAT PATTERNS;
+
+
+
+*** WARNING in VARIABLE command
+  Note that only the first 8 characters of variable names are used in the output.
+  Shorten variable names to avoid any confusion.
+*** WARNING
+  Data set contains cases with missing on time scores but non-missing on the
+  corresponding dependent variables.  These cases were not included in the analysis.
+  Number of such cases:  5
+   2 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+PxVx Bivariate LCM-SR - post mi - Linear bfi_hp8 with Linear aspfinc_d;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         864
+
+Number of dependent variables                                    8
+Number of independent variables                                  0
+Number of continuous latent variables                           12
+
+Observed dependent variables
+
+  Continuous
+   ABFI_HP8    BBFI_HP8    CBFI_HP8    DBFI_HP8    AASPFINC_D  BASPFINC_D
+   CASPFINC_D  DASPFINC_D
+
+Continuous latent variables
+   P1          P2          P3          P4          V1          V2
+   V3          V4          I_BFI_HP    S_BFI_HP    I_ASPFIN    S_ASPFIN
+
+Variables with special functions
+
+  Time scores
+   A1          A2          A3          A4
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                   100
+Convergence criterion                                    0.100D-05
+Maximum number of EM iterations                                500
+Convergence criteria for the EM algorithm
+  Loglikelihood change                                   0.100D-02
+  Relative loglikelihood change                          0.100D-05
+  Derivative                                             0.100D-03
+Minimum variance                                         0.100D-03
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+
+Input data file(s)
+  /home/jflournoy/code_new/lnt_pxvx/Data/lnt_nat_recalc.tsv
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            19
+
+
+SUMMARY OF MISSING DATA PATTERNS
+
+
+     MISSING DATA PATTERNS (x = not missing)
+
+           1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
+ ABFI_HP8  x  x  x  x  x  x  x  x  x  x  x  x  x     x  x  x  x  x
+ BBFI_HP8  x     x  x        x     x  x  x  x  x        x  x
+ CBFI_HP8  x           x     x  x        x  x  x           x  x
+ DBFI_HP8  x     x     x  x              x  x  x  x     x     x  x
+ AASPFINC  x  x  x  x  x  x  x  x     x  x  x  x  x     x  x  x  x
+ BASPFINC  x     x  x        x     x     x     x           x
+ CASPFINC  x           x     x  x        x  x              x  x
+ DASPFINC  x     x     x  x                 x  x  x     x  x
+
+
+     MISSING DATA PATTERN FREQUENCIES
+
+    Pattern   Frequency     Pattern   Frequency     Pattern   Frequency
+          1         494           8          22          15           1
+          2         168           9           1          16           1
+          3          26          10           3          17           1
+          4          48          11           1          18           2
+          5          21          12           2          19           2
+          6          23          13           1
+          7          46          14           1
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              ABFI_HP8      BBFI_HP8      CBFI_HP8      DBFI_HP8      AASPFINC
+              ________      ________      ________      ________      ________
+ ABFI_HP8       0.999
+ BBFI_HP8       0.722         0.722
+ CBFI_HP8       0.683         0.631         0.683
+ DBFI_HP8       0.663         0.608         0.603         0.664
+ AASPFINC       0.997         0.721         0.683         0.664         0.998
+ BASPFINC       0.715         0.715         0.628         0.604         0.714
+ CASPFINC       0.682         0.630         0.682         0.602         0.682
+ DASPFINC       0.659         0.608         0.601         0.659         0.660
+
+
+           Covariance Coverage
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+ BASPFINC       0.715
+ CASPFINC       0.627         0.682
+ DASPFINC       0.604         0.600         0.660
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              ABFI_HP8      BBFI_HP8      CBFI_HP8      DBFI_HP8      AASPFINC
+              ________      ________      ________      ________      ________
+               71.146        71.549        72.283        72.298        36.030
+
+
+           Means
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+               37.549        37.387        38.693
+
+
+           Covariances
+              ABFI_HP8      BBFI_HP8      CBFI_HP8      DBFI_HP8      AASPFINC
+              ________      ________      ________      ________      ________
+ ABFI_HP8     247.296
+ BBFI_HP8     187.393       253.850
+ CBFI_HP8     173.906       185.782       231.163
+ DBFI_HP8     164.975       176.684       176.474       233.843
+ AASPFINC     -66.970       -69.747       -69.803       -63.217       225.971
+ BASPFINC     -56.375       -68.136       -59.299       -55.856       166.680
+ CASPFINC     -62.721       -75.246       -73.181       -72.759       168.079
+ DASPFINC     -59.513       -68.238       -66.255       -71.814       156.850
+
+
+           Covariances
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+ BASPFINC     222.299
+ CASPFINC     166.331       225.599
+ DASPFINC     158.991       171.141       225.201
+
+
+           Correlations
+              ABFI_HP8      BBFI_HP8      CBFI_HP8      DBFI_HP8      AASPFINC
+              ________      ________      ________      ________      ________
+ ABFI_HP8       1.000
+ BBFI_HP8       0.748         1.000
+ CBFI_HP8       0.727         0.767         1.000
+ DBFI_HP8       0.686         0.725         0.759         1.000
+ AASPFINC      -0.283        -0.291        -0.305        -0.275         1.000
+ BASPFINC      -0.240        -0.287        -0.262        -0.245         0.744
+ CASPFINC      -0.266        -0.314        -0.320        -0.317         0.744
+ DASPFINC      -0.252        -0.285        -0.290        -0.313         0.695
+
+
+           Correlations
+              BASPFINC      CASPFINC      DASPFINC
+              ________      ________      ________
+ BASPFINC       1.000
+ CASPFINC       0.743         1.000
+ DASPFINC       0.711         0.759         1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -20207.758
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ABFI_HP8             71.135      -0.353      25.000    0.23%      56.250     68.750     71.875
+             863.000     247.335      -0.371     100.000    2.67%      75.000     84.375
+     BBFI_HP8             71.731      -0.342      21.875    0.16%      56.250     68.750     71.875
+             624.000     248.888      -0.525     100.000    1.44%      78.125     87.500
+     CBFI_HP8             72.103      -0.329      28.125    0.51%      59.375     68.750     71.875
+             590.000     234.156      -0.407     100.000    2.54%      78.125     87.500
+     DBFI_HP8             72.391      -0.351      28.125    0.35%      59.375     68.750     71.875
+             574.000     234.868      -0.329     100.000    2.09%      78.125     87.500
+     AASPFINC_D           36.031       0.362       0.000    0.12%      22.722     30.972     34.386
+             862.000     226.057       0.110     100.000    0.12%      39.295     49.453
+     BASPFINC_D           37.485       0.256       2.673    0.32%      23.791     32.612     36.622
+             618.000     219.141      -0.280      81.264    0.32%      40.365     50.255
+     CASPFINC_D           37.530       0.286       1.069    0.17%      23.524     32.880     36.889
+             589.000     225.425      -0.260      97.303    0.17%      40.632     50.790
+     DASPFINC_D           38.659       0.300       5.614    0.18%      25.395     33.682     37.691
+             570.000     223.422      -0.160      87.679    0.18%      41.166     52.661
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       24
+
+Loglikelihood
+
+          H0 Value                      -20220.611
+          H0 Scaling Correction Factor      1.0764
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   40489.223
+          Bayesian (BIC)                 40603.501
+          Sample-Size Adjusted BIC       40527.283
+            (n* = (n + 2) / 24)
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ P1       BY
+    ABFI_HP8           1.000      0.000    999.000    999.000
+
+ P2       BY
+    BBFI_HP8           1.000      0.000    999.000    999.000
+
+ P3       BY
+    CBFI_HP8           1.000      0.000    999.000    999.000
+
+ P4       BY
+    DBFI_HP8           1.000      0.000    999.000    999.000
+
+ V1       BY
+    AASPFINC_D         1.000      0.000    999.000    999.000
+
+ V2       BY
+    BASPFINC_D         1.000      0.000    999.000    999.000
+
+ V3       BY
+    CASPFINC_D         1.000      0.000    999.000    999.000
+
+ V4       BY
+    DASPFINC_D         1.000      0.000    999.000    999.000
+
+ P4         ON
+    P3                 0.129      0.048      2.680      0.007
+    V3                -0.028      0.041     -0.679      0.497
+
+ P3         ON
+    P2                 0.129      0.048      2.680      0.007
+    V2                -0.028      0.041     -0.679      0.497
+
+ P2         ON
+    P1                 0.129      0.048      2.680      0.007
+    V1                -0.028      0.041     -0.679      0.497
+
+ V4         ON
+    V3                 0.117      0.051      2.299      0.022
+    P3                -0.034      0.038     -0.905      0.366
+
+ V3         ON
+    V2                 0.117      0.051      2.299      0.022
+    P2                -0.034      0.038     -0.905      0.366
+
+ V2         ON
+    V1                 0.117      0.051      2.299      0.022
+    P1                -0.034      0.038     -0.905      0.366
+
+ S_BFI_HP WITH
+    I_BFI_HP8         -0.581      0.463     -1.255      0.209
+    S_ASPFINC_         0.000      0.068      0.006      0.995
+    I_ASPFINC_         0.119      1.477      0.081      0.936
+
+ I_BFI_HP WITH
+    S_ASPFINC_         1.088      1.545      0.704      0.481
+    I_ASPFINC_       -59.498      9.189     -6.475      0.000
+
+ S_ASPFIN WITH
+    I_ASPFINC_        -1.261      0.514     -2.452      0.014
+
+ P1       WITH
+    V1                -5.175      4.097     -1.263      0.207
+
+ P2       WITH
+    V2                -6.452      2.298     -2.808      0.005
+
+ P3       WITH
+    V3                -6.452      2.298     -2.808      0.005
+
+ P4       WITH
+    V4                -6.452      2.298     -2.808      0.005
+
+ Means
+    P1                 0.000      0.000    999.000    999.000
+    V1                 0.000      0.000    999.000    999.000
+    I_BFI_HP8         71.408      0.493    144.880      0.000
+    S_BFI_HP8          0.276      0.043      6.383      0.000
+    I_ASPFINC_        37.229      0.478     77.848      0.000
+    S_ASPFINC_        -0.093      0.042     -2.208      0.027
+
+ Intercepts
+    ABFI_HP8           0.000      0.000    999.000    999.000
+    BBFI_HP8           0.000      0.000    999.000    999.000
+    CBFI_HP8           0.000      0.000    999.000    999.000
+    DBFI_HP8           0.000      0.000    999.000    999.000
+    AASPFINC_D         0.000      0.000    999.000    999.000
+    BASPFINC_D         0.000      0.000    999.000    999.000
+    CASPFINC_D         0.000      0.000    999.000    999.000
+    DASPFINC_D         0.000      0.000    999.000    999.000
+    P2                 0.000      0.000    999.000    999.000
+    P3                 0.000      0.000    999.000    999.000
+    P4                 0.000      0.000    999.000    999.000
+    V2                 0.000      0.000    999.000    999.000
+    V3                 0.000      0.000    999.000    999.000
+    V4                 0.000      0.000    999.000    999.000
+
+ Variances
+    P1                77.290      6.327     12.215      0.000
+    V1                68.086      5.643     12.065      0.000
+    I_BFI_HP8        158.957     11.833     13.433      0.000
+    S_BFI_HP8          0.059      0.097      0.614      0.539
+    I_ASPFINC_       152.108     12.290     12.376      0.000
+    S_ASPFINC_         0.072      0.087      0.827      0.409
+
+ Residual Variances
+    ABFI_HP8           0.000      0.000    999.000    999.000
+    BBFI_HP8           0.000      0.000    999.000    999.000
+    CBFI_HP8           0.000      0.000    999.000    999.000
+    DBFI_HP8           0.000      0.000    999.000    999.000
+    AASPFINC_D         0.000      0.000    999.000    999.000
+    BASPFINC_D         0.000      0.000    999.000    999.000
+    CASPFINC_D         0.000      0.000    999.000    999.000
+    DASPFINC_D         0.000      0.000    999.000    999.000
+    P2                64.960      3.894     16.681      0.000
+    P3                64.960      3.894     16.681      0.000
+    P4                64.960      3.894     16.681      0.000
+    V2                64.123      3.962     16.186      0.000
+    V3                64.123      3.962     16.186      0.000
+    V4                64.123      3.962     16.186      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.340E-04
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  14:20:16
+        Ending Time:  14:20:37
+       Elapsed Time:  00:00:21
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen

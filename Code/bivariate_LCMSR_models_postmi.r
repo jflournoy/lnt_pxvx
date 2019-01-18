@@ -68,7 +68,8 @@ vVarNames <- c(
   hrz_col_d ='Horizontal Collectivism Invariant',
   hrz_ind='Horizontal Individualism',
   hrz_ind_d='Horizontal Individualism Invariant',
-  aspfinc='Financial Aspirations MC'
+  aspfinc='Financial Aspirations MC',
+  aspfinc='Financial Aspirations MC Invariant'
 )
 periodsToEmSpaces <- function(varname, spacer = '\\.', replace = '&emsp;'){
   return(gsub(paste0(spacer, '(?=[', spacer, '[:alpha:]])'), replace, varname, perl = T))

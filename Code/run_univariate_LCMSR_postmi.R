@@ -337,6 +337,10 @@ vDF <- baseMainDF %>%
             ci_l = mean - qt(.975, df=n-1) * stderr) %>%
   mutate(variable = factor(variable, levels = names(vVarNames), labels = vVarNames))
 
+vDF %>%
+  group_by(half_decade) %>%
+  summarize(max_n = max(n))
+
 bordergray <- '#dddddd'
 meangray <- '#777777'
 
