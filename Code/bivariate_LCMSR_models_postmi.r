@@ -656,3 +656,47 @@ nada <- allParams_w_sampleLong %>%
 #     write.csv.tabular(atable, file=csvFilename, leftpad=F)
 #     data_frame(aTable=list(atable))
 #   })
+
+#'
+#' # Examine effect of modified to be invariant
+#'
+
+invariance_effect <- allParams_w_sampleLong %>%
+  select(ScaleName, vVar, `PtoV est`, `PtoV pval`, `VtoP est`, `VtoP pval`, Group) %>%
+  mutate(invariant = case_when(grepl('inv', ScaleName) ~ 'inv', TRUE ~ 'noninv')) %>%
+  gather(key, value, `PtoV est`, `VtoP est`, `PtoV pval`, `VtoP pval`) %>%
+  extract(key, into = c('dir', 'stat'), regex = '(.*) (est|pval)') %>%
+  unite(key, stat, invariant) %>% 
+  mutate(ScaleName = gsub('\\$_\\{inv\\}\\$', '', ScaleName)) %>%
+  spread(key, value) %>%
+  filter(pval_noninv < .05) %>%
+  rowwise() %>%
+  mutate(est_diff = abs(as.numeric(est_inv) - as.numeric(est_noninv)),
+         max_est = max(abs(c(as.numeric(est_inv), as.numeric(est_noninv)))),
+         perc_diff = est_diff/max_est,
+         ScaleName = factor(ScaleName, levels = pVarNames)) %>%
+  arrange(vVar, ScaleName, Group, dir) %>%
+  select(vVar, ScaleName, Group, dir, est_noninv, pval_noninv, est_inv, pval_inv, max_est, perc_diff, est_diff)
+  
+kable(filter(invariance_effect, pval_noninv < .005), caption = 'Significant Paths')
+
+hist(filter(invariance_effect, pval_noninv < .005)$est_diff, main = 'Absolute difference for p<.005 paths')
+
+hist(filter(invariance_effect, pval_noninv < .005)$perc_diff, main = 'Percent difference for p<.005 paths')
+
+kable(filter(invariance_effect, pval_noninv < .05, pval_noninv >= .005), caption = 'Suggestive Paths')
+
+hist(filter(invariance_effect, pval_noninv < .05, pval_noninv >= .005)$est_diff, main = 'Absolute difference for .005 <= p <.05 paths')
+
+hist(filter(invariance_effect, pval_noninv < .05, pval_noninv >= .005)$perc_diff, main = 'Percent difference for .005 <= p <.05 paths')
+
+mean_est_diff_p005 <- mean(filter(invariance_effect, pval_noninv < .005)$est_diff, na.rm=T)
+sd_est_diff_p005 <- sd(filter(invariance_effect, pval_noninv < .005)$est_diff, na.rm=T)
+mean_est_diff_p05 <- mean(filter(invariance_effect, pval_noninv < .05, pval_noninv >= .005)$est_diff, na.rm=T)
+sd_est_diff_p05 <- sd(filter(invariance_effect, pval_noninv < .05, pval_noninv >= .005)$est_diff, na.rm=T)
+
+#'
+#' For all p < .005 paths, mean absolute estimated differences were `r round(mean_est_diff_p005, 3)` (SD = `r round(sd_est_diff_p005, 3)`).
+#' 
+#' For all .005 < p < .05 paths, mean absolute estimated differences were `r round(mean_est_diff_p05, 3)` (SD = `r round(sd_est_diff_p05, 3)`).
+#'
