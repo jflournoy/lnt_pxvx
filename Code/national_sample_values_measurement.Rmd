@@ -361,6 +361,11 @@ all_waves_scored_w_finaspmc <- dplyr::full_join(all_waves_scored_w,
                                                 aspfinmc_df_pomp,
                                                 by = 'subjid')
 
+
+all_waves_scored_w <- all_waves_scored_w %>%
+  mutate(subjid = sample(1:n())) %>%
+  arrange(subjid)
+
 readr::write_tsv(all_waves_scored_w, path = '../Data/lnt_nat_recalc.tsv', col_names = F, na = '-9999')
 readr::write_lines(names(all_waves_scored_w), path = '../Data/lnt_nat_recalc_names.txt')
 
@@ -467,7 +472,7 @@ if(!file.exists(invar_test_rez_fn)){
 
 ## MFI, CFI & *IC
 
-To determine the invariance of measurement over groups, we can examine the $\chi^2$ test. But this is often an overly strict test with a large sample size. Relative change in AIC and BIC (with lower values, and negative changes, being better) help guide interpretation by incorporating information about the number of parameters (AIC, BIC) and sample size (BIC). Kang, McNeish, & Hancock (2016) recommend using McDonald's non-centrality parameter (McDonald, 1989) because it is not influenced by complexity, sample size, or measurement quality. Their simulation study indicates that under the null of no difference in model fit, a difference in the MFI, $\Delta\text{MFI}$, of < -.007 occurs in fewer than 5% of cases, and < -.01 in less that 1% of cases. They also caution against using cutoffs. 
+To determine the invariance of measurement over groups, we can examine the $\chi^2$ test. But this is often an overly strict test with a large sample size. Relative change in AIC and BIC (with lower values, and negative changes, being better) help guide interpretation by incorporating information about the number of parameters (AIC, BIC) and sample size (BIC). Kang, McNeish, & Hancock (2016) recommend using McDonald's non-centrality parameter (McDonald, 1989) because it is not influenced by complexity, sample size, or measurement quality. Their simulation study indicates that under the null of no difference in model fit, a difference in the MFI, $\Delta\text{MFI}$, of < -.007 occurs in fewer than 5% of cases, and < -.01 in less that 1% of cases. They also caution against using cutoffs. [Our own simulations](https://jflournoy.github.io/milav/articles/simulate-mi-tests.html)] ([flournoy, 2018](http://dx.doi.org/10.5281/zenodo.1294090)), which account for the longitudinal structure of the data, indicate similar cutoffs, with $\Delta\text{MFI} < -.012$ occurring in less that 1% of cases.
 
 ```{r results='asis', echo=F, warning=F, message=F}
 #  [1] "bfi_s_scale" "bfi_d_scale" "bfi_hp8"     "bfi_c"       "bfi_a"       "bfi_a6"     
