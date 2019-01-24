@@ -669,14 +669,14 @@ invariance_effect <- allParams_w_sampleLong %>%
   unite(key, stat, invariant) %>% 
   mutate(ScaleName = gsub('\\$_\\{inv\\}\\$', '', ScaleName)) %>%
   spread(key, value) %>%
-  filter(pval_noninv < .05) %>%
   rowwise() %>%
   mutate(est_diff = abs(as.numeric(est_inv) - as.numeric(est_noninv)),
          max_est = max(abs(c(as.numeric(est_inv), as.numeric(est_noninv)))),
          perc_diff = est_diff/max_est,
-         ScaleName = factor(ScaleName, levels = pVarNames)) %>%
+         ScaleName = factor(ScaleName, levels = pVarNames),
+         flip = sign(as.numeric(est_inv)) != sign(as.numeric(est_noninv))) %>%
   arrange(vVar, ScaleName, Group, dir) %>%
-  select(vVar, ScaleName, Group, dir, est_noninv, pval_noninv, est_inv, pval_inv, max_est, perc_diff, est_diff)
+  select(vVar, ScaleName, Group, dir, est_noninv, pval_noninv, est_inv, pval_inv, max_est, perc_diff, est_diff, flip)
   
 kable(filter(invariance_effect, pval_noninv < .005), caption = 'Significant Paths')
 
@@ -700,3 +700,64 @@ sd_est_diff_p05 <- sd(filter(invariance_effect, pval_noninv < .05, pval_noninv >
 #' 
 #' For all .005 < p < .05 paths, mean absolute estimated differences were `r round(mean_est_diff_p05, 3)` (SD = `r round(sd_est_diff_p05, 3)`).
 #'
+#'
+
+
+filter(invariance_effect, pval_noninv < .005) %>%
+  group_by(Group) %>%
+  arrange(Group) %>%
+  dplyr::summarize(mean = mean(est_diff, na.rm = T), 
+                   sd = sd(est_diff, na.rm = T),
+                   min = min(est_diff, na.rm = T),
+                   max = max(est_diff, na.rm = T),
+                   mean_perc = mean(perc_diff, na.rm = T), 
+                   sd_perc = sd(perc_diff, na.rm = T),
+                   min_perc = min(perc_diff, na.rm = T),
+                   max_perc = max(perc_diff, na.rm = T)) %>% kable(digits = 4)
+
+filter(invariance_effect, pval_noninv >= .005, pval_noninv < .05) %>%
+  group_by(Group) %>%
+  arrange(Group) %>%
+  dplyr::summarize(mean = mean(est_diff, na.rm = T), 
+                   sd = sd(est_diff, na.rm = T),
+                   min = min(est_diff, na.rm = T),
+                   max = max(est_diff, na.rm = T),
+                   mean_perc = mean(perc_diff, na.rm = T), 
+                   sd_perc = sd(perc_diff, na.rm = T),
+                   min_perc = min(perc_diff, na.rm = T),
+                   max_perc = max(perc_diff, na.rm = T)) %>% kable(digits = 4)
+
+filter(invariance_effect, pval_noninv < .05) %>%
+  group_by(Group) %>%
+  arrange(Group) %>%
+  dplyr::summarize(mean = mean(est_diff, na.rm = T), 
+                   sd = sd(est_diff, na.rm = T),
+                   min = min(est_diff, na.rm = T),
+                   max = max(est_diff, na.rm = T),
+                   mean_perc = mean(perc_diff, na.rm = T), 
+                   sd_perc = sd(perc_diff, na.rm = T),
+                   min_perc = min(perc_diff, na.rm = T),
+                   max_perc = max(perc_diff, na.rm = T)) %>% kable(digits = 4)
+
+invariance_effect %>%
+  group_by(Group) %>%
+  arrange(Group) %>%
+  dplyr::summarize(mean = mean(est_diff, na.rm = T), 
+                   sd = sd(est_diff, na.rm = T),
+                   min = min(est_diff, na.rm = T),
+                   max = max(est_diff, na.rm = T),
+                   mean_perc = mean(perc_diff, na.rm = T), 
+                   sd_perc = sd(perc_diff, na.rm = T),
+                   min_perc = min(perc_diff, na.rm = T),
+                   max_perc = max(perc_diff, na.rm = T)) %>% kable(digits = 4)
+
+invariance_effect %>%
+  filter(Group %in% c('ALL', 'EARLIER', 'LATER')) %>%
+  dplyr::summarize(mean = mean(est_diff, na.rm = T), 
+                   sd = sd(est_diff, na.rm = T),
+                   min = min(est_diff, na.rm = T),
+                   max = max(est_diff, na.rm = T),
+                   mean_perc = mean(perc_diff, na.rm = T), 
+                   sd_perc = sd(perc_diff, na.rm = T),
+                   min_perc = min(perc_diff, na.rm = T),
+                   max_perc = max(perc_diff, na.rm = T)) %>% kable(digits = 4)
