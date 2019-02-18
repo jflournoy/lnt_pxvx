@@ -512,9 +512,10 @@ allParams <- paramsummaries %>%
          ci.l=est-1.96*se) %>%
   select(ScaleName, vVar, modelCombo, colName, 
          Estimator, N, est, est.bf, est.stars,  se, se.d,
-         ci.u, ci.l, pval, pVar, Group) 
+         ci.u, ci.l, pval, pVar, Group, est_se) 
 
 allParams_w_sampleLong  <- allParams %>% 
+  select(-est_se) %>%
   gather(parameter, value, -(ScaleName:N), -Group) %>%
   unite(EfDir_Param, colName, parameter, sep=' ') %>%
   spread(EfDir_Param, value) %>%
@@ -832,3 +833,63 @@ invariance_effect %>%
                    min_perc = min(perc_diff, na.rm = T),
                    max_perc = max(perc_diff, na.rm = T)) %>% kable(digits = 4,
                                                                    caption = 'all main, under 40, over 40')
+
+
+#'
+#' # FWE control
+#'
+
+
+est_se  <- allParams %>% 
+  filter(colName %in% c('VtoP', 'PtoV'), Group == 'ALL') %>%
+  ungroup() %>%
+  select(ScaleName:colName, est, se, pVar, est_se) %>%
+  mutate(inv = grepl('_\\{inv\\}', ScaleName)) %>%
+  group_by(colName, inv) %>%
+  mutate(p = pnorm(abs(est_se), lower.tail = F)*2,
+         p.d = case_when(p < .05 ~ sprintf('**%.4f**', p),
+                         TRUE ~ sprintf('%.4f', p)),
+         p.holm = sprintf('%.4f', p.adjust(p, method = 'holm')),
+         p.fdr = sprintf('%.4f', p.adjust(p, method = 'BH')),
+         n_comp = n())
+
+est_se_w <- est_se %>%
+  select(-pVar) %>%
+  gather(parameter, value, -(ScaleName:colName)) %>%
+  unite(EfDir_Param, colName, parameter, sep=' ') %>%
+  spread(EfDir_Param, value) %>%
+  arrange(ScaleName)
+
+#'
+#+results='asis'
+nada <- est_se_w %>% 
+  mutate(ScaleName = factor(periodsToEmSpaces(ScaleName),
+                            levels = periodsToEmSpaces(pVarNames))) %>%
+  group_by(vVar) %>%
+  do({
+    atable <- tabular(Heading()*Justify(l)*(scale=Factor(ScaleName, texify=F))~
+                        Heading()*I2*
+                        # Heading()*Justify(c)*
+                        # (sample=factor(sample, 
+                        #                levels=c('Nat', 'Col', 'Inf'),
+                        #                labels=c('National Sample',
+                        #                         'Student Sample',
+                        #                         'Informant Sample')))*
+                        Justify(r)*
+                        ((`$P\\rightarrow V$`=`PtoV est`)+
+                           (`Z`=`PtoV est_se`)+
+                           (`$p_{\\text{PV}}$`=`PtoV p.d`)+
+                           (`$p^{\\text{Holm}}_{\\text{PV}}$`=`PtoV p.holm`)+
+                           (`$p^{\\text{FDR}}_{\\text{PV}}$`=`PtoV p.fdr`)+
+                           (`$k_{\\text{PV}}$`=`PtoV n_comp`)+
+                           (`$V\\rightarrow P$`=`VtoP est`)+
+                           (`Z`=`VtoP est_se`)+
+                           (`$p_{\\text{VP}}$`=`VtoP p.d`)+
+                           (`$p^{\\text{Holm}}_{\\text{VP}}$`=`VtoP p.holm`)+
+                           (`$p^{\\text{FDR}}_{\\text{VP}}$`=`VtoP p.fdr`)+
+                           (`$k_{\\text{VP}}$`=`VtoP n_comp`)), 
+                      data=.) # %>% cat #%>% latex()
+    cat(paste0('\n### ', vVarNames[.$vVar[[1]]], '\n'))
+    html(atable)
+    data_frame(aTable=list(atable))
+  })
