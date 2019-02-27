@@ -841,7 +841,8 @@ invariance_effect %>%
 
 
 est_se  <- allParams %>% 
-  filter(colName %in% c('VtoP', 'PtoV'), Group == 'ALL') %>%
+  filter(colName %in% c('VtoP', 'PtoV', 'covPVwithin'), Group == 'ALL',
+         vVar != 'aspfin') %>%
   ungroup() %>%
   select(ScaleName:colName, est, se, pVar, est_se) %>%
   mutate(inv = grepl('_\\{inv\\}', ScaleName)) %>%
@@ -849,8 +850,10 @@ est_se  <- allParams %>%
   mutate(p = pnorm(abs(est_se), lower.tail = F)*2,
          p.d = case_when(p < .05 ~ sprintf('**%.4f**', p),
                          TRUE ~ sprintf('%.4f', p)),
-         p.holm = sprintf('%.4f', p.adjust(p, method = 'holm')),
-         p.fdr = sprintf('%.4f', p.adjust(p, method = 'BH')),
+         p.holm = case_when(p.adjust(p, method = 'holm') < .05 ~ sprintf('**%.4f**', p.adjust(p, method = 'holm')),
+                            TRUE ~ sprintf('%.4f', p.adjust(p, method = 'holm'))),
+         p.fdr = case_when(p.adjust(p, method = 'BH') < .05 ~ sprintf('**%.4f**', p.adjust(p, method = 'BH')),
+                           TRUE ~ sprintf('%.4f', p.adjust(p, method = 'BH'))),
          n_comp = n())
 
 est_se_w <- est_se %>%
@@ -860,6 +863,8 @@ est_se_w <- est_se %>%
   spread(EfDir_Param, value) %>%
   arrange(ScaleName)
 
+#'
+#' ## Cross-lag parameters
 #'
 #+results='asis'
 nada <- est_se_w %>% 
@@ -888,6 +893,30 @@ nada <- est_se_w %>%
                            (`$p^{\\text{Holm}}_{\\text{VP}}$`=`VtoP p.holm`)+
                            (`$p^{\\text{FDR}}_{\\text{VP}}$`=`VtoP p.fdr`)+
                            (`$k_{\\text{VP}}$`=`VtoP n_comp`)), 
+                      data=.) # %>% cat #%>% latex()
+    cat(paste0('\n### ', vVarNames[.$vVar[[1]]], '\n'))
+    html(atable)
+    data_frame(aTable=list(atable))
+  })
+
+#'
+#' ## Within-wave parameters
+#'
+#+results='asis'
+nada <- est_se_w %>% 
+  mutate(ScaleName = factor(periodsToEmSpaces(ScaleName),
+                            levels = periodsToEmSpaces(pVarNames))) %>%
+  group_by(vVar) %>%
+  do({
+    atable <- tabular(Heading()*Justify(l)*(scale=Factor(ScaleName, texify=F))~
+                        Heading()*I2*
+                        Justify(r)*
+                        ((`$P\\leftrightarrow V$`=`covPVwithin est`)+
+                           (`Z`=`covPVwithin est_se`)+
+                           (`$p_{\\text{rPV}}$`=`covPVwithin p.d`)+
+                           (`$p^{\\text{Holm}}_{\\text{rPV}}$`=`covPVwithin p.holm`)+
+                           (`$p^{\\text{FDR}}_{\\text{rPV}}$`=`covPVwithin p.fdr`)+
+                           (`$k_{\\text{rPV}}$`=`covPVwithin n_comp`)), 
                       data=.) # %>% cat #%>% latex()
     cat(paste0('\n### ', vVarNames[.$vVar[[1]]], '\n'))
     html(atable)
